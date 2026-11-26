@@ -107,10 +107,24 @@ export interface AccountExport {
    */
   challengeCompletions: Record<string, unknown>[];
   bossForms: Record<string, unknown>[];
+  /**
+   * Capture receipts (migration 0016): which cards a server-accepted in-app capture made
+   * claimable for this account, and when each was claimed. Empty until that migration is applied.
+   */
+  captureReceipts: Record<string, unknown>[];
+  /** Discoveries that existed before capture enforcement and may always be re-recorded. */
+  grandfatheredDiscoveries: Record<string, unknown>[];
   photos: {
     included: ExportedPhoto[];
     omitted: { sightingId: string; reference: string; reason: string }[];
   };
+}
+
+/** Tables created by migrations that are applied project by project. */
+const OPTIONAL_TABLES = new Set(['capture receipts', 'grandfathered discoveries']);
+
+function isMissingRelation(error: { code?: string; message?: string }): boolean {
+  return error.code === 'PGRST205' || error.code === '42P01' || /does not exist|schema cache/i.test(error.message ?? '');
 }
 
 const NOTES = [
@@ -268,6 +282,8 @@ export async function exportLocalData(): Promise<AccountExport> {
     // Boss Form records are written only by the server, against an account.
     challengeCompletions: [],
     bossForms: [],
+    captureReceipts: [],
+    grandfatheredDiscoveries: [],
     // The shelf, however, is kept on the device when signed out — so it is here.
     seedShelf: mergeFinds(getLocalFinds()),
     seedShelfFinds: getLocalFinds(),
@@ -301,6 +317,8 @@ export async function exportAccountData(userId: string, email?: string): Promise
     leaderboardRow,
     challengeRows,
     bossFormRows,
+    captureReceiptRows,
+    grandfatheredRows,
   ] = await Promise.all([
       client.from('discoveries').select('herb_id, discovered_at').eq('user_id', userId),
       client.from('learned').select('herb_id, learned_at').eq('user_id', userId),
@@ -353,6 +371,8 @@ export async function exportAccountData(userId: string, email?: string): Promise
       // tried the pilot has none, which is every account today.
       client.from('challenge_completions').select('herb_id, activity_id, completed_at').eq('user_id', userId),
       client.from('boss_forms').select('herb_id, earned_at').eq('user_id', userId),
+      client.from('capture_receipts').select('*').eq('user_id', userId),
+      client.from('discovery_grandfathered').select('*').eq('user_id', userId),
     ]);
 
   for (const [name, result] of Object.entries({
@@ -370,9 +390,14 @@ export async function exportAccountData(userId: string, email?: string): Promise
     'Field Board listing': leaderboardRow,
     'challenge completions': challengeRows,
     'Boss Forms': bossFormRows,
+    'capture receipts': captureReceiptRows,
+    'grandfathered discoveries': grandfatheredRows,
   })) {
     // A partial export presented as complete is worse than a failed one: somebody deleting
     // their account afterwards would believe they had kept a copy.
+    // Migration 0016 is applied per project and may not exist yet: a missing relation is an empty
+    // list, not a failed export. Any other error still throws.
+    if (result.error && isMissingRelation(result.error) && OPTIONAL_TABLES.has(name)) continue;
     if (result.error) throw new Error(`Could not read your ${name}: ${result.error.message}`);
   }
 
@@ -462,6 +487,8 @@ export async function exportAccountData(userId: string, email?: string): Promise
     leaderboardListing: (leaderboardRow.data as Record<string, unknown> | null) ?? null,
     challengeCompletions: (challengeRows.data ?? []) as Record<string, unknown>[],
     bossForms: (bossFormRows.data ?? []) as Record<string, unknown>[],
+    captureReceipts: (captureReceiptRows.error ? [] : captureReceiptRows.data ?? []) as Record<string, unknown>[],
+    grandfatheredDiscoveries: (grandfatheredRows.error ? [] : grandfatheredRows.data ?? []) as Record<string, unknown>[],
     photos: await collectPhotos(sightings, async (path) => {
       const { data, error } = await client.storage.from('sighting-photos').download(path);
       if (error) return null;

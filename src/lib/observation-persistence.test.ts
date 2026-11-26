@@ -80,7 +80,18 @@ function fakeSupabase(captured: Captured, existingScan: Record<string, unknown> 
           return Promise.resolve({ error: null });
         },
         select: () => thenable({ data: existingScan, error: null }),
-        delete: () => thenable({ error: null }),
+        // `confirmScan` may delete conditionally (`.eq().eq().is()`) and ask which rows went
+        // (`.select('id')`); awaited directly it still resolves `{ error: null }`.
+        delete: () => {
+          const del: Record<string, unknown> = {
+            then: (resolve: (v: unknown) => unknown) =>
+              Promise.resolve({ error: null }).then(resolve),
+            select: () => Promise.resolve({ data: [{ id: 'scan_1' }], error: null }),
+          };
+          del.eq = () => del;
+          del.is = () => del;
+          return del;
+        },
       };
     },
   };

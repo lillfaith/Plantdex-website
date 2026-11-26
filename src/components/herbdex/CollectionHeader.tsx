@@ -36,7 +36,7 @@ export function CollectionHeader() {
   const collectionComplete = ready && deckSize > 0 && discoveredCount >= deckSize;
 
   return (
-    <section aria-labelledby="progress-heading" className="space-y-4">
+    <section aria-labelledby="progress-heading" className="panel panel-accent space-y-4 p-4">
       <h2 id="progress-heading" className="sr-only">
         Your progress
       </h2>
@@ -65,7 +65,7 @@ export function CollectionHeader() {
                 <span className="truncate">{title}</span>
               </p>
             </div>
-            <span className="rounded-full border-2 border-gold-500/80 bg-plum-900/70 px-3 py-1 text-sm font-extrabold text-gold-200 tabular-nums">
+            <span className="lav-pill rounded-full border-2 border-gold-500/80 bg-plum-900/70 px-3 py-1 text-sm font-extrabold text-gold-200 tabular-nums">
               Lv. {progress.level}
             </span>
           </div>
@@ -75,7 +75,7 @@ export function CollectionHeader() {
       <div>
         <div className="relative">
           <div
-            className="relative h-6 overflow-hidden rounded-full bg-plum-950/80 ring-2 ring-violet-400/60"
+            className="lav-track relative h-6 overflow-hidden rounded-full bg-plum-950/80 ring-2 ring-violet-400/60"
             role="progressbar"
             aria-valuenow={pct}
             aria-valuemin={0}

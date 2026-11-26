@@ -2,7 +2,10 @@
   "$comment": "Who may change which file. First matching rule wins; the final rule is the catch-all. Read agents/README.md before editing. This file is Tier 1 (coordinator) and is checked by src/lib/ownership.test.ts, scripts/agent-guard.mjs and the PR gate. A manifest alone is NOT a security boundary: the real boundary is the GitHub ruleset and environment gate described in docs/agent-workflow/github-protections.md.",
   "version": 1,
   "production": "claude/planning-session-61zwro",
-  "protectedBranches": ["claude/planning-session-61zwro", "integration"],
+  "protectedBranches": [
+    "claude/planning-session-61zwro",
+    "integration"
+  ],
   "branches": {
     "coord/": "coordinator",
     "agent/scan/": "scan",
@@ -57,9 +60,23 @@
       ]
     },
     {
+      "owner": "coordinator",
+      "tier": 1,
+      "why": "THE RECEIPT CONTRACT AND ITS EDGE MIRROR ARE ONE CONTRACT. observation-capture-receipt.ts is the TypeScript mirror of migration 0016, and identify-plant/capture.ts is the edge function's copy of it; their tests pin each other (and the SQL) in both directions, so a contract change cannot go green in two lane-owned PRs. These exact paths (observation-qualification.ts too: it is mirrored into the edge function with the receipt module, and mirrored modules must have a coordinator or human owner) are coordinator-owned so a contract change lands as ONE reviewed change. Nothing else in either lane moves: the handler (identify-plant/index.ts), the client and the migration's behaviour stay with their lanes.",
+      "globs": [
+        "supabase/functions/identify-plant/capture.ts",
+        "src/lib/observation-capture-receipt.ts",
+        "src/lib/observation-capture-receipt.test.ts",
+        "src/lib/observation-qualification.ts",
+        "src/lib/scan-edge-receipts.test.ts",
+        "src/lib/scan-edge-receipts.local.test.ts",
+        "src/lib/scan-edge-handler.test.ts"
+      ]
+    },
+    {
       "owner": "ui",
       "tier": 3,
-      "why": "Human-directed design: navigation, palette, type, layout, shared components, cards, animation. Feature agents never edit these; they file a UI request.",
+      "why": "Human-directed design: navigation, palette, type, layout, shared components, cards, animation. Feature agents never edit these; they file a UI request. Three exact lane-b component paths (SpeciesHero, GardenView, RecentFinds) were added on 2026-11-26 so the owner-approved lavender V3 look, which restyles them, is one UI change; nothing else in those directories moves.",
       "globs": [
         "src/app/globals.css",
         "src/app/icon.png",
@@ -72,6 +89,9 @@
         "src/components/PlantSprite.tsx",
         "src/components/ui/**",
         "src/components/icons/**",
+        "src/components/game/SpeciesHero.tsx",
+        "src/components/garden/GardenView.tsx",
+        "src/components/profile/RecentFinds.tsx",
         "src/components/herbdex/**",
         "src/components/start/**",
         "src/components/support/**",
@@ -131,6 +151,14 @@
       ]
     },
     {
+      "owner": "quests",
+      "tier": 2,
+      "why": "The Habitats screen's data layer (pure view-model). It sits ahead of the coordinator's habitat classification files in first-match order, so only habitat-view-model* belongs to the Quests lane; habitat.ts and the rest stay with the coordinator.",
+      "globs": [
+        "src/lib/habitat-view-model*"
+      ]
+    },
+    {
       "owner": "coordinator",
       "tier": 1,
       "why": "Shared contracts: types, the reducer, XP/progression/mastery/research engine, storage, auth, providers, schema, CI, dependencies, routing shell. Changed only through a Shared Change Request.",
@@ -177,6 +205,7 @@
         "src/lib/no-emoji*",
         "src/lib/tailwind-candidates*",
         "src/lib/ownership*",
+        "src/lib/expansion-pilot*",
         "src/lib/*-schema.test.ts",
         "src/lib/*-e2e-guard.test.ts",
         "src/state/**",
@@ -209,7 +238,9 @@
         "CLAUDE.md",
         "README.md",
         ".gitignore",
-        ".env.example"
+        ".env.example",
+        "src/lib/persistence-*",
+        "src/lib/v1-security-audit*"
       ]
     },
     {
@@ -355,7 +386,9 @@
       "tier": 1,
       "catchAll": true,
       "why": "Anything not named above is a shared file until somebody decides otherwise.",
-      "globs": ["**"]
+      "globs": [
+        "**"
+      ]
     }
   ]
 }

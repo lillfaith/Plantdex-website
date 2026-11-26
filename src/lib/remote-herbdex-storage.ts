@@ -24,6 +24,13 @@ export function createRemoteHerbdexStorage(userId: string): HerbdexStorage {
   // rather than re-inserting everything it already knows about.
   let lastKnown: HerbdexState = emptyState();
 
+  // Saves that have been issued and have not settled. `save()` is fire-and-forget by contract,
+  // but `reconcile()` asks a server function to derive mastery and research from the rows IN
+  // THE DATABASE, so it must not run ahead of a write it depends on: a player who finishes the
+  // knowledge check and triggers a reconcile in the same tick otherwise sends the function a
+  // world in which the card is not yet learned, and is told nothing was mastered.
+  const inFlight = new Set<Promise<void>>();
+
   async function fetchRecord(
     table: string,
     idColumn: string,
@@ -115,9 +122,20 @@ export function createRemoteHerbdexStorage(userId: string): HerbdexStorage {
       // `lastKnown` is updated per table AFTER each write settles, and only to what
       // actually landed, so a failure leaves those ids unwritten and the next save picks
       // them up again.
-      void (async () => {
-        const [discoveries, learned, achievements] = await Promise.all([
-          upsertNew('discoveries', 'herb_id', 'discovered_at', state.discoveries, previous.discoveries),
+      const write = (async () => {
+        // DISCOVERIES FIRST, THEN THE REST. Written in parallel, a `learned` row could land before
+        // the `discoveries` row it depends on. That was harmless while nothing checked it, but
+        // migration 0016 (draft, switch OFF) refuses a `learned`/`mastered` row for a card with no
+        // `discoveries` row once enforcement is ON, so the order must be a property of the adapter
+        // and not luck. With enforcement OFF this changes nothing a player can observe.
+        const discoveries = await upsertNew(
+          'discoveries',
+          'herb_id',
+          'discovered_at',
+          state.discoveries,
+          previous.discoveries,
+        );
+        const [learned, achievements] = await Promise.all([
           upsertNew('learned', 'herb_id', 'learned_at', state.learned, previous.learned),
           upsertNew(
             'unlocked_achievements',
@@ -129,6 +147,8 @@ export function createRemoteHerbdexStorage(userId: string): HerbdexStorage {
         ]);
         lastKnown = { ...lastKnown, discoveries, learned, achievements };
       })();
+      inFlight.add(write);
+      void write.finally(() => inFlight.delete(write));
     },
 
     clear(): void {
@@ -145,6 +165,9 @@ export function createRemoteHerbdexStorage(userId: string): HerbdexStorage {
       activeTasks: readonly ResearchTask[],
     ): Promise<ReconcileOutcome | null> {
       if (!supabase) return null;
+      // Never rejects: a failed save is retried by the next save, and is no reason to refuse
+      // to reconcile what DID land.
+      await Promise.allSettled([...inFlight]);
       const dailyTaskIds = activeTasks
         .filter((task) => task.kind === 'daily')
         .map((task) => task.id);

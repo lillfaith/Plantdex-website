@@ -9,7 +9,7 @@ import type { DiscoveryResult } from '@/lib/types';
 import { genusOf, type ScanCandidate } from '@/lib/plant-match';
 import { genusLabel, improvementHint, summariseScan } from '@/lib/scan-summary';
 import {
-  MIN_OBSERVATION_PHOTOS,
+  minPhotosFor,
   confirmScan,
   identifyPlant,
   isScanFailure,
@@ -32,6 +32,24 @@ import { IdentifyTraitsPanel } from './IdentifyTraitsPanel';
 import { ScanCaution } from './ScanCaution';
 import { ScanOutcome } from './ScanOutcome';
 import { SaveToSeedShelf } from '../seedshelf/SaveToSeedShelf';
+import { ProviderConsent, useProviderConsent } from './ProviderConsent';
+import {
+  COLLECT_NOTE,
+  FLOW_STEPS,
+  LOOKUP_NOTICE,
+  channelForPhotos,
+  collectAllowed,
+  currentStep,
+  type ObservationChannel,
+} from '@/lib/scan-flow';
+import { decideConfirm, shouldClaim, shouldFetchRules } from '@/lib/scan-receipt';
+import {
+  claimDiscovery,
+  fetchDiscoveryRules,
+  openCaptureSession,
+  type CaptureSession,
+} from '@/lib/scan-capture-session';
+import { isCameraCaptureEnabled } from '@/lib/scan-capture';
 
 /** How many candidates the result list opens with; the rest are one tap away. */
 const VISIBLE_CANDIDATES = 3;
@@ -68,6 +86,37 @@ export function ScanPanel() {
    * locally" the SAME code path rather than a second anonymous history to keep in step.
    */
   const { addSighting } = useSightingsStore();
+  /*
+   * WHERE PHOTOS GO, ACKNOWLEDGED BEFORE THE FIRST SEND. Inert unless the consent flag or the
+   * camera pilot is on. Per account (device when signed out), re-asked when the wording or the
+   * provider set changes.
+   */
+  const consent = useProviderConsent(user?.id ?? null);
+  /*
+   * WHAT KIND OF OBSERVATION THE RESULT ON SCREEN CAME FROM, captured as it was sent. Under the
+   * camera pilot only an all-camera set is `collect`; anything with an imported photo is a
+   * `lookup` and cannot unlock a NEW card. `unspecified` (flag off) is today's behaviour.
+   */
+  const [sentChannel, setSentChannel] = useState<ObservationChannel>('unspecified');
+  /* The scan receipt line for the last confirm. MOCK until the discoveries contract lands. */
+  const [receiptNote, setReceiptNote] = useState<string | null>(null);
+  /* Why a confirm was refused (safe failure state), or null. Nothing is unlocked when set. */
+  const [confirmBlock, setConfirmBlock] = useState<string | null>(null);
+  const confirmingRef = useRef(false);
+  /*
+   * THE CAPTURE SESSION, in memory only (its nonce is a bearer secret). Opened when the camera
+   * screen opens and the player is signed in; spent by the next collect identify. A failure to
+   * open one is not an error: the scan still identifies, and the confirm step says what it can.
+   */
+  const captureSession = useRef<CaptureSession | null>(null);
+  const openSession = useCallback(() => {
+    if (!user) return;
+    const current = captureSession.current;
+    if (current && Date.now() - current.openedAtMs < 9 * 60 * 1000) return;
+    void openCaptureSession().then((opened) => {
+      captureSession.current = opened.ok ? opened.session : null;
+    });
+  }, [user]);
 
   /*
    * TWO STAGES, AND DELIBERATELY NOT THREE.
@@ -257,7 +306,7 @@ export function ScanPanel() {
     // `confirmed` is a dependency for the reason spelled out at the outcome panel: the panel
     // reporting the most important action in the app used to render below the fold with
     // nothing scrolling to it.
-  }, [result, problem, confirmed, busy]);
+  }, [result, problem, confirmed, busy, confirmBlock]);
 
   const run = useCallback(
     async (photos: ObservationPhoto[]) => {
@@ -277,6 +326,22 @@ export function ScanPanel() {
        * already had one — advice about a set that is no longer the set that was identified.
        */
       setSentOrgans(photos.map((photo) => photo.organ));
+      const channel = channelForPhotos(photos);
+      setSentChannel(channel);
+      setReceiptNote(null);
+      setConfirmBlock(null);
+      // A session is single-use: whichever way this call goes, it is spent.
+      const session = channel === 'collect' ? captureSession.current : null;
+      captureSession.current = null;
+      if (channel === 'collect' && !session && photos.length < minPhotosFor('lookup')) {
+        // One camera photo is enough only with an open capture session; without one this is a
+        // lookup, which needs two. Say so rather than letting the generic refusal blame the count.
+        setProblem(
+          'The camera session could not be started, so this photo can only look a plant up. Add another photo of the same plant, or try the camera again.',
+        );
+        setStage('idle');
+        return;
+      }
       setProblem(null);
       setRateLimited(null);
       setResult(null);
@@ -292,7 +357,10 @@ export function ScanPanel() {
        * be drawn at all. A frame is what it costs to actually see the first stage.
        */
       await new Promise((resolve) => setTimeout(resolve, 0));
-      const answer = await identifyPlant(photos, () => setStage('identifying'));
+      const answer = await identifyPlant(photos, () => setStage('identifying'), {
+        consentScope: consent.scope,
+        capture: session ? { sessionId: session.sessionId, nonce: session.nonce } : undefined,
+      });
 
       if (isScanFailure(answer)) {
         if (answer.kind === 'rateLimited') {
@@ -324,7 +392,7 @@ export function ScanPanel() {
       if (user) void recordScan(user.id, answer).then(setScanId);
       setStage('idle');
     },
-    [user, recordAllowance],
+    [user, recordAllowance, consent.scope],
   );
 
   /*
@@ -336,7 +404,28 @@ export function ScanPanel() {
    * to drift apart depending on which button was pressed.
    */
   const confirmCandidate = useCallback(
-    (herb: NonNullable<ReturnType<typeof getCatalogueEntry>>, candidate: ScanCandidate) => {
+    async (herb: NonNullable<ReturnType<typeof getCatalogueEntry>>, candidate: ScanCandidate) => {
+      if (confirmingRef.current) return;
+      confirmingRef.current = true;
+      try {
+      /*
+       * THE COLLECT RULE, UNDER THE CAMERA PILOT, coded to the discovery receipt contract
+       * (docs/discoveries/discovery-receipt-contract.md). An observation with an imported photo
+       * identifies for education and cannot unlock a NEW card. A camera observation signed in
+       * claims the server's receipt for the CHOSEN candidate first; a claim the server refuses
+       * blocks the unlock and says so. A card already held is untouched (grandfathered), and
+       * `discover()` below is still the idempotent call it always was: after a successful claim
+       * the contract lets the ordinary insert through, so claim comes first, never after.
+       */
+      const wasHeld = isDiscovered(herb.id);
+      const receipt = result?.receipts?.[candidate.scientificName];
+      const gate = { channel: sentChannel, signedIn: Boolean(user), wasHeld, receipt };
+      const claim = shouldClaim(gate) ? await claimDiscovery(receipt!.id) : null;
+      const rules = shouldFetchRules(gate) ? await fetchDiscoveryRules() : null;
+      const decision = decideConfirm({ ...gate, claim, rules });
+      setConfirmBlock(decision.allow ? null : decision.line);
+      if (!decision.allow) return;
+      setReceiptNote(decision.line);
       // The player's decision, and the only thing that awards anything. `discover` is the same
       // call the plant page makes, so a repeat awards nothing — idempotency is the reducer's.
       const outcome = discover(herb);
@@ -392,8 +481,11 @@ export function ScanPanel() {
         setCelebrating({ herbId: herb.id, result: outcome });
         celebrateRef.current?.showModal();
       }
+      } finally {
+        confirmingRef.current = false;
+      }
     },
-    [addSighting, discover, result?.provider, scanId, user],
+    [addSighting, discover, isDiscovered, result, scanId, sentChannel, user],
   );
 
   /*
@@ -403,7 +495,10 @@ export function ScanPanel() {
    */
   const [photos, setPhotos] = useState<ObservationPhoto[]>([]);
   const outOfScans = allowance.left <= 0;
-  const canIdentify = photos.length >= MIN_OBSERVATION_PHOTOS && !outOfScans;
+  // Consent is part of "can identify": nothing is sent until where photos go is acknowledged.
+  const consentPending = consent.required && !(consent.known && consent.accepted);
+  const photoMinimum = minPhotosFor(channelForPhotos(photos));
+  const canIdentify = photos.length >= photoMinimum && !outOfScans && !consentPending;
 
   /*
    * DERIVED ON RENDER, FROM THE RESULT ITSELF. No state and nothing stored: the summary is a
@@ -426,8 +521,47 @@ export function ScanPanel() {
       */}
       <ScanGoal progress={progress} ready={ready} allowance={allowance} />
 
+      {isCameraCaptureEnabled() && (
+        <ol
+          aria-label="Scan steps (test preview)"
+          data-ui-placeholder="flow-steps"
+          className="flex flex-wrap justify-center gap-x-3 gap-y-1 text-xs text-violet-300"
+        >
+          {FLOW_STEPS.map((step) => {
+            const here =
+              step === currentStep({ hasResult: !!result, confirmed: !!confirmed, celebrating: !!celebrating });
+            return (
+              <li
+                key={step}
+                aria-current={here ? 'step' : undefined}
+                className={here ? 'font-extrabold text-gold-300' : undefined}
+              >
+                {step}
+              </li>
+            );
+          })}
+        </ol>
+      )}
+
       <section aria-label="Identify a plant">
-        <ObservationPhotos onChange={setPhotos} disabled={busy || outOfScans} />
+        <ObservationPhotos
+          onChange={setPhotos}
+          disabled={busy || outOfScans}
+          scope={user?.id ?? null}
+          onCameraOpen={openSession}
+        />
+        {isCameraCaptureEnabled() && (
+          <p
+            data-ui-placeholder="capture-channel"
+            className="mt-3 text-center text-xs font-semibold text-violet-200"
+          >
+            {channelForPhotos(photos) === 'collect'
+              ? COLLECT_NOTE
+              : photos.length > 0
+                ? LOOKUP_NOTICE.heading
+                : 'Camera preview (test). Photos taken with the in-app camera can collect a new card; library photos identify only.'}
+          </p>
+        )}
 
         {/*
           THE ONE PIECE OF FRAMING ADVICE, BESIDE THE CONTROL IT IS ABOUT.
@@ -449,6 +583,15 @@ export function ScanPanel() {
           Disabled rather than hidden: one that is visibly not ready, beside a line saying why,
           tells somebody exactly what remains.
         */}
+        {consent.required && consent.known && !consent.accepted && (
+          <div className="mt-4">
+            <ProviderConsent
+              onAccept={consent.accept}
+              onDecline={consent.decline}
+              declined={consent.declined}
+            />
+          </div>
+        )}
         <button
           type="button"
           disabled={!canIdentify || busy}
@@ -462,9 +605,11 @@ export function ScanPanel() {
         <p className="mt-2 text-center text-xs text-violet-300" aria-live="polite">
           {outOfScans
             ? 'You have used all of today\u2019s scans. They reset at midnight UTC.'
-            : canIdentify
-              ? `Ready with ${photos.length} photo${photos.length === 1 ? '' : 's'}.`
-              : `Add ${MIN_OBSERVATION_PHOTOS - photos.length} more photo${MIN_OBSERVATION_PHOTOS - photos.length === 1 ? '' : 's'} to identify.`}
+            : consentPending
+              ? 'Review where your photos are sent, above, to continue.'
+              : canIdentify
+              ? `Ready with ${photos.length} photo${photos.length === 1 ? '' : 's'}.${photoMinimum === 1 && photos.length < 3 ? ' Extra angles are optional and only help accuracy.' : ''}`
+              : `Add ${photoMinimum - photos.length} more photo${photoMinimum - photos.length === 1 ? '' : 's'} to identify.`}
         </p>
         <span
           aria-hidden="true"
@@ -988,6 +1133,20 @@ export function ScanPanel() {
                               ? 'Added \u2713'
                               : 'Already in your collection.'}
                           </p>
+                        ) : !collectAllowed(sentChannel) ? (
+                          /*
+                           * IMPORTED PHOTO, CAMERA PILOT ON: identification only. No path from
+                           * here to a confirm, so a library photo can never unlock a new card.
+                           */
+                          <p
+                            data-ui-placeholder="lookup-only"
+                            className="mt-2 text-xs leading-relaxed text-violet-300"
+                          >
+                            <span className="font-semibold text-violet-200">
+                              {LOOKUP_NOTICE.heading}.
+                            </span>{' '}
+                            {LOOKUP_NOTICE.body}
+                          </p>
                         ) : (
                           /*
                            * INSPECT, THEN DECIDE — AND NOTHING IS NAMED UNTIL IT IS EARNED.
@@ -1066,6 +1225,13 @@ export function ScanPanel() {
           </section>
         )}
 
+        {confirmBlock && !confirmed && (
+          <section ref={outcomeRef} role="status" data-ui-placeholder="confirm-blocked" className="panel p-5">
+            <p className="text-sm leading-relaxed text-violet-100">{confirmBlock}</p>
+            <p className="mt-1 text-xs text-violet-300">Nothing was unlocked or changed in your collection.</p>
+          </section>
+        )}
+
         {/*
           CASE A'S OUTCOME, AND WHY IT MOVED IN HERE.
 
@@ -1103,6 +1269,11 @@ export function ScanPanel() {
                   "saved to your journal" after every single find is noise that teaches people
                   to stop reading the place a real failure would appear.
                 */}
+                {receiptNote && (
+                  <p data-ui-placeholder="scan-receipt" className="mt-3 text-xs leading-relaxed text-violet-300">
+                    {receiptNote}
+                  </p>
+                )}
                 {!confirmed.journalled && (
                   <p className="mt-3 text-xs leading-relaxed text-mystery-pink">
                     The card is in your collection, but this observation could not be saved to
@@ -1142,7 +1313,7 @@ export function ScanPanel() {
            */
           const subject = checking;
           traitsRef.current?.close();
-          if (subject) confirmCandidate(subject.herb, subject.candidate);
+          if (subject) void confirmCandidate(subject.herb, subject.candidate);
         }}
         onDismiss={() => {
           traitsRef.current?.close();

@@ -3,11 +3,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ACCEPT_ATTRIBUTE } from '@/lib/photo-input';
 import { PlantdexIcon } from '../icons/PlantdexIcon';
-import {
-  MAX_OBSERVATION_PHOTOS,
-  MIN_OBSERVATION_PHOTOS,
-  type ObservationPhoto,
-} from '@/lib/scans';
+import { isCameraCaptureEnabled } from '@/lib/scan-capture';
+import { CameraCapturePanel } from './CameraCapturePanel';
+import { channelForPhotos } from '@/lib/scan-flow';
+import { MAX_OBSERVATION_PHOTOS, minPhotosFor, type ObservationPhoto } from '@/lib/scans';
 
 /**
  * TWO TO THREE PHOTOGRAPHS OF ONE INDIVIDUAL PLANT.
@@ -72,6 +71,7 @@ const SLOTS: readonly Slot[] = [
 interface Held {
   readonly file: File;
   readonly url: string;
+  readonly source: 'camera' | 'import';
 }
 
 /** Cheap identity, at pick time. Catches the real case: the same file chosen twice. */
@@ -80,10 +80,23 @@ const fingerprint = (file: File): string => `${file.name}:${file.size}:${file.la
 export function ObservationPhotos({
   onChange,
   disabled = false,
+  scope = null,
+  onCameraOpen,
 }: {
   onChange: (photos: ObservationPhoto[]) => void;
   disabled?: boolean;
+  /** Account id for the remembered camera decline; null signed out. */
+  scope?: string | null;
+  /** Called when the live-camera screen opens (the capture session is opened then). */
+  onCameraOpen?: () => void;
 }) {
+  /*
+   * LIVE CAMERA PREVIEW, OFF BY DEFAULT. `cameraOn` is a build-time literal, so with the flag off
+   * none of the capture UI is reachable and the slots behave exactly as before (the OS camera
+   * hand-off via `capture="environment"`, or the library).
+   */
+  const cameraOn = isCameraCaptureEnabled();
+  const [capturingSlot, setCapturingSlot] = useState<string | null>(null);
   const [held, setHeld] = useState<Record<string, Held | undefined>>({});
   const [duplicate, setDuplicate] = useState<string | null>(null);
   const inputs = useRef<Record<string, HTMLInputElement | null>>({});
@@ -105,21 +118,21 @@ export function ObservationPhotos({
     (next: Record<string, Held | undefined>) => {
       const photos = SLOTS.flatMap((slot) => {
         const one = next[slot.key];
-        return one ? [{ file: one.file, organ: slot.organ }] : [];
+        return one ? [{ file: one.file, organ: slot.organ, source: cameraOn ? one.source : undefined }] : [];
       });
       onChange(photos);
     },
-    [onChange],
+    [onChange, cameraOn],
   );
 
   const put = useCallback(
-    (slot: Slot, file: File | undefined) => {
+    (slot: Slot, file: File | undefined, source: 'camera' | 'import' = 'import') => {
       setHeld((current) => {
         const previous = current[slot.key];
         if (previous) URL.revokeObjectURL(previous.url);
         const next = { ...current };
         if (file) {
-          next[slot.key] = { file, url: URL.createObjectURL(file) };
+          next[slot.key] = { file, url: URL.createObjectURL(file), source };
         } else {
           delete next[slot.key];
         }
@@ -145,7 +158,16 @@ export function ObservationPhotos({
   );
 
   const count = SLOTS.filter((slot) => held[slot.key]).length;
-  const ready = count >= MIN_OBSERVATION_PHOTOS;
+  /*
+   * THE FLOOR FOLLOWS THE CHANNEL. Every photograph from the in-app camera is a collect
+   * observation, which needs ONE; add a library photo and it is a lookup, which keeps two.
+   * Extra angles on a collect are optional and help accuracy only - never proof of presence.
+   */
+  const heldPhotos = Object.values(held).flatMap((one) => (one ? [{ source: one.source }] : []));
+  const channel = channelForPhotos(heldPhotos);
+  const minimum = minPhotosFor(channel);
+  const ready = count >= minimum;
+  const closeRequired = minimum > 1;
 
   const firstEmpty = SLOTS.find((slot) => !held[slot.key]);
 
@@ -160,10 +182,18 @@ export function ObservationPhotos({
         <span aria-hidden="true" className="shrink-0 text-2xl text-violet-300">
           <PlantdexIcon name="scan" />
         </span>
-        <span>
-          Take <span className="font-semibold text-gold-300">2 or 3 photos of the same plant</span>{' '}
-          &mdash; the same individual, not two plants of the same kind.
-        </span>
+        {cameraOn ? (
+          <span>
+            Take <span className="font-semibold text-gold-300">one photo of the plant</span> with
+            the camera. More angles are optional and only help the identifier&rsquo;s accuracy
+            &mdash; keep them to the same plant.
+          </span>
+        ) : (
+          <span>
+            Take <span className="font-semibold text-gold-300">2 or 3 photos of the same plant</span>{' '}
+            &mdash; the same individual, not two plants of the same kind.
+          </span>
+        )}
       </p>
 
       <ol className="grid grid-cols-3 gap-3">
@@ -176,7 +206,11 @@ export function ObservationPhotos({
                 <button
                   type="button"
                   disabled={disabled}
-                  onClick={() => inputs.current[slot.key]?.click()}
+                  onClick={() => {
+                    if (!cameraOn) return inputs.current[slot.key]?.click();
+                    setCapturingSlot(slot.key);
+                    onCameraOpen?.();
+                  }}
                   aria-label={`${one ? 'Replace' : 'Add'} photo: ${slot.label}. ${slot.instruction}`}
                   className={`relative block aspect-square w-full overflow-hidden rounded-2xl border-2 bg-plum-800/60 transition-colors disabled:opacity-60 ${
                     one
@@ -224,7 +258,7 @@ export function ObservationPhotos({
                 />
                 {slot.label}
               </p>
-              {!slot.required && (
+              {!(slot.required || (slot.key === 'close' && closeRequired)) && (
                 <p className="text-[0.72rem] leading-tight text-violet-300">(optional)</p>
               )}
               <input
@@ -233,7 +267,9 @@ export function ObservationPhotos({
                 }}
                 type="file"
                 accept={ACCEPT_ATTRIBUTE}
-                capture="environment"
+                // With the live camera on, the input is the LIBRARY path (no `capture`), which
+                // is what a fallback or an import means: identification only.
+                capture={cameraOn ? undefined : 'environment'}
                 className="sr-only"
                 tabIndex={-1}
                 onChange={(event) => {
@@ -244,12 +280,34 @@ export function ObservationPhotos({
                 }}
               />
               <span className="sr-only">
-                {index + 1}. {slot.required ? 'Required' : 'Optional'}. {slot.instruction}
+                {index + 1}. {slot.required || (slot.key === 'close' && closeRequired) ? 'Required' : 'Optional'}. {slot.instruction}
               </span>
             </li>
           );
         })}
       </ol>
+
+      {cameraOn &&
+        capturingSlot &&
+        (() => {
+          const slot = SLOTS.find((one) => one.key === capturingSlot);
+          if (!slot) return null;
+          return (
+            <CameraCapturePanel
+              slotLabel={slot.label}
+              scope={scope}
+              onCaptured={(file) => {
+                put(slot, file, 'camera');
+                setCapturingSlot(null);
+              }}
+              onUseLibrary={() => {
+                setCapturingSlot(null);
+                inputs.current[slot.key]?.click();
+              }}
+              onCancel={() => setCapturingSlot(null)}
+            />
+          );
+        })()}
 
       {duplicate && <p className="text-sm text-stat-temp">{duplicate}</p>}
 
@@ -259,7 +317,9 @@ export function ObservationPhotos({
           <span className="text-gold-300">ready to identify</span>
         ) : (
           <span>
-            {MIN_OBSERVATION_PHOTOS} photos required · {MAX_OBSERVATION_PHOTOS} recommended
+            {minimum === 1 || (cameraOn && count === 0)
+              ? `1 camera photo needed · extra angles optional (up to ${MAX_OBSERVATION_PHOTOS})`
+              : `${minimum} photos required · ${MAX_OBSERVATION_PHOTOS} recommended`}
           </span>
         )}
       </p>

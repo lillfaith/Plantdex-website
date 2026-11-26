@@ -39,7 +39,7 @@ function Chip({
       */
       className={`tap-44 h-[1.875rem] rounded-full border px-3 text-[0.72rem] font-semibold whitespace-nowrap transition-colors ${
         active
-          ? 'border-gold-500 bg-gold-500/20 text-gold-300'
+          ? 'border-pink-accent chip-card-violet'
           : 'border-violet-700 bg-plum-800/50 text-violet-300 hover:border-violet-500 hover:text-violet-100'
       }`}
       {...props}
@@ -182,7 +182,7 @@ export function HerbGrid({ herbs, fieldCards = [] }: { herbs: Herb[]; fieldCards
       <div
         role="group"
         aria-label="Show cards by status"
-        className="mb-3 grid grid-cols-4 rounded-full border-2 border-violet-500/70 bg-plum-900/60 p-0.5"
+        className="lav-track mb-3 grid grid-cols-4 rounded-full bg-plum-900 p-0.5"
       >
         {PILLS.map((pill) => (
           <button
@@ -192,7 +192,7 @@ export function HerbGrid({ herbs, fieldCards = [] }: { herbs: Herb[]; fieldCards
             onClick={() => setStatus(pill.value)}
             className={`min-h-11 rounded-full px-1 text-[0.78rem] font-bold whitespace-nowrap transition-colors ${
               status === pill.value
-                ? 'bg-gradient-to-b from-pink-accent to-violet-400 text-violet-deep'
+                ? 'chip-selected-deep'
                 : 'text-violet-200 hover:text-violet-50'
             }`}
           >
@@ -208,12 +208,12 @@ export function HerbGrid({ herbs, fieldCards = [] }: { herbs: Herb[]; fieldCards
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             placeholder="Search discovered herbs or card number…"
-            className="min-h-11 w-full rounded-full border border-violet-700 bg-plum-700/70 px-4 text-sm text-violet-100 placeholder:text-violet-500"
+            className="min-h-11 w-full rounded-full lav-input border-2 border-violet-600 bg-plum-900 px-4 text-sm text-violet-100 placeholder:text-violet-400"
           />
         </label>
 
         <details className="group">
-          <summary className="tap-44 flex cursor-pointer list-none items-center justify-between gap-2 text-[0.72rem] font-bold tracking-[0.1em] text-violet-300 uppercase">
+          <summary className="tap-44 flex cursor-pointer list-none items-center justify-between gap-2 text-[0.72rem] font-extrabold tracking-[0.1em] uppercase ground-ink">
             <span className="flex items-center gap-1.5">
               <span
                 aria-hidden="true"
@@ -300,7 +300,7 @@ export function HerbGrid({ herbs, fieldCards = [] }: { herbs: Herb[]; fieldCards
         </details>
       </div>
 
-      <p aria-live="polite" className="mt-4 text-xs text-violet-400">
+      <p aria-live="polite" className="ground-ink mt-4 text-xs font-semibold">
         Showing {visible.length} of {herbs.length} cards
       </p>
       {/*
@@ -318,7 +318,7 @@ export function HerbGrid({ herbs, fieldCards = [] }: { herbs: Herb[]; fieldCards
         what is behind it.
       */}
       {ready && discoveredCount === 0 && (
-        <p className="mt-1 text-xs text-violet-400">
+        <p className="ground-ink mt-1 text-xs">
           Undiscovered species stay hidden until you find them outside.
         </p>
       )}
@@ -358,15 +358,15 @@ export function HerbGrid({ herbs, fieldCards = [] }: { herbs: Herb[]; fieldCards
       */}
       {visibleFieldCards.length > 0 && (
         <section aria-labelledby="field-cards-heading" className="mt-10">
-          <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 border-t border-gold-500/30 pt-5">
+          <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 border-t-2 border-violet-600 pt-5">
             <h2
               id="field-cards-heading"
-              className="font-display flex items-center gap-2 text-lg font-extrabold text-gold-plate"
+              className="font-display flex items-center gap-2 text-lg font-extrabold text-violet-50"
             >
               <PlantdexIcon name="mastered" className="text-base text-gold-400" aria-hidden="true" />
               Field Cards
             </h2>
-            <p className="text-[0.72rem] font-bold tracking-[0.1em] text-violet-400 uppercase tabular-nums">
+            <p className="ground-ink text-[0.72rem] font-extrabold tracking-[0.1em] uppercase tabular-nums">
               {visibleFieldCards.length} of {FIELD_CARDS_TOTAL}
             </p>
           </div>

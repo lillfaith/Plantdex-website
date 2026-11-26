@@ -139,7 +139,8 @@ describe('the deployed function reads the same rule', () => {
      * the variable would be set on the test project and the 1-photograph arm would keep
      * recording 400s that look like a result.
      */
-    expect(fn).toContain('files.length < MIN_IMAGES_FLOOR');
+    expect(fn).toContain('MIN_IMAGES_FLOOR');
+    expect(fn).toContain('files.length < imageFloor');
     expect(fn).not.toMatch(/files\.length\s*<\s*MIN_IMAGES\b(?!_)/);
   });
 });

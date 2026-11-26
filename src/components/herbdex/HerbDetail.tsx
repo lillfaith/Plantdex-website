@@ -14,6 +14,7 @@ import { useRevealed } from '@/lib/reveals';
 import { plantViewedEvent, track } from '@/lib/analytics';
 import { DiscoverPanel } from './DiscoverPanel';
 import { ProfileTabs } from './ProfileTabs';
+import { PageAtmosphere } from '@/components/PageAtmosphere';
 import { LockedHerb } from './LockedHerb';
 import { LockedFieldCard } from './LockedFieldCard';
 import { FIELD_CARDS_NAME, FIELD_CARD_SLOTS, unlockXpFor } from '@/lib/field-cards';
@@ -404,7 +405,8 @@ export function HerbDetail({ herb }: { herb: Herb }) {
   }
 
   return (
-    <main id="main" className="mx-auto max-w-6xl px-4 py-8">
+    <main id="main" data-ground="lavender" className="mx-auto max-w-6xl px-4 py-8">
+      <PageAtmosphere theme="collection" />
       {breadcrumb}
       {body}
       {celebrationDialog}

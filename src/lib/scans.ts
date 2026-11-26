@@ -8,6 +8,7 @@ import {
   type ScanOutcome,
 } from './plant-match';
 import type { NewSighting } from './sightings';
+import { ANONYMOUS_CONSENT_SCOPE, browserConsentStorage, mayTransmit } from './scan-consent';
 
 /**
  * PLANT ID, CLIENT SIDE.
@@ -52,6 +53,20 @@ export interface ScanResult {
   provider?: string;
   /** Server-minted uuid for this set of photographs. See `identification_observation_id`. */
   observationId?: string;
+  /**
+   * The provider answered that this is not a plant. An ANSWER, and different from "no card":
+   * the candidate list is empty either way, so without this flag the two were the same result.
+   */
+  notAPlant?: boolean;
+  /** The provider answered successfully and had no suggestion at all. Also not "no card". */
+  providerFoundNothing?: boolean;
+  /**
+   * Capture outcome from the discovery receipt contract, present only when the request declared
+   * `purpose=collect` and the server implements it. Absent means "no receipt, nothing to claim".
+   */
+  capture?: { accepted: boolean; code?: string; replay?: boolean };
+  /** The server's receipt for each eligible candidate, keyed by the provider's scientific name. */
+  receipts?: Record<string, { id: string; rankPosition: 'top' | 'listed'; expiresAt: string }>;
 }
 
 export type ScanFailure =
@@ -102,16 +117,50 @@ function newScanId(): string {
 export interface ObservationPhoto {
   readonly file: File;
   readonly organ: 'habit' | 'leaf' | 'auto';
+  /**
+   * Where the photograph came from, when the capture pilot is on: the live in-app camera or a
+   * file the player imported. Read only to decide whether the observation may unlock a NEW card
+   * (`scan-flow.ts`); it is never sent to the provider and never stored.
+   */
+  readonly source?: 'camera' | 'import';
 }
 
 /** Two required, three allowed. The server enforces the same bounds. */
 export const MIN_OBSERVATION_PHOTOS = 2;
 export const MAX_OBSERVATION_PHOTOS = 3;
+/**
+ * A COLLECT observation (in-app camera) needs ONE photograph; more angles are optional and help
+ * the identifier's accuracy only. They are never evidence that somebody was there. The server
+ * applies the same floor independently, for `purpose=collect` only.
+ */
+export const MIN_CAPTURE_PHOTOS = 1;
+
+/** The minimum for a channel: collect = 1, anything else keeps the lookup floor of two. */
+export function minPhotosFor(channel: 'collect' | 'lookup' | 'unspecified'): number {
+  return channel === 'collect' ? MIN_CAPTURE_PHOTOS : MIN_OBSERVATION_PHOTOS;
+}
 
 export async function identifyPlant(
   photos: readonly ObservationPhoto[],
   onPrepared?: () => void,
+  options: {
+    consentScope?: string;
+    /** An open capture session, for a `collect` observation only (discovery receipt contract). */
+    capture?: { sessionId: string; nonce: string };
+  } = {},
 ): Promise<ScanResult | ScanFailure> {
+  /*
+   * NOTHING LEAVES THE DEVICE BEFORE THE PLAYER HAS ACKNOWLEDGED WHERE IT GOES. Enforced here as
+   * well as in the screen, because the screen is not the only possible caller. Inert unless the
+   * consent flag or the camera pilot is on (`isConsentEnforced`), so today's behaviour is
+   * unchanged by default.
+   */
+  if (!mayTransmit(browserConsentStorage(), options.consentScope ?? ANONYMOUS_CONSENT_SCOPE)) {
+    return {
+      kind: 'error',
+      message: 'Review where your photos are sent before identifying a plant. Nothing was sent.',
+    };
+  }
   /*
    * ARGUMENTS BEFORE ENVIRONMENT, AND THE ORDER IS THE MESSAGE.
    *
@@ -125,10 +174,14 @@ export async function identifyPlant(
    * single photograph would still produce a confident-looking result — just a worse one —
    * which is the failure mode this whole change exists to reduce.
    */
-  if (photos.length < MIN_OBSERVATION_PHOTOS) {
+  const minimum = options.capture ? MIN_CAPTURE_PHOTOS : MIN_OBSERVATION_PHOTOS;
+  if (photos.length < minimum) {
     return {
       kind: 'error',
-      message: `Add ${MIN_OBSERVATION_PHOTOS} photographs of the same plant before identifying.`,
+      message:
+        minimum === 1
+          ? 'Add a photograph of the plant before identifying.'
+          : `Add ${minimum} photographs of the same plant before identifying.`,
     };
   }
   if (photos.length > MAX_OBSERVATION_PHOTOS) {
@@ -187,6 +240,16 @@ export async function identifyPlant(
     form.append('organ', photos[index]!.organ);
   });
 
+  /*
+   * THE RECEIPT CONTRACT'S THREE FIELDS, only for a collect observation that holds an open
+   * session. A lookup sends nothing extra, so its request is byte-identical to today's.
+   */
+  if (options.capture) {
+    form.append('purpose', 'collect');
+    form.append('capture_session_id', options.capture.sessionId);
+    form.append('capture_nonce', options.capture.nonce);
+  }
+
   const { data, error } = await supabase.functions.invoke('identify-plant', { body: form });
 
   if (error) {
@@ -226,27 +289,87 @@ export async function identifyPlant(
       powoId?: string;
       /** The signed candidate, when the deployment has an attestation secret set. */
       attestation?: string;
+      captureReceipt?: { id?: unknown; rankPosition?: unknown; expiresAt?: unknown };
     }[];
+    capture?: { accepted?: unknown; code?: unknown; replay?: unknown };
     remaining?: number;
     limit?: number;
     signedIn?: boolean;
     provider?: string;
     observationId?: string;
+    notAPlant?: boolean;
+    providerFoundNothing?: boolean;
   };
 
-  const candidates: ScanCandidate[] = (raw.candidates ?? []).map((candidate) => ({
+  /*
+   * A SUCCESS THAT DOES NOT HAVE THE SHAPE OF ONE IS A FAILURE. `data ?? {}` turned a null
+   * body, an `{ error }` body or a cached error page into an empty candidate list, which
+   * `outcomeFor` reports as `noMatch` — "not one of the 45 cards" — a confident-sounding
+   * answer the identifier never gave. Every real answer carries a `candidates` array, an
+   * empty one included, so its absence is the app failing to understand the response.
+   */
+  const rawCandidates = (data as { candidates?: unknown } | null)?.candidates;
+  if (!Array.isArray(rawCandidates)) {
+    return {
+      kind: 'error',
+      message: 'The identification service answered in a way this app did not recognise.',
+    };
+  }
+  // An entry with no name or no usable score cannot be matched or ranked; keep the rest.
+  const usable = (raw.candidates ?? []).filter(
+    (candidate) =>
+      typeof candidate?.scientificName === 'string' &&
+      candidate.scientificName.trim() !== '' &&
+      typeof candidate.score === 'number' &&
+      Number.isFinite(candidate.score),
+  );
+  // Suggestions arrived and none could be read: that is not "nothing recognised".
+  if (rawCandidates.length > 0 && usable.length === 0) {
+    return {
+      kind: 'error',
+      message: 'The identification service answered in a way this app did not recognise.',
+    };
+  }
+
+  const candidates: ScanCandidate[] = usable.map((candidate) => ({
     ...candidate,
     match: matchScientificName(candidate.scientificName),
   }));
 
+  const receipts: NonNullable<ScanResult['receipts']> = {};
+  for (const candidate of usable) {
+    const r = candidate.captureReceipt;
+    if (
+      r &&
+      typeof r.id === 'string' &&
+      (r.rankPosition === 'top' || r.rankPosition === 'listed') &&
+      typeof r.expiresAt === 'string'
+    ) {
+      receipts[candidate.scientificName] = { id: r.id, rankPosition: r.rankPosition, expiresAt: r.expiresAt };
+    }
+  }
+  const cap = raw.capture;
+
   return {
     outcome: outcomeFor(candidates),
     candidates,
+    capture:
+      cap && typeof cap.accepted === 'boolean'
+        ? {
+            accepted: cap.accepted,
+            code: typeof cap.code === 'string' ? cap.code : undefined,
+            replay: cap.replay === true ? true : undefined,
+          }
+        : undefined,
+    receipts: Object.keys(receipts).length > 0 ? receipts : undefined,
     remaining: raw.remaining,
     limit: raw.limit,
     signedIn: raw.signedIn,
     provider: raw.provider,
     observationId: raw.observationId,
+    // Strict `=== true`: only an explicit statement from the server counts.
+    notAPlant: raw.notAPlant === true ? true : undefined,
+    providerFoundNothing: raw.providerFoundNothing === true ? true : undefined,
   };
 }
 
@@ -360,15 +483,78 @@ export async function confirmScan(
   candidate: ScanCandidate,
 ): Promise<boolean> {
   if (!supabase) return false;
-  const { data: existing } = await supabase
+  /*
+   * ATOMIC PATH (migration 0014, `confirm_scan`). OFF BY DEFAULT: the literal comparison below is
+   * resolved at build time (`NEXT_PUBLIC_CONFIRM_SCAN_RPC`, 'off' unless the owner sets it), so with
+   * the flag off this block is not in the bundle and the mitigation underneath is unchanged.
+   *
+   * `true`  = the scan is now confirmed for THIS card (first time, or an idempotent retry).
+   * `false` = it is already confirmed for a different card, or is not this caller's: never success.
+   * ANY error is a failure, not "already confirmed" — we do not know what happened, so we claim
+   * nothing. Only a MISSING function (PostgREST PGRST202, Postgres 42883: a database that has not
+   * run 0014) falls through to the mitigation, so a deployment ahead of its migration still works.
+   */
+  if (process.env.NEXT_PUBLIC_CONFIRM_SCAN_RPC === 'on') {
+    const chosen = candidate.match.observedTaxon;
+    try {
+      const { data, error: rpcError } = await supabase.rpc('confirm_scan', {
+        p_scan_id: scanId,
+        p_herb_id: herbId,
+        p_scientific_name: candidate.scientificName,
+        p_probability: candidate.score,
+        p_taxon_rank: chosen?.rank ?? null,
+        p_eligibility: candidate.match.eligibility,
+        p_species_confidence: chosen
+          ? speciesConfidenceFor(chosen.rank, candidate.score)
+          : null,
+      });
+      if (!rpcError) return data === true;
+      if (rpcError.code !== 'PGRST202' && rpcError.code !== '42883') {
+        console.error(`confirmScan: rpc failed for scan ${scanId}`);
+        return false;
+      }
+      // Function missing on this database: fall through to the mitigation below.
+    } catch {
+      console.error(`confirmScan: rpc failed for scan ${scanId}`);
+      return false;
+    }
+  }
+  const { data: existing, error: readError } = await supabase
     .from('scans')
     .select('*')
     .eq('user_id', userId)
     .eq('id', scanId)
     .maybeSingle();
+  // A failed read is not "no row": say so, and write nothing.
+  if (readError) {
+    console.error(`confirmScan: read failed for scan ${scanId}`);
+    return false;
+  }
   if (!existing) return false;
+  // Already confirmed (perhaps by a concurrent tap): the same card is a success, anything else
+  // is refused. Either way nothing is written, so a confirmation is never overwritten.
+  if (existing.confirmed_herb_id != null) {
+    return existing.confirmed_herb_id === herbId;
+  }
   const taxon = candidate.match.observedTaxon;
-  await supabase.from('scans').delete().eq('user_id', userId).eq('id', scanId);
+  /*
+   * MITIGATION, NOT THE FIX. The proper fix is an atomic server-side `confirm_scan` function
+   * (one transaction, no window in which the row is absent). `scans` deliberately has no update
+   * policy, so the client can only DELETE then INSERT; this guards the window rather than
+   * closing it. The delete matches only a row that is still unconfirmed, so it cannot remove a
+   * confirmation another call has just written, and `.select()` tells us whether a row was
+   * really removed.
+   */
+  const { data: removed, error: deleteError } = await supabase
+    .from('scans')
+    .delete()
+    .eq('user_id', userId)
+    .eq('id', scanId)
+    .is('confirmed_herb_id', null)
+    .select('id');
+  // Nothing was removed (error, or the row changed under us), so there is nothing to replace;
+  // inserting would only collide with the row that is still there.
+  if (deleteError || !removed || removed.length === 0) return false;
   const { error } = await supabase.from('scans').insert({
     ...existing,
     confirmed_herb_id: herbId,
@@ -382,5 +568,15 @@ export async function confirmScan(
       ? speciesConfidenceFor(taxon.rank, candidate.score)
       : null,
   });
-  return !error;
+  if (error) {
+    /*
+     * THE DELETE HAS ALREADY HAPPENED, SO A FAILED INSERT WOULD OTHERWISE LOSE THE SCAN.
+     * Put back exactly what was read. One attempt, no retry loop: a dropped connection can
+     * fail this too, so its result is checked and reported (id only, no personal data).
+     */
+    const { error: restoreError } = await supabase.from('scans').insert(existing);
+    if (restoreError) console.error(`confirmScan: restore failed for scan ${scanId}`);
+    return false;
+  }
+  return true;
 }
