@@ -1,0 +1,12 @@
+scene 1 buttons: SKIP THE INTRODUCTION | START COLLECTING |  |  |  |  | ‹ | › | Take the tour
+scene 2 buttons: SKIP THE INTRODUCTION | Back | NEXT |  |  |  |  | ‹ | › | Take the tour
+scene 3 buttons: SKIP THE INTRODUCTION |  | Back | NEXT |  |  |  |  | ‹ | › | Take the tour
+scene 4 buttons: SKIP THE INTRODUCTION | Back | NEXT |  |  |  |  | ‹ | › | Take the tour
+scene 5 buttons: SKIP THE INTRODUCTION | Back | NEXT |  |  |  |  | ‹ | › | Take the tour
+scene 6 buttons: SKIP THE INTRODUCTION | SHOW ME AROUND |  |  |  |  | ‹ | › | Take the tour
+scene 7 buttons: SKIP THE TOUR | NEXT | + | + | + | Get Identification →
+scene 8 buttons: SKIP THE TOUR | Back | NEXT | All (45) | Found (0) | Learned (0) | Mastered (0)
+url after onboarding http://localhost:4173/garden/
+locked card buttons: #01 | Log a Discovery +100 XP | Reveal plant → | Identify | Herbalism | Challenges | Progress | ? | ? | ?
+after tap buttons: #01 | Log a Discovery +100 XP | Cancel | Yes, I found it | Reveal plant → | Identify | Herbalism | Challenges | Progress | ? | ? | ?
+region options: Everywhere — show the whole collection | Georgia
