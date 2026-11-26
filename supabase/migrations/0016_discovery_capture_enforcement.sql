@@ -322,6 +322,56 @@ begin
   return v_n = 1;
 end $$;
 
+-- 6b3. identify-plant (service role) gives back the CALLER'S OWN daily unit when the identification PROVIDER failed
+--      (an outage on their side, never an invalid or rejected photograph; the caller of this function decides which).
+--      HARDENED against being a free-calls loophole, in the database rather than in the caller:
+--        * IDEMPOTENT PER REQUEST: one refund per observation id (primary key). A second call for the same request,
+--          from a retry, a replay or a bug, returns false and changes nothing.
+--        * CAPPED: at most 3 refunds per caller bucket per UTC day, so even a deliberate provider-failure farm is
+--          bounded far below the daily limit a refund restores.
+--        * SCOPED: only the per-caller bucket (never `global`, the upstream-cost backstop, which is spent whether or
+--          not the provider charged for the failure), only today +/- one day, only when that bucket actually has a
+--          claim recorded for that day, and never below zero. The bucket row is locked first so concurrent calls
+--          serialise.
+--      The ledger keeps a one-way digest of the bucket (not the user id) and a request id, and is pruned after 3 days.
+create table if not exists public.scan_refunds (
+  observation_id text primary key check (observation_id ~ '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'),
+  bucket_digest bytea not null check (pg_catalog.octet_length(bucket_digest) = 32),
+  day date not null,
+  refunded_at timestamptz not null default now()
+);
+create index if not exists scan_refunds_bucket_day_idx on public.scan_refunds (bucket_digest, day);
+alter table public.scan_refunds enable row level security;
+revoke all on table public.scan_refunds from public, anon, authenticated;
+
+create or replace function public.refund_scan_claim(p_bucket text, p_day date, p_observation_id text)
+returns boolean language plpgsql security definer set search_path = '' as $$
+declare
+  v_digest bytea;
+  v_today date := (pg_catalog.now() at time zone 'utc')::date;
+  v_cap constant int := 3;
+  v_n int;
+begin
+  if p_bucket is null or p_day is null or p_observation_id is null or p_bucket = 'global'
+     or p_observation_id !~ '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
+     or p_day < v_today - 1 or p_day > v_today + 1 then
+    return false;
+  end if;
+  perform 1 from public.scan_quota where bucket = p_bucket and day = p_day for update;
+  if not found then return false; end if;
+  v_digest := pg_catalog.sha256(pg_catalog.convert_to(p_bucket, 'UTF8'));
+  if (select pg_catalog.count(*) from public.scan_refunds where bucket_digest = v_digest and day = p_day) >= v_cap then
+    return false;
+  end if;
+  insert into public.scan_refunds (observation_id, bucket_digest, day) values (p_observation_id, v_digest, p_day)
+    on conflict (observation_id) do nothing;
+  get diagnostics v_n = row_count;
+  if v_n = 0 then return false; end if;
+  update public.scan_quota set count = count - 1 where bucket = p_bucket and day = p_day and count > 0;
+  get diagnostics v_n = row_count;
+  return v_n = 1;
+end $$;
+
 -- 6c. identify-plant (service role) records one receipt per eligible candidate.
 --     p_items: [{herb_id, observed_taxon_key, observed_taxon_rank, eligibility, rank_position, species_confidence}]
 --     An item the CHECKs refuse is skipped, never fatal: a receipt bug must not become an identification failure.
@@ -434,6 +484,7 @@ begin
   delete from public.capture_sessions
    where consumed_at is null and expires_at < pg_catalog.now() - interval '2 days';
   get diagnostics v_sessions = row_count;
+  delete from public.scan_refunds where refunded_at < pg_catalog.now() - interval '3 days';
   return pg_catalog.jsonb_build_object('digests', v_digests, 'sessions', v_sessions);
 end $$;
 
@@ -531,9 +582,11 @@ revoke all on function public.consume_capture_session(uuid, uuid, text, text, te
 revoke all on function public.issue_capture_receipts(uuid, uuid, jsonb) from public, anon, authenticated;
 revoke all on function public.prune_capture_artifacts() from public, anon, authenticated;
 revoke all on function public.release_capture_session(uuid, uuid) from public, anon, authenticated;
+revoke all on function public.refund_scan_claim(text, date, text) from public, anon, authenticated;
 revoke all on function public.set_discovery_enforcement(boolean, timestamptz, text) from public, anon, authenticated;
 grant execute on function public.consume_capture_session(uuid, uuid, text, text, text[]) to service_role;
 grant execute on function public.issue_capture_receipts(uuid, uuid, jsonb) to service_role;
 grant execute on function public.prune_capture_artifacts() to service_role;
 grant execute on function public.release_capture_session(uuid, uuid) to service_role;
+grant execute on function public.refund_scan_claim(text, date, text) to service_role;
 grant execute on function public.set_discovery_enforcement(boolean, timestamptz, text) to service_role;

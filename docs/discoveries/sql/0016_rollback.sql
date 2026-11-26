@@ -33,6 +33,7 @@ drop function if exists public.consume_capture_session(uuid, uuid, text, text, t
 drop function if exists public.issue_capture_receipts(uuid, uuid, jsonb);
 drop function if exists public.prune_capture_artifacts();
 drop function if exists public.release_capture_session(uuid, uuid);
+drop function if exists public.refund_scan_claim(text, date, text);
 drop function if exists public.discovery_rules();
 drop function if exists public.capture_config();
 
