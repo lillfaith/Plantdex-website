@@ -671,6 +671,41 @@ Deno.serve(async (req: Request) => {
      */
     const { kind, message, status } = identification;
     const configFault = kind === 'auth' || kind === 'unconfigured';
+
+    /*
+     * A FAILURE ON THE PROVIDER'S OWN SIDE GIVES BACK WHAT IT SPENT, AND NOTHING ELSE DOES.
+     *
+     * Outage, timeout or a 5xx means the player got no answer through no act of theirs, so the
+     * capture session is handed back (the same photographs may be sent again as a first use) and
+     * their own daily unit is refunded. Not a rejected photograph (4xx, an encode fault), not a
+     * refused key, not the provider rate-limiting us, not a malformed answer: those either are the
+     * caller's input or are not an outage, and refunding them would let bad input farm retries.
+     * The shared `global` unit is never refunded; it is the upstream-cost backstop.
+     *
+     * Both calls are best-effort: a release or refund that fails must never change the answer the
+     * player sees, so each is guarded and its outcome only decides `capture.retryable`.
+     */
+    const providerSide =
+      kind === 'timeout' || kind === 'network' || (kind === 'provider' && typeof status === 'number' && status >= 500);
+    let released = false;
+    let refunded = false;
+    if (providerSide) {
+      if (capture?.kind === 'open') {
+        try {
+          released = (await capturePort.release(capture.userId, capture.sessionId)) === true;
+        } catch {
+          released = false;
+        }
+      }
+      try {
+        // Only an explicit `true` with no error is a confirmed refund. False (cap of 3, repeated
+        // request id, no claim found), an error, a throw or a non-boolean are all "not refunded".
+        const r = await admin.rpc('refund_scan_claim', { p_bucket: bucket, p_day: day, p_observation_id: observationId });
+        refunded = !r?.error && r?.data === true;
+      } catch {
+        refunded = false;
+      }
+    }
     return json(
       {
         error: configFault
@@ -691,6 +726,10 @@ Deno.serve(async (req: Request) => {
          * is currently unnecessary.
          */
         providerMessage: redact(message),
+        // Present only when the session was really handed back: the client may resend the same photographs.
+        ...(released ? { capture: { accepted: true, retryable: true } } : {}),
+        // Provider-side failures only: whether the caller's OWN daily scan unit was confirmed refunded.
+        ...(providerSide ? { allowance: refunded ? 'refunded' : 'not_refunded' } : {}),
       },
       configFault ? 500 : 502,
     );
