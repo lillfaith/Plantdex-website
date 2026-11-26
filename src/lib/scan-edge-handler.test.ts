@@ -102,6 +102,20 @@ beforeEach(() => {
   };
 });
 
+/**
+ * A provider-side failure may now carry TWO additive, honest fields (owner direction 2026-11-26): `capture` ({accepted, retryable}) when the
+ * capture session was really handed back, and `allowance` ('refunded' | 'not_refunded') for what the backend confirmed about the caller's own
+ * daily unit. The rest of the body must still be byte-for-byte what it always was, and no other failure may gain either field. This compares
+ * everything else exactly, so the golden still pins the old contract while allowing only those two fields and only with their known values.
+ */
+function expectProviderDownBody(text: string): void {
+  const body = JSON.parse(text) as Record<string, unknown>;
+  const { allowance, capture, ...rest } = body;
+  expect([undefined, 'refunded', 'not_refunded']).toContain(allowance);
+  expect([undefined, JSON.stringify({ accepted: true, retryable: true })]).toContain(capture === undefined ? undefined : JSON.stringify(capture));
+  expect(rest).toEqual(JSON.parse(GOLDEN.providerDown));
+}
+
 describe('a request with no capture purpose is byte-identical to the pre-capture handler', () => {
   it('anonymous, no extra fields', async () => {
     const { admin, calls } = fakeAdmin();
@@ -141,7 +155,7 @@ describe('a request with no capture purpose is byte-identical to the pre-capture
     provider.plan = { mode: 'fail', names: [] };
     const down = await invoke(handler, { token: 'tok-alice' });
     expect(down.status).toBe(502);
-    expect(down.text).toBe(GOLDEN.providerDown);
+    expectProviderDownBody(down.text);
   });
 });
 
@@ -286,7 +300,7 @@ describe('purpose=collect', () => {
     provider.plan = { mode: 'fail', names: [] };
     const out = await invoke(handler, { token: 'tok-alice', fields: collect });
     expect(out.status).toBe(502);
-    expect(out.text).toBe(GOLDEN.providerDown);
+    expectProviderDownBody(out.text);
     expect(calls.rpc.map(([n]) => n)).not.toContain('issue_capture_receipts');
   });
 
