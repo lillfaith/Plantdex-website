@@ -33,3 +33,8 @@ did not test); and that capture sessions and image digests exist once 0016 is en
 ## Release gate
 Flag ON in the V1 release build; wording v2 approved by you; `/privacy` updated; a real-device pass that declines, accepts, reloads, changes wording
 version (asks again) and confirms nothing was transmitted before acceptance.
+
+
+## UPDATE (owner request): short notice, long text in the privacy policy
+The "Proposed v2" column above is superseded. The scan-screen notice becomes a short statement (providers, purpose, Send / Not now, link) and the detail moves to
+`/privacy#plant-id`; exact text for both is in `docs/release/privacy-plant-id-copy.md`. `/privacy` is a human-only file, so you apply it (or authorise it).
