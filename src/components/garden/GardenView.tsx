@@ -73,7 +73,7 @@ export function GardenView() {
   }, [ready, stageSignature]);
 
   return (
-    <main id="main" className="mx-auto max-w-5xl px-4 py-8">
+    <main id="main" data-ground="lavender" className="mx-auto max-w-5xl px-4 py-8">
       <h1 className="font-display text-3xl font-extrabold text-gold-plate">My Garden</h1>
       <p className="mt-1 text-sm text-violet-300">
         Every plant you&apos;ve found, growing as you get to know it.
@@ -150,7 +150,7 @@ export function GardenView() {
                         pine and a dandelion share one ground line and the bed reads as a
                         planting rather than a row of stickers. Growth is carried by the
                         DRAWING now, not by scaling one image up and down. */}
-                    <span className="relative flex h-20 w-full items-end justify-center">
+                    <span data-glow={bossForms.has(herbId) || flowering ? 'gold' : stage === 'growing' ? 'pink' : 'violet'} className="sprite-glow relative flex h-20 w-full items-end justify-center">
                       {/* An earned Boss Form stands on a mossy stone step with a gold rim: still,
                           and part of the bed rather than a trophy stand. */}
                       {bossForms.has(herbId) && <span aria-hidden="true" className="boss-pedestal" />}

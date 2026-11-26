@@ -33,7 +33,7 @@ export default function HerbdexPage() {
   const fieldCards = [...FIELD_CARDS].sort((a, b) => a.cardNumber - b.cardNumber);
 
   return (
-    <main id="main" className="mx-auto max-w-6xl px-4 py-8">
+    <main id="main" data-ground="lavender" className="mx-auto max-w-6xl px-4 py-8">
       <PageAtmosphere theme="collection" />
       <TrackView event="herbdex_opened" />
       {/* Above the header, because it is about that progress, and inline in the page flow
@@ -63,12 +63,12 @@ export default function HerbdexPage() {
           the Collection in words a person would look for (`plant-id-safety.test.ts`), and the
           Seed Shelf is a kept thing that is effectively lost if nothing here points at it
           (`launch-loop.test.ts`). Text, not rectangles: the primary nav carries Scan too. */}
-      <nav aria-label="More ways to explore" className="mt-4 space-y-1 text-center text-sm text-violet-300">
+      <nav aria-label="More ways to explore" className="ground-ink mt-4 space-y-1 text-center text-sm font-semibold">
         <p>
           Spotted something growing?{' '}
           <Link
             href="/scan"
-            className="tap-44 inline-flex items-center font-bold text-gold-300 underline underline-offset-2 hover:text-gold-200"
+            className="tap-44 inline-flex items-center font-extrabold text-violet-800 underline decoration-pink-accent decoration-2 underline-offset-4 hover:text-violet-900"
           >
             Identify a plant
           </Link>
@@ -77,7 +77,7 @@ export default function HerbdexPage() {
           Found a plant with no card?{' '}
           <Link
             href="/seed-shelf"
-            className="tap-44 inline-flex items-center font-bold text-gold-300 underline underline-offset-2 hover:text-gold-200"
+            className="tap-44 inline-flex items-center font-extrabold text-violet-800 underline decoration-pink-accent decoration-2 underline-offset-4 hover:text-violet-900"
           >
             Open your Seed Shelf
           </Link>
@@ -85,16 +85,16 @@ export default function HerbdexPage() {
       </nav>
 
       <div className="mt-8 flex items-center gap-3">
-        <span aria-hidden="true" className="h-0.5 flex-1 bg-gradient-to-r from-transparent to-gold-500/80" />
-        <h1 className="font-display text-3xl font-extrabold text-gold-plate">My Collection</h1>
-        <span aria-hidden="true" className="h-0.5 flex-1 bg-gradient-to-l from-transparent to-gold-500/80" />
+        <span aria-hidden="true" className="h-0.5 flex-1 bg-gradient-to-r from-transparent to-gold-500" />
+        <h1 className="font-display flex items-center gap-3 px-1 text-3xl font-extrabold text-violet-50"><span aria-hidden="true" className="pixel-diamond" />My Collection<span aria-hidden="true" className="pixel-diamond" /></h1>
+        <span aria-hidden="true" className="h-0.5 flex-1 bg-gradient-to-l from-transparent to-gold-500" />
       </div>
       {/* Collection identity, stated once. The deck is complete as it stands: this names it
           rather than implying anything is missing from it. */}
-      <p className="mt-2 text-center text-xs font-semibold tracking-wide text-violet-400 uppercase">
+      <p className="ground-ink mt-2 text-center text-xs font-bold tracking-wide uppercase">
         {CURRENT_COLLECTION.size} cards · {CURRENT_COLLECTION.shortName}
       </p>
-      <p className="mt-1 text-center text-xs text-violet-400">
+      <p className="ground-ink mt-1 text-center text-xs">
         {CURRENT_COLLECTION.shortName} is the {CURRENT_COLLECTION.size}-card physical Plantdex
         deck. Found a plant in the wild? Open its card and log it.
       </p>
@@ -120,7 +120,7 @@ export default function HerbdexPage() {
         <BeyondCollection />
       </div>
 
-      <div className="mt-10">
+      <div className="panel mt-10 p-4">
         <DeckCta placement="herbdex" />
       </div>
 
