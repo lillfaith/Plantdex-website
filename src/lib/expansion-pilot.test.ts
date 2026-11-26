@@ -192,8 +192,8 @@ describe('the pilot stays out of the live app', () => {
     }
   };
   walk('src');
-  it('has no live module importing the generated file or the importer', () => {
-    const importers = live.filter((p) => /expansion-pilot\.generated|pilot-source|generate_pilot|validate_record|snapshot_draft/.test(strip(readFileSync(p, 'utf8'))));
+  it('has no live module importing the generated file or the importer (the preview module is the one sanctioned reader, and nothing imports IT: see expansion-pilot-preview.test.ts)', () => {
+    const importers = live.filter((p) => p !== 'src/lib/expansion-entries.preview.ts').filter((p) => /expansion-pilot\.generated|pilot-source|generate_pilot|validate_record|snapshot_draft/.test(strip(readFileSync(p, 'utf8'))));
     expect(importers).toEqual([]);
   });
   it('has no live module reading the flag or the pilot module yet', () => {

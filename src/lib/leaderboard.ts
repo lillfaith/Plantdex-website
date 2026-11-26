@@ -1,3 +1,4 @@
+import { isExpansionEntry } from './catalogue';
 import type { HerbdexState } from './types';
 import type { Sighting } from './sightings';
 
@@ -366,7 +367,8 @@ export function scoreFromRecords(
   state: HerbdexState,
   sightings: readonly ScorableSighting[],
 ): LeaderboardScore {
-  const discoveredIds = new Set(Object.keys(state.discoveries));
+  // Expansion cards score nothing: the database refuses them and the client mirror must agree.
+  const discoveredIds = new Set(Object.keys(state.discoveries).filter((id) => !isExpansionEntry(id)));
   return scoreFromCounts({
     discoveries: discoveredIds.size,
     journalEntries: paidJournalSpecies(sightings, discoveredIds).length,

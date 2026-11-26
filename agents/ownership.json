@@ -154,6 +154,7 @@
         "src/lib/research.*",
         "src/lib/achievements*",
         "src/lib/field-cards*",
+        "src/lib/expansion-entries*",
         "src/lib/rng*",
         "src/lib/habitat*",
         "src/lib/card-coverage*",
