@@ -62,11 +62,12 @@
     {
       "owner": "coordinator",
       "tier": 1,
-      "why": "THE RECEIPT CONTRACT AND ITS EDGE MIRROR ARE ONE CONTRACT. observation-capture-receipt.ts is the TypeScript mirror of migration 0016, and identify-plant/capture.ts is the edge function's copy of it; their tests pin each other (and the SQL) in both directions, so a contract change cannot go green in two lane-owned PRs. These exact paths are coordinator-owned so a contract change lands as ONE reviewed change. Nothing else in either lane moves: the handler (identify-plant/index.ts), the client and the migration's behaviour stay with their lanes.",
+      "why": "THE RECEIPT CONTRACT AND ITS EDGE MIRROR ARE ONE CONTRACT. observation-capture-receipt.ts is the TypeScript mirror of migration 0016, and identify-plant/capture.ts is the edge function's copy of it; their tests pin each other (and the SQL) in both directions, so a contract change cannot go green in two lane-owned PRs. These exact paths (observation-qualification.ts too: it is mirrored into the edge function with the receipt module, and mirrored modules must have a coordinator or human owner) are coordinator-owned so a contract change lands as ONE reviewed change. Nothing else in either lane moves: the handler (identify-plant/index.ts), the client and the migration's behaviour stay with their lanes.",
       "globs": [
         "supabase/functions/identify-plant/capture.ts",
         "src/lib/observation-capture-receipt.ts",
         "src/lib/observation-capture-receipt.test.ts",
+        "src/lib/observation-qualification.ts",
         "src/lib/scan-edge-receipts.test.ts",
         "src/lib/scan-edge-receipts.local.test.ts",
         "src/lib/scan-edge-handler.test.ts"
@@ -75,7 +76,7 @@
     {
       "owner": "ui",
       "tier": 3,
-      "why": "Human-directed design: navigation, palette, type, layout, shared components, cards, animation. Feature agents never edit these; they file a UI request.",
+      "why": "Human-directed design: navigation, palette, type, layout, shared components, cards, animation. Feature agents never edit these; they file a UI request. Three exact lane-b component paths (SpeciesHero, GardenView, RecentFinds) were added on 2026-11-26 so the owner-approved lavender V3 look, which restyles them, is one UI change; nothing else in those directories moves.",
       "globs": [
         "src/app/globals.css",
         "src/app/icon.png",
@@ -88,6 +89,9 @@
         "src/components/PlantSprite.tsx",
         "src/components/ui/**",
         "src/components/icons/**",
+        "src/components/game/SpeciesHero.tsx",
+        "src/components/garden/GardenView.tsx",
+        "src/components/profile/RecentFinds.tsx",
         "src/components/herbdex/**",
         "src/components/start/**",
         "src/components/support/**",

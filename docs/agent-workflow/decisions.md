@@ -97,3 +97,19 @@ must not create automatic growth timers.
    card-production behaviour (`github/photo-next-max-parallel.patch`, a draft for that branch).
 6. **No lane launches until** the rulesets, credential restrictions, environment protections and acceptance tests pass.
    The Discoveries lane may prepare its written design in isolation, activating no scoring change. UI stays human-directed.
+
+## 2026-11-26 (evening): V1 anti-cheat, imports, consent, UI baseline (owner)
+
+1. **One mandatory in-app camera photograph to collect; further angles optional (up to 3).** The 2-to-3 photograph minimum and a mandatory
+   capture delay are NOT adopted (`min_images` 1, `min_capture_ms` 0, both stay configurable). Imported-photo lookups keep the existing two.
+2. **Duplicate images:** flag, never auto-refuse (false positives are real). Server-authoritative sessions, single-use nonces, idempotent
+   receipts, rate limits and replay protection stand. No claim that capture proves an outdoor sighting.
+3. **Existing and local collections:** preserved; no erasure at enforcement. No permanent alternative unlock through local import, manual
+   sightings or uploaded photos. Any legacy import is a limited, clearly distinguished migration of HISTORY that manufactures no competitive
+   score, XP or newly eligible card. Cutoff and safeguards are proposed for owner review (`docs/release/legacy-import-proposal.md`), not chosen.
+4. **Provider consent is mandatory for public V1:** before the first photograph goes to PlantNet or plant.id, from the camera or the library;
+   names the providers and purpose, offers a real decline, links accurate privacy information, is stored and re-requested when the disclosure
+   changes, and no older path may bypass it. The flag stays off in current production. Copy for review: `docs/release/consent-copy-review.md`.
+5. **UI:** the brighter lavender/lilac V3b direction is the visual baseline (isolated branch `ui/palette-sample`, PR #79); no global roll-out until
+   the owner approves the final screenshots.
+6. 0015 (#69) stays off the V1 critical path; 0014 (#43) and 0016 stay held for production until the whole flow is reviewed.
