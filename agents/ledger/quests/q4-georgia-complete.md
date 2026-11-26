@@ -26,9 +26,9 @@ Progress is derived from `discoveries` through `habitatsViewModel`; completion i
 
 ## Evidence
 Unit: `src/lib/region-quest.test.ts` (24 tests: supply completability, derived/idempotent, no reducer/progression import, no clock, no discover call, flag gating, wording, record ratchet/scope/validation).
-Browser: `agents/ledger/quests/q4-sandbox/run.mjs`, 390px, 16/16 checks, screenshots in `docs/agent-workflow/quests-q4/`.
+Browser: `agents/ledger/quests/q4-sandbox/run.mjs`, 390px, 16/16 checks, screenshots in `docs/quests-q4/`.
 `npm run verify`: exit 0, 142 files / 2286 tests.
 
 ## Notes
 `docs/release/v1-launch-gap-audit.md` does not exist on `integration`; it could not be read.
-`docs/agent-workflow/quests-q4/` and `e2e/` are coordinator-owned; the screenshots were written where the task asked, and the runner lives under the ledger (any-agent).
+`docs/quests-q4/` and `e2e/` are coordinator-owned; the screenshots were written where the task asked, and the runner lives under the ledger (any-agent).
