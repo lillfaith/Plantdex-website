@@ -3,6 +3,7 @@ import { getPrintedCard } from '@/lib/deck';
 import { GARDEN_STAGE_BY_MASTERY } from '@/lib/garden';
 import { MASTERY_STAGE_LABEL } from '@/lib/mastery';
 import type { RecentFind } from '@/lib/profile-stats';
+import { contentFit, spriteFor } from '@/lib/plant-sprites';
 import { PlantSprite } from '../PlantSprite';
 import { PlantdexIcon, type IconName } from '../icons/PlantdexIcon';
 import { EYEBROW, MICRO_LABEL } from '../ui/accents';
@@ -60,7 +61,7 @@ function exactDay(iso: string): string {
   return date.toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' });
 }
 
-export function RecentFinds({ finds }: { finds: RecentFind[] }) {
+export function RecentFinds({ finds, fitSprites = false }: { finds: RecentFind[]; fitSprites?: boolean }) {
   return (
     <section aria-labelledby="profile-recent" className="field-panel p-4 sm:p-5">
       <h2 id="profile-recent" className={`${EYEBROW} text-mystery-lilac`}>
@@ -83,6 +84,9 @@ export function RecentFinds({ finds }: { finds: RecentFind[] }) {
           {finds.map((find) => {
             const herb = getPrintedCard(find.herbId);
             if (!herb) return null;
+            // Collection only: scale the DRAWN sprite (measured ink box) to fill its node, so the
+            // character itself is larger, not just the circle around it.
+            const ink = fitSprites ? contentFit(spriteFor(herb.id, GARDEN_STAGE_BY_MASTERY[find.stage])) : null;
             return (
               <li key={find.herbId} className="relative z-10">
                 <Link
@@ -91,13 +95,20 @@ export function RecentFinds({ finds }: { finds: RecentFind[] }) {
                 >
                   {/* The node: the sprite on a plum disc, so the rail passes behind it
                       rather than through it. */}
-                  <span data-glow={find.stage === 'mastered' ? 'gold' : find.stage === 'learned' ? 'pink' : 'violet'} className="recent-node relative flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-plum-950/80 ring-1 ring-violet-600/35">
+                  <span data-glow={find.stage === 'mastered' ? 'gold' : find.stage === 'learned' ? 'pink' : 'violet'} className="recent-node relative flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-full bg-plum-950/80 ring-1 ring-violet-600/35">
                     <PlantSprite
                       herbId={herb.id}
                       alt={herb.commonName}
                       stage={GARDEN_STAGE_BY_MASTERY[find.stage]}
                       fit
-                      className="w-[86%]"
+                      className={ink ? 'w-full' : 'w-[86%]'}
+                      style={
+                        ink
+                          ? {
+                              transform: `translate(${ink.translateX.toFixed(2)}%, ${ink.translateY.toFixed(2)}%) scale(${ink.scale.toFixed(3)})`,
+                            }
+                          : undefined
+                      }
                     />
                   </span>
                   <span className="min-w-0 flex-1">
