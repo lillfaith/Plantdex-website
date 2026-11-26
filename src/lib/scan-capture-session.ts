@@ -55,7 +55,7 @@ export async function openCaptureSession(): Promise<OpenSessionResult> {
         session: {
           sessionId: data.session_id,
           nonce: data.nonce,
-          minCaptureMs: typeof data.min_capture_ms === 'number' ? data.min_capture_ms : 2000,
+          minCaptureMs: typeof data.min_capture_ms === 'number' ? data.min_capture_ms : 0,
           openedAtMs: Date.now(),
         },
       };

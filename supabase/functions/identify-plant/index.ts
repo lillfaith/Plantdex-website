@@ -89,6 +89,12 @@ const COMPARISON_CANDIDATE_CAP = 5;
 /** Two required, three allowed. Enforced here as well as in the browser. */
 const MIN_IMAGES = 2;
 const MAX_IMAGES = 3;
+/**
+ * A `purpose=collect` observation needs ONE in-app camera photograph; the extra angles are optional
+ * and help accuracy only (owner decision, 2026-11-26). Every other request keeps the floor above.
+ * Enforced here independently of the browser's button, which is not the only possible caller.
+ */
+const MIN_COLLECT_IMAGES = 1;
 
 /*
  * THE FLOOR THAT IS ACTUALLY ENFORCED, AND WHY IT IS NOT JUST `MIN_IMAGES`.
@@ -413,7 +419,7 @@ Deno.serve(async (req: Request) => {
       const earlyAsk = readCaptureAsk(early);
       if (earlyAsk) {
         const earlyFiles = early.getAll('image').filter((one): one is File => one instanceof File);
-        if (earlyFiles.length >= 2 && earlyFiles.length <= 3) {
+        if (earlyFiles.length >= MIN_COLLECT_IMAGES && earlyFiles.length <= MAX_IMAGES) {
           const replay = await checkReplay(capturePort, earlyAsk, userId, earlyFiles);
           if (replay) {
             return json({
@@ -515,12 +521,18 @@ Deno.serve(async (req: Request) => {
    * one `organs` field — the multi-image shape PlantNet documents was already half-wired.
    */
   const files = form.getAll('image').filter((one): one is File => one instanceof File);
-  if (files.length < MIN_IMAGES_FLOOR) {
+  // `readCaptureAsk` is non-null only for an explicit `purpose=collect`, so this is the one place the
+  // lower floor applies; a lookup (or a request with no purpose at all) keeps the resolved floor.
+  const imageFloor = readCaptureAsk(form) ? MIN_COLLECT_IMAGES : MIN_IMAGES_FLOOR;
+  if (files.length < imageFloor) {
     return json(
       {
         // The NUMBER the caller must actually satisfy, not the default. A deployment that
         // lowered the floor and then told people to add two would be lying to them.
-        error: `Add ${MIN_IMAGES_FLOOR} photographs of the same plant — the whole plant and a close-up.`,
+        error:
+          imageFloor === 1
+            ? 'Add a photograph of the plant.'
+            : `Add ${imageFloor} photographs of the same plant \u2014 the whole plant and a close-up.`,
         code: 'tooFewImages',
       },
       400,

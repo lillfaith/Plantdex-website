@@ -11,6 +11,7 @@ vi.mock('./image-prepare', () => ({
 
 import {
   CONSENT_COPY,
+  CONSENT_WORDING_VERSION,
   CONSENT_PRIVACY_HREF,
   CONSENT_STORAGE_KEY,
   IDENTIFICATION_PROVIDERS,
@@ -110,24 +111,89 @@ describe('nothing is sent before the acknowledgement', () => {
   });
 });
 
-describe('the notice and /privacy say the same thing', () => {
+describe('wording version 2', () => {
+  it('is version 2, and a stamp from the long v1 wording no longer counts', () => {
+    expect(CONSENT_WORDING_VERSION).toBe(2);
+    const k = `${CONSENT_STORAGE_KEY}:device`;
+    expect(hasAcknowledged(store({ [k]: JSON.stringify({ stamp: 'v1:plantnet+plantid' }) }), 'device')).toBe(false);
+    expect(consentStamp()).toBe('v2:plantnet+plantid');
+  });
+  it('uses the owner-approved copy exactly', () => {
+    expect(CONSENT_COPY.heading).toBe('Send your photo to identify?');
+    expect(CONSENT_COPY.body).toBe(
+      'PlantDex sends your selected photo(s) to Pl@ntNet or Plant.id (by Kindwise) to suggest which plant you photographed.',
+    );
+    expect(CONSENT_COPY.privacyLink).toBe('Privacy details');
+    expect(CONSENT_COPY.accept).toBe('Send photo(s)');
+    expect(CONSENT_COPY.decline).toBe('Not now');
+  });
+  it('states no provider retention, deletion or training facts (unverified)', () => {
+    const all = JSON.stringify(CONSENT_COPY).toLowerCase();
+    for (const word of ['retain', 'retention', 'delete', 'deleted', 'train', 'stored', 'forever']) {
+      expect(all).not.toContain(word);
+    }
+  });
+});
+
+describe('declining genuinely prevents transmission', () => {
+  function withBrowserStorage(initial: Record<string, string>) {
+    const s = store(initial);
+    vi.stubGlobal('window', { localStorage: s });
+    return s;
+  }
+  afterEach(() => vi.unstubAllGlobals());
+
+  it('sends nothing when the player has not accepted (declined or undecided)', async () => {
+    vi.stubEnv('NEXT_PUBLIC_SCAN_CONSENT', 'on');
+    withBrowserStorage({}); // "Not now" writes nothing, so there is no acknowledgement
+    const answer = await identifyPlant(PHOTOS, undefined, { consentScope: 'device' });
+    expect(answer).toMatchObject({ kind: 'error' });
+    expect(invoke).not.toHaveBeenCalled();
+  });
+  it('sends nothing on a stale v1 acknowledgement', async () => {
+    vi.stubEnv('NEXT_PUBLIC_SCAN_CONSENT', 'on');
+    withBrowserStorage({ [`${CONSENT_STORAGE_KEY}:device`]: JSON.stringify({ stamp: 'v1:plantnet+plantid' }) });
+    await identifyPlant(PHOTOS, undefined, { consentScope: 'device' });
+    expect(invoke).not.toHaveBeenCalled();
+  });
+  it('sends after "Send photo(s)", for the capture photo too (library and camera share the gate)', async () => {
+    vi.stubEnv('NEXT_PUBLIC_SCAN_CONSENT', 'on');
+    const s = withBrowserStorage({});
+    acknowledge(s, 'device');
+    await identifyPlant(PHOTOS, undefined, { consentScope: 'device' });
+    expect(invoke).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe('the notice screen', () => {
+  const ui = readFileSync('src/components/scan/ProviderConsent.tsx', 'utf8');
+  it('shows "Nothing was sent" only behind the declined state, after the buttons', () => {
+    expect(ui).toMatch(/\{declined && \(/);
+    expect(ui.indexOf('CONSENT_COPY.declined')).toBeGreaterThan(ui.indexOf('onClick={onDecline}'));
+    // The hook starts undecided and only the decline handler sets it.
+    expect(ui).toContain('useState(false)');
+    expect(ui).toContain('const decline = useCallback(() => setDeclined(true), [])');
+  });
+  it('links to /privacy', () => {
+    expect(CONSENT_PRIVACY_HREF.startsWith('/privacy')).toBe(true);
+    expect(ui).toContain('CONSENT_COPY.privacyLink');
+  });
+});
+
+describe('the notice and /privacy agree on who receives photos', () => {
   const privacy = readFileSync('src/app/privacy/page.tsx', 'utf8');
   it('names every provider the privacy page names', () => {
     expect(privacy).toContain('PlantNet');
     expect(privacy).toContain('plant.id');
-    const body = CONSENT_COPY.body.join(' ');
-    for (const p of IDENTIFICATION_PROVIDERS) expect(body).toContain(p.name.split(' ')[0]);
+    expect(CONSENT_COPY.body).toContain('Pl@ntNet');
+    expect(CONSENT_COPY.body).toContain('Plant.id (by Kindwise)');
+    for (const p of IDENTIFICATION_PROVIDERS) expect(CONSENT_COPY.body.toLowerCase()).toContain(p.name.split(' ')[0]!.toLowerCase());
   });
-  it('links to a section that exists and states the three disclosures', () => {
+  it('links to a section that exists', () => {
     expect(CONSENT_PRIVACY_HREF).toBe('/privacy#plant-id');
     expect(privacy).toContain('id="plant-id"');
-    const body = CONSENT_COPY.body.join(' ').toLowerCase();
-    expect(body).toContain('photos');
-    expect(body).toMatch(/location/);
-    expect(body).toContain('optional');
   });
-  it('claims no location or EXIF is sent, matching the re-encode rule', () => {
-    expect(CONSENT_COPY.body.join(' ')).toMatch(/location data \(EXIF\/GPS\) is removed/);
+  it('the EXIF removal stays true in code even though the short notice no longer says it', () => {
     expect(readFileSync('src/lib/scans.ts', 'utf8')).toContain('prepareImage(photo.file, IDENTIFY_PROFILE)');
   });
 });

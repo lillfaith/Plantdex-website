@@ -5,11 +5,8 @@ import { ACCEPT_ATTRIBUTE } from '@/lib/photo-input';
 import { PlantdexIcon } from '../icons/PlantdexIcon';
 import { isCameraCaptureEnabled } from '@/lib/scan-capture';
 import { CameraCapturePanel } from './CameraCapturePanel';
-import {
-  MAX_OBSERVATION_PHOTOS,
-  MIN_OBSERVATION_PHOTOS,
-  type ObservationPhoto,
-} from '@/lib/scans';
+import { channelForPhotos } from '@/lib/scan-flow';
+import { MAX_OBSERVATION_PHOTOS, minPhotosFor, type ObservationPhoto } from '@/lib/scans';
 
 /**
  * TWO TO THREE PHOTOGRAPHS OF ONE INDIVIDUAL PLANT.
@@ -161,7 +158,16 @@ export function ObservationPhotos({
   );
 
   const count = SLOTS.filter((slot) => held[slot.key]).length;
-  const ready = count >= MIN_OBSERVATION_PHOTOS;
+  /*
+   * THE FLOOR FOLLOWS THE CHANNEL. Every photograph from the in-app camera is a collect
+   * observation, which needs ONE; add a library photo and it is a lookup, which keeps two.
+   * Extra angles on a collect are optional and help accuracy only - never proof of presence.
+   */
+  const heldPhotos = Object.values(held).flatMap((one) => (one ? [{ source: one.source }] : []));
+  const channel = channelForPhotos(heldPhotos);
+  const minimum = minPhotosFor(channel);
+  const ready = count >= minimum;
+  const closeRequired = minimum > 1;
 
   const firstEmpty = SLOTS.find((slot) => !held[slot.key]);
 
@@ -176,10 +182,18 @@ export function ObservationPhotos({
         <span aria-hidden="true" className="shrink-0 text-2xl text-violet-300">
           <PlantdexIcon name="scan" />
         </span>
-        <span>
-          Take <span className="font-semibold text-gold-300">2 or 3 photos of the same plant</span>{' '}
-          &mdash; the same individual, not two plants of the same kind.
-        </span>
+        {cameraOn ? (
+          <span>
+            Take <span className="font-semibold text-gold-300">one photo of the plant</span> with
+            the camera. More angles are optional and only help the identifier&rsquo;s accuracy
+            &mdash; keep them to the same plant.
+          </span>
+        ) : (
+          <span>
+            Take <span className="font-semibold text-gold-300">2 or 3 photos of the same plant</span>{' '}
+            &mdash; the same individual, not two plants of the same kind.
+          </span>
+        )}
       </p>
 
       <ol className="grid grid-cols-3 gap-3">
@@ -244,7 +258,7 @@ export function ObservationPhotos({
                 />
                 {slot.label}
               </p>
-              {!slot.required && (
+              {!(slot.required || (slot.key === 'close' && closeRequired)) && (
                 <p className="text-[0.72rem] leading-tight text-violet-300">(optional)</p>
               )}
               <input
@@ -266,7 +280,7 @@ export function ObservationPhotos({
                 }}
               />
               <span className="sr-only">
-                {index + 1}. {slot.required ? 'Required' : 'Optional'}. {slot.instruction}
+                {index + 1}. {slot.required || (slot.key === 'close' && closeRequired) ? 'Required' : 'Optional'}. {slot.instruction}
               </span>
             </li>
           );
@@ -303,7 +317,9 @@ export function ObservationPhotos({
           <span className="text-gold-300">ready to identify</span>
         ) : (
           <span>
-            {MIN_OBSERVATION_PHOTOS} photos required · {MAX_OBSERVATION_PHOTOS} recommended
+            {minimum === 1 || (cameraOn && count === 0)
+              ? `1 camera photo needed · extra angles optional (up to ${MAX_OBSERVATION_PHOTOS})`
+              : `${minimum} photos required · ${MAX_OBSERVATION_PHOTOS} recommended`}
           </span>
         )}
       </p>

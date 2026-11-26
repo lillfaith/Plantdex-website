@@ -9,7 +9,7 @@ import type { DiscoveryResult } from '@/lib/types';
 import { genusOf, type ScanCandidate } from '@/lib/plant-match';
 import { genusLabel, improvementHint, summariseScan } from '@/lib/scan-summary';
 import {
-  MIN_OBSERVATION_PHOTOS,
+  minPhotosFor,
   confirmScan,
   identifyPlant,
   isScanFailure,
@@ -333,6 +333,15 @@ export function ScanPanel() {
       // A session is single-use: whichever way this call goes, it is spent.
       const session = channel === 'collect' ? captureSession.current : null;
       captureSession.current = null;
+      if (channel === 'collect' && !session && photos.length < minPhotosFor('lookup')) {
+        // One camera photo is enough only with an open capture session; without one this is a
+        // lookup, which needs two. Say so rather than letting the generic refusal blame the count.
+        setProblem(
+          'The camera session could not be started, so this photo can only look a plant up. Add another photo of the same plant, or try the camera again.',
+        );
+        setStage('idle');
+        return;
+      }
       setProblem(null);
       setRateLimited(null);
       setResult(null);
@@ -488,7 +497,8 @@ export function ScanPanel() {
   const outOfScans = allowance.left <= 0;
   // Consent is part of "can identify": nothing is sent until where photos go is acknowledged.
   const consentPending = consent.required && !(consent.known && consent.accepted);
-  const canIdentify = photos.length >= MIN_OBSERVATION_PHOTOS && !outOfScans && !consentPending;
+  const photoMinimum = minPhotosFor(channelForPhotos(photos));
+  const canIdentify = photos.length >= photoMinimum && !outOfScans && !consentPending;
 
   /*
    * DERIVED ON RENDER, FROM THE RESULT ITSELF. No state and nothing stored: the summary is a
@@ -598,8 +608,8 @@ export function ScanPanel() {
             : consentPending
               ? 'Review where your photos are sent, above, to continue.'
               : canIdentify
-              ? `Ready with ${photos.length} photo${photos.length === 1 ? '' : 's'}.`
-              : `Add ${MIN_OBSERVATION_PHOTOS - photos.length} more photo${MIN_OBSERVATION_PHOTOS - photos.length === 1 ? '' : 's'} to identify.`}
+              ? `Ready with ${photos.length} photo${photos.length === 1 ? '' : 's'}.${photoMinimum === 1 && photos.length < 3 ? ' Extra angles are optional and only help accuracy.' : ''}`
+              : `Add ${photoMinimum - photos.length} more photo${photoMinimum - photos.length === 1 ? '' : 's'} to identify.`}
         </p>
         <span
           aria-hidden="true"

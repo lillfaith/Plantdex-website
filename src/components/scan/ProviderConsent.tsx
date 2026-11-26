@@ -77,16 +77,15 @@ export function ProviderConsent({
     <section
       aria-labelledby="scan-consent-heading"
       data-ui-placeholder="provider-consent"
-      className="panel space-y-3 p-5"
+      className="panel space-y-3 p-4 pr-5"
     >
-      <h3 id="scan-consent-heading" className="font-display text-lg font-bold text-gold-plate">
+      <h3
+        id="scan-consent-heading"
+        className="font-display text-lg leading-snug font-bold text-gold-plate [overflow-wrap:anywhere]"
+      >
         {CONSENT_COPY.heading}
       </h3>
-      {CONSENT_COPY.body.map((line) => (
-        <p key={line} className="text-sm leading-relaxed text-violet-200">
-          {line}
-        </p>
-      ))}
+      <p className="text-sm leading-relaxed text-violet-200">{CONSENT_COPY.body}</p>
       <p className="text-sm">
         <Link
           href={CONSENT_PRIVACY_HREF}
@@ -95,12 +94,7 @@ export function ProviderConsent({
           {CONSENT_COPY.privacyLink}
         </Link>
       </p>
-      {declined && (
-        <p role="status" className="text-sm text-violet-300">
-          {CONSENT_COPY.declined}
-        </p>
-      )}
-      <div className="flex flex-col gap-2 sm:flex-row">
+      <div className="flex flex-col gap-2 min-[400px]:flex-row">
         <button
           type="button"
           onClick={onAccept}
@@ -116,6 +110,12 @@ export function ProviderConsent({
           {CONSENT_COPY.decline}
         </button>
       </div>
+      {/* ONLY after the player pressed "Not now". It used to be able to appear before any decision. */}
+      {declined && (
+        <p role="status" className="text-sm text-violet-300">
+          {CONSENT_COPY.declined}
+        </p>
+      )}
     </section>
   );
 }
