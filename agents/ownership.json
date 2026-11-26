@@ -185,6 +185,7 @@
         "src/lib/no-emoji*",
         "src/lib/tailwind-candidates*",
         "src/lib/ownership*",
+        "src/lib/expansion-pilot*",
         "src/lib/*-schema.test.ts",
         "src/lib/*-e2e-guard.test.ts",
         "src/state/**",
