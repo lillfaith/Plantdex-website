@@ -25,9 +25,9 @@ person with their own JWT can script any request. What the server CAN establish,
 
 1. a signed-in account (`auth.uid()`),
 2. that opened a **server-issued, single-use capture session** (the in-app camera screen does this on open),
-3. and, no sooner than `min_capture_ms` and no later than `ttl_s` afterwards,
-4. submitted **2 to 3 images through that session** in one `identify-plant` call that the provider answered,
-5. none of whose image digests the server has ever seen before,
+3. and, no later than `ttl_s` afterwards (no minimum delay: `min_capture_ms` is 0 by owner decision, 2026-11-26),
+4. submitted **one to three images through that session** in one `identify-plant` call that the provider answered (ONE in-app photograph is mandatory; further angles are optional),
+5. whose image digests are recorded; an image the server has seen under ANOTHER account is flagged for review and never refused automatically,
 6. receiving a **server-recorded receipt** for each eligible candidate,
 7. which the account then **claims once**, server-side, producing the discovery row with the server clock.
 
@@ -83,7 +83,7 @@ Call when the in-app camera screen opens (not on app load, not on a timer). No a
 ```jsonc
 // success
 { "ok": true, "session_id": "uuid", "nonce": "64-hex", "issued_at": "ISO", "expires_at": "ISO",
-  "ttl_s": 600, "min_capture_ms": 2000 }
+  "ttl_s": 600, "min_capture_ms": 0 }
 // failure (HTTP 200; the body carries the code)
 { "ok": false, "code": "not_signed_in" | "too_many_open_sessions" | "daily_session_limit" }
 ```
@@ -106,8 +106,8 @@ Server behaviour, in this order, only when the account is authenticated and `pur
 
 1. compute SHA-256 of each received image part (the client's already re-encoded JPEG; no decode happens);
 2. `consume_capture_session` (one transaction): session exists, belongs to the caller, nonce digest matches, unexpired, not
-   already consumed by a **different** request, `now() - issued_at >= min_capture_ms`, image count in 2..3, **no digest
-   previously recorded** (any account);
+   already consumed by a **different** request, image count in 1..3 (`min_capture_ms` is 0: no mandatory delay), digests recorded per
+   account (`capture_sessions.suspect_duplicate` is set when a digest was already seen under another account; this never refuses);
 3. run the provider call and the matcher **exactly as today** (quota accounting `claim_scan_pair` is unchanged and counts
    once, whether or not a receipt results);
 4. for each candidate whose server-side match is `confirmable` with `eligibility` in the five allowed values: insert a receipt.
@@ -169,7 +169,7 @@ immediately.
 ### 3.5 `rpc('discovery_rules')` -> `jsonb` (read only; for copy, never authorisation)
 
 ```jsonc
-{ "enforcing": false, "ttl_s": 600, "min_capture_ms": 2000, "receipt_ttl_days": 30 }
+{ "enforcing": false, "ttl_s": 600, "min_capture_ms": 0, "receipt_ttl_days": 30 }
 ```
 
 `enforcing` tells the client which wording to show and whether to route a Discover tap to the camera. It is **not** a gate:
@@ -202,9 +202,8 @@ type CaptureCode =
   | 'capture_session_nonce'        // nonce digest mismatch
   | 'capture_session_expired'      // older than ttl_s
   | 'capture_session_used'         // consumed by a different request
-  | 'capture_too_fast'             // submitted before min_capture_ms elapsed
-  | 'capture_images_invalid'       // not 2..3 images
-  | 'capture_duplicate_image'      // a digest was seen before (this or another account)
+  | 'capture_too_fast'             // only if the owner later sets min_capture_ms > 0 (0 today: never returned)
+  | 'capture_images_invalid'       // not 1..3 images, or a malformed/duplicate-in-request digest
   | 'capture_unavailable'          // server not configured / switch off; identification still returned
   | 'no_eligible_candidate';       // accepted capture, but nothing mapped to a card (a Seed Shelf case)
 type SessionCode = 'not_signed_in' | 'too_many_open_sessions' | 'daily_session_limit';
@@ -234,10 +233,10 @@ User-facing copy per code is the UI lane's. None may say or imply the plant is v
 | Measure | Stops | Does not stop |
 |---|---|---|
 | Single-use session nonce, 10-minute TTL | replaying a captured request; pre-minting receipts days ahead | a script that opens a session and submits |
-| `min_capture_ms` (2000 ms) | zero-latency scripted loops, submit-on-open | an attacker who waits 2 s |
+| `min_capture_ms` (0: NOT enforced, owner decision; stays configurable) | nothing today | n/a |
 | 3 open sessions, 60 opens/day | session farming | n/a (bounded) |
 | Existing quota (`claim_scan_pair`: 450 global, 10 per account per day) | mass minting: at most 10 capture calls per account per day, each costing a real provider call | many accounts |
-| Image digests (SHA-256 of the received re-encoded bytes), single use, any account | resubmitting one file, one file shared across accounts | a re-encoded or edited copy; a different photo of a screen |
+| Image digests (SHA-256 of the received re-encoded bytes), per account; cross-account repeats are FLAGGED (`suspect_duplicate`), not refused | gives reviewers a signal on one file shared across accounts | a re-encoded or edited copy; a different photo of a screen. Not an automatic refusal because shared photos, households and re-sent files are legitimate |
 | Receipt single-claim, server-clock stamps, owner-only | double rewards, back-dating | n/a |
 | Grandfathering with a cutoff | pre-stuffing the collection between announcement and enforcement | n/a |
 

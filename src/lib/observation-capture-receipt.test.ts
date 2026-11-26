@@ -109,6 +109,34 @@ describe('the TypeScript mirror equals the SQL, in both directions', () => {
   });
 });
 
+describe('duplicate images are flagged for review, never refused and never revealed', () => {
+  const code = MIGRATION.split('\n').filter((l) => !l.trim().startsWith('--')).join('\n');
+  it('the digest key is per account, so a same-account repeat is a retake', () => {
+    expect(code).toMatch(/primary key \(user_id, digest\)/);
+    expect(code).toMatch(/on conflict do nothing/);
+    expect(code).not.toMatch(/unique_violation/);
+  });
+  it('a cross-account repeat sets the flag and cannot refuse: no duplicate code exists anywhere', () => {
+    expect(code).toMatch(/x\.user_id <> p_user/);
+    expect(code).toMatch(/suspect_duplicate = v_cross/);
+    expect(code).not.toMatch(/capture_duplicate/);
+    expect(CAPTURE_CODES.join(' ')).not.toMatch(/duplicate/);
+    expect(CONTRACT).not.toMatch(/capture_duplicate_image/);
+  });
+  it('the flag is never returned or granted: no response, view or column grant mentions it', () => {
+    const mentions = code.split('\n').filter((l) => l.includes('suspect_duplicate'));
+    expect(mentions).toHaveLength(2); // the column and the one update; nothing else
+    expect(code).not.toMatch(/jsonb_build_object\([^;]*suspect_duplicate/);
+    expect(code).not.toMatch(/grant[^;]*capture_sessions[^;]*(anon|authenticated)/i);
+    expect(code).toMatch(/revoke all on table public\.capture_sessions from public, anon, authenticated/);
+    expect(MODULE).not.toMatch(/suspect|duplicate/i);
+  });
+  it('the verification proves accept, flag, no flag on same-account repeat, and a silent response', () => {
+    for (const claim of ['ACCEPTED, not refused', 'FLAGGED for review', 'SAME account re-using an image', 'reveals the duplicate'])
+      expect(VERIFY, claim).toContain(claim);
+  });
+});
+
 describe('the switch defaults OFF and nothing here can turn it on', () => {
   it('the switch row is created with enforce = false and the migration never calls the setter', () => {
     expect(MIGRATION).toMatch(/enforce boolean not null default false/);
