@@ -97,3 +97,19 @@ must not create automatic growth timers.
    card-production behaviour (`github/photo-next-max-parallel.patch`, a draft for that branch).
 6. **No lane launches until** the rulesets, credential restrictions, environment protections and acceptance tests pass.
    The Discoveries lane may prepare its written design in isolation, activating no scoring change. UI stays human-directed.
+
+## 2026-11-26: Herbdex Expansion progression, database protection and pilot (owner)
+
+1. **Zero XP for expansion cards is a TEMPORARY safety default**, in force only while cards are unpublished and rarities
+   unapproved. The intended released experience is that eligible expansion cards inherit the original collection's
+   appropriate XP, mastery, progression and Garden rules, per-card, once rarity is approved and the release gate opens.
+   Never document or implement zero XP as permanent.
+2. **A disabled frontend flag is not authorization.** Adding the 85 ids to a database allowlist (`is_catalogue_herb`,
+   migration 0015) must not let a user unlock unpublished cards or claim rewards by calling the API directly (direct
+   inserts, the `confirm_scan` RPC, `herbdex-action`, the standings function). Tests and docs must separate the two
+   layers. If the allowlist alone cannot enforce publication, that is a **production blocker**, even though a TEST-only
+   apply is acceptable. Migration 0015 is TEST only; production is not authorised.
+3. **Five-card preview (#57, #60, #67, #68, #80):** show the real experience first and label every step WORKING,
+   MOCKED, DISABLED, MISSING or AWAITING APPROVAL. Do not call it playable while an essential step is mocked.
+4. **iOS:** feasibility audit and an isolated proof of concept only; no native conversion without approval.
+5. Production stays unchanged; no restricted gameplay feature is activated.
