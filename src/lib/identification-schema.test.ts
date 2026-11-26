@@ -237,7 +237,11 @@ describe('comparison mode is off unless two separate things say otherwise', () =
      * comparison would be measuring the wrong thing.
      */
     expect(fn).not.toMatch(/return json\([^)]*\balternate\b/);
-    expect(fn).toMatch(/candidates: attested\.filter/);
+    // The served list starts as `attested` (the PRIMARY provider's candidates) and the capture step may only
+    // add a `captureReceipt` to those same rows; it is never rebuilt from anything else.
+    expect(fn).toMatch(/let outCandidates: unknown\[\] = attested;/);
+    expect(fn).toMatch(/outCandidates = withReceipts\(attested, /);
+    expect(fn).toMatch(/candidates: \(outCandidates as [^)]*\)\.filter/);
   });
 
   it('cannot fail a scan when the telemetry write fails', () => {

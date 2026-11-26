@@ -11,6 +11,21 @@ import {
   ATTESTATION_SECRET_ENV,
   attestIdentity,
 } from '../_shared/herbdex/species-attestation.ts';
+import { matchScientificName, speciesConfidenceFor } from '../_shared/herbdex/plant-match.ts';
+import {
+  acceptedBlock,
+  beginCapture,
+  finishCapture,
+  parseCaptureIntent,
+  refusedBlock,
+  replayBlock,
+  sha256Hex,
+  withReceipts,
+  type CaptureBlock,
+  type CaptureDeps,
+  type CaptureStart,
+  type ReceiptRow,
+} from './capture.ts';
 
 /**
  * PLANT ID V1 — the identification call, server side.
@@ -495,6 +510,76 @@ Deno.serve(async (req: Request) => {
     organ: ORGANS.has(organs[index] ?? '') ? organs[index]! : 'auto',
   }));
 
+  /*
+   * ── CAPTURE RECEIPTS (discovery receipt contract, sections 3.2 and 3.3) ─────────────────────
+   *
+   * Runs ONLY for a request that says `purpose=collect`. A request with no purpose, `lookup`, or
+   * session fields without `collect` skips this block entirely: `intent.mode` is `none`, nothing is
+   * hashed, no RPC is made, and the response below is byte-for-byte what it was before capture
+   * existed (pinned by `scan-capture-edge.test.ts`).
+   *
+   * A CAPTURE FAILURE NEVER FAILS THE IDENTIFICATION. Every outcome here is a `capture.code` on an
+   * ordinary response; the player still gets the education lookup. Only the provider's own
+   * failures fail the request, exactly as before.
+   *
+   * The service-role client is `admin`, created above, and is used here for nothing but the two
+   * RPCs and one read of the caller's own receipts. No EXIF, coordinate or device identifier is
+   * read: all that is taken from an image is a SHA-256 of the bytes the browser already re-encoded.
+   */
+  const observationId = crypto.randomUUID();
+  const captureIntent = parseCaptureIntent(form);
+  const captureDeps: CaptureDeps = {
+    rpc: (fn, args) => admin.rpc(fn, args),
+    receiptsFor: async (forUser, forObservation): Promise<ReceiptRow[]> => {
+      const { data, error } = await admin
+        .from('capture_receipts')
+        .select('id, herb_id, rank_position, expires_at')
+        .eq('user_id', forUser)
+        .eq('observation_id', forObservation);
+      if (error || !Array.isArray(data)) return [];
+      return data.map((row) => ({
+        id: String(row.id),
+        herbId: String(row.herb_id),
+        rankPosition: row.rank_position === 'listed' ? ('listed' as const) : ('top' as const),
+        expiresAt: String(row.expires_at),
+      }));
+    },
+  };
+  let captureStart: CaptureStart = { kind: 'none' };
+  if (captureIntent.mode === 'collect') {
+    try {
+      const digests = await Promise.all(files.map(async (file) => sha256Hex(await file.arrayBuffer())));
+      captureStart = await beginCapture(captureDeps, { userId, intent: captureIntent, digests, observationId });
+    } catch {
+      captureStart = { kind: 'refused', code: 'capture_unavailable' };
+    }
+  }
+  let captureBlock: CaptureBlock | undefined =
+    captureStart.kind === 'refused' ? refusedBlock(captureStart.code) : undefined;
+  /** Spread into a response: nothing at all unless a capture was asked for, so lookups are untouched. */
+  const captureExtra = (block: CaptureBlock | undefined): { capture?: CaptureBlock } =>
+    block ? { capture: block } : {};
+  // Accepted (session consumed) but the identification then failed: no receipt can follow. Say so.
+  if (captureStart.kind === 'accepted') captureBlock = refusedBlock('capture_unavailable');
+
+  if (captureStart.kind === 'replay') {
+    /*
+     * A lost response, resent: the same session and the same ordered digests. The provider is NOT
+     * called again and no candidates are returned: the client lists or claims the receipts already
+     * recorded. (The quota unit for THIS request was taken at the top, before the images could be
+     * read; handing it back needs a refund function, filed as a Shared Change Request.)
+     */
+    await housekeeping;
+    return json({
+      candidates: [],
+      remaining: Math.max(0, limit - (claimed as number)),
+      limit,
+      signedIn: true,
+      observationId: captureStart.observationId || observationId,
+      capture: replayBlock(captureStart.receipts),
+    });
+  }
+
   // ── The provider ─────────────────────────────────────────────────────────
 
   /*
@@ -542,7 +627,7 @@ Deno.serve(async (req: Request) => {
    * "which provider agreed with what the player confirmed?" be a JOIN rather than a column
    * somebody has to go back and update; there is no update policy to do it with, deliberately.
    */
-  const observationId = crypto.randomUUID();
+  // `observationId` is minted above, before the provider call, so a capture session can record it.
 
   if (comparing) {
     /*
@@ -611,6 +696,7 @@ Deno.serve(async (req: Request) => {
          * is currently unnecessary.
          */
         providerMessage: redact(message),
+        ...captureExtra(captureBlock),
       },
       configFault ? 500 : 502,
     );
@@ -629,6 +715,7 @@ Deno.serve(async (req: Request) => {
       notAPlant: true,
       provider: identification.provider,
       observationId,
+      ...captureExtra(captureStart.kind === 'accepted' ? acceptedBlock({ receipts: [], code: 'no_eligible_candidate' }) : captureBlock),
     });
   }
 
@@ -638,6 +725,7 @@ Deno.serve(async (req: Request) => {
       providerFoundNothing: true,
       provider: identification.provider,
       observationId,
+      ...captureExtra(captureStart.kind === 'accepted' ? acceptedBlock({ receipts: [], code: 'no_eligible_candidate' }) : captureBlock),
     });
   }
 
@@ -684,11 +772,44 @@ Deno.serve(async (req: Request) => {
     }),
   );
 
+  /*
+   * RECEIPTS, from the SERVER'S OWN match of each candidate — nothing about eligibility comes from
+   * the client. `matchScientificName` is the same function the browser runs, synced into `_shared`.
+   * Candidate order is the provider's: index 0 is the leading answer (`top`), the rest are `listed`.
+   * Card membership never promotes a candidate; only a `confirmable` match on an allowed basis earns
+   * a receipt, and `legacyGenus` never does. Wrapped in a catch so a fault in here is a code, never
+   * a failed identification.
+   */
+  let outCandidates: unknown[] = attested;
+  if (captureStart.kind === 'accepted') {
+    try {
+      const finish = await finishCapture(captureDeps, {
+        userId: userId!,
+        sessionId: captureStart.sessionId,
+        observationId,
+        candidates: attested.map((candidate, index) => {
+          const match = matchScientificName(candidate.scientificName);
+          return {
+            match,
+            rankPosition: index === 0 ? ('top' as const) : ('listed' as const),
+            speciesConfidence: match.observedTaxon
+              ? speciesConfidenceFor(match.observedTaxon.rank, candidate.score)
+              : 'unresolved',
+          };
+        }),
+      });
+      outCandidates = withReceipts(attested, finish.receipts);
+      captureBlock = acceptedBlock(finish);
+    } catch {
+      captureBlock = refusedBlock('capture_unavailable');
+    }
+  }
+
   // Free by now — the provider call above took far longer than this did.
   await housekeeping;
 
   return json({
-    candidates: attested.filter((candidate) => candidate.scientificName),
+    candidates: (outCandidates as Array<{ scientificName: string }>).filter((candidate) => candidate.scientificName),
     // `claimed` is this caller's own post-increment count: every negative value returned
     // a 429 above, so by here it is a positive number and the subtraction is meaningful.
     remaining: Math.max(0, limit - (claimed as number)),
@@ -703,5 +824,6 @@ Deno.serve(async (req: Request) => {
      */
     provider: identification.provider,
     observationId,
+    ...captureExtra(captureBlock),
   });
 });

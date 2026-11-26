@@ -1,0 +1,255 @@
+import { createClient, type SupabaseClient, type User } from '@supabase/supabase-js';
+import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+
+/**
+ * `identify-plant` capture receipts + migration 0016, THE REAL PATH, LIVE. TEST PROJECT ONLY.
+ *
+ *   open_capture_session -> identify-plant (deployed, real provider) -> receipt -> claim_discovery
+ *
+ * Skipped without credentials (so `npm test` and CI never run it) and refuses to run against production
+ * or any project but the test one: `e2e/guard.setup.ts` allow-lists the test ref for every live suite,
+ * and the check below repeats it so this file is safe on its own. It holds NO service-role key and never
+ * turns enforcement on or off: it works whichever way the TEST switch is set, and says which in its output.
+ *
+ * WHAT MUST ALREADY BE ON TEST (the owner deploys these; see docs/scan-s6/README.md):
+ *   - migration 0016 applied (run-migration workflow), and
+ *   - the `identify-plant` edge function deployed from this branch (deploy-function workflow), with the
+ *     provider key set as it is today.
+ * If either is missing the FIRST test fails with a message saying which, rather than passing quietly.
+ *
+ * COST. Each run makes about six real identification calls (a provider credit each) across two disposable
+ * accounts; every account is under its own 10-a-day allowance, and the shared 450 is untouched in practice.
+ *
+ * Disposable accounts only (a fresh Alice and Bob per run). The photographs are fetched from Wikimedia
+ * Commons at run time and a run-unique trailer is appended after the JPEG's end-of-image marker, so a
+ * rerun never collides with the single-use image digests of an earlier one. The trailer is data after the
+ * image, not metadata read from it: the function still hashes the bytes and reads nothing else.
+ *
+ * WORDING. A receipt means "captured in the app". Nothing here, or in the function, says the plant was
+ * outdoors, present or verified.
+ */
+const SB_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+const configured = Boolean(SB_URL && KEY);
+
+const TEST_REF = 'vgjehmwcpavflbfhbbrp';
+if (SB_URL && new URL(SB_URL).hostname !== `${TEST_REF}.supabase.co`) {
+  throw new Error('e2e/capture-receipts.e2e.test.ts runs against the TEST project only.');
+}
+
+const STAMP = `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 5)}`;
+const COMMONS = 'https://commons.wikimedia.org/w/api.php';
+const CATEGORY = 'Category:Taraxacum officinale';
+
+type Json = Record<string, any>; // eslint-disable-line @typescript-eslint/no-explicit-any
+
+function freshClient(): SupabaseClient {
+  return createClient(SB_URL!, KEY!, { auth: { persistSession: false, autoRefreshToken: false } });
+}
+
+async function signUpAndIn(client: SupabaseClient, tag: string): Promise<{ user: User; token: string }> {
+  const email = `plantdex-e2e-capture-${tag}-${STAMP}@mailinator.com`;
+  const password = `Test-Passw0rd-${Math.random().toString(36).slice(2, 10)}`;
+  const { error: signUpError } = await client.auth.signUp({ email, password });
+  if (signUpError) throw new Error(`signUp failed: ${signUpError.message}`);
+  const { data, error } = await client.auth.signInWithPassword({ email, password });
+  if (error || !data.user || !data.session) throw new Error(`signIn failed: ${error?.message}`);
+  return { user: data.user, token: data.session.access_token };
+}
+
+/** Two different real photographs of one card species, each made unique for this run. */
+async function photographs(n = 2): Promise<Blob[]> {
+  const url = new URL(COMMONS);
+  url.search = new URLSearchParams({
+    action: 'query', format: 'json', generator: 'categorymembers', gcmtitle: CATEGORY, gcmtype: 'file',
+    gcmlimit: '40', prop: 'imageinfo', iiprop: 'url|mime', iiurlwidth: '800',
+  }).toString();
+  const res = await fetch(url, { headers: { 'User-Agent': 'plantdex-live-test/1.0 (TEST project)' } });
+  if (!res.ok) throw new Error(`Commons answered ${res.status}`);
+  const pages = Object.values(((await res.json()) as Json).query?.pages ?? {}) as Json[];
+  const jpegs = pages
+    .map((p) => p.imageinfo?.[0])
+    .filter((i): i is Json => !!i && i.mime === 'image/jpeg' && typeof i.thumburl === 'string')
+    .sort(() => Math.random() - 0.5)
+    .slice(0, n);
+  if (jpegs.length < n) throw new Error('Commons returned too few photographs');
+  const out: Blob[] = [];
+  for (const [i, info] of jpegs.entries()) {
+    const r = await fetch(info.thumburl, { headers: { 'User-Agent': 'plantdex-live-test/1.0 (TEST project)' } });
+    if (!r.ok) throw new Error(`photo ${i} answered ${r.status}`);
+    out.push(new Blob([await r.arrayBuffer(), new TextEncoder().encode(`\nplantdex-test-${STAMP}-${i}`)], { type: 'image/jpeg' }));
+  }
+  return out;
+}
+
+async function identify(token: string | null, images: Blob[], fields: Record<string, string>): Promise<{ status: number; body: Json }> {
+  const form = new FormData();
+  images.forEach((b, i) => {
+    form.append('image', b, `${i}.jpg`);
+    form.append('organ', 'auto');
+  });
+  for (const [k, v] of Object.entries(fields)) form.append(k, v);
+  const res = await fetch(`${SB_URL}/functions/v1/identify-plant`, {
+    method: 'POST',
+    headers: { apikey: KEY!, ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+    body: form,
+  });
+  let body: Json = {};
+  try {
+    body = (await res.json()) as Json;
+  } catch {
+    // leave empty; the status says what happened
+  }
+  return { status: res.status, body };
+}
+
+describe.skipIf(!configured)('identify-plant capture receipts, live (TEST project)', () => {
+  let alice: SupabaseClient;
+  let bob: SupabaseClient;
+  let aliceTok: string;
+  let aliceUser: User;
+  let pics: Blob[];
+  let session: { session_id: string; nonce: string };
+  let first: { status: number; body: Json };
+  let receiptId: string | undefined;
+
+  beforeAll(async () => {
+    alice = freshClient();
+    bob = freshClient();
+    const a = await signUpAndIn(alice, 'alice');
+    aliceUser = a.user;
+    aliceTok = a.token;
+    await signUpAndIn(bob, 'bob');
+    pics = await photographs(2);
+  }, 90_000);
+
+  afterAll(async () => {
+    // Disposable users cannot be removed without a service-role key, which this suite never holds.
+    for (const c of [alice, bob]) await c?.auth.signOut();
+  }, 30_000);
+
+  it('opens a capture session (0016 must be applied on TEST)', async () => {
+    const { data, error } = await alice.rpc('open_capture_session');
+    expect(error, 'open_capture_session is missing: apply 0016 to TEST first (run-migration)').toBeNull();
+    expect(data).toMatchObject({ ok: true, min_capture_ms: 2000, ttl_s: 600 });
+    expect(data.nonce).toMatch(/^[0-9a-f]{64}$/);
+    session = { session_id: data.session_id, nonce: data.nonce };
+    await new Promise((r) => setTimeout(r, 2300)); // the server's own 2 s minimum, honestly waited out
+  }, 30_000);
+
+  it('identify-plant with purpose=collect answers with a capture block (the deployed function must be this branch)', async () => {
+    first = await identify(aliceTok, pics, { purpose: 'collect', capture_session_id: session.session_id, capture_nonce: session.nonce });
+    expect(first.status, JSON.stringify(first.body)).toBe(200);
+    expect(
+      first.body.capture,
+      'no `capture` block: the deployed identify-plant predates S6. Deploy it to TEST (deploy-function) and rerun.',
+    ).toBeDefined();
+    expect(first.body.capture.accepted, JSON.stringify(first.body.capture)).toBe(true);
+    expect(Array.isArray(first.body.candidates)).toBe(true);
+    const receipted = first.body.candidates.filter((c: Json) => c.captureReceipt);
+    // A real photograph of a card species normally earns exactly one. If the provider named something
+    // else, the honest outcome is no_eligible_candidate; the test says so rather than faking a pass.
+    if (receipted.length === 0) {
+      expect(first.body.capture.code).toBe('no_eligible_candidate');
+      console.warn('provider did not name a card species for these photographs; the claim steps are skipped');
+      return;
+    }
+    expect(receipted[0].captureReceipt.id).toMatch(/^rcpt_[0-9a-f]{32}$/);
+    expect(['top', 'listed']).toContain(receipted[0].captureReceipt.rankPosition);
+    expect(Date.parse(receipted[0].captureReceipt.expiresAt)).toBeGreaterThan(Date.now());
+    receiptId = receipted[0].captureReceipt.id;
+  }, 90_000);
+
+  it('the receipt is readable by its owner only, and claims once, idempotently', async () => {
+    if (!receiptId) return;
+    const own = await alice.from('capture_receipts').select('id, herb_id, claimed_at').eq('id', receiptId);
+    expect(own.error).toBeNull();
+    expect(own.data).toHaveLength(1);
+    expect(own.data![0]!.claimed_at).toBeNull();
+
+    const bobSees = await bob.from('capture_receipts').select('id').eq('id', receiptId);
+    expect(bobSees.data ?? []).toHaveLength(0);
+
+    const claim = await alice.rpc('claim_discovery', { p_receipt_id: receiptId });
+    expect(claim.error).toBeNull();
+    expect(claim.data.ok, JSON.stringify(claim.data)).toBe(true);
+    expect(['claimed', 'already_held']).toContain(claim.data.status);
+    const row = await alice.from('discoveries').select('herb_id').eq('user_id', aliceUser.id).eq('herb_id', claim.data.herb_id);
+    expect(row.data).toHaveLength(1);
+
+    const again = await alice.rpc('claim_discovery', { p_receipt_id: receiptId });
+    expect(again.data.ok).toBe(true);
+    expect(['already_claimed', 'already_held']).toContain(again.data.status);
+  }, 60_000);
+
+  it("another account cannot claim Alice's receipt, and a forged id is indistinguishable", async () => {
+    if (!receiptId) return;
+    const foreign = await bob.rpc('claim_discovery', { p_receipt_id: receiptId });
+    expect(foreign.data).toEqual({ ok: false, code: 'receipt_unknown' });
+    const forged = await bob.rpc('claim_discovery', { p_receipt_id: `rcpt_${'0'.repeat(32)}` });
+    expect(forged.data).toEqual({ ok: false, code: 'receipt_unknown' });
+  }, 30_000);
+
+  it('REPLAY: the identical request resent returns the receipts and no candidates', async () => {
+    if (!receiptId) return;
+    const again = await identify(aliceTok, pics, { purpose: 'collect', capture_session_id: session.session_id, capture_nonce: session.nonce });
+    expect(again.status).toBe(200);
+    expect(again.body.candidates).toEqual([]);
+    expect(again.body.capture.replay).toBe(true);
+    expect(again.body.capture.receipts.map((r: Json) => r.id)).toContain(receiptId);
+  }, 60_000);
+
+  it('a consumed session cannot be used for different photographs', async () => {
+    const other = await photographs(2);
+    const r = await identify(aliceTok, other, { purpose: 'collect', capture_session_id: session.session_id, capture_nonce: session.nonce });
+    expect(r.status).toBe(200);
+    expect(r.body.capture).toEqual({ accepted: false, code: 'capture_session_used' });
+    expect(r.body.candidates.length).toBeGreaterThanOrEqual(0); // still an ordinary identification
+    for (const c of r.body.candidates ?? []) expect(c.captureReceipt).toBeUndefined();
+  }, 90_000);
+
+  it('a wrong nonce is refused WITHOUT failing the identification, and without consuming the session', async () => {
+    const { data } = await alice.rpc('open_capture_session');
+    await new Promise((r) => setTimeout(r, 2300));
+    const fresh = await photographs(2);
+    const bad = await identify(aliceTok, fresh, { purpose: 'collect', capture_session_id: data.session_id, capture_nonce: 'ff'.repeat(32) });
+    expect(bad.status).toBe(200);
+    expect(bad.body.capture).toEqual({ accepted: false, code: 'capture_session_nonce' });
+    for (const c of bad.body.candidates ?? []) expect(c.captureReceipt).toBeUndefined();
+  }, 90_000);
+
+  it('a request with no purpose is the unchanged lookup: no capture block, no receipt', async () => {
+    const fresh = await photographs(2);
+    const r = await identify(aliceTok, fresh, {});
+    expect(r.status).toBe(200);
+    expect(r.body.capture).toBeUndefined();
+    for (const c of r.body.candidates ?? []) expect(c.captureReceipt).toBeUndefined();
+  }, 90_000);
+
+  it('anonymous collect is an ordinary identification with capture_not_signed_in', async () => {
+    const fresh = await photographs(2);
+    const r = await identify(null, fresh, { purpose: 'collect', capture_session_id: session.session_id, capture_nonce: session.nonce });
+    expect(r.status).toBe(200);
+    expect(r.body.capture).toEqual({ accepted: false, code: 'capture_not_signed_in' });
+  }, 90_000);
+
+  it('the service-only calls are not reachable from a client, and receipts cannot be written directly', async () => {
+    for (const [fn, args] of [
+      ['consume_capture_session', { p_user: aliceUser.id, p_session: aliceUser.id, p_nonce: 'x', p_observation_id: 'o', p_image_digests: ['a'.repeat(64), 'b'.repeat(64)] }],
+      ['issue_capture_receipts', { p_user: aliceUser.id, p_session: aliceUser.id, p_items: [] }],
+      ['set_discovery_enforcement', { p_on: false, p_cutoff: null, p_confirm: null }],
+    ] as const) {
+      const r = await alice.rpc(fn, args as Record<string, unknown>);
+      expect(r.error, `${fn} must be refused to a signed-in client`).not.toBeNull();
+      expect(r.data).toBeNull();
+    }
+    const insert = await alice.from('capture_receipts').insert({
+      id: `rcpt_${'3'.repeat(32)}`, user_id: aliceUser.id, session_id: aliceUser.id, observation_id: 'o', herb_id: 'plantago-major',
+      observed_taxon_key: 'k', observed_taxon_rank: 'species', eligibility: 'exact', rank_position: 'top', species_confidence: 'high',
+      expires_at: new Date(Date.now() + 86400_000).toISOString(),
+    });
+    expect(insert.error).not.toBeNull();
+    const sessions = await alice.from('capture_sessions').select('id');
+    expect(sessions.error, 'capture_sessions must not be readable by a client').not.toBeNull();
+  }, 30_000);
+});
