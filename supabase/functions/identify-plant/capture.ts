@@ -44,7 +44,6 @@ export type CaptureCode =
   | 'capture_session_used'
   | 'capture_too_fast'
   | 'capture_images_invalid'
-  | 'capture_duplicate_image'
   | 'capture_unavailable'
   | 'no_eligible_candidate';
 
@@ -57,14 +56,13 @@ const KNOWN_CODES: ReadonlySet<string> = new Set<CaptureCode>([
   'capture_session_used',
   'capture_too_fast',
   'capture_images_invalid',
-  'capture_duplicate_image',
   'capture_unavailable',
   'no_eligible_candidate',
 ]);
 
 /** Mirrors `capture_config()`; used only to compute an expiry when the database cannot be re-read. */
 export const RECEIPT_TTL_DAYS = 30;
-export const MIN_CAPTURE_MS = 2000;
+export const MIN_CAPTURE_MS = 0; // owner decision 2026-11-26: no mandatory capture delay (mirrors 0016's min_capture_ms)
 
 export type RankPosition = 'top' | 'listed';
 
