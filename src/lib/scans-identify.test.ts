@@ -124,12 +124,12 @@ describe('identifyPlant: a provider failure the server handed back', () => {
 
 describe('identifyPlant: four honest outcomes, exact words', () => {
   const U = 'The identifier could not be reached.';
-  const fail = async (body: Record<string, unknown>, options?: Parameters<typeof identifyPlant>[1]) => {
+  const fail = async (body: Record<string, unknown>, options?: Parameters<typeof identifyPlant>[2]) => {
     state.data = null;
     state.error = { context: new Response(JSON.stringify({ code: 'provider', ...body }), { status: 502 }) };
     return identifyPlant(photos, undefined, options);
   };
-  const cap = { capture: { sessionId: 's', nonce: 'n' } } as unknown as Parameters<typeof identifyPlant>[1];
+  const cap = { capture: { sessionId: 's', nonce: 'n' } } as unknown as Parameters<typeof identifyPlant>[2];
   const R = { accepted: true, retryable: true };
 
   it('released && refunded', async () => {
