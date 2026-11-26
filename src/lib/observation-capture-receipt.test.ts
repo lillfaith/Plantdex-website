@@ -405,3 +405,47 @@ describe('the consent gate is the first thing the only upload path does', () => 
     expect(gate).toBeLessThan(fn.indexOf("functions.invoke('identify-plant'"));
   });
 });
+
+/* The live camera-to-collection workflow and suite stay TEST-only, secret-free and manual. */
+const LCF_TEXT = read('.github/workflows/live-capture-flow.yml');
+const LCF_CODE = LCF_TEXT.replace(/^\s*#.*$/gm, '');
+const LCF_SPEC = read('e2e/capture-flow.e2e.test.ts');
+
+describe('the live camera-to-collection workflow stays TEST-only, secret-free and manual', () => {
+  it('is dispatch-only: no push, pull_request or schedule trigger', () => {
+    expect(LCF_CODE).toMatch(/on:\s*\n\s*workflow_dispatch:/);
+    expect(LCF_CODE).not.toMatch(/^\s{2}(push|pull_request|pull_request_target|schedule):/m);
+  });
+  it('targets the TEST project literal and never production', () => {
+    expect(LCF_CODE).toContain('PROJECT_REF: vgjehmwcpavflbfhbbrp');
+    expect(LCF_CODE).not.toContain('vygiamigomwlvnwkryyl');
+  });
+  it('reads no secret, only the public TEST anon key variable, and is read-only', () => {
+    expect(LCF_CODE).not.toMatch(/secrets\./);
+    expect([...new Set([...LCF_CODE.matchAll(/vars\.([A-Z_]+)/g)].map((m) => m[1]))]).toEqual(['TEST_SUPABASE_ANON_KEY']);
+    expect(LCF_CODE).toMatch(/permissions:\s*\n\s*contents: read/);
+  });
+  it('deploys, migrates and flips nothing', () => {
+    expect(LCF_CODE).not.toMatch(/functions deploy|database\/query|supabase-production|set_discovery_enforcement/i);
+  });
+  it('runs only the capture-flow suite', () => {
+    expect(LCF_CODE).toContain('e2e/capture-flow.e2e.test.ts');
+    expect(LCF_CODE).not.toContain('e2e/supabase.e2e.test.ts');
+  });
+});
+
+describe('the live suite itself', () => {
+  it('refuses any project but TEST and skips without credentials', () => {
+    expect(LCF_SPEC).toContain("const TEST_REF = 'vgjehmwcpavflbfhbbrp'");
+    expect(LCF_SPEC).toMatch(/describe\.skipIf\(!configured\)/);
+  });
+  it('mocks no backend: it uses the real client, the real RPCs and the deployed function', () => {
+    expect(LCF_SPEC).not.toMatch(/vi\.mock|vi\.fn|nock|msw/);
+    expect(LCF_SPEC).toContain("functions.invoke('identify-plant'");
+    expect(LCF_SPEC).toContain("rpc('open_capture_session')");
+    expect(LCF_SPEC).toContain("rpc('claim_discovery'");
+  });
+  it('never carries a service-role key', () => {
+    expect(LCF_SPEC).not.toMatch(/SERVICE_ROLE|service_role_key|sb_secret_/i);
+  });
+});
