@@ -18,7 +18,7 @@ vi.mock('./image-prepare', () => ({
   }),
 }));
 
-import { identifyPlant, isScanFailure, type ObservationPhoto } from './scans';
+import { identifyPlant, isScanFailure, providerFailureMessage, type ObservationPhoto } from './scans';
 
 const photos: ObservationPhoto[] = [
   { file: new File(['a'], 'a.jpg', { type: 'image/jpeg' }), organ: 'leaf' },
@@ -97,6 +97,7 @@ describe('identifyPlant: a provider failure the server handed back', () => {
           providerStatus: 502,
           providerMessage: 'PlantNet returned 502.',
           capture: { accepted: true, retryable: true },
+          allowance: 'refunded',
         }),
         { status: 502 },
       ),
@@ -105,7 +106,7 @@ describe('identifyPlant: a provider failure the server handed back', () => {
     expect(isScanFailure(answer)).toBe(true);
     expect(answer).toEqual({
       kind: 'error',
-      message: 'The identifier could not be reached. You were not charged for this attempt. Try again.',
+      message: 'The identifier could not be reached. You can try again with the same photos, and this attempt was not counted against your daily scans.',
       retryable: true,
     });
     expect(JSON.stringify(answer)).not.toMatch(/PlantNet|502/);
@@ -118,5 +119,51 @@ describe('identifyPlant: a provider failure the server handed back', () => {
     };
     const answer = await identifyPlant(photos);
     expect(answer).toEqual({ kind: 'error', message: 'The identification service could not be reached. Please try again.' });
+  });
+});
+
+describe('identifyPlant: four honest outcomes, exact words', () => {
+  const U = 'The identifier could not be reached.';
+  const fail = async (body: Record<string, unknown>, options?: Parameters<typeof identifyPlant>[1]) => {
+    state.data = null;
+    state.error = { context: new Response(JSON.stringify({ code: 'provider', ...body }), { status: 502 }) };
+    return identifyPlant(photos, undefined, options);
+  };
+  const cap = { capture: { sessionId: 's', nonce: 'n' } } as unknown as Parameters<typeof identifyPlant>[1];
+  const R = { accepted: true, retryable: true };
+
+  it('released && refunded', async () => {
+    expect(await fail({ capture: R, allowance: 'refunded' })).toEqual({
+      kind: 'error', retryable: true,
+      message: `${U} You can try again with the same photos, and this attempt was not counted against your daily scans.`,
+    });
+  });
+  it.each([['not_refunded'], [undefined]])('released && !refunded (%s)', async (allowance) => {
+    expect(await fail({ capture: R, allowance })).toEqual({
+      kind: 'error', retryable: true,
+      message: `${U} You can try again with the same photos. We could not confirm your daily scan count was restored.`,
+    });
+  });
+  it('!released && refunded: capture', async () => {
+    const a = await fail({ allowance: 'refunded' }, cap);
+    expect(a).toEqual({ kind: 'error', message: `${U} This attempt was not counted against your daily scans. Please take your photos again.` });
+    expect(a).not.toHaveProperty('retryable');
+  });
+  it('!released && refunded: non-capture lookup', async () => {
+    expect(await fail({ allowance: 'refunded' })).toEqual({
+      kind: 'error', message: `${U} This attempt was not counted against your daily scans. Please try again.`,
+    });
+  });
+  it('neither', async () => {
+    const a = await fail({ allowance: 'not_refunded' }, cap);
+    expect(a).toEqual({ kind: 'error', message: `${U} Please try again in a little while.` });
+    expect(a).not.toHaveProperty('retryable');
+  });
+  it('no player-facing message names global, shared or budget, or claims a restore without confirmation', () => {
+    for (const released of [true, false]) for (const refunded of [true, false]) for (const c of [true, false]) {
+      const m = providerFailureMessage(released, refunded, c);
+      expect(m).not.toMatch(/global|shared|budget/i);
+      if (!refunded) expect(m).not.toMatch(/not counted|not charged/i);
+    }
   });
 });

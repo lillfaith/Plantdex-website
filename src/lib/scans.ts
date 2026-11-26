@@ -69,9 +69,27 @@ export interface ScanResult {
   receipts?: Record<string, { id: string; rankPosition: 'top' | 'listed'; expiresAt: string }>;
 }
 
-/** Shown when the server handed the capture session back after a provider-side failure. */
-export const RETRYABLE_MESSAGE =
-  'The identifier could not be reached. You were not charged for this attempt. Try again.';
+const UNREACHABLE = 'The identifier could not be reached.';
+
+/**
+ * The four honest outcomes of a provider-side failure. `released` = the capture session was handed
+ * back (same photos may be resent); `refunded` = the backend CONFIRMED the player's own daily scan
+ * was restored. Nothing here may claim a restore the backend did not confirm.
+ */
+export function providerFailureMessage(released: boolean, refunded: boolean, isCapture: boolean): string {
+  if (released && refunded) {
+    return `${UNREACHABLE} You can try again with the same photos, and this attempt was not counted against your daily scans.`;
+  }
+  if (released) {
+    return `${UNREACHABLE} You can try again with the same photos. We could not confirm your daily scan count was restored.`;
+  }
+  if (refunded) {
+    return isCapture
+      ? `${UNREACHABLE} This attempt was not counted against your daily scans. Please take your photos again.`
+      : `${UNREACHABLE} This attempt was not counted against your daily scans. Please try again.`;
+  }
+  return `${UNREACHABLE} Please try again in a little while.`;
+}
 
 export type ScanFailure =
   | { kind: 'rateLimited'; message: string; signedIn: boolean }
@@ -258,7 +276,7 @@ export async function identifyPlant(
 
   if (error) {
     // The function's own sentence is better than a generic one, so re-read the body.
-    let payload: { error?: string; code?: string; signedIn?: boolean; capture?: { retryable?: unknown } } = {};
+    let payload: { error?: string; code?: string; signedIn?: boolean; capture?: { retryable?: unknown }; allowance?: unknown } = {};
     try {
       const context = (error as { context?: Response }).context;
       if (context) payload = await context.clone().json();
@@ -278,8 +296,13 @@ export async function identifyPlant(
         message: payload.error ?? 'Plant identification is not set up on this deployment yet.',
       };
     }
-    if (payload.capture?.retryable === true) {
-      return { kind: 'error', message: RETRYABLE_MESSAGE, retryable: true };
+    if (payload.allowance === 'refunded' || payload.allowance === 'not_refunded' || payload.capture?.retryable === true) {
+      const released = payload.capture?.retryable === true;
+      return {
+        kind: 'error',
+        message: providerFailureMessage(released, payload.allowance === 'refunded', Boolean(options.capture)),
+        ...(released ? { retryable: true } : {}),
+      };
     }
     return {
       kind: 'error',

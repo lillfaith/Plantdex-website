@@ -688,6 +688,7 @@ Deno.serve(async (req: Request) => {
     const providerSide =
       kind === 'timeout' || kind === 'network' || (kind === 'provider' && typeof status === 'number' && status >= 500);
     let released = false;
+    let refunded = false;
     if (providerSide) {
       if (capture?.kind === 'open') {
         try {
@@ -697,9 +698,12 @@ Deno.serve(async (req: Request) => {
         }
       }
       try {
-        await admin.rpc('refund_scan_claim', { p_bucket: bucket, p_day: day });
+        // Only an explicit `true` with no error is a confirmed refund. False (cap of 3, repeated
+        // request id, no claim found), an error, a throw or a non-boolean are all "not refunded".
+        const r = await admin.rpc('refund_scan_claim', { p_bucket: bucket, p_day: day, p_observation_id: observationId });
+        refunded = !r?.error && r?.data === true;
       } catch {
-        /* a refund that fails is a unit not returned, never an error shown */
+        refunded = false;
       }
     }
     return json(
@@ -724,6 +728,8 @@ Deno.serve(async (req: Request) => {
         providerMessage: redact(message),
         // Present only when the session was really handed back: the client may resend the same photographs.
         ...(released ? { capture: { accepted: true, retryable: true } } : {}),
+        // Provider-side failures only: whether the caller's OWN daily scan unit was confirmed refunded.
+        ...(providerSide ? { allowance: refunded ? 'refunded' : 'not_refunded' } : {}),
       },
       configFault ? 500 : 502,
     );
