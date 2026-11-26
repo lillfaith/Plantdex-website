@@ -14,7 +14,7 @@ Merging this document deploys and applies nothing.
 | 0015 (expansion ids) | Not required. Separate expansion track, TEST-only, not part of V1 | 0016 depends only on 0001-0013 (`is_catalogue_herb`); it does not reference `is_permitted_herb` or any 0015 object | **Do not apply for V1.** |
 | Production | Has at least 0012 (run #33, 2026-11-14, `PROJECT_REF: vygiamigomwlvnwkryyl`). 0013, 0014, 0016: not applied | | **Untouched. Nothing here is for production.** |
 
-Compatibility, proven locally on PostgreSQL 16 (not on TEST): 0001-0013 + **0014** + **0016** passes **111** checks, including that `confirm_scan` with a forged
+Compatibility, proven locally on PostgreSQL 16 (not on TEST; `run-local.sh` sends the verification as one request, the way the Editor does): 0001-0013 + **0014** + **0016** passes **111** checks, including that `confirm_scan` with a forged
 receipt confirms only a scan and creates no discovery or receipt. 0016 **without** 0014 passes **109**. The end-to-end handler suite (real `identify-plant` code against
 0001-0014 + 0016) passes 14/14. 0016 is idempotent (`if not exists` / `create or replace`) but is still applied **once**, on a `READY` preflight.
 
@@ -24,7 +24,7 @@ receipt confirms only a scan and creates no discovery or receipt. 0016 **without
 |---|---|---|---|---|
 | **A** | **Preflight (read-only).** Paste `docs/release/v1-test-preflight.sql` | TEST SQL editor | one row; `verdict` starts `READY` | verdict starts `STOP` (including **UNEXPECTED DRIFT: 0014 missing**, which is investigated, never worked around: it was applied on 2026-11-24); or `PARTLY present`; or `ALREADY APPLIED` (then skip to step C, never re-run B) |
 | **B** | **Apply 0016.** Actions > "Run a Supabase migration": **Use workflow from: `integration`** (the migration file exists only there), `project_ref` = `vgjehmwcpavflbfhbbrp`, `migration` = `0016_discovery_capture_enforcement.sql` | GitHub | green run, "Confirm the objects exist" lists the new tables | red run; any refusal from the token/project checks |
-| **C** | **Verify 0016 (self-rolling-back).** Paste `docs/discoveries/sql/0016_verify.sql` | TEST SQL editor | last line `ALL 0016 CHECKS PASSED (rolling back)`; **111** checks if 0014 is present (it is), 109 if not | any line containing `FAIL`/`ERROR`; a count other than 111 |
+| **C** | **Verify 0016 (SQL Editor compatible, self-rolling-back).** Open `docs/discoveries/sql/0016_verify.sql`, copy the **whole file**, paste it into a new TEST SQL Editor tab and press **Run once** (nothing selected). Details under "Step C: what you will see" below | TEST SQL editor | **one result row**: `status` = `ALL 0016 CHECKS PASSED (rolled back)`, `checks_passed` = **111**, `expected_checks` = 111, `matches_expected` = `true`, `confirm_scan_present` = `true` | an **error** whose text starts `FAIL - ...`; or `status` says `MISMATCH`; or `checks_passed` is not 111; or no row appears |
 | **D** | **Re-run the preflight.** | TEST SQL editor | `verdict` = `ALREADY APPLIED`, `enforcing` = `false`, `fn_0016_of_10` = 10 | `enforcing` is not `false` |
 | **E** | **Deploy exactly ONE edge function: `identify-plant`.** Actions > "Deploy a Supabase function": **Use workflow from: `integration`**, `project_ref` = test, `function` = `identify-plant`. **Do NOT choose `all`, `delete-account` or `challenge-submit`.** What changes is listed under "Step E precisely" below | GitHub | one green run | a red run; or anyone selects `all`, `delete-account` or `challenge-submit` |
 | **F0** | **Temporary TEST auth change** (only if needed; see "Temporary TEST authentication change" below): record the current "Confirm email" state, turn it OFF | TEST dashboard | recorded state noted; setting OFF | cannot read the current state |
@@ -37,6 +37,32 @@ receipt confirms only a scan and creates no discovery or receipt. 0016 **without
 Safe activation order, stated once: **migration (B) -> verify (C) -> functions (E) -> live suite with the switch OFF (F) -> switch ON (G) -> live suite ON (H) -> switch OFF (I).**
 The functions are deployed **after** the migration, never before: the new `identify-plant` calls RPCs that exist only after 0016. Enforcement is never ON while a suite is not
 running against it, and it is returned to OFF in the same sitting. Enforcement on production is not authorised and is not part of this procedure.
+
+### Step B: is the migration atomic, and what if it fails or half-applies?
+
+**What I can prove.** The workflow reads the file and sends all of it as one `query` string in one HTTP request to the Supabase Management API (`/v1/projects/<ref>/database/query`), and fails the run on any non-200 response. 0016 contains no `COMMIT`, `ROLLBACK`, `CREATE INDEX CONCURRENTLY` or any other statement that cannot run inside a transaction. I tested the same shape locally on PostgreSQL 16: the whole file sent as **one multi-statement request** with a failing statement appended at the very end leaves the database **exactly as it was** (0 tables, 0 functions, no new column, no trigger): all or nothing.
+
+**What I cannot prove from here.** Whether Supabase's API wraps a multi-statement request in one transaction. PostgreSQL does that for a single request by default and I expect the API to behave that way, but I have not seen its source. **So treat atomicity as expected, not guaranteed, and let the preflight decide.**
+
+**If Step B fails or you are unsure what state it left:**
+1. **Do not click Run again.** Re-run the read-only preflight (step A's file) and read the `verdict`.
+2. `READY`: nothing was applied. The failure was before any change (for example a token or project check). Send me the workflow's error text; do not retry yet.
+3. `ALREADY APPLIED`: it did apply. Go on to step C.
+4. `PARTLY present`: the migration stopped part-way. **Send me the preflight row and the workflow log's first error line. Do not improvise any SQL.** This is the one case with a prepared recovery: 0016 is written so that every statement is idempotent (`if not exists`, `create or replace`, `drop trigger if exists`, `on conflict do nothing`), so **re-running the same file once completes it**. I tested exactly that: after committing only the first 30 of 75 statements one at a time (preflight: `PARTLY present`), re-applying the full file succeeded, the preflight turned `ALREADY APPLIED`, and the verification returned 111. I will tell you when to do it; it is not pre-authorised.
+5. Whatever happens, no existing player row is changed or deleted by this migration; the rollback script (`0016_rollback.sql`) is available and never deletes a record.
+
+### Step C: what you will see (and what the SQL Editor does not show)
+
+The earlier version of this script used psql-only commands (`\gset`, `\if`, a `:variable`) and reported success only through `RAISE NOTICE`, which the SQL Editor does not display. It was rebuilt as **one request the Editor can run**, generated mechanically from the original so no check was dropped: all 111 checks (109 where 0014 is absent) are carried over unchanged.
+
+- **Pass:** exactly one row (columns above). A `Success. No rows returned` message, or no row, is **not** a pass.
+- **Fail:** the Editor shows an **error** beginning `FAIL - <the check that failed>`. The first failure stops the whole request, which is a single implicit transaction, so nothing is left behind. Send me that text.
+- **It leaves nothing behind.** The checks create their own users, sessions, receipts and quota rows and flip the enforcement switch, all inside one inner block that ends by raising a private sentinel error the script catches itself; that rolls everything back, **including the switch**, without relying on how a client wraps a script in a transaction. Only a counter in a session-private temporary sequence survives. Tested on PostgreSQL 16 with 2 existing discoveries on the database: user, discovery, grandfather, session, receipt, digest, refund, quota and scan counts and the switch were identical before and after, and no helper object exists in `public`.
+- **It refuses to run if enforcement is already ON** (`FAIL - enforcement is OFF on entry`), and it stops at the first failing check (tested by deleting one protection from a copy: the run raised `FAIL - ON: DIRECT INSERT of a new card is refused ...`, nothing persisted).
+- **It can be pasted twice** in one session (a pooled connection): the helpers use `create or replace`.
+- **It works without superuser rights.** Supabase's `postgres` role is not a superuser. It was also run as a non-superuser that bypasses RLS and is only a member of `anon`/`authenticated`/`service_role`: 111 checks, same result.
+- **A destructive-operation warning may appear.** The script contains `drop sequence` and `delete` statements; they act only on its own session-temporary sequence and on test rows it created inside the rolled-back block. If the Editor asks you to confirm, that is why. If you would rather not, say so and I will provide a psql-based route instead.
+- **Not tested by me:** the real SQL Editor UI itself (no access from here). What I tested is its transport: a single multi-statement simple-protocol request, run as a non-superuser. If the Editor behaves differently, the failure mode is a visible error, never a silent pass.
 
 ### Configuration and flags
 
