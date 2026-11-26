@@ -214,6 +214,27 @@ select pg_temp.ok('release: a session whose result was already issued can NEVER 
 reset role;
 set local role authenticated;
 select pg_temp.act_as('00000000-0000-0000-0000-0000000000b2');
+reset role;
+-- ALLOWANCE REFUND: the caller's own unit comes back; the shared pool never does; never below zero.
+insert into public.scan_quota (bucket, day, count) values ('user:refund-test', current_date, 3), ('global', current_date, 10)
+  on conflict (bucket, day) do update set count = excluded.count;
+set local role service_role;
+select pg_temp.ok('refund: the per-caller unit is given back', public.refund_scan_claim('user:refund-test', current_date));
+select pg_temp.ok('refund: the per-caller count went 3 -> 2',
+  (select count from public.scan_quota where bucket = 'user:refund-test' and day = current_date) = 2);
+select pg_temp.ok('refund: the GLOBAL bucket is never refunded', not public.refund_scan_claim('global', current_date)
+  and (select count from public.scan_quota where bucket = 'global' and day = current_date) = 10);
+reset role;
+update public.scan_quota set count = 0 where bucket = 'user:refund-test' and day = current_date;
+set local role service_role;
+select pg_temp.ok('refund: never below zero', not public.refund_scan_claim('user:refund-test', current_date)
+  and (select count from public.scan_quota where bucket = 'user:refund-test' and day = current_date) = 0);
+reset role;
+delete from public.scan_quota where bucket = 'user:refund-test';
+set local role authenticated;
+select pg_temp.act_as('00000000-0000-0000-0000-0000000000b2');
+select pg_temp.refuses('refund: a signed-in player cannot call it (service role only)',
+  $q$select public.refund_scan_claim('user:anyone', current_date)$q$, '42501', 'permission denied');
 select pg_temp.refuses('release: a signed-in player cannot call it (service role only)',
   $q$select public.release_capture_session(auth.uid(), gen_random_uuid())$q$, '42501', 'permission denied');
 reset role;

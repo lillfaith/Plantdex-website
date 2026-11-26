@@ -322,6 +322,21 @@ begin
   return v_n = 1;
 end $$;
 
+-- 6b3. identify-plant (service role) gives back the CALLER'S OWN daily unit when the identification PROVIDER failed
+--      (an outage on their side, never an invalid or rejected photograph). It touches only the per-caller bucket the
+--      request itself claimed: the shared `global` bucket is the upstream-cost backstop and is never refunded, so a
+--      forced failure cannot widen what the whole product may spend in a day. Never goes below zero.
+create or replace function public.refund_scan_claim(p_bucket text, p_day date)
+returns boolean language plpgsql security definer set search_path = '' as $$
+declare v_n int;
+begin
+  if p_bucket is null or p_day is null or p_bucket = 'global' then return false; end if;
+  update public.scan_quota set count = count - 1
+   where bucket = p_bucket and day = p_day and count > 0;
+  get diagnostics v_n = row_count;
+  return v_n = 1;
+end $$;
+
 -- 6c. identify-plant (service role) records one receipt per eligible candidate.
 --     p_items: [{herb_id, observed_taxon_key, observed_taxon_rank, eligibility, rank_position, species_confidence}]
 --     An item the CHECKs refuse is skipped, never fatal: a receipt bug must not become an identification failure.
@@ -531,9 +546,11 @@ revoke all on function public.consume_capture_session(uuid, uuid, text, text, te
 revoke all on function public.issue_capture_receipts(uuid, uuid, jsonb) from public, anon, authenticated;
 revoke all on function public.prune_capture_artifacts() from public, anon, authenticated;
 revoke all on function public.release_capture_session(uuid, uuid) from public, anon, authenticated;
+revoke all on function public.refund_scan_claim(text, date) from public, anon, authenticated;
 revoke all on function public.set_discovery_enforcement(boolean, timestamptz, text) from public, anon, authenticated;
 grant execute on function public.consume_capture_session(uuid, uuid, text, text, text[]) to service_role;
 grant execute on function public.issue_capture_receipts(uuid, uuid, jsonb) to service_role;
 grant execute on function public.prune_capture_artifacts() to service_role;
 grant execute on function public.release_capture_session(uuid, uuid) to service_role;
+grant execute on function public.refund_scan_claim(text, date) to service_role;
 grant execute on function public.set_discovery_enforcement(boolean, timestamptz, text) to service_role;

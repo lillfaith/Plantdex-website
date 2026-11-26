@@ -332,6 +332,33 @@ describe('purpose=collect', () => {
     expect(out.body.capture).toEqual({ accepted: false, code: 'capture_session_used' });
   });
 
+  it('EXACTLY ONE in-app camera photo completes the capture and earns a receipt (owner decision 2026-11-26)', async () => {
+    const { admin, calls } = fakeAdmin({ receipts: [{ id: 'rcpt_00000000000000000000000000000000', herb_id: 'taraxacum-officinale', rank_position: 'top', expires_at: '2030-01-01T00:00:00+00:00' }] });
+    router.admin = admin;
+    const image = fakeImage('solo');
+    const out = await invoke(handler, { token: 'tok-alice', images: [image], fields: collect });
+    expect(out.status).toBe(200);
+    expect(provider.calls).toBe(1);
+    expect(calls.rpc.map(([n]) => n)).toEqual(['claim_scan_pair', 'consume_capture_session', 'issue_capture_receipts']);
+    const sha = [...new Uint8Array(await crypto.subtle.digest('SHA-256', await image.arrayBuffer()))].map((b) => b.toString(16).padStart(2, '0')).join('');
+    expect(calls.rpc[1]![1].p_image_digests).toEqual([sha]);
+    const body = out.body as { candidates: Array<Record<string, unknown>>; capture: unknown };
+    expect(body.capture).toEqual({ accepted: true });
+    expect(body.candidates[0]!.captureReceipt).toEqual({ id: 'rcpt_00000000000000000000000000000000', rankPosition: 'top', expiresAt: '2030-01-01T00:00:00+00:00' });
+  });
+
+  it('three images are still accepted and a FOURTH is refused (the contract maximum)', async () => {
+    const ok = fakeAdmin();
+    router.admin = ok.admin;
+    const three = await invoke(handler, { token: 'tok-alice', images: [fakeImage('a'), fakeImage('b'), fakeImage('c')], fields: collect });
+    expect(three.status).toBe(200);
+    const bad = fakeAdmin();
+    router.admin = bad.admin;
+    const four = await invoke(handler, { token: 'tok-alice', images: [fakeImage('a'), fakeImage('b'), fakeImage('c'), fakeImage('d')], fields: collect });
+    expect(four.status).toBe(400);
+    expect(bad.calls.rpc.map(([n]) => n)).not.toContain('consume_capture_session');
+  });
+
   it('NO images is a 400 before any capture call (holds for the collect floor of 1 and the old floor of 2)', async () => {
     const { admin, calls } = fakeAdmin();
     router.admin = admin;
