@@ -3179,14 +3179,6 @@ body {
   --color-violet-400: #5f2f94;
   --color-gold-300: #6b3f06;
   --color-gold-400: #7d4d08;
-  --color-mystery-lilac: #5b3a8a;
-  /* Rarity words keep their hue family, deepened to read on lilac (not by colour alone: the word is spelled). */
-  --color-rarity-common: #2f5f8f;
-  --color-rarity-uncommon: #8a5300;
-  --color-rarity-rare: #a8326a;
-  --color-rarity-epic: #0b6a96;
-  --color-botanical-200: #1f6a35;
-  --color-botanical-400: #2f7a43;
   color: var(--color-violet-200);
 }
 /* Inside a plum plate the deck's light text tokens come back. */
@@ -3200,7 +3192,6 @@ body {
   --color-violet-400: #dd9ef6;
   --color-gold-300: #fff0b3;
   --color-gold-400: #ffe27a;
-  --color-mystery-lilac: #f0cdfe;
   color: var(--color-violet-200);
 }
 
@@ -3426,4 +3417,29 @@ body:has(main[data-ground='lavender']) [data-page-theme='garden'] {
   color: #fff;
   border-bottom-color: var(--color-pink-accent);
   box-shadow: 0 0 0 1px rgb(156 33 248 / 0.8), 0 0 10px 2px rgb(255 255 255 / 0.7);
+}
+
+/*
+ * TEXT-ONLY colour fixes on the lavender ground. These are deliberately CLASS rules and not token overrides:
+ * the mystery, rarity and botanical tokens also build the card-back gradient, the locked-card gradient and the
+ * rarity auras, and those must stay exactly as designed.
+ */
+[data-ground='lavender'] .text-mystery-lilac {
+  color: #5b3a8a;
+}
+[data-ground='lavender'] [class*='text-rarity-common'] {
+  color: #2f5f8f;
+}
+[data-ground='lavender'] [class*='text-rarity-uncommon'] {
+  color: #8a5300;
+}
+[data-ground='lavender'] [class*='text-rarity-rare'] {
+  color: #a8326a;
+}
+[data-ground='lavender'] [class*='text-rarity-epic'] {
+  color: #0b6a96;
+}
+[data-ground='lavender'] [class*='text-botanical-200'],
+[data-ground='lavender'] [class*='text-botanical-400'] {
+  color: #1f6a35;
 }
