@@ -12,6 +12,8 @@ M14="$ROOT/supabase/migrations/0014_confirm_scan.sql"
 if [ ! -f "$M14" ]; then M14="$(mktemp)"; git -C "$ROOT" show origin/coord/confirm-scan-rpc:supabase/migrations/0014_confirm_scan.sql > "$M14"; fi
 if [ "$(id -u)" = 0 ]; then PSQL=(su postgres -c); run() { su postgres -c "psql -v ON_ERROR_STOP=1 -q -d $DB -f -" < "$1"; }; rootsql() { su postgres -c "psql -v ON_ERROR_STOP=1 -q -d postgres -c \"$1\""; };
 else run() { psql -v ON_ERROR_STOP=1 -q -d "$DB" -f - < "$1"; }; rootsql() { psql -v ON_ERROR_STOP=1 -q -d postgres -c "$1"; }; fi
+# The verification is sent as ONE multi-statement request (a single simple-protocol Query), exactly as the Supabase SQL Editor sends it.
+verify_run() { if [ "$(id -u)" = 0 ]; then cp "$HERE/0016_verify.sql" /tmp/d5-verify-request.sql; chmod 644 /tmp/d5-verify-request.sql; su postgres -c "psql -d $DB -At -v ON_ERROR_STOP=1 -c \"\$(cat /tmp/d5-verify-request.sql)\""; else psql -d "$DB" -At -v ON_ERROR_STOP=1 -c "$(cat "$HERE/0016_verify.sql")"; fi; }
 q() { if [ "$(id -u)" = 0 ]; then su postgres -c "psql -At -d $DB -c \"$1\""; else psql -At -d "$DB" -c "$1"; fi; }
 
 fresh() {
@@ -45,9 +47,13 @@ q "set role authenticated; select set_config('request.jwt.claim.sub','00000000-0
 echo "ok - OFF behaviour unchanged"
 
 echo "== 4. verification suite (self-rolling-back)"
-run "$HERE/0016_verify.sql" 2>&1 | grep -E "NOTICE|ERROR|FAIL|CHECKS PASSED" | sed 's/^psql:<stdin>:[0-9]*: NOTICE:  //' | tee /tmp/d5-verify.out | tail -n 4
-grep -q "FAIL\|ERROR" /tmp/d5-verify.out && { echo "VERIFICATION FAILED"; exit 1; }
-PASSED=$(grep -c '^ok - ' /tmp/d5-verify.out); echo "verification: $PASSED checks passed"
+VOUT="$(verify_run 2>&1)" || { echo "$VOUT" | grep -E "ERROR|FAIL" | head -3; echo "VERIFICATION FAILED"; exit 1; }
+echo "$VOUT" | grep -E "^ALL 0016|ERROR|FAIL" | tee /tmp/d5-verify.out | tail -n 2
+grep -q "FAIL\|ERROR\|MISMATCH" /tmp/d5-verify.out && { echo "VERIFICATION FAILED"; exit 1; }
+ROW="$(grep '^ALL 0016 CHECKS PASSED' /tmp/d5-verify.out | head -1)"
+PASSED="$(echo "$ROW" | cut -d'|' -f2)"; MATCH="$(echo "$ROW" | cut -d'|' -f4)"
+[ "$MATCH" = "t" ] || { echo "FAIL: check count does not match the expected number: $ROW"; exit 1; }
+echo "verification: $PASSED checks passed"
 [ "$(q "select count(*) from auth.users where email like '%d5@example.invalid'")" = "0" ] || { echo "FAIL: verify left users behind"; exit 1; }
 [ "$(q "select count(*) from public.capture_sessions")" = "0" ] || { echo "FAIL: verify left sessions behind"; exit 1; }
 echo "ok - the suite rolled itself back (no fixture survived)"
@@ -63,7 +69,7 @@ done
 [ "$(q "select count(*) from pg_proc where proname in ('claim_discovery','open_capture_session','discoveries_capture_gate')")" = "0" ] || { echo "FAIL: functions remain"; exit 1; }
 echo "ok - rollback kept every record and table, dropped only triggers and functions"
 run "$ROOT/supabase/migrations/0016_discovery_capture_enforcement.sql" >/dev/null 2>&1
-run "$HERE/0016_verify.sql" 2>&1 | grep -q "ALL 0016 CHECKS PASSED" || { echo "FAIL: re-apply after rollback"; exit 1; }
+verify_run 2>&1 | grep -q "^ALL 0016 CHECKS PASSED" || { echo "FAIL: re-apply after rollback"; exit 1; }
 echo "ok - 0016 re-applies cleanly after a rollback and the suite passes again"
 
 if [ "${1:-}" = "--mutate" ]; then
@@ -71,7 +77,7 @@ if [ "${1:-}" = "--mutate" ]; then
   mutate() { # name, sql
     run "$ROOT/supabase/migrations/0016_discovery_capture_enforcement.sql" >/dev/null 2>&1
     q "$2" >/dev/null
-    if run "$HERE/0016_verify.sql" >/dev/null 2>&1; then echo "FAIL: suite still passes after: $1"; exit 1; else echo "ok - suite fails when: $1"; fi
+    if verify_run >/dev/null 2>&1; then echo "FAIL: suite still passes after: $1"; exit 1; else echo "ok - suite fails when: $1"; fi
   }
   mutate "the discoveries gate is dropped" "drop trigger discoveries_capture_gate_trg on public.discoveries"
   mutate "the learned gate is dropped" "drop trigger learned_requires_discovery_trg on public.learned"

@@ -200,10 +200,26 @@ describe('the switch defaults OFF and nothing here can turn it on', () => {
 
   it('the verification is self-rolling-back and refuses a project that is already enforcing', () => {
     const code = VERIFY.split('\n').filter((l) => !l.trim().startsWith('--')).join('\n').trim();
-    expect(code.startsWith('begin;')).toBe(true);
-    expect(code.endsWith('rollback;')).toBe(true);
+    // One inner block that always ends by raising a private sentinel the function itself catches: that is what rolls the checks back,
+    // so it does not depend on how a client wraps a script in a transaction. Only the sentinel is swallowed; a real failure aborts.
+    expect(code).toMatch(/raise exception 'verification complete - rolling back' using errcode = 'VK001'/);
+    expect(code).toMatch(/exception when sqlstate 'VK001' then\s+null;/);
+    expect(code.match(/exception when sqlstate/g)).toHaveLength(1);
     expect(code).not.toMatch(/\bcommit\b/i);
     expect(code).toMatch(/enforcement is OFF on entry/);
+  });
+
+  it('the verification is Supabase SQL Editor compatible: no psql meta-command, no psql variable, no transaction-control statement', () => {
+    const lines = VERIFY.split('\n').filter((l) => !l.trim().startsWith('--'));
+    expect(lines.filter((l) => /^\s*\\/.test(l)), 'a line starts with a backslash (psql meta-command)').toEqual([]);
+    expect(VERIFY).not.toMatch(/\\gset|\\if\b|\\endif|\\set\b|\\echo/);
+    // `:name` psql variables (not casts `::`, not inside quoted strings like 'd5.x').
+    const code = lines.join('\n').replace(/'(?:[^']|'')*'/g, "''").replace(/\$q\$[\s\S]*?\$q\$/g, '');
+    expect(code.match(/(?<![:\w]):[a-z_]+\b/g) ?? [], 'a psql :variable is used').toEqual([]);
+    expect(code).not.toMatch(/^\s*(begin|rollback|commit)\s*;/im);
+    // The editor shows only the last statement's rows and never RAISE NOTICE: the last statement must be the result row.
+    const statements = code.split(';').map((s) => s.trim()).filter(Boolean);
+    expect(statements.at(-1)).toMatch(/^select case when[\s\S]*from \(select pg_temp\.vk_run\(\) as r\) x$/);
   });
 
   it('the verification covers every bypass the owner named, ON and OFF', () => {
@@ -347,7 +363,7 @@ describe.skipIf(process.env.D5_RUN_SQL !== '1')('0016 against a real PostgreSQL 
       encoding: 'utf8',
       timeout: 240_000,
     });
-    expect(out).toContain('ALL 0016 CHECKS PASSED');
+    expect(out).toContain('verification: 111 checks passed');
     expect(out).toContain('ALL LOCAL ACCEPTANCE STEPS PASSED');
     expect(out).toContain('suite fails when: the discoveries gate is dropped');
   }, 250_000);
