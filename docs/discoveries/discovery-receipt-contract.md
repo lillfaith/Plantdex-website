@@ -116,9 +116,11 @@ Server behaviour, in this order, only when the account is authenticated and `pur
 identification (an education lookup) with `capture.accepted = false` and a code. Only step 3's own failures (provider down,
 quota) fail the request, as today.
 
-Retry idempotence: re-sending the **same** session and the **same** ordered image digests after a lost response returns the
-**same** receipts (`capture.replay = true`) with no second provider call and no second quota unit. Any other re-use of a
-consumed session is `capture_session_used`.
+Retry idempotence: re-sending the **same** session and the **same** ordered image digests after a lost response is a
+**replay** (`capture.replay = true`): the server does not call the provider again and spends no second quota unit; it returns
+`capture.receipts` (the receipts already recorded for that observation) and **no candidates**. The client then lists or claims
+those receipts (`capture_receipts` is readable by its owner under RLS) instead of re-showing the identification. Any other
+re-use of a consumed session is `capture_session_used`.
 
 ### 3.3 `identify-plant` response additions (all additive; absent when `purpose` is not `collect`)
 
@@ -127,7 +129,8 @@ interface IdentifyResponseCaptureAdditions {
   capture?: {
     accepted: boolean;
     code?: CaptureCode;       // present when accepted is false, see section 5
-    replay?: boolean;
+    replay?: boolean;                 // true: no provider call was made; see receipts
+    receipts?: Array<{ id: string; herbId: string; rankPosition: 'top' | 'listed' }>;   // replay only
     minCaptureMs?: number;
   };
   candidates: Array<{
@@ -150,11 +153,12 @@ immediately.
 { "ok": true,  "status": "claimed",         "herb_id": "...", "discovered_at": "ISO" }   // new row written
 { "ok": true,  "status": "already_claimed", "herb_id": "...", "discovered_at": "ISO" }   // idempotent retry
 { "ok": true,  "status": "already_held",    "herb_id": "...", "discovered_at": "ISO" }   // card was already in the collection
-{ "ok": false, "code": "not_signed_in" | "receipt_unknown" | "receipt_expired" | "receipt_ineligible" }
+{ "ok": false, "code": "not_signed_in" | "receipt_unknown" | "receipt_expired" | "receipt_ineligible" | "collection_limit_reached" }
 ```
 
 - `herb_id` is read from the **receipt**; the client cannot name a card here.
 - `discovered_at` is the **server clock**. (The Seed Shelf's `at` back-dating does not apply to this path.)
+- `collection_limit_reached` is migration 0008's free-tier limit surfacing through the claim: the whole claim rolls back, the receipt stays claimable, and the UI says so (it is a collection-size message, not a capture failure).
 - `receipt_unknown` covers a forged id AND another account's id, so nothing can be learned about other accounts.
 - Idempotent: claiming the same receipt twice, or two receipts for the same card, writes one row and one award.
   XP is derived from rows (CLAUDE.md), so repeat XP stays structurally impossible.
@@ -204,7 +208,7 @@ type CaptureCode =
   | 'capture_unavailable'          // server not configured / switch off; identification still returned
   | 'no_eligible_candidate';       // accepted capture, but nothing mapped to a card (a Seed Shelf case)
 type SessionCode = 'not_signed_in' | 'too_many_open_sessions' | 'daily_session_limit';
-type ClaimCode = 'not_signed_in' | 'receipt_unknown' | 'receipt_expired' | 'receipt_ineligible';
+type ClaimCode = 'not_signed_in' | 'receipt_unknown' | 'receipt_expired' | 'receipt_ineligible' | 'collection_limit_reached';
 ```
 
 User-facing copy per code is the UI lane's. None may say or imply the plant is verified, outdoors or safe.
@@ -220,7 +224,7 @@ User-facing copy per code is the UI lane's. None may say or imply the plant is v
 - **Identify succeeded, claim not reached** (app killed, signal lost): the receipt is valid for **30 days**. The client may
   persist the opaque `receiptId` (it is useless to anyone but the account; it grants only that account's own claim) and call
   `claim_discovery` on next launch. Idempotent.
-- **Lost identify response:** resend the identical request; it replays (3.2) with no second quota unit.
+- **Lost identify response:** resend the identical request; it replays (3.2): no second quota unit, receipts returned, candidates not.
 - **Signed out:** can scan for education (a lookup). Cannot collect to an account. Signed-out local collections are the
   player's own file and are out of server scope (design D4); with enforcement ON the card page and import still cannot add
   cards to an account.
