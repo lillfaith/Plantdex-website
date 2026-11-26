@@ -1,106 +1,52 @@
 -- 0015_expansion_catalogue_ids.sql
 --
--- STATUS: DRAFT. NOT APPLIED ANYWHERE. Written by the progression-design lane for owner review; nothing in
--- the app reads or depends on it, no workflow runs it, and applying it to ANY database needs the owner's
--- explicit approval of THIS file. Test plan: docs/agent-workflow/migration-0015-test-plan.md.
+-- STATUS: REVIEWED DRAFT. Owner-approved for the TEST project ONLY (never production), after independent review, green CI and
+-- confirmation that the file matches the reviewed commit. Procedure: docs/agent-workflow/migration-0015-test-apply.md.
 --
--- WHAT IT DOES. `public.is_catalogue_herb()` is the database's list of valid card ids (0013). Every new
--- discoveries / learned / mastered / sightings row is checked against it by a CHECK constraint, and
--- `leaderboard_standings()` counts only ids it accepts. The list is hard-coded to the 54 cards of
--- today's CATALOGUE (45 printed + 9 Field Cards), so a discovery of any of the 85 digital-only Herbdex
--- Expansion cards (#57-141) is REFUSED by the database. This file replaces the function with the same
--- 54 ids, in the same order, followed by the 85 expansion ids in card-number order.
+-- WHAT IT DOES. Migration 0013 made the database refuse any card id that is not in `public.is_catalogue_herb()` (the 54 cards of
+-- the CATALOGUE: 45 printed + 9 Field Cards), through four NOT VALID CHECK constraints (discoveries, learned, mastered, sightings).
+-- That list also feeds the Field Board and the daily-research rule. This file lets those FOUR TABLES record the 85 digital-only Herbdex
+-- Expansion ids (#57-141) and does nothing else:
+--   * adds `public.is_expansion_herb(text)`: the 85 ids, in card-number order;
+--   * adds `public.is_permitted_herb(text)`: `is_catalogue_herb(p) or is_expansion_herb(p)`, i.e. what a card-id column may HOLD;
+--   * re-points exactly those four CHECK constraints from `is_catalogue_herb` to `is_permitted_herb`, each again NOT VALID.
+--
+-- WHY `is_catalogue_herb` IS NOT TOUCHED (owner decision 6, and the reason this is a different shape from the first draft).
+-- The first draft widened `is_catalogue_herb` itself. `leaderboard_standings()` and `is_research_task()` call that function, so
+-- every expansion discovery would have scored 50 Field Board points the moment the database accepted it. The owner's decision is that
+-- expansion discoveries contribute NO board score until scan eligibility, database integrity and fraud-resistant collection rules are
+-- validated and separately approved. So the scoring side keeps asking the unchanged 0013 function (54 ids, same signature, same order,
+-- byte-identical), and "may be stored" is a separate question with its own function. An id can now be STORED and still be worth
+-- nothing on the board, and that is a property of the SQL, not of a flag. A later decision that expansion cards should score is its own
+-- migration that points the standings at a new function; nothing here prepares or implies it.
 --
 -- WHAT IT DELIBERATELY DOES NOT DO.
---   * It changes no constraint, trigger, policy, table, column or grant. The five CHECK constraints
---     from 0013 call the function BY NAME, so they pick up the new body without being touched, and they
---     stay NOT VALID: no existing row is re-checked, deleted or rewritten.
---   * It adds no id for a card the app does not yet serve. See "APPLY ONLY A RELEASED BATCH" below.
---   * It scores nothing new. LEADERBOARD_POINTS (50 / 15 / 100) are unchanged; a discovery of any valid id,
---     Field Cards included, already pays 50 and that is the one rule being inherited.
---   * It does not touch is_scoring_task, is_research_task or is_achievement. A DAILY task id is accepted
---     for any id this function accepts (0013), so daily:* for the new cards follows for free. Standing
---     tasks and achievements are a separate decision (docs/expansion/progression-inheritance.md, section 3).
+--   * It redefines no existing function: `is_catalogue_herb`, `is_scoring_task`, `is_research_task`, `is_achievement` and
+--     `leaderboard_standings` are exactly as 0013 left them. Daily research tasks for an expansion id are therefore still refused.
+--   * It adds no table, column, policy, grant, trigger or index, and writes no row. Constraints stay NOT VALID, so no existing row is
+--     scanned, re-checked, deleted or rewritten.
+--   * It awards no XP and unlocks nothing: XP is derived by the client and the edge bundle from the printed deck only, and an
+--     expansion id is not in it.
+--   * It does not publish a card. The app serves no expansion card (NEXT_PUBLIC_EXPANSION_PILOT is off and nothing imports the pilot
+--     data); this only stops the database being the thing that says no, so a released batch does not need a migration at the moment of
+--     release. See "APPLY ONLY A RELEASED BATCH".
 --
--- APPLY ONLY A RELEASED BATCH. The function is executable through PostgREST by any caller, and every
--- discovery insert is a plain RLS-scoped upsert from the browser, so a listed id is an id any signed-in client
--- can record - and score 50 board points for - whether or not the app serves that card yet. Listing a card
--- that is HELD (an unresolved safety review, an unapproved image) would therefore let a hand-written request
--- record it. Before applying, delete from the second block every id that is not live in the build that is
--- going out; the schema test accepts any in-order subset, and the id order and spelling come from the
--- generated catalogue, never from this file.
+-- APPLY ONLY A RELEASED BATCH FOR ANYTHING REAL. A permitted id is an id any signed-in client can record by a hand-written request
+-- whether or not the app serves that card. It scores nothing and pays nothing, but it does write a row that belongs to the player. On
+-- the TEST project that is accepted by the owner. Before this file goes anywhere that holds real players, delete from
+-- `is_expansion_herb` every id that is not live in the build that is going out; the schema test accepts any in-order subset.
 --
--- ORDER OF OPERATIONS (details in the test plan): this migration first, on TEST; the edge bundle second
--- (`npm run sync:edge-shared`, deploy `herbdex-action`); the catalogue flag last. Nothing writes a new id
--- until the flag is on, so applying this first is inert. Reversing the order is not: a client that records
--- a new id against a database that has not heard of it gets a CHECK violation and, signed in, a failed sync.
+-- ORDER OF OPERATIONS: this migration on TEST only. Nothing writes a new id until a catalogue gate in the app is on, so applying it is
+-- inert for players.
 --
--- ROLLBACK: docs/agent-workflow/migration-0015-rollback.sql restores the 0013 body. Safe only while no row
--- holds a new id (the test plan has the pre-check); otherwise those rows stop scoring, which changes
--- standings, and the right move is to leave this in place.
+-- ROLLBACK: docs/agent-workflow/migration-0015-rollback.sql. It REFUSES (raises, changes nothing) if any row in the four tables holds
+-- an id outside the 54, and it never deletes or edits a player record.
 --
--- IDEMPOTENT: `create or replace`, same signature, same attributes. Running it twice changes nothing.
---
--- Block 1 is 0013's list, verbatim, in order. Block 2 is the expansion batch. Do not interleave.
+-- IDEMPOTENT: `create or replace` and `drop constraint if exists` / `add constraint`. Running it twice changes nothing.
 
-create or replace function public.is_catalogue_herb(p text)
+create or replace function public.is_expansion_herb(p text)
 returns boolean language sql immutable set search_path = '' as $$
   select p = any (array[
-    'taraxacum-officinale',
-    'rumex-obtusifolius',
-    'solidago-canadensis',
-    'ambrosia-artemisiifolia',
-    'chenopodium-album',
-    'portulaca-oleracea',
-    'alliaria-petiolata',
-    'urtica-dioica',
-    'oxalis-stricta',
-    'trifolium-pratense',
-    'lamium-purpureum',
-    'viola-sororia',
-    'stellaria-media',
-    'plantago-major',
-    'galium-aparine',
-    'glechoma-hederacea',
-    'acer-spp',
-    'rubus-spp',
-    'rumex-acetosella',
-    'rhus-spp',
-    'cichorium-intybus',
-    'arctium-lappa',
-    'mentha-canadensis',
-    'nepeta-cataria',
-    'capsella-bursa-pastoris',
-    'prunella-vulgaris',
-    'verbascum-thapsus',
-    'equisetum-arvense',
-    'allium-vineale',
-    'fragaria-virginiana',
-    'sambucus-spp',
-    'hypericum-perforatum',
-    'achillea-millefolium',
-    'impatiens-capensis',
-    'melissa-officinalis',
-    'monarda-fistulosa',
-    'rosa-spp',
-    'salix-spp',
-    'geranium-maculatum',
-    'lonicera-japonica',
-    'pinus-spp',
-    'morus-spp',
-    'passiflora-incarnata',
-    'lactuca-serriola',
-    'quercus-spp',
-    'echinacea-purpurea',
-    'typha-latifolia',
-    'oenothera-biennis',
-    'lindera-benzoin',
-    'hamamelis-virginiana',
-    'malva-neglecta',
-    'silybum-marianum',
-    'verbena-hastata',
-    'callicarpa-americana',
-    -- Block 2: expansion batch, card numbers 57-141. Delete any id that is not live in the build going out.
     'eupatorium-perfoliatum',
     'eutrochium-fistulosum',
     'ceanothus-americanus',
@@ -188,3 +134,17 @@ returns boolean language sql immutable set search_path = '' as $$
     'vaccinium-vitis-idaea'
   ]::text[])
 $$;
+
+create or replace function public.is_permitted_herb(p text)
+returns boolean language sql immutable set search_path = '' as $$
+  select public.is_catalogue_herb(p) or public.is_expansion_herb(p)
+$$;
+
+alter table public.discoveries drop constraint if exists discoveries_valid_herb;
+alter table public.discoveries add constraint discoveries_valid_herb check (public.is_permitted_herb(herb_id)) not valid;
+alter table public.learned drop constraint if exists learned_valid_herb;
+alter table public.learned add constraint learned_valid_herb check (public.is_permitted_herb(herb_id)) not valid;
+alter table public.mastered drop constraint if exists mastered_valid_herb;
+alter table public.mastered add constraint mastered_valid_herb check (public.is_permitted_herb(herb_id)) not valid;
+alter table public.sightings drop constraint if exists sightings_valid_herb;
+alter table public.sightings add constraint sightings_valid_herb check (public.is_permitted_herb(herb_id)) not valid;

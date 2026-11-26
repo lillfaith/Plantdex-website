@@ -1,76 +1,19 @@
 -- Rollback for 0015_expansion_catalogue_ids.sql. TEST PROJECT ONLY. Not a migration; not under supabase/migrations/.
--- Run in the Supabase SQL editor of the TEST project, in this order, as ONE paste.
+-- Run in the Supabase SQL editor of the TEST project as ONE paste.
 --
--- STEP 1, THE PRE-CHECK. Every number must be 0. A non-zero number means rows already hold an expansion id; the
--- restored function would stop accepting them, they would stop scoring on the Field Board, and the rollback
--- would change standings. In that case do not continue: leave 0015 in place.
-with old(id) as (values
-    ('taraxacum-officinale'),
-    ('rumex-obtusifolius'),
-    ('solidago-canadensis'),
-    ('ambrosia-artemisiifolia'),
-    ('chenopodium-album'),
-    ('portulaca-oleracea'),
-    ('alliaria-petiolata'),
-    ('urtica-dioica'),
-    ('oxalis-stricta'),
-    ('trifolium-pratense'),
-    ('lamium-purpureum'),
-    ('viola-sororia'),
-    ('stellaria-media'),
-    ('plantago-major'),
-    ('galium-aparine'),
-    ('glechoma-hederacea'),
-    ('acer-spp'),
-    ('rubus-spp'),
-    ('rumex-acetosella'),
-    ('rhus-spp'),
-    ('cichorium-intybus'),
-    ('arctium-lappa'),
-    ('mentha-canadensis'),
-    ('nepeta-cataria'),
-    ('capsella-bursa-pastoris'),
-    ('prunella-vulgaris'),
-    ('verbascum-thapsus'),
-    ('equisetum-arvense'),
-    ('allium-vineale'),
-    ('fragaria-virginiana'),
-    ('sambucus-spp'),
-    ('hypericum-perforatum'),
-    ('achillea-millefolium'),
-    ('impatiens-capensis'),
-    ('melissa-officinalis'),
-    ('monarda-fistulosa'),
-    ('rosa-spp'),
-    ('salix-spp'),
-    ('geranium-maculatum'),
-    ('lonicera-japonica'),
-    ('pinus-spp'),
-    ('morus-spp'),
-    ('passiflora-incarnata'),
-    ('lactuca-serriola'),
-    ('quercus-spp'),
-    ('echinacea-purpurea'),
-    ('typha-latifolia'),
-    ('oenothera-biennis'),
-    ('lindera-benzoin'),
-    ('hamamelis-virginiana'),
-    ('malva-neglecta'),
-    ('silybum-marianum'),
-    ('verbena-hastata'),
-    ('callicarpa-americana')
-)
-select
-  (select count(*) from public.discoveries x where x.herb_id not in (select id from old)) as discoveries_beyond_54,
-  (select count(*) from public.learned     x where x.herb_id not in (select id from old)) as learned_beyond_54,
-  (select count(*) from public.mastered    x where x.herb_id not in (select id from old)) as mastered_beyond_54,
-  (select count(*) from public.sightings   x where x.herb_id not in (select id from old)) as sightings_beyond_54;
+-- IT REFUSES, AND IT NEVER DELETES. The whole script is one DO block, which Postgres runs in one transaction. Step 1 counts the rows in
+-- the four tables that hold an id outside the 54 of 0013; if ANY count is non-zero it raises an exception and NOTHING is changed (the
+-- function and constraints stay as 0015 left them). Rolling back under those rows would leave records the database would now refuse had
+-- they been written today; that is a decision for the owner, not something a script does. It issues no DELETE, no UPDATE and no
+-- TRUNCATE against any table, ever.
+--
+-- Step 2 re-points the four constraints at 0013's `is_catalogue_herb` (each NOT VALID, as in 0013), then drops the two functions 0015
+-- added. `is_catalogue_herb` and every other function are untouched by both 0015 and this script.
+-- The 54 ids below are 0013's list, used only for the pre-check; the schema test requires them to equal 0013's, in order.
 
--- STEP 2, THE ROLLBACK. The 0013 body, verbatim: the 54 ids of today's CATALOGUE. Same signature and attributes,
--- so the five CHECK constraints (which call it by name) keep working untouched.
-create or replace function public.is_catalogue_herb(p text)
-returns boolean language sql immutable set search_path = '' as $$
-  select p = any (array[
+do $rollback$
+declare
+  old_ids text[] := array[
     'taraxacum-officinale',
     'rumex-obtusifolius',
     'solidago-canadensis',
@@ -125,151 +68,31 @@ returns boolean language sql immutable set search_path = '' as $$
     'silybum-marianum',
     'verbena-hastata',
     'callicarpa-americana'
-  ]::text[])
-$$;
+  ];
+  d integer; l integer; m integer; s integer;
+begin
+  select (select count(*) from public.discoveries x where x.herb_id <> all (old_ids)),
+         (select count(*) from public.learned     x where x.herb_id <> all (old_ids)),
+         (select count(*) from public.mastered    x where x.herb_id <> all (old_ids)),
+         (select count(*) from public.sightings   x where x.herb_id <> all (old_ids))
+    into d, l, m, s;
 
--- STEP 3, CONFIRM. Expect: 54 accepted, 0 of the expansion ids accepted.
-select
-  (select count(*) from unnest(array[
-    'taraxacum-officinale',
-    'rumex-obtusifolius',
-    'solidago-canadensis',
-    'ambrosia-artemisiifolia',
-    'chenopodium-album',
-    'portulaca-oleracea',
-    'alliaria-petiolata',
-    'urtica-dioica',
-    'oxalis-stricta',
-    'trifolium-pratense',
-    'lamium-purpureum',
-    'viola-sororia',
-    'stellaria-media',
-    'plantago-major',
-    'galium-aparine',
-    'glechoma-hederacea',
-    'acer-spp',
-    'rubus-spp',
-    'rumex-acetosella',
-    'rhus-spp',
-    'cichorium-intybus',
-    'arctium-lappa',
-    'mentha-canadensis',
-    'nepeta-cataria',
-    'capsella-bursa-pastoris',
-    'prunella-vulgaris',
-    'verbascum-thapsus',
-    'equisetum-arvense',
-    'allium-vineale',
-    'fragaria-virginiana',
-    'sambucus-spp',
-    'hypericum-perforatum',
-    'achillea-millefolium',
-    'impatiens-capensis',
-    'melissa-officinalis',
-    'monarda-fistulosa',
-    'rosa-spp',
-    'salix-spp',
-    'geranium-maculatum',
-    'lonicera-japonica',
-    'pinus-spp',
-    'morus-spp',
-    'passiflora-incarnata',
-    'lactuca-serriola',
-    'quercus-spp',
-    'echinacea-purpurea',
-    'typha-latifolia',
-    'oenothera-biennis',
-    'lindera-benzoin',
-    'hamamelis-virginiana',
-    'malva-neglecta',
-    'silybum-marianum',
-    'verbena-hastata',
-    'callicarpa-americana'
-  ]::text[]) q(id) where public.is_catalogue_herb(id)) as old_ids_accepted,
-  (select count(*) from unnest(array[
-    'eupatorium-perfoliatum',
-    'eutrochium-fistulosum',
-    'ceanothus-americanus',
-    'rudbeckia-hirta',
-    'pycnanthemum-tenuifolium',
-    'eriogonum-fasciculatum',
-    'parthenium-integrifolium',
-    'pseudognaphalium-obtusifolium',
-    'nelumbo-lutea',
-    'erigeron-annuus',
-    'rumex-crispus',
-    'plantago-lanceolata',
-    'artemisia-vulgaris',
-    'leonurus-cardiaca',
-    'vernonia-noveboracensis',
-    'agastache-foeniculum',
-    'claytonia-virginica',
-    'polygonatum-biflorum',
-    'mitchella-repens',
-    'apios-americana',
-    'dioscorea-villosa',
-    'lepidium-virginicum',
-    'potentilla-simplex',
-    'trifolium-repens',
-    'daucus-carota',
-    'scutellaria-lateriflora',
-    'monardella-odoratissima',
-    'ulmus-rubra',
-    'prunus-serotina',
-    'juglans-nigra',
-    'juniperus-virginiana',
-    'asimina-triloba',
-    'diospyros-virginiana',
-    'cornus-florida',
-    'cercis-canadensis',
-    'liquidambar-styraciflua',
-    'platanus-occidentalis',
-    'comptonia-peregrina',
-    'fagus-grandifolia',
-    'tilia-americana',
-    'ilex-vomitoria',
-    'morella-cerifera',
-    'aralia-spinosa',
-    'amelanchier-canadensis',
-    'vitis-rotundifolia',
-    'eschscholzia-californica',
-    'eriodictyon-californicum',
-    'aralia-californica',
-    'artemisia-douglasiana',
-    'umbellularia-californica',
-    'mahonia-aquifolium',
-    'frangula-purshiana',
-    'gaultheria-shallon',
-    'scrophularia-californica',
-    'ribes-sanguineum',
-    'condea-emoryi',
-    'sphaeralcea-ambigua',
-    'simmondsia-chinensis',
-    'opuntia-engelmannii',
-    'prosopis-glandulosa',
-    'chilopsis-linearis',
-    'anemopsis-californica',
-    'salvia-columbariae',
-    'encelia-farinosa',
-    'ephedra-trifurca',
-    'cleomella-serrulata',
-    'balsamorhiza-sagittata',
-    'chamerion-angustifolium',
-    'arctostaphylos-uva-ursi',
-    'hibiscus-moscheutos',
-    'populus-tremuloides',
-    'artemisia-tridentata',
-    'shepherdia-canadensis',
-    'glycyrrhiza-lepidota',
-    'grindelia-squarrosa',
-    'amorpha-canescens',
-    'dalea-purpurea',
-    'echinacea-angustifolia',
-    'artemisia-frigida',
-    'serenoa-repens',
-    'bidens-alba',
-    'bacopa-monnieri',
-    'smilax-bona-nox',
-    'rhododendron-groenlandicum',
-    'vaccinium-vitis-idaea'
-  ]::text[]) q(id) where public.is_catalogue_herb(id)) as expansion_ids_accepted;
+  if d + l + m + s > 0 then
+    raise exception 'ROLLBACK REFUSED: rows already hold an expansion id (discoveries_beyond_54=%, learned_beyond_54=%, mastered_beyond_54=%, sightings_beyond_54=%). Nothing was changed. Leave 0015 in place.', d, l, m, s;
+  end if;
+
+  alter table public.discoveries drop constraint if exists discoveries_valid_herb;
+  alter table public.discoveries add constraint discoveries_valid_herb check (public.is_catalogue_herb(herb_id)) not valid;
+  alter table public.learned drop constraint if exists learned_valid_herb;
+  alter table public.learned add constraint learned_valid_herb check (public.is_catalogue_herb(herb_id)) not valid;
+  alter table public.mastered drop constraint if exists mastered_valid_herb;
+  alter table public.mastered add constraint mastered_valid_herb check (public.is_catalogue_herb(herb_id)) not valid;
+  alter table public.sightings drop constraint if exists sightings_valid_herb;
+  alter table public.sightings add constraint sightings_valid_herb check (public.is_catalogue_herb(herb_id)) not valid;
+
+  drop function if exists public.is_permitted_herb(text);
+  drop function if exists public.is_expansion_herb(text);
+
+  raise notice 'ROLLBACK DONE: constraints point at is_catalogue_herb again; is_permitted_herb and is_expansion_herb are gone; no row was touched.';
+end
+$rollback$;

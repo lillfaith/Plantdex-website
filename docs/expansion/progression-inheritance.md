@@ -1,15 +1,36 @@
 # Herbdex Expansion (#57-141): how the 85 digital cards inherit progression
 
-**Status: DESIGN FOR OWNER REVIEW. Nothing here is active.** No `src/` logic, reducer, UI, workflow, flag, generated data or database was
-changed. The only code added is a read-only numbers script, a draft migration that nothing reads, and its schema test. Owner direction of
-2026-11-25 is applied: the 85 cards are digital-only at first, named **Herbdex Expansion**, carry their own internal digital collection id, sit
-inside the ONE Herbdex, and are not permanently limited to zero XP, no mastery and no Garden. They take part in the same systems as the
-original cards **without new XP values and without disturbing anyone's existing progress.**
+**Status: DESIGN, WITH SIX OWNER DECISIONS APPLIED (2026-11-26). Nothing here is active.** No `src/` logic, reducer, UI, workflow, flag, generated
+data or database was changed by this design. The code added is a read-only numbers script, migration 0015 (owner-approved for the TEST project only,
+see "Decided" and section 4) with its rollback and verification, and tests that pin what it may not do. Owner direction of 2026-11-25 is applied:
+the 85 cards are digital-only at first, named **Herbdex Expansion**, carry their own internal digital collection id and sit inside the ONE Herbdex.
+Owner decisions of 2026-11-26 narrow what they may do until a release gate says otherwise: **they pay 0 XP, score nothing on the Field Board,
+and disturb no existing player's progress.**
 
 Inputs: `CLAUDE.md`, `agents/README.md`, `agents/ownership.json`, `docs/expansion/pilot-plan.md`, the two audits (`integration-map.md`,
 `field-matrix.csv`, `inventory.csv`), and the code named in each row. Every number below is reproduced by
 `python3 scripts/expansion-audit/progression_numbers.py`, which reads the constants out of the TypeScript sources and the card data out of
 `herbs.json` and `inventory.csv`, and exits non-zero rather than guess.
+
+## Decided (owner, 2026-11-26)
+
+Each of these is final. Where a later row of this document proposes something different, the decision governs and the row is marked
+**SUPERSEDED**. Nothing below invents a value.
+
+| # | Decision | What it means in the code | Supersedes |
+|---|---|---|---|
+| 1 | **Field Cards: preserve the existing XP economy and unlock behaviour.** No second XP pool. Field Cards never award XP that funds later Field Card unlocks. | Unchanged: `FIELD_CARD_SLOTS`, `slotsUnlockedAt`, the ratchet, and "a Field Card pays 0 XP". Expansion cards pay 0 (decision 3), so XP and every unlock moment are identical for every existing player. No `participates` widening of `getPrintedCard` that would let a Field Card price. | D1 (answered); rows 4 and 8 of section 8 stay as warnings. |
+| 2 | **Levels: keep the existing Level 11 structure and thresholds.** Invent no higher levels or thresholds. Earned XP stays correctly recorded. | `LEVELS` is untouched. XP above 15,000, if it is ever earned, is still derived and recorded; it simply does not open a Level 12. | D2 (answered), row 3. |
+| 3 | **Rarity: expansion cards use the existing rarity categories and XP mechanics, but every proposed rarity must be reviewed and approved before PUBLIC XP activation. Invent no XP values. Expansion cards pay 0 XP until a release gate says otherwise.** | A card's draft rarity is a proposal, not a record. The expansion is excluded from `xpForDiscoveries` / `xpForHerb` (the printed deck is the only thing that prices), so a discovery, learning or mastery of an expansion id credits 0. The release gate is a separate, written, owner-approved step that does not exist yet and is not defined here. | D3 (answered), rows 1, 1b and 2 are the design for AFTER the gate, not before. |
+| 4 | **Denominators: the 45-card printed collection stays separate from the 85-card Herbdex Expansion** for completion percentages. Existing players must not lose apparent progress. A combined 130 may be shown separately, and never replaces collection-specific stats. | `PRINTED_DECK_SIZE` stays the denominator for every existing statement; the expansion reads `Collection.size` (85). A combined "of 130" is an additional line, never a substitute. | D4 (answered), row 7. |
+| 5 | **Research: reuse the mechanics, but do not raise or double existing task targets.** Expansion-specific research content is proposed separately. | `RESEARCH_POOL` stays the printed deck; the 12 standing tasks, their targets and ids are frozen (a snapshot test, invariant 5). No `seasonal:` or `collection:` id is added. | D5 (answered), rows 8, 8b, 9. |
+| 6 | **Field Board: expansion discoveries contribute NO board score** until scan eligibility, database integrity and fraud-resistant collection rules are validated and separately approved. | The scoring side of the database keeps asking the unchanged 0013 `is_catalogue_herb` (54 ids). Migration 0015 adds a separate "may be stored" function instead of widening that one, so an expansion id can be stored on TEST and is still worth 0. Pinned by `expansion-ids-schema.test.ts` and by the verification script, which scores a real participant. | D7 (answered), row 14. |
+| M | **Migration 0015 may be applied to the TEST project ONLY (never production),** after independent review, green CI and confirmation that the file matches the reviewed commit. It may permit the 85 ids in TEST but must not publish cards or bypass publication gates. | Procedure and verification: `docs/agent-workflow/migration-0015-test-apply.md`. Production is NOT authorised. | n/a |
+
+**One consequence to confirm at the release gate, not decided here.** Decisions 1 and 3 together mean no expansion card funds a Field Card unlock
+today. If the gate later gives expansion cards XP, whether that XP counts toward the existing Field Card slots (one pool, earlier unlocks) or stays
+outside them is the gate's question, and it must be answered before the gate opens; decision 1 forbids a second pool and forbids Field Cards funding
+Field Cards, and does not by itself say which.
 
 ## 0. The answer in one screen
 
@@ -19,10 +40,7 @@ mastery-to-growth map (no clock), the 25 / 250 / 500 research table, the daily-t
 cap, derived XP, achievement thresholds that count cards (10, 25, 5 Rare), frames and titles that count mastery (10, 15), scanner matching by
 exact binomial, and the Seed Shelf's "grown into a card" derivation. Not one row of any existing player's data has to change.
 
-**Needs an owner decision (section 6):** whether Field Card unlocks share the one XP pool (the design default) or stay calibrated to the
-printed deck; what sits above Level 11; ratifying each card's draft rarity before release (it is XP, and XP is derived); whether to show a
-blended "of 130"; whether the expansion gets standing research tasks of its own; how a daily is weighted across 130 cards; whether expansion
-discoveries score on the Field Board from day one; and any expansion-only achievement, frame or title.
+**Still open (section 6):** how a daily is weighted across a larger pool, any expansion-only achievement, frame or title, card numbering in labels, and the definition of the release gate itself.
 
 **Would invent a new value, so refused (section 7):** an XP figure for any expansion card, a different mastery or learning award, level
 thresholds above 15,000, new Field Card thresholds, any board point value, habitat or season assignments, and a "Collection 02".
@@ -88,6 +106,9 @@ scannable but not yet earning is the state the pilot plan already describes for 
 Tags: **REUSE** = existing rule, no new value. **DECISION** = needs the owner. **INVENT** = would need a value that does not exist; refused.
 "Naive" means "append the 85 and let the code inherit by accident".
 
+> **SUPERSEDED where it conflicts with "Decided" above.** Rows 1, 1b, 2, 3, 4, 7, 8, 8b, 9 and 14 describe the design for what the expansion does AFTER a
+> release gate; until then the decisions govern (0 XP, no new levels, separate denominators, frozen research, no board score).
+
 ### 3.1 Economy
 
 | # | System | Rule and source | What naive inheritance does (numbers from the real tables) | Proposal | Tag |
@@ -122,28 +143,37 @@ Tags: **REUSE** = existing rule, no new value. **DECISION** = needs the owner. *
 | 16 | **Shop, `/start`, home copy** | `DECK_CARD_COUNT = PRINTED_DECK_SIZE` (45); home: "`${PRINTED_DECK_SIZE}` species have a card. Everything else becomes a seed packet."; "The first Plantdex collection begins with 45 plants" | The shop must stay 45: $/card and the physical product. The home sentence is already untrue (54 cards exist) and would be untrue by 85 more. | Physical statements keep reading the printed deck. Any "N species have a card" sentence must say what N counts. UI-owned; filed as a request, not edited. `/safety` lists cautions from `PRINTED_CARDS`: expansion cautions need a home there (Tier 0, human). | REUSE; copy is UI/owner |
 | 17 | **Profile, export, deletion, storage** | `resolveProfile` validates avatar/sidekick/featured through the deck; state is `{discoveries, learned, mastered, research, achievements}`; `STORAGE_VERSION` 3 | A profile selection of an expansion card silently falls back. No new stored field exists, so no export or deletion change. | Selections resolve through the catalogue for display and through `participates` for earning. No `STORAGE_VERSION` bump (additive ids only; `parseState` filters nothing by id). | REUSE |
 
-## 4. The database side (drafted, not applied)
+## 4. The database side (migration 0015: approved for TEST only)
 
-The only server-side refusal of a new card id is `public.is_catalogue_herb()` (0013): five `NOT VALID` CHECK constraints and
-`leaderboard_standings()` call it. Everything else was checked: `scans.confirmed_herb_id` and 0014's `confirm_scan` accept any text;
-`boss_forms` only requires non-empty; `seed_shelf`, `species_packets`, `profiles` and the entitlement tables hold no card-id list.
+The only server-side refusal of a new card id is `public.is_catalogue_herb()` (0013): four `NOT VALID` CHECK constraints (`discoveries`, `learned`,
+`mastered`, `sightings`) call it, and so do `leaderboard_standings()` and the daily-task rule inside `is_research_task()`. Everything else was checked:
+`scans.confirmed_herb_id` and 0014's `confirm_scan` accept any text; `boss_forms` only requires non-empty; `seed_shelf`, `species_packets`, `profiles`
+and the entitlement tables hold no card-id list.
+
+**The first draft widened that function and was withdrawn.** It would have made every expansion discovery score 50 board points the moment the
+database accepted it, which decision 6 forbids. The shape now is:
+
+| Object | What |
+|---|---|
+| `is_catalogue_herb(text)` | **Not touched.** 0013's function, byte for byte: the 54 ids, their order, the signature. The standings, the daily-task rule and every scoring path keep asking it. |
+| `is_expansion_herb(text)` (new) | The 85 ids in card-number order. Referenced by nothing but the next function. |
+| `is_permitted_herb(text)` (new) | `is_catalogue_herb(p) or is_expansion_herb(p)`: "may this id be STORED". |
+| The four CHECK constraints | Re-pointed from `is_catalogue_herb` to `is_permitted_herb`, each again `NOT VALID`, so no existing row is scanned, re-checked or rewritten. |
 
 | File | What |
 |---|---|
-| `supabase/migrations/0015_expansion_catalogue_ids.sql` | **DRAFT, NOT APPLIED.** Replaces the one function: 0013's 54 ids verbatim, then the 85 in card-number order. Changes no constraint, grant, policy or row. Numbered 0015 because 0014 is held by `coord/confirm-scan-rpc`. |
-| `src/lib/expansion-ids-schema.test.ts` | 15 tests, same style as `confirm-scan-schema.test.ts`: the 54 are an untouched prefix; added ids come from the inventory, in order, equal to the lowercase hyphenated scientific name, none duplicated or already present; `CATALOGUE ⊆ list`; no other migration redefines the function; the file contains exactly one statement; the rollback restores 0013 and pre-checks. |
-| `docs/agent-workflow/migration-0015-rollback.sql` | Pre-check (four counts, all must be 0), 0013 body restored, confirmation. Not under `supabase/migrations/`. |
-| `docs/agent-workflow/migration-0015-test-verification.sql` | Self-rolling-back `DO` block, 17 checks; ends by raising an exception whose text is the report. |
-| `docs/agent-workflow/migration-0015-test-plan.md` | TEST-only apply plan, rollback, and what was and was not exercised. |
+| `supabase/migrations/0015_expansion_catalogue_ids.sql` | The above and nothing else: two `create or replace function`, four constraint swaps. No table, column, policy, grant, trigger, row. Idempotent. |
+| `src/lib/expansion-ids-schema.test.ts` | Pins: ids come from the inventory in order; `is_catalogue_herb` is never redefined; only the four constraint swaps; **nothing that scores or unlocks references the new functions or an expansion id** (migrations, edge functions, `src/lib`); standings filters are all `is_catalogue_herb`; the rollback refuses before it changes anything and issues no DELETE or UPDATE. |
+| `src/lib/expansion-gate.test.ts` | With `NEXT_PUBLIC_EXPANSION_PILOT` off, none of the 85 is reachable through the catalogue, grid, card route, scan matcher, Seed Shelf, research supply, knowledge-check pool or garden, and a forged record of all 85 is worth 0 XP. |
+| `docs/agent-workflow/migration-0015-rollback.sql` | One `DO` block: counts rows beyond the 54 in the four tables and **raises, changing nothing, if any**; otherwise restores the constraints and drops the two new functions. Never deletes or edits a record. |
+| `docs/agent-workflow/migration-0015-test-verification.sql` | Self-rolling-back `DO` block: existing rows intact, 0013 compatible, **a participant holding one printed and one expansion card scores exactly 50 through the real `leaderboard_standings`**, the new capability works, near-misses refused. |
+| `docs/agent-workflow/migration-0015-test-apply.md` | The exact manual steps for the owner, and "production is NOT authorised". |
+| `docs/agent-workflow/migration-0015-test-plan.md` | What was exercised locally and what was not. |
 
-Found while drafting, and recorded in the test plan: **a listed id is an id any signed-in client can record**, so unreleased or HELD cards
-must not be in the list when it is applied (trim block 2 to the released batch); and the function is executable by `anon` through PostgREST
-(0013's posture, unchanged), so the list is probeable.
-
-**Order of operations when the time comes (each step inert until the next):** 0015 on TEST → `npm run sync:edge-shared` and deploy
-`herbdex-action` (it recomputes mastery and research from its bundled copy of the reducer, and is the only writer of `mastered`; a stale
-bundle silently never records an expansion mastery) → `npm run check:edge` → the catalogue flag → the progression flag. Reversing the first two
-is not inert: a client that records a new id against an unaware database gets a CHECK violation.
+**Order of operations when the time comes (each step inert until the next):** 0015 on TEST (owner-dispatched) → verification script → the edge bundle
+only if and when the catalogue changes (`npm run sync:edge-shared`, `herbdex-action`, `npm run check:edge`) → a release gate. 0015 alone is inert: the app
+serves no expansion card and nothing writes a new id. A listed id is still an id a signed-in client could record by hand on TEST; it scores nothing and
+pays nothing, and the file says it must be trimmed to a released batch before it goes anywhere real.
 
 ## 5. Invariants, and the tests that must change
 
@@ -166,7 +196,7 @@ is not inert: a client that records a new id against an unaware database gets a 
 |---|---|
 | `catalogue.test` "holds the Field Cards, and they widen the catalogue without widening the deck" | asserts the digital set is exactly nine; becomes per-collection |
 | `field-cards.test` "is reachable through the catalogue" | literal 54 |
-| `leaderboard-integrity.test` "every catalogue card, and nothing else, is a valid herb id" | reads 0013; must read the latest definition (0015) or assert `CATALOGUE ⊆ list` |
+| `leaderboard-integrity.test` "every catalogue card, and nothing else, is a valid herb id" | **No change needed under the 0015 that shipped for TEST**: `is_catalogue_herb` is not redefined, so the test keeps reading 0013 and keeps asserting the 54. It changes only if a later migration makes expansion cards score (decision 6 forbids that for now) |
 | `edge-shared.test` | mirrored modules drift until `npm run sync:edge-shared` |
 | `plant-match.live.test` (two Rumex cases), `card-coverage.test` "keeps the two Rumex cards separate and refuses a third dock" | *R. crispus* becomes exact; rewrite to say exactly the pilot rule (exact and checked synonyms confirm; hybrids and relatives never do), do not delete |
 | `seed-shelf.test` "accepts a close relative of a card" | *Plantago lanceolata* stops being a relative; needs another example species |
@@ -181,26 +211,24 @@ is not inert: a client that records a new id against an unaware database gets a 
 assertion, `herbdex-reducer.test` idempotence, `mastery.test` stage ordering, `field-cards.test` threshold pins, `profile-schema.test`,
 `leaderboard-schema.test`, `legal.test`.
 
-## 6. Decisions for the owner
+## 6. Still open
+
+D1 to D5 and D7 are decided (see "Decided"). What remains, none of it needed for 0015 on TEST:
 
 | # | Decision | Options | Recommendation |
 |---|---|---|---|
-| D1 | Do Field Card unlocks share the one XP pool? | A single pool; B keep the printed-deck calibration (a second XP figure); C append slots (invents thresholds) | **A.** It is what "same progression systems" says, and nothing can be taken back. The cost is that expansion collectors unlock the nine cards sooner (discovery supply is ×2.63). |
-| D2 | What is above Level 11? | leave L11 as the top; or the owner supplies appended thresholds | Owner's call; no value is proposed. |
-| D3 | Ratify the 85 rarities and freeze them | per card, before release | Required before the progression flag, not before the catalogue flag. |
-| D4 | Blended "of 130" on any surface | never; or on the profile only | Per-collection only until asked. |
-| D5 | Expansion standing research tasks | none (daily only); or define them (each scores 100 on the board and needs the `seasonal-sweep` fix) | None for now. |
-| D6 | Daily weighting across 130 | flat; or weighted toward cards a player holds | Flat. |
-| D7 | Do expansion discoveries score on the Field Board from day one? | yes; or only after capture validation (needs a second id function) | Decide before 0015 is applied anywhere real; the default is "yes", which widens the self-declared surface 2.6×. |
+| D6 | Daily weighting across a larger pool | flat; or weighted toward cards a player holds | Flat. Moot while the pool is the printed deck (decision 5). |
 | D8 | Expansion-only achievement, frame or title | none; or add (new ids, `is_achievement` migration) | None for now. |
 | D9 | Card numbering in labels | "#57-141" as reserved; or restart at #01 within the collection | "#57-141", the Field Cards' precedent. |
+| R1 | **Define the release gate** that ends "0 XP, no board score" | an owner-approved written checklist: per-card rarity approval, safety review, art, scan eligibility, database integrity, fraud-resistant collection rules | Not designed here; decisions 3 and 6 name its inputs. |
+| R2 | Expansion-specific research content | a separate proposal (decision 5) | To be written; it must not reuse `seasonal:` or `collection:` ids. |
 
 ## 7. Refused: what would invent a value
 
 New XP for any expansion card or stage; a per-card or per-collection multiplier; Level 12+ thresholds; additional Field Card thresholds; any
 change to 50 / 100 / 25 / 250 / 500 or to the board's 50 / 15 / 100; `SIGHTINGS_FOR_MASTERY` above 1; habitat, season or regional
 assignments not present in researched data; a free-cap different from 10; a size for any collection but the counted 85; a date, price or
-"Collection 02". Also refused: reading EXIF or inferring presence to gate expansion (owner direction 2026-11-19), and treating several photos
+"Collection 02". Also refused (decisions of 2026-11-26): Level 12 and above; any XP for an expansion card before a release gate; a second XP pool; a Field Card that funds a Field Card; raising or doubling an existing research target; any board score for an expansion discovery; and a combined denominator that replaces a collection's own. Also refused: reading EXIF or inferring presence to gate expansion (owner direction 2026-11-19), and treating several photos
 as proof of presence.
 
 ## 8. What would break an existing player's progress if done naively
@@ -213,7 +241,7 @@ as proof of presence.
 6. **Editing a card's rarity after release.** Rewrites every holder's XP.
 7. **Pooling the quiz.** Every existing card's quiz changes; an unreleased card's text can appear as a wrong answer.
 8. **Wrong rollout order.** Flag before 0015 → CHECK violation on every new discovery; flag before the edge sync → mastery never recorded; 0015
-   listing unreleased ids → anyone can record a held card; rollback after players hold new ids → they drop out of the standings (reproduced: 100 → 50).
+   listing unreleased ids (on anything but TEST) → anyone can record a held card; **0015 widening `is_catalogue_herb` instead of adding a second function → every expansion discovery scores 50 board points (the withdrawn first draft);** rollback after players hold new ids → they drop out of the standings (reproduced: 100 → 50).
 9. **Omitting `collectionId`.** The card silently joins Collection 01, and the shop's 45 and the "of 45" with it.
 10. **Adding `seasonal:` or `collection:` task ids.** They pay 100 board points each and fold into "Four Seasons".
 11. **Bumping `STORAGE_VERSION`.** Not needed (additive ids), and a bare bump wipes collections.
