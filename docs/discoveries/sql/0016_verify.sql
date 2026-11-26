@@ -139,9 +139,8 @@ select set_config('d5.d1', repeat('1', 64), true);
 select set_config('d5.d2', repeat('2', 64), true);
 select set_config('d5.d3', repeat('3', 64), true);
 
-select pg_temp.ok('too fast: a session submitted before min_capture_ms is refused and NOT consumed',
-  (public.consume_capture_session('00000000-0000-0000-0000-0000000000b2', current_setting('d5.sid')::uuid,
-     current_setting('d5.nonce'), 'obs_1', array[current_setting('d5.d1'), current_setting('d5.d2')])) ->> 'code' = 'capture_too_fast');
+select pg_temp.ok('no mandatory capture delay: min_capture_ms is 0 and min_images is 1 (owner decision)',
+  (public.capture_config() ->> 'min_capture_ms')::int = 0 and (public.capture_config() ->> 'min_images')::int = 1);
 reset role;
 -- Fixture only: age the session, because now() is frozen for the length of this transaction.
 update public.capture_sessions set issued_at = issued_at - interval '10 seconds', expires_at = expires_at - interval '10 seconds'
@@ -154,8 +153,8 @@ select pg_temp.ok('another account cannot use this session', (public.consume_cap
   current_setting('d5.nonce'), 'obs_1', array[current_setting('d5.d1'), current_setting('d5.d2')])) ->> 'code' = 'capture_session_unknown');
 select pg_temp.ok('wrong nonce', (public.consume_capture_session('00000000-0000-0000-0000-0000000000b2', current_setting('d5.sid')::uuid,
   repeat('0', 64), 'obs_1', array[current_setting('d5.d1'), current_setting('d5.d2')])) ->> 'code' = 'capture_session_nonce');
-select pg_temp.ok('one image is not enough', (public.consume_capture_session('00000000-0000-0000-0000-0000000000b2', current_setting('d5.sid')::uuid,
-  current_setting('d5.nonce'), 'obs_1', array[current_setting('d5.d1')])) ->> 'code' = 'capture_images_invalid');
+select pg_temp.ok('zero images is not enough', (public.consume_capture_session('00000000-0000-0000-0000-0000000000b2', current_setting('d5.sid')::uuid,
+  current_setting('d5.nonce'), 'obs_1', array[]::text[])) ->> 'code' = 'capture_images_invalid');
 select pg_temp.ok('four images are too many', (public.consume_capture_session('00000000-0000-0000-0000-0000000000b2', current_setting('d5.sid')::uuid,
   current_setting('d5.nonce'), 'obs_1', array[repeat('1',64), repeat('2',64), repeat('3',64), repeat('4',64)])) ->> 'code' = 'capture_images_invalid');
 select pg_temp.ok('a malformed digest is refused', (public.consume_capture_session('00000000-0000-0000-0000-0000000000b2', current_setting('d5.sid')::uuid,
@@ -190,6 +189,20 @@ select pg_temp.ok('issuing twice for the same candidate is idempotent (same id, 
 reset role;
 select pg_temp.ok('exactly one receipt row exists', (select count(*) from public.capture_receipts where observation_id = 'obs_1') = 1);
 
+-- ONE mandatory photograph (owner decision): a session submitted with exactly one image is consumed.
+reset role;
+set local role authenticated;
+select pg_temp.act_as('00000000-0000-0000-0000-0000000000b2');
+select set_config('d5.open_one', public.open_capture_session()::text, true);
+reset role;
+set local role service_role;
+select pg_temp.ok('ONE IMAGE is a valid capture (additional angles are optional), and an immediate submit is accepted',
+  (public.consume_capture_session('00000000-0000-0000-0000-0000000000b2', (current_setting('d5.open_one')::jsonb ->> 'session_id')::uuid,
+    current_setting('d5.open_one')::jsonb ->> 'nonce', 'obs_one', array[repeat('7', 64)])) ->> 'ok' = 'true');
+select pg_temp.ok('the SAME account re-using an image is accepted and is not flagged (a retake is harmless)',
+  (select not suspect_duplicate from public.capture_sessions where id = (current_setting('d5.open_one')::jsonb ->> 'session_id')::uuid));
+reset role;
+
 -- Duplicate image across accounts: a second account, a second session, one reused image.
 set local role authenticated;
 select pg_temp.act_as('00000000-0000-0000-0000-0000000000c3');
@@ -198,12 +211,19 @@ reset role;
 update public.capture_sessions set issued_at = issued_at - interval '10 seconds', expires_at = expires_at - interval '10 seconds'
  where id = (current_setting('d5.open_c')::jsonb ->> 'session_id')::uuid;
 set local role service_role;
-select pg_temp.ok('DUPLICATE IMAGE: an image already used by another account is refused',
-  (public.consume_capture_session('00000000-0000-0000-0000-0000000000c3', (current_setting('d5.open_c')::jsonb ->> 'session_id')::uuid,
-    current_setting('d5.open_c')::jsonb ->> 'nonce', 'obs_c', array[current_setting('d5.d1'), repeat('9', 64)])) ->> 'code' = 'capture_duplicate_image');
-select pg_temp.ok('...and the refused session is NOT consumed, so fresh photographs still work in it',
-  (public.consume_capture_session('00000000-0000-0000-0000-0000000000c3', (current_setting('d5.open_c')::jsonb ->> 'session_id')::uuid,
-    current_setting('d5.open_c')::jsonb ->> 'nonce', 'obs_c', array[repeat('8', 64), repeat('9', 64)])) ->> 'ok' = 'true');
+select set_config('d5.dup_c', public.consume_capture_session('00000000-0000-0000-0000-0000000000c3', (current_setting('d5.open_c')::jsonb ->> 'session_id')::uuid,
+  current_setting('d5.open_c')::jsonb ->> 'nonce', 'obs_c', array[current_setting('d5.d1'), repeat('9', 64)])::text, true);
+select pg_temp.ok('DUPLICATE IMAGE (cross-account) is ACCEPTED, not refused',
+  (current_setting('d5.dup_c')::jsonb ->> 'ok')::boolean);
+select pg_temp.ok('...and nothing in the response reveals the duplicate (no flag, no code, only ok/replay/session_id/observation_id)',
+  (select array_agg(k order by k) from jsonb_object_keys(current_setting('d5.dup_c')::jsonb) k) = array['observation_id','ok','replay','session_id']
+  and current_setting('d5.dup_c') !~* 'dup|suspect|flag');
+reset role;
+select pg_temp.ok('...and the session is FLAGGED for review',
+  (select suspect_duplicate from public.capture_sessions where id = (current_setting('d5.open_c')::jsonb ->> 'session_id')::uuid));
+set local role service_role;
+select pg_temp.ok('a session with no cross-account duplicate is NOT flagged',
+  not (select suspect_duplicate from public.capture_sessions where id = current_setting('d5.sid')::uuid));
 reset role;
 
 -- Session limits.
