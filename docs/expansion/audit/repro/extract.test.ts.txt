@@ -1,0 +1,67 @@
+import { test } from 'vitest';
+import fs from 'node:fs';
+import path from 'node:path';
+import { PRINTED_CARDS, DECK } from '@/lib/deck';
+import { CATALOGUE } from '@/lib/catalogue';
+import { FIELD_CARDS, FIELD_CARD_SLOTS } from '@/lib/field-cards';
+import { SITE_CAUTIONS, siteCautionFor } from '@/lib/card-cautions';
+import { cardCorrectionFor } from '@/lib/card-corrections';
+import { knownIssueFor } from '@/lib/card-issues';
+import { FIELD_NOTES, fieldNotesFor, isGenusCard } from '@/lib/card-field-notes';
+import { habitatOf } from '@/lib/habitat';
+import { GEORGIA } from '@/lib/region-species';
+import { spriteFor, hasStageArt, hasSprite } from '@/lib/plant-sprites';
+import { photosFor, REFERENCE_PHOTOS } from '@/lib/reference-photos';
+import { LOOKALIKE_COMPARISONS } from '@/lib/reference-comparisons';
+import { compoundFor } from '@/lib/compounds';
+import { evidenceFor } from '@/lib/trait-evidence';
+import { badgeFor, statusesFor } from '@/lib/invasive-status';
+import { scopeFor } from '@/lib/card-coverage';
+import { citationsFor, evidenceLabelFor } from '@/lib/card-sources';
+import { COMPOUND_LINKS } from '@/lib/compound-links';
+import { VERIFIED_PLACEMENTS, CONTENT_EXCLUSIONS } from '@/lib/taxon-placements';
+
+const pub = path.resolve('public');
+const ex = (p: string) => fs.existsSync(path.join(pub, p));
+test('extract', () => {
+  const rows: any[] = [];
+  for (const h of CATALOGUE) {
+    const fn = fieldNotesFor(h);
+    const comps = h.back.compounds.map((c) => ({ c, e: compoundFor(c) }));
+    const g = GEORGIA.find((e) => e.herbId === h.id);
+    const hab = habitatOf(h.id);
+    const sp = spriteFor(h.id);
+    rows.push({
+      id: h.id, n: h.cardNumber, common: h.commonName, sci: h.scientificName,
+      printed: PRINTED_CARDS.some((p) => p.id === h.id),
+      fieldCard: FIELD_CARD_SLOTS.find((s) => s.card?.id === h.id)?.ordinal ?? null,
+      rarity: h.rarity, xp: h.xp, season: h.season, uses: h.uses.length,
+      warning: !!h.warning, cardIssue: !!knownIssueFor(h), siteCaution: !!siteCautionFor(h), correction: !!cardCorrectionFor(h),
+      supersedes: !!cardCorrectionFor(h)?.supersedesCardIssue,
+      hasFieldNotes: !!fn, idRows: fn?.identification?.length ?? 0, habitatText: !!fn?.habitat,
+      lookalikes: fn?.lookalikes?.length ?? 0, lookalikeRisk: fn?.lookalikes?.filter((l) => l.risk).length ?? 0,
+      lookalikeNote: !!fn?.lookalikeNote, genusTraitsNote: !!fn?.genusTraitsNote, fnSourceIds: fn?.sourceIds.length ?? 0, habSourceIds: fn?.habitatSourceIds?.length ?? 0,
+      genusCard: isGenusCard(h),
+      habitat: hab ? (hab as any).primary ?? JSON.stringify(hab).slice(0, 40) : null,
+      habitatSecondary: hab ? ((hab as any).also?.length ?? 0) : 0,
+      georgia: g ? g.occurrence + (g.featured ? '+featured' : '') : null,
+      spriteSheet: hasSprite(h.id), stagesGrowing: hasStageArt(h.id, 'growing'), stagesSprout: hasStageArt(h.id, 'sprout'), stagesFlowering: hasStageArt(h.id, 'flowering'), stagesBoss: hasStageArt(h.id, 'boss'),
+      personality: sp?.personality ?? null, frames: sp?.frames ?? null,
+      files: { image: ex(h.image), thumb: ex(h.thumb), back: ex(h.backImage), sprite: ex(h.sprite), chip: ex(`/cards/chip/${h.id}.webp`) },
+      refPhotos: REFERENCE_PHOTOS.filter((p) => p.herbId === h.id).length, refPhotosReviewed: photosFor(h.id).length,
+      comparison: LOOKALIKE_COMPARISONS.some((c) => c.herbId === h.id),
+      compounds: comps.length, compoundsMolecule: comps.filter((x) => x.e?.structure).length, compoundsScaffold: comps.filter((x) => x.e?.scaffold).length, compoundsUndrawn: comps.filter((x) => x.e && !x.e.structure && !x.e.scaffold).length, compoundsUnknown: comps.filter((x) => !x.e).length,
+      unknownCompounds: comps.filter((x) => !x.e).map((x) => x.c),
+      compoundLinks: Object.keys(COMPOUND_LINKS).includes(h.id) ? COMPOUND_LINKS[h.id].length : 0,
+      traitEvidence: !!evidenceFor(h), invasive: !!badgeFor(h.id), statuses: statusesFor(h.id).length,
+      coverage: scopeFor(h.id)?.kind ?? (scopeFor(h.id) as any)?.type ?? (scopeFor(h.id) ? 'present' : null),
+      coverageRaw: scopeFor(h.id) ? Object.keys(scopeFor(h.id) as any).join('|') : null,
+      citations: citationsFor(h).length, evidenceLabel: evidenceLabelFor(h),
+      herbSources: h.sources?.length ?? 0, sectionSources: h.sectionSources ? Object.keys(h.sectionSources).length : 0, claimSources: h.claimSources?.length ?? 0,
+      placement: VERIFIED_PLACEMENTS.some((p: any) => JSON.stringify(p).includes(h.scientificName)),
+      exclusion: CONTENT_EXCLUSIONS.some((p: any) => JSON.stringify(p).includes(h.scientificName)),
+    });
+  }
+  fs.writeFileSync('../matrix.json', JSON.stringify(rows, null, 1));
+  console.log('rows', rows.length, 'deck', DECK.herbs.length, 'field', FIELD_CARDS.length);
+});

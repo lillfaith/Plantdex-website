@@ -1,0 +1,1032 @@
+{
+  "cards": [
+    {
+      "assets": {
+        "main": {
+          "actualSha256": "9a99f74be74a47780f78bafb40332224a64b1c3fb09184667869d18021fcd149",
+          "botanicalReviewRequired": true,
+          "importedBy": "ChatGPT handoff, owner-approved #57-61",
+          "note": null,
+          "origin": "ai_generated_derivative",
+          "path": "expansion/assets/eupatorium-perfoliatum/main.png",
+          "recordedSha256": "9a99f74be74a47780f78bafb40332224a64b1c3fb09184667869d18021fcd149"
+        },
+        "pixel": {
+          "actualSha256": "5cf4e5745b2ab77fa44897f6b22b41bcf90b5d68afed328679cded22e8dd8f4d",
+          "botanicalReviewRequired": true,
+          "importedBy": "ChatGPT handoff, owner-approved #57-61",
+          "note": null,
+          "origin": "ai_generated_derivative",
+          "path": "expansion/assets/eupatorium-perfoliatum/pixel.png",
+          "recordedSha256": "5cf4e5745b2ab77fa44897f6b22b41bcf90b5d68afed328679cded22e8dd8f4d"
+        },
+        "tall": {
+          "actualSha256": "31028385993a29093b4e0b79079f0a4b0cb6975c3b595fb5c6e131ff5692fd22",
+          "botanicalReviewRequired": true,
+          "importedBy": "ChatGPT handoff, owner-approved #57-61",
+          "note": null,
+          "origin": "ai_generated_derivative",
+          "path": "expansion/assets/eupatorium-perfoliatum/tall.png",
+          "recordedSha256": "31028385993a29093b4e0b79079f0a4b0cb6975c3b595fb5c6e131ff5692fd22"
+        }
+      },
+      "inventory": {
+        "approvalQuote": "6be20a6 2026-11-17: \"Expansion: import approved artwork for cards #57-61 (main, pixel, tall) as hidden drafts\"",
+        "assembledCard": "PRESENT",
+        "mainImage": "APPROVED",
+        "pixelIcon": "APPROVED",
+        "sprite": "APPROVED",
+        "spriteApprovalQuote": "commit f3861d1 2026-11-17: \"Expansion #57-61: record owner approval of the five sprites\"",
+        "tallPreview": "APPROVED"
+      },
+      "ownerEdits": [
+        {
+          "by": "owner",
+          "field": "back.healingTraits"
+        }
+      ],
+      "record": {
+        "back": {
+          "aromatic": [
+            "Herbal",
+            "Grassy",
+            "Faint"
+          ],
+          "compounds": [
+            "Sesquiterpenes",
+            "Flavonoids",
+            "Tannins"
+          ],
+          "healingTraits": [
+            "Fever aid",
+            "Sweat-inducing",
+            "Cold support",
+            "Digestive aid"
+          ],
+          "preparations": [
+            "Dried Herb",
+            "Infusion",
+            "Tincture"
+          ],
+          "taste": [
+            "Bitter",
+            "Sharp",
+            "Harsh"
+          ],
+          "usableParts": [
+            "Leaf",
+            "Flower",
+            "Stem"
+          ]
+        },
+        "cardNumber": 57,
+        "commonName": "Boneset",
+        "front": {
+          "rarity": "Common",
+          "season": "summer",
+          "stats": {
+            "sun": 4,
+            "temperature": 3,
+            "water": 5
+          },
+          "uses": [
+            "immune",
+            "tea"
+          ],
+          "xp": 100
+        },
+        "id": "eupatorium-perfoliatum",
+        "researchLinks": {
+          "directReferencesLocated": 3,
+          "links": [
+            {
+              "isCitation": true,
+              "type": "Direct reference",
+              "url": "https://pubmed.ncbi.nlm.nih.gov/22004891/"
+            },
+            {
+              "isCitation": true,
+              "type": "Direct reference",
+              "url": "https://www.fs.usda.gov/nrs/pubs/rp/rp_ne138.pdf"
+            },
+            {
+              "isCitation": true,
+              "type": "Direct reference",
+              "url": "https://pubmed.ncbi.nlm.nih.gov/21669270/"
+            }
+          ],
+          "notes": "Direct references are not automatically evidence for each card claim. Search links require selecting and checking individual papers.",
+          "verificationStatus": "3 direct references \u2014 claim matching still needed"
+        },
+        "review": {
+          "cardSafetyWarning": "Possible liver toxins; avoid long-term use.",
+          "cardSafetyWarningStatus": "SHORT CARD COPY \u2014 final botanical/safety review pending",
+          "editorial": {
+            "aromaEvidenceStatus": "Editorial sensory proposal \u2014 source verification required",
+            "aromaPlantPart": "Leaves",
+            "aromaSourceUrl": null,
+            "cardSafetyWarning": "Possible liver toxins; avoid long-term use.",
+            "cardSafetyWarningStatus": "SHORT CARD COPY \u2014 final botanical/safety review pending",
+            "compoundEvidenceNote": "Potential hepatotoxic alkaloids; no proof of fever efficacy",
+            "compoundEvidenceStatus": "PROVISIONAL \u2014 species verification required",
+            "compoundSourceUrl": null,
+            "ecologyRatingStatus": "ESTIMATE \u2014 ecology-based; species-level horticultural verification recommended",
+            "guideCaution": "Contains pyrrolizidine alkaloids; traditional herbal use only\u2014not a culinary plant.",
+            "healingEvidenceNote": "Traditional fever/cold use. Internal safety concern; not verified clinically.",
+            "originalPdfPartNames": "Leaves | Flowering Tops",
+            "peakSeasonSource": "https://www.wildflower.org/plants/",
+            "preparationSafetyReview": "Pyrrolizidine-alkaloid status disputed; internal use not approved without review.",
+            "publicationStatus": "EDITORIAL DRAFT \u2014 species-specific safety and claims review pending",
+            "rarityRationale": "Broad eastern and central U.S. distribution; occurs in moist habitats",
+            "raritySource": "https://explorer.natureserve.org/Taxon/ELEMENT_GLOBAL.2.143537/Eupatorium_perfoliatum",
+            "seasonLimitations": "Broad calendar estimate; not a nationwide observation-derived peak. Flowering varies by elevation, latitude, rainfall, and year. For fruit-focused species, peak means ripe fruit, not bloom. Evergreen season indicates foliage visibility. Specific local season should come from regional quests.",
+            "tasteEvidenceStatus": "Needs source verification",
+            "tastePlantPart": "Leaves",
+            "tasteSourceUrl": null
+          },
+          "references": {
+            "claimCoverage": {
+              "aromaTaste": "editorial; evidence status in original editorial metadata",
+              "compoundChemistry": "PROVISIONAL \u2014 species verification required",
+              "healingTraits": "traditional claims, not established efficacy",
+              "identity": "species named",
+              "regionalPresence": "provisional ecological assignment, not independently range-verified",
+              "usableParts": "user guide only"
+            },
+            "existingExternalUrls": [
+              "https://explorer.natureserve.org/Taxon/ELEMENT_GLOBAL.2.143537/Eupatorium_perfoliatum"
+            ],
+            "externalUrlsVerification": "Links carried over from earlier draft; each supports only its documented subject, not entire card. Independent source quality/content not re-checked.",
+            "primaryProvidedGuide": {
+              "file": "PlantDex_Usable_Parts_Guide_57-142.pdf",
+              "page": 1,
+              "supports": "Documented parts, traditional / culinary / utility uses as claimed in supplied guide",
+              "verification": "USER-SUPPLIED GUIDE \u2014 not independently fact checked"
+            },
+            "rangeResearchResources": {
+              "BONAP_ATLAS": "https://bonap.net/NAPA/",
+              "KEW_POWO_SEARCH": "https://powo.science.kew.org/",
+              "USDA_PLANTS_STATE_SEARCH": "https://plants.sc.egov.usda.gov/state-search",
+              "WILDFLOWER_DB": "https://www.wildflower.org/plants/"
+            },
+            "speciesQuery": "Eupatorium perfoliatum"
+          },
+          "regionalConfidence": "Provisional ecology-based; confirm range before quest release",
+          "regions": [
+            "NE",
+            "AP",
+            "SE",
+            "GC",
+            "MW"
+          ]
+        },
+        "scientificName": "Eupatorium perfoliatum",
+        "status": "draft",
+        "supplied": {
+          "peakSeason": "Summer",
+          "stats": {
+            "heat": 3,
+            "sun": 4,
+            "water": 5
+          },
+          "useIcons": [
+            "Immune",
+            "Tea"
+          ]
+        }
+      }
+    },
+    {
+      "assets": {
+        "main": {
+          "actualSha256": "29d4b945794dc1890e0fa77f7faa219c3a128116b312ac8ade67b2aabc00ccde",
+          "botanicalReviewRequired": true,
+          "importedBy": "ChatGPT handoff, owner-approved #57-61",
+          "note": null,
+          "origin": "ai_generated_derivative",
+          "path": "expansion/assets/rudbeckia-hirta/main.png",
+          "recordedSha256": "29d4b945794dc1890e0fa77f7faa219c3a128116b312ac8ade67b2aabc00ccde"
+        },
+        "pixel": {
+          "actualSha256": "1389086b310e19a6a821484875339db4c5658ad91434e278ad515209d1324be4",
+          "botanicalReviewRequired": true,
+          "importedBy": "ChatGPT handoff, owner-approved #57-61",
+          "note": null,
+          "origin": "ai_generated_derivative",
+          "path": "expansion/assets/rudbeckia-hirta/pixel.png",
+          "recordedSha256": "1389086b310e19a6a821484875339db4c5658ad91434e278ad515209d1324be4"
+        },
+        "tall": {
+          "actualSha256": "86a537ce22190b3d3f9fce32f0a14355845f37dab56e9bfcb0b83aa40cc824e9",
+          "botanicalReviewRequired": true,
+          "importedBy": "ChatGPT handoff, owner-approved #57-61",
+          "note": null,
+          "origin": "ai_generated_derivative",
+          "path": "expansion/assets/rudbeckia-hirta/tall.png",
+          "recordedSha256": "86a537ce22190b3d3f9fce32f0a14355845f37dab56e9bfcb0b83aa40cc824e9"
+        }
+      },
+      "inventory": {
+        "approvalQuote": "6be20a6 2026-11-17: \"Expansion: import approved artwork for cards #57-61 (main, pixel, tall) as hidden drafts\"",
+        "assembledCard": "PRESENT",
+        "mainImage": "APPROVED",
+        "pixelIcon": "APPROVED",
+        "sprite": "APPROVED",
+        "spriteApprovalQuote": "commit f3861d1 2026-11-17: \"Expansion #57-61: record owner approval of the five sprites\"",
+        "tallPreview": "APPROVED"
+      },
+      "ownerEdits": [
+        {
+          "by": "owner",
+          "field": "back.compounds"
+        },
+        {
+          "by": "owner",
+          "field": "back.healingTraits"
+        }
+      ],
+      "record": {
+        "back": {
+          "aromatic": [
+            "Green",
+            "Grassy",
+            "Mild"
+          ],
+          "compounds": [
+            "Flavonoids",
+            "Tannins",
+            "Phenolic acid"
+          ],
+          "healingTraits": [
+            "Wound support",
+            "Skin soothing",
+            "Cold support",
+            "Fever aid",
+            "Immune aid",
+            "Snakebite aid"
+          ],
+          "preparations": [
+            "Wash",
+            "Poultice",
+            "Dye"
+          ],
+          "taste": [
+            "Bitter",
+            "Green",
+            "Earthy"
+          ],
+          "usableParts": [
+            "Root",
+            "Flower",
+            "Leaf"
+          ]
+        },
+        "cardNumber": 60,
+        "commonName": "Black-Eyed Susan",
+        "front": {
+          "rarity": "Common",
+          "season": "summer",
+          "stats": {
+            "sun": 5,
+            "temperature": 3,
+            "water": 2
+          },
+          "uses": [
+            "wound",
+            "topical"
+          ],
+          "xp": 100
+        },
+        "id": "rudbeckia-hirta",
+        "researchLinks": {
+          "directReferencesLocated": 0,
+          "links": [
+            {
+              "isCitation": false,
+              "type": "Research search \u2014 NOT A CITATION",
+              "url": "https://pubmed.ncbi.nlm.nih.gov/?term=%22Rudbeckia%20hirta%22%20medicinal%20ethnobotany"
+            },
+            {
+              "isCitation": false,
+              "type": "Research search \u2014 NOT A CITATION",
+              "url": "https://pmc.ncbi.nlm.nih.gov/?term=%22Rudbeckia%20hirta%22%20medicinal%20ethnobotany"
+            },
+            {
+              "isCitation": false,
+              "type": "Research search \u2014 NOT A CITATION",
+              "url": "https://scholar.google.com/scholar?q=%22Rudbeckia%20hirta%22%20medicinal%20ethnobotany"
+            }
+          ],
+          "notes": "Direct references are not automatically evidence for each card claim. Search links require selecting and checking individual papers.",
+          "verificationStatus": "3 research search link(s) \u2014 direct medicinal sources not yet confirmed"
+        },
+        "review": {
+          "cardSafetyWarning": "Seeds may be toxic; not a food plant.",
+          "cardSafetyWarningStatus": "SHORT CARD COPY \u2014 final botanical/safety review pending",
+          "editorial": {
+            "aromaEvidenceStatus": "Editorial sensory proposal \u2014 source verification required",
+            "aromaPlantPart": "Flowers / leaves",
+            "aromaSourceUrl": null,
+            "cardSafetyWarning": "Seeds may be toxic; not a food plant.",
+            "cardSafetyWarningStatus": "SHORT CARD COPY \u2014 final botanical/safety review pending",
+            "compoundEvidenceNote": "Compound occurrence and relevance to listed healing traits need species-specific review; not a clinical claim.",
+            "compoundEvidenceStatus": "PROVISIONAL \u2014 species verification required",
+            "compoundSourceUrl": null,
+            "ecologyRatingStatus": "ESTIMATE \u2014 ecology-based; species-level horticultural verification recommended",
+            "guideCaution": "Seeds are toxic; not a culinary plant.",
+            "healingEvidenceNote": "Historical root wash and leaf poultice; flower dye is not medicinal.",
+            "originalPdfPartNames": "Roots | Flowers | Leaves",
+            "peakSeasonSource": "https://www.wildflower.org/plants/",
+            "preparationSafetyReview": "Seeds flagged toxic in guide; historical medicinal uses need confirmation.",
+            "publicationStatus": "EDITORIAL DRAFT \u2014 species-specific safety and claims review pending",
+            "rarityRationale": "Jun\u2013Aug",
+            "raritySource": "Flower",
+            "seasonLimitations": "Broad calendar estimate; not a nationwide observation-derived peak. Flowering varies by elevation, latitude, rainfall, and year. For fruit-focused species, peak means ripe fruit, not bloom. Evergreen season indicates foliage visibility. Specific local season should come from regional quests.",
+            "tasteEvidenceStatus": "EDITORIAL PROPOSAL \u2014 sensory verification pending",
+            "tastePlantPart": "Roots / aerial parts",
+            "tasteSourceUrl": null
+          },
+          "references": {
+            "claimCoverage": {
+              "aromaTaste": "editorial; evidence status in original editorial metadata",
+              "compoundChemistry": "PROVISIONAL \u2014 species verification required",
+              "healingTraits": "traditional claims, not established efficacy",
+              "identity": "species named",
+              "regionalPresence": "provisional ecological assignment, not independently range-verified",
+              "usableParts": "user guide only"
+            },
+            "existingExternalUrls": [],
+            "externalUrlsVerification": "Links carried over from earlier draft; each supports only its documented subject, not entire card. Independent source quality/content not re-checked.",
+            "primaryProvidedGuide": {
+              "file": "PlantDex_Usable_Parts_Guide_57-142.pdf",
+              "page": 2,
+              "supports": "Documented parts, traditional / culinary / utility uses as claimed in supplied guide",
+              "verification": "USER-SUPPLIED GUIDE \u2014 not independently fact checked"
+            },
+            "rangeResearchResources": {
+              "BONAP_ATLAS": "https://bonap.net/NAPA/",
+              "KEW_POWO_SEARCH": "https://powo.science.kew.org/",
+              "USDA_PLANTS_STATE_SEARCH": "https://plants.sc.egov.usda.gov/state-search",
+              "WILDFLOWER_DB": "https://www.wildflower.org/plants/"
+            },
+            "speciesQuery": "Rudbeckia hirta"
+          },
+          "regionalConfidence": "Provisional ecology-based; confirm range before quest release",
+          "regions": [
+            "NE",
+            "AP",
+            "SE",
+            "GC",
+            "MW",
+            "GP",
+            "RM"
+          ]
+        },
+        "scientificName": "Rudbeckia hirta",
+        "status": "draft",
+        "supplied": {
+          "peakSeason": "Summer",
+          "stats": {
+            "heat": 3,
+            "sun": 5,
+            "water": 2
+          },
+          "useIcons": [
+            "Wound",
+            "Topical"
+          ]
+        }
+      }
+    },
+    {
+      "assets": {
+        "main": {
+          "actualSha256": "e4389177b639fb51aa966f817904ebbe4a105489c17e342414e2825098fcea78",
+          "botanicalReviewRequired": true,
+          "importedBy": "owner",
+          "note": null,
+          "origin": "ai_generated_derivative",
+          "path": "expansion/assets/rumex-crispus/main.png",
+          "recordedSha256": "e4389177b639fb51aa966f817904ebbe4a105489c17e342414e2825098fcea78"
+        },
+        "pixel": {
+          "actualSha256": "863a083e36f13194a528c1169289d2f6e9b0d61531591c5fa1e7cbe532fc2e76",
+          "botanicalReviewRequired": true,
+          "importedBy": "owner",
+          "note": null,
+          "origin": "ai_generated_derivative",
+          "path": "expansion/assets/rumex-crispus/pixel.png",
+          "recordedSha256": "863a083e36f13194a528c1169289d2f6e9b0d61531591c5fa1e7cbe532fc2e76"
+        },
+        "tall": {
+          "actualSha256": "b4890d5a2af8a0d96af3d69ec1be7ef2ff0d457836ccd6d60f8559de4e667fdb",
+          "botanicalReviewRequired": true,
+          "importedBy": "owner",
+          "note": null,
+          "origin": "ai_generated_derivative",
+          "path": "expansion/assets/rumex-crispus/tall.png",
+          "recordedSha256": "b4890d5a2af8a0d96af3d69ec1be7ef2ff0d457836ccd6d60f8559de4e667fdb"
+        }
+      },
+      "inventory": {
+        "approvalQuote": "9ce5514 2026-11-18: \"Cards 67-71 assembled on approved V28 finals; approved fronts/backs stored with checksums\"",
+        "assembledCard": "APPROVED",
+        "mainImage": "PRESENT",
+        "pixelIcon": "PRESENT",
+        "sprite": "MISSING",
+        "spriteApprovalQuote": null,
+        "tallPreview": "PRESENT"
+      },
+      "ownerEdits": [
+        {
+          "by": "owner",
+          "field": "back.healingTraits"
+        }
+      ],
+      "record": {
+        "back": {
+          "aromatic": [
+            "Earthy",
+            "Grassy",
+            "Mild"
+          ],
+          "compounds": [
+            "Emodin",
+            "Chrysophanol",
+            "Physcion"
+          ],
+          "healingTraits": [
+            "Anti-parasitic",
+            "Digestive aid",
+            "Iron source",
+            "Laxative",
+            "Antimicrobial"
+          ],
+          "preparations": [
+            "Cooked Greens",
+            "Flour",
+            "Dye",
+            "Roasted Seed"
+          ],
+          "taste": [
+            "Sour",
+            "Tart",
+            "Bitter"
+          ],
+          "usableParts": [
+            "Leaf",
+            "Seed",
+            "Root",
+            "Stem"
+          ]
+        },
+        "cardNumber": 67,
+        "commonName": "Curly Dock",
+        "front": {
+          "rarity": "Common",
+          "season": "summer",
+          "stats": {
+            "sun": 5,
+            "temperature": 3,
+            "water": 3
+          },
+          "uses": [
+            "digestive",
+            "edible"
+          ],
+          "xp": 100
+        },
+        "id": "rumex-crispus",
+        "researchLinks": {
+          "directReferencesLocated": 0,
+          "links": [
+            {
+              "isCitation": false,
+              "type": "Research search \u2014 NOT A CITATION",
+              "url": "https://pubmed.ncbi.nlm.nih.gov/?term=%22Rumex%20crispus%22%20medicinal%20ethnobotany"
+            },
+            {
+              "isCitation": false,
+              "type": "Research search \u2014 NOT A CITATION",
+              "url": "https://pmc.ncbi.nlm.nih.gov/?term=%22Rumex%20crispus%22%20medicinal%20ethnobotany"
+            },
+            {
+              "isCitation": false,
+              "type": "Research search \u2014 NOT A CITATION",
+              "url": "https://scholar.google.com/scholar?q=%22Rumex%20crispus%22%20medicinal%20ethnobotany"
+            }
+          ],
+          "notes": "Direct references are not automatically evidence for each card claim. Search links require selecting and checking individual papers.",
+          "verificationStatus": "3 research search link(s) \u2014 direct medicinal sources not yet confirmed"
+        },
+        "review": {
+          "cardSafetyWarning": "High oxalate; cook and eat in moderation.",
+          "cardSafetyWarningStatus": "SHORT CARD COPY \u2014 final botanical/safety review pending",
+          "editorial": {
+            "aromaEvidenceStatus": "Editorial sensory proposal \u2014 source verification required",
+            "aromaPlantPart": "Leaves",
+            "aromaSourceUrl": null,
+            "cardSafetyWarning": "High oxalate; cook and eat in moderation.",
+            "cardSafetyWarningStatus": "SHORT CARD COPY \u2014 final botanical/safety review pending",
+            "compoundEvidenceNote": "Named components supported by species-specific chemistry; constituent concentration varies by plant part and sample. Chemical presence does not validate healing traits.",
+            "compoundEvidenceStatus": "SPECIES SOURCE \u2014 compounds identified; effects not established",
+            "compoundSourceUrl": "https://pubmed.ncbi.nlm.nih.gov/20432897/",
+            "ecologyRatingStatus": "ESTIMATE \u2014 ecology-based; species-level horticultural verification recommended",
+            "guideCaution": "Contains oxalic acid; best cooked and eaten in moderation.",
+            "healingEvidenceNote": "Traditional root use plus edible greens and seeds; nutritional specifics need analysis.",
+            "originalPdfPartNames": "Young Leaves | Seeds | Roots | Young Stems",
+            "peakSeasonSource": "https://www.wildflower.org/plants/",
+            "preparationSafetyReview": null,
+            "publicationStatus": "EDITORIAL DRAFT \u2014 species-specific safety and claims review pending",
+            "rarityRationale": "Jun\u2013Aug",
+            "raritySource": "Seed/foliage",
+            "seasonLimitations": "Broad calendar estimate; not a nationwide observation-derived peak. Flowering varies by elevation, latitude, rainfall, and year. For fruit-focused species, peak means ripe fruit, not bloom. Evergreen season indicates foliage visibility. Specific local season should come from regional quests.",
+            "tasteEvidenceStatus": "Needs part-specific source verification",
+            "tastePlantPart": "Leaf / root (different)",
+            "tasteSourceUrl": null
+          },
+          "references": {
+            "claimCoverage": {
+              "aromaTaste": "editorial; evidence status in original editorial metadata",
+              "compoundChemistry": "SPECIES SOURCE \u2014 compounds identified; effects not established",
+              "healingTraits": "traditional claims, not established efficacy",
+              "identity": "species named",
+              "regionalPresence": "provisional ecological assignment, not independently range-verified",
+              "usableParts": "user guide only"
+            },
+            "existingExternalUrls": [
+              "https://pubmed.ncbi.nlm.nih.gov/20432897/"
+            ],
+            "externalUrlsVerification": "Links carried over from earlier draft; each supports only its documented subject, not entire card. Independent source quality/content not re-checked.",
+            "primaryProvidedGuide": {
+              "file": "PlantDex_Usable_Parts_Guide_57-142.pdf",
+              "page": 5,
+              "supports": "Documented parts, traditional / culinary / utility uses as claimed in supplied guide",
+              "verification": "USER-SUPPLIED GUIDE \u2014 not independently fact checked"
+            },
+            "rangeResearchResources": {
+              "BONAP_ATLAS": "https://bonap.net/NAPA/",
+              "KEW_POWO_SEARCH": "https://powo.science.kew.org/",
+              "USDA_PLANTS_STATE_SEARCH": "https://plants.sc.egov.usda.gov/state-search",
+              "WILDFLOWER_DB": "https://www.wildflower.org/plants/"
+            },
+            "speciesQuery": "Rumex crispus"
+          },
+          "regionalConfidence": "Provisional ecology-based; confirm range before quest release",
+          "regions": [
+            "NE",
+            "AP",
+            "SE",
+            "GC",
+            "MW",
+            "GP",
+            "RM",
+            "SW",
+            "PC"
+          ]
+        },
+        "scientificName": "Rumex crispus",
+        "status": "draft",
+        "supplied": {
+          "peakSeason": "Summer",
+          "stats": {
+            "heat": 3,
+            "sun": 5,
+            "water": 3
+          },
+          "useIcons": [
+            "Digestive",
+            "Edible"
+          ]
+        }
+      }
+    },
+    {
+      "assets": {
+        "main": {
+          "actualSha256": "db237a26151167fdcd155f311a13d296d7d1b4bf1c6fb743f4ae7889bfd6b5ff",
+          "botanicalReviewRequired": true,
+          "importedBy": "owner",
+          "note": null,
+          "origin": "ai_generated_derivative",
+          "path": "expansion/assets/plantago-lanceolata/main.png",
+          "recordedSha256": "db237a26151167fdcd155f311a13d296d7d1b4bf1c6fb743f4ae7889bfd6b5ff"
+        },
+        "pixel": {
+          "actualSha256": "3e26d2740f0cee304c2b3ca22b0e560192fbca994a9cf4fd12a85ba9939d2986",
+          "botanicalReviewRequired": true,
+          "importedBy": "owner",
+          "note": null,
+          "origin": "ai_generated_derivative",
+          "path": "expansion/assets/plantago-lanceolata/pixel.png",
+          "recordedSha256": "3e26d2740f0cee304c2b3ca22b0e560192fbca994a9cf4fd12a85ba9939d2986"
+        },
+        "tall": {
+          "actualSha256": "2935601fd0d6658a7da17cfa10bf6ce0d86ddbca27a6279754bef850bd36aa83",
+          "botanicalReviewRequired": true,
+          "importedBy": "owner",
+          "note": null,
+          "origin": "ai_generated_derivative",
+          "path": "expansion/assets/plantago-lanceolata/tall.png",
+          "recordedSha256": "2935601fd0d6658a7da17cfa10bf6ce0d86ddbca27a6279754bef850bd36aa83"
+        }
+      },
+      "inventory": {
+        "approvalQuote": "9ce5514 2026-11-18: \"Cards 67-71 assembled on approved V28 finals; approved fronts/backs stored with checksums\"",
+        "assembledCard": "APPROVED",
+        "mainImage": "PRESENT",
+        "pixelIcon": "PRESENT",
+        "sprite": "MISSING",
+        "spriteApprovalQuote": null,
+        "tallPreview": "PRESENT"
+      },
+      "ownerEdits": [
+        {
+          "by": "owner",
+          "field": "back.healingTraits"
+        }
+      ],
+      "record": {
+        "back": {
+          "aromatic": [
+            "Green",
+            "Grassy",
+            "Faint"
+          ],
+          "compounds": [
+            "Aucubin",
+            "Acteoside",
+            "Mucilage"
+          ],
+          "healingTraits": [
+            "Wound support",
+            "Bite soothing",
+            "Respiratory aid",
+            "Anti-inflam."
+          ],
+          "preparations": [
+            "Salad",
+            "Cooked Greens",
+            "Poultice",
+            "Seed Fiber"
+          ],
+          "taste": [
+            "Mild",
+            "Grassy",
+            "Bitter"
+          ],
+          "usableParts": [
+            "Leaf",
+            "Flower",
+            "Seed"
+          ]
+        },
+        "cardNumber": 68,
+        "commonName": "Narrowleaf Plantain",
+        "front": {
+          "rarity": "Common",
+          "season": "spring",
+          "stats": {
+            "sun": 5,
+            "temperature": 3,
+            "water": 3
+          },
+          "uses": [
+            "wound",
+            "edible"
+          ],
+          "xp": 100
+        },
+        "id": "plantago-lanceolata",
+        "researchLinks": {
+          "directReferencesLocated": 0,
+          "links": [
+            {
+              "isCitation": false,
+              "type": "Research search \u2014 NOT A CITATION",
+              "url": "https://pubmed.ncbi.nlm.nih.gov/?term=%22Plantago%20lanceolata%22%20medicinal%20ethnobotany"
+            },
+            {
+              "isCitation": false,
+              "type": "Research search \u2014 NOT A CITATION",
+              "url": "https://pmc.ncbi.nlm.nih.gov/?term=%22Plantago%20lanceolata%22%20medicinal%20ethnobotany"
+            },
+            {
+              "isCitation": false,
+              "type": "Research search \u2014 NOT A CITATION",
+              "url": "https://scholar.google.com/scholar?q=%22Plantago%20lanceolata%22%20medicinal%20ethnobotany"
+            }
+          ],
+          "notes": "Direct references are not automatically evidence for each card claim. Search links require selecting and checking individual papers.",
+          "verificationStatus": "3 research search link(s) \u2014 direct medicinal sources not yet confirmed"
+        },
+        "review": {
+          "cardSafetyWarning": "Seeds swell; drink plenty of water.",
+          "cardSafetyWarningStatus": "SHORT CARD COPY \u2014 final botanical/safety review pending",
+          "editorial": {
+            "aromaEvidenceStatus": "Editorial sensory proposal \u2014 source verification required",
+            "aromaPlantPart": "Leaves",
+            "aromaSourceUrl": null,
+            "cardSafetyWarning": "Seeds swell; drink plenty of water.",
+            "cardSafetyWarningStatus": "SHORT CARD COPY \u2014 final botanical/safety review pending",
+            "compoundEvidenceNote": "More specific candidate chemical labels for card design; independent species-specific identification and plant-part relevance not yet verified. Do not publish as confirmed.",
+            "compoundEvidenceStatus": "PROVISIONAL \u2014 compound identity needs species-specific verification",
+            "compoundSourceUrl": null,
+            "ecologyRatingStatus": "ESTIMATE \u2014 ecology-based; species-level horticultural verification recommended",
+            "guideCaution": null,
+            "healingEvidenceNote": "Topical leaf and mucilaginous seed use, not a clinical endorsement.",
+            "originalPdfPartNames": "Leaves | Flower Buds | Seeds",
+            "peakSeasonSource": "https://www.wildflower.org/plants/",
+            "preparationSafetyReview": null,
+            "publicationStatus": "EDITORIAL DRAFT \u2014 species-specific safety and claims review pending",
+            "rarityRationale": "Apr\u2013Jun",
+            "raritySource": "Leaf/flower",
+            "seasonLimitations": "Broad calendar estimate; not a nationwide observation-derived peak. Flowering varies by elevation, latitude, rainfall, and year. For fruit-focused species, peak means ripe fruit, not bloom. Evergreen season indicates foliage visibility. Specific local season should come from regional quests.",
+            "tasteEvidenceStatus": "Needs source verification",
+            "tastePlantPart": "Young leaves",
+            "tasteSourceUrl": null
+          },
+          "references": {
+            "claimCoverage": {
+              "aromaTaste": "editorial; evidence status in original editorial metadata",
+              "compoundChemistry": "PROVISIONAL \u2014 compound identity needs species-specific verification",
+              "healingTraits": "traditional claims, not established efficacy",
+              "identity": "species named",
+              "regionalPresence": "provisional ecological assignment, not independently range-verified",
+              "usableParts": "user guide only"
+            },
+            "existingExternalUrls": [],
+            "externalUrlsVerification": "Links carried over from earlier draft; each supports only its documented subject, not entire card. Independent source quality/content not re-checked.",
+            "primaryProvidedGuide": {
+              "file": "PlantDex_Usable_Parts_Guide_57-142.pdf",
+              "page": 5,
+              "supports": "Documented parts, traditional / culinary / utility uses as claimed in supplied guide",
+              "verification": "USER-SUPPLIED GUIDE \u2014 not independently fact checked"
+            },
+            "rangeResearchResources": {
+              "BONAP_ATLAS": "https://bonap.net/NAPA/",
+              "KEW_POWO_SEARCH": "https://powo.science.kew.org/",
+              "USDA_PLANTS_STATE_SEARCH": "https://plants.sc.egov.usda.gov/state-search",
+              "WILDFLOWER_DB": "https://www.wildflower.org/plants/"
+            },
+            "speciesQuery": "Plantago lanceolata"
+          },
+          "regionalConfidence": "Provisional ecology-based; confirm range before quest release",
+          "regions": [
+            "NE",
+            "AP",
+            "SE",
+            "GC",
+            "MW",
+            "GP",
+            "RM",
+            "SW",
+            "PC"
+          ]
+        },
+        "scientificName": "Plantago lanceolata",
+        "status": "draft",
+        "supplied": {
+          "peakSeason": "Spring",
+          "stats": {
+            "heat": 3,
+            "sun": 5,
+            "water": 3
+          },
+          "useIcons": [
+            "Wound",
+            "Edible"
+          ]
+        }
+      }
+    },
+    {
+      "assets": {
+        "main": {
+          "actualSha256": "7c91823dd04dead2ad2d59b11f9536e637c3f6627add78e5c008c2a991927243",
+          "botanicalReviewRequired": null,
+          "importedBy": null,
+          "note": "V17 supplies the transparent generated cutout (STAGES/main_generated_cutout_used.png); front/back finals identical to V15",
+          "origin": null,
+          "path": "expansion/cards/080_trifolium-repens/approved_final/main_generated_cutout_used.png",
+          "recordedSha256": "7c91823dd04dead2ad2d59b11f9536e637c3f6627add78e5c008c2a991927243"
+        },
+        "pixel": {
+          "actualSha256": "04bbc58cf6e580d2b4ba1acaf2cea227be64bb309efb8e35691b83c709e7ae16",
+          "botanicalReviewRequired": null,
+          "importedBy": null,
+          "note": "V17 supplies the transparent generated cutout (STAGES/main_generated_cutout_used.png); front/back finals identical to V15",
+          "origin": null,
+          "path": "expansion/cards/080_trifolium-repens/approved_final/pixel_icon_native_24x24.png",
+          "recordedSha256": "04bbc58cf6e580d2b4ba1acaf2cea227be64bb309efb8e35691b83c709e7ae16"
+        }
+      },
+      "inventory": {
+        "approvalQuote": "1a7fd5d 2026-11-19: \"Cards 77-81 assembled on approved V15 finals (front enlarged, text drawn over; no cutouts supplied)\"",
+        "assembledCard": "APPROVED",
+        "mainImage": "APPROVED",
+        "pixelIcon": "PRESENT",
+        "sprite": "MISSING",
+        "spriteApprovalQuote": null,
+        "tallPreview": "MISSING"
+      },
+      "ownerEdits": [
+        {
+          "by": "owner",
+          "field": "back.healingTraits"
+        }
+      ],
+      "record": {
+        "back": {
+          "aromatic": [
+            "Sweet",
+            "Floral",
+            "Grassy"
+          ],
+          "compounds": [
+            "Formononetin",
+            "Genistein",
+            "Coumestrol"
+          ],
+          "healingTraits": [
+            "Mineral source",
+            "Antioxidant",
+            "Wound aid",
+            "Antitumor"
+          ],
+          "preparations": [
+            "Salad",
+            "Cooked Greens",
+            "Tea",
+            "Flour"
+          ],
+          "taste": [
+            "Mild",
+            "Sweet",
+            "Grassy"
+          ],
+          "usableParts": [
+            "Flower",
+            "Leaf"
+          ]
+        },
+        "cardNumber": 80,
+        "commonName": "White Clover",
+        "front": {
+          "rarity": "Common",
+          "season": "spring",
+          "stats": {
+            "sun": 5,
+            "temperature": 3,
+            "water": 3
+          },
+          "uses": [
+            "edible",
+            "tea"
+          ],
+          "xp": 100
+        },
+        "id": "trifolium-repens",
+        "researchLinks": {
+          "directReferencesLocated": 0,
+          "links": [
+            {
+              "isCitation": false,
+              "type": "Research search \u2014 NOT A CITATION",
+              "url": "https://pubmed.ncbi.nlm.nih.gov/?term=%22Trifolium%20repens%22%20medicinal%20ethnobotany"
+            },
+            {
+              "isCitation": false,
+              "type": "Research search \u2014 NOT A CITATION",
+              "url": "https://pmc.ncbi.nlm.nih.gov/?term=%22Trifolium%20repens%22%20medicinal%20ethnobotany"
+            },
+            {
+              "isCitation": false,
+              "type": "Research search \u2014 NOT A CITATION",
+              "url": "https://scholar.google.com/scholar?q=%22Trifolium%20repens%22%20medicinal%20ethnobotany"
+            }
+          ],
+          "notes": "Direct references are not automatically evidence for each card claim. Search links require selecting and checking individual papers.",
+          "verificationStatus": "3 research search link(s) \u2014 direct medicinal sources not yet confirmed"
+        },
+        "review": {
+          "cardSafetyWarning": "Some plants can release cyanide.",
+          "cardSafetyWarningStatus": "SHORT CARD COPY \u2014 final botanical/safety review pending",
+          "editorial": {
+            "aromaEvidenceStatus": "Editorial sensory proposal \u2014 source verification required",
+            "aromaPlantPart": "Flowers",
+            "aromaSourceUrl": null,
+            "cardSafetyWarning": "Some plants can release cyanide.",
+            "cardSafetyWarningStatus": "SHORT CARD COPY \u2014 final botanical/safety review pending",
+            "compoundEvidenceNote": "More specific candidate chemical labels for card design; independent species-specific identification and plant-part relevance not yet verified. Do not publish as confirmed.",
+            "compoundEvidenceStatus": "PROVISIONAL \u2014 compound identity needs species-specific verification",
+            "compoundSourceUrl": null,
+            "ecologyRatingStatus": "ESTIMATE \u2014 ecology-based; species-level horticultural verification recommended",
+            "guideCaution": null,
+            "healingEvidenceNote": "Food traits not treatment claims. Specific nutrient quantities unverified. | REVIEW: Removed \"Flower nectar\" (not a healing trait); dietary claims need species-specific nutritional analysis.",
+            "originalPdfPartNames": "Flowers | Young Leaves",
+            "peakSeasonSource": "https://www.wildflower.org/plants/",
+            "preparationSafetyReview": null,
+            "publicationStatus": "EDITORIAL DRAFT \u2014 species-specific safety and claims review pending",
+            "rarityRationale": "Apr\u2013Jun",
+            "raritySource": "Flower",
+            "seasonLimitations": "Broad calendar estimate; not a nationwide observation-derived peak. Flowering varies by elevation, latitude, rainfall, and year. For fruit-focused species, peak means ripe fruit, not bloom. Evergreen season indicates foliage visibility. Specific local season should come from regional quests.",
+            "tasteEvidenceStatus": "Needs source verification",
+            "tastePlantPart": "Flowers / leaves",
+            "tasteSourceUrl": null
+          },
+          "references": {
+            "claimCoverage": {
+              "aromaTaste": "editorial; evidence status in original editorial metadata",
+              "compoundChemistry": "PROVISIONAL \u2014 compound identity needs species-specific verification",
+              "healingTraits": "traditional claims, not established efficacy",
+              "identity": "species named",
+              "regionalPresence": "provisional ecological assignment, not independently range-verified",
+              "usableParts": "user guide only"
+            },
+            "existingExternalUrls": [],
+            "externalUrlsVerification": "Links carried over from earlier draft; each supports only its documented subject, not entire card. Independent source quality/content not re-checked.",
+            "primaryProvidedGuide": {
+              "file": "PlantDex_Usable_Parts_Guide_57-142.pdf",
+              "page": 9,
+              "supports": "Documented parts, traditional / culinary / utility uses as claimed in supplied guide",
+              "verification": "USER-SUPPLIED GUIDE \u2014 not independently fact checked"
+            },
+            "rangeResearchResources": {
+              "BONAP_ATLAS": "https://bonap.net/NAPA/",
+              "KEW_POWO_SEARCH": "https://powo.science.kew.org/",
+              "USDA_PLANTS_STATE_SEARCH": "https://plants.sc.egov.usda.gov/state-search",
+              "WILDFLOWER_DB": "https://www.wildflower.org/plants/"
+            },
+            "speciesQuery": "Trifolium repens"
+          },
+          "regionalConfidence": "Provisional ecology-based; confirm range before quest release",
+          "regions": [
+            "NE",
+            "AP",
+            "SE",
+            "MW"
+          ]
+        },
+        "scientificName": "Trifolium repens",
+        "status": "draft",
+        "supplied": {
+          "peakSeason": "Spring",
+          "stats": {
+            "heat": 3,
+            "sun": 5,
+            "water": 3
+          },
+          "useIcons": [
+            "Edible",
+            "Tea"
+          ]
+        }
+      }
+    }
+  ],
+  "snapshotOf": {
+    "draftCommit": "26e9deafe5e50f9b70e8853ab83ac705ec5a7a4c",
+    "draftFile": "src/data/expansion-cards.json",
+    "draftFileSha256": "a3384286269e66ebcb11eb90d1f04c941988b96869c526ee907bf03bdacd8ac1",
+    "draftStatus": "EDITORIAL_DRAFT_NOT_PUBLICATION_VERIFIED",
+    "inventoryCommit": "6ac59c6515e731d36a9129e80e6a684b20856f73"
+  },
+  "sourceFiles": [
+    {
+      "actualSha256": "7a2061e1ca7a6c2044e69dae358d976535feede2ae120f191006a37ea336bf67",
+      "file": "expansion/source/PlantDex_85_All_Requested_Corrections.json",
+      "recordedSha256": "7a2061e1ca7a6c2044e69dae358d976535feede2ae120f191006a37ea336bf67"
+    },
+    {
+      "actualSha256": "e6f27a3c18ae88d1d04f5484f066e900207f66f61d030650886230606e6a9f59",
+      "file": "expansion/source/PlantDex_85_All_Requested_Corrections.csv",
+      "recordedSha256": "e6f27a3c18ae88d1d04f5484f066e900207f66f61d030650886230606e6a9f59"
+    },
+    {
+      "actualSha256": "a38a930a3cb561b4a159c2fa8d72bee611b675cb5da8c95d03042f920dff1637",
+      "file": "expansion/source/PlantDex_85_ALL_Corrections_Claude_Master.xlsx",
+      "recordedSha256": "a38a930a3cb561b4a159c2fa8d72bee611b675cb5da8c95d03042f920dff1637"
+    },
+    {
+      "actualSha256": "6e2371bc32f36541b223ae542a55028a020c39e3fc502d83c5609d161faf25e5",
+      "file": "expansion/source/PlantDex_85_Claude_Safety_Correction_Handoff.md",
+      "recordedSha256": "6e2371bc32f36541b223ae542a55028a020c39e3fc502d83c5609d161faf25e5"
+    },
+    {
+      "actualSha256": "7b2f08c92f788221e323a6c6818a2cbf320d1be8ea9dda628d8b41112b225cb7",
+      "file": "expansion/source/PlantDex_85_All_Corrections_QA.json",
+      "recordedSha256": "7b2f08c92f788221e323a6c6818a2cbf320d1be8ea9dda628d8b41112b225cb7"
+    },
+    {
+      "actualSha256": "a50cce0f70a56ae9346f5ccbf71166fd75cf8c7d6225f6ae50c5c49b1f8acc40",
+      "file": "expansion/source/PlantDex_139_Three_Research_Links_Per_Plant.csv",
+      "recordedSha256": "a50cce0f70a56ae9346f5ccbf71166fd75cf8c7d6225f6ae50c5c49b1f8acc40"
+    },
+    {
+      "actualSha256": "39acc590f9f633d2fce3abd80f55c83ea066750be7d3c1eabf0da53a68958196",
+      "file": "expansion/source/PlantDex_139_Three_Links_Per_Plant_Source_Tracker.xlsx",
+      "recordedSha256": "39acc590f9f633d2fce3abd80f55c83ea066750be7d3c1eabf0da53a68958196"
+    }
+  ]
+}
