@@ -85,9 +85,9 @@ export default function HerbdexPage() {
       </nav>
 
       <div className="mt-8 flex items-center gap-3">
-        <span aria-hidden="true" className="h-0.5 flex-1 bg-gradient-to-r from-transparent to-violet-600" />
-        <h1 className="plate-plum font-display px-4 py-1 text-3xl font-extrabold text-gold-plate">My Collection</h1>
-        <span aria-hidden="true" className="h-0.5 flex-1 bg-gradient-to-l from-transparent to-violet-600" />
+        <span aria-hidden="true" className="h-0.5 flex-1 bg-gradient-to-r from-transparent to-gold-500" />
+        <h1 className="font-display px-1 text-3xl font-extrabold text-violet-50">My Collection</h1>
+        <span aria-hidden="true" className="h-0.5 flex-1 bg-gradient-to-l from-transparent to-gold-500" />
       </div>
       {/* Collection identity, stated once. The deck is complete as it stands: this names it
           rather than implying anything is missing from it. */}
@@ -120,7 +120,7 @@ export default function HerbdexPage() {
         <BeyondCollection />
       </div>
 
-      <div className="plate-plum mt-10 p-4">
+      <div className="panel mt-10 p-4">
         <DeckCta placement="herbdex" />
       </div>
 

@@ -182,7 +182,7 @@ export function HerbGrid({ herbs, fieldCards = [] }: { herbs: Herb[]; fieldCards
       <div
         role="group"
         aria-label="Show cards by status"
-        className="mb-3 grid grid-cols-4 rounded-full border-2 border-violet-600 bg-plum-900 p-0.5 shadow-[0_3px_0_0_var(--color-violet-800)]"
+        className="lav-track mb-3 grid grid-cols-4 rounded-full bg-plum-900 p-0.5"
       >
         {PILLS.map((pill) => (
           <button
@@ -192,7 +192,7 @@ export function HerbGrid({ herbs, fieldCards = [] }: { herbs: Herb[]; fieldCards
             onClick={() => setStatus(pill.value)}
             className={`min-h-11 rounded-full px-1 text-[0.78rem] font-bold whitespace-nowrap transition-colors ${
               status === pill.value
-                ? 'chip-card-violet'
+                ? 'chip-selected-deep'
                 : 'text-violet-200 hover:text-violet-50'
             }`}
           >
@@ -208,7 +208,7 @@ export function HerbGrid({ herbs, fieldCards = [] }: { herbs: Herb[]; fieldCards
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             placeholder="Search discovered herbs or card number…"
-            className="min-h-11 w-full rounded-full border-2 border-violet-600 bg-plum-900 px-4 text-sm text-violet-100 placeholder:text-violet-400"
+            className="min-h-11 w-full rounded-full lav-input border-2 border-violet-600 bg-plum-900 px-4 text-sm text-violet-100 placeholder:text-violet-400"
           />
         </label>
 
@@ -361,7 +361,7 @@ export function HerbGrid({ herbs, fieldCards = [] }: { herbs: Herb[]; fieldCards
           <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 border-t-2 border-violet-600 pt-5">
             <h2
               id="field-cards-heading"
-              className="plate-plum font-display flex items-center gap-2 px-3 py-1 text-lg font-extrabold text-gold-plate"
+              className="font-display flex items-center gap-2 text-lg font-extrabold text-violet-50"
             >
               <PlantdexIcon name="mastered" className="text-base text-gold-400" aria-hidden="true" />
               Field Cards

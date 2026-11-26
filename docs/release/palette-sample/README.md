@@ -32,3 +32,33 @@ Not run: the full browser contrast suite (needs the built export); `npm run veri
 
 ## Not in this sample (waiting for your approval)
 Card profile pages, Scan, the Discovery reveal, and every other screen. Scan and the reveal share files with the running S5 camera work; they will go through the ownership process after you approve the balance here.
+
+---
+# v2 (owner feedback: lighter, one family, "UI cohesive to" the Habitats references)
+`v2-collection-and-card-before-after.png`, `v2-habitats-preview.png`, individual shots in `v2/`.
+
+## What changed from v1
+Dark plum is now reserved for the bottom nav, primary CTAs and small emphasis. Panels, sheets, tiles, inputs, the progress header and the safety notice are pale lilac with deep-violet ink; headings are ink on the lavender (no plates); the selected tab is a light pill with a card-violet bar; the XP track and level pill are lilac.
+
+| Role | Token / value |
+|---|---|
+| Ground | `#C9A4F8` (lights `#E2CFFC`, `#B98CF2`) |
+| Surface (panels, sheets, tiles) | `#EEE3FD` pale lilac; `#F7F0FF` lighter (inputs, selected tab, collected tiles) |
+| Surface 2 (tracks, locked tiles) | `#DDC8FA` soft lavender |
+| Edge / drop | `#8A5BD0` / `#B48AEE` (muted card purple) |
+| Card violet (sampled) | `#9C21F8` (chips, selected-tab bar, top dotted line) |
+| Ink | `#3D0A63` (headings, body), `#4F1D82`, `#5F2F94` (secondary) |
+| Deep plum (emphasis only) | `#211827` nav + CTA; `#3D0A63` strong text |
+| Pink | `#F9C9E6` habitat label pill; `#F280B3` underlines |
+| Gold | `#FFD54A` collected check, progress fill, XP; deepened ink-gold `#7D4D08` for gold text on lilac |
+| Rarity words on lilac | common `#2F5F8F`, uncommon `#8A5300`, rare `#A8326A`, epic `#0B6A96` |
+Contrast (WCAG): ink on surface 12.0:1, on `#F7F0FF` 13.3:1, on ground 7.1:1; secondary ink 9.3 and 7.3:1; ink-gold 5.8:1; rarity words 4.9 to 5.4:1; white on deep plum 17:1; ink on pink pill 10.2:1; ink on gold 10.5:1. Browser contrast suite not run.
+
+## Known leftovers for your call
+- The "Field identification" section of a card page keeps its existing parchment-and-wood field-guide look; it now sits on lavender and is the one place the old identity shows through.
+- The empty avatar slot is still a dark tile (component not touched); small, but dark.
+- Hills/stars scenery stays hidden on lavender pages.
+- Scan and the discovery reveal not yet restyled (shared with the S5 camera work; ownership process).
+
+## Habitats: DEVELOPMENT PREVIEW, not on integration
+Branch `ui/palette-sample-habitats` (not for merge: new files are Quests-lane territory and the real Q4 trail is separate). It renders from the real `habitatsViewModel` (poster carousel with thumbnail strip, "Explore" CTA, labelled three-column sprite grid with silhouettes, occasional section and legend, bottom sheet, About-this-data sheet), real sprites and the real data note. The five poster scenes are PLACEHOLDER rectangles, not approved art. The "Quests" tab is a label only. Nothing records a discovery or pays XP. Off unless `NEXT_PUBLIC_HABITATS_PREVIEW=on`.

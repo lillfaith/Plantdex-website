@@ -175,7 +175,7 @@ export function HerbCard({
           {showFace && <CardFoil rarity={herb.rarity} />}
 
           {showFace && (
-            <span className="absolute top-1.5 left-1.5 rounded-md bg-plum-950/75 px-1.5 py-0.5 text-[0.72rem] font-bold text-gold-400 tabular-nums">
+            <span data-on-plum className="absolute top-1.5 left-1.5 rounded-md bg-plum-950/75 px-1.5 py-0.5 text-[0.72rem] font-bold text-gold-400 tabular-nums">
               {number}
             </span>
           )}
@@ -187,6 +187,7 @@ export function HerbCard({
                   ? 'bg-gold-500 text-violet-deep'
                   : 'bg-plum-950/80 text-gold-400'
               }`}
+              data-on-plum
             >
               <PlantdexIcon name={STAGE_MARK[stage ?? 'discovered']} className="block text-[0.72rem]" />
               <span className="sr-only">{stageLabel}</span>
@@ -194,7 +195,7 @@ export function HerbCard({
           )}
         </div>
 
-        <div className="space-y-0.5 bg-plum-800/90 px-2 pt-1.5 pb-2">
+        <div className="herb-strip space-y-0.5 bg-plum-800/90 px-2 pt-1.5 pb-2">
           <p
             className={`truncate text-xs font-bold ${
               showFace ? 'text-violet-100' : 'text-violet-400'
