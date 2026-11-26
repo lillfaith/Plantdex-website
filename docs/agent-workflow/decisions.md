@@ -97,3 +97,13 @@ must not create automatic growth timers.
    card-production behaviour (`github/photo-next-max-parallel.patch`, a draft for that branch).
 6. **No lane launches until** the rulesets, credential restrictions, environment protections and acceptance tests pass.
    The Discoveries lane may prepare its written design in isolation, activating no scoring change. UI stays human-directed.
+
+## 2026-11-26 (later): V1 camera decision, FINAL (owner)
+
+**SETTLED, not open for re-litigation.** V1 requires eligible in-app camera scanning to earn NEW collectible plant cards, with
+server-authoritative eligibility and sensible anti-cheat. Imported photos, manual entries and self-reported sightings may remain for
+education and the journal but cannot unlock new collectible cards. Existing collections are grandfathered (no revocation, no rescoring).
+No copy may claim camera capture proves a real outdoor sighting. Enforcement is NOT enabled in production until the owner approves.
+Informed in-flow disclosure and consent are required before photos go to a third-party identification provider.
+The 85-card expansion is not a V1 prerequisite; the V1 release uses the original collection and one complete Georgia experience.
+The approved lavender visual direction stands; agents wire function and do not redesign.
