@@ -2,6 +2,7 @@ import { beforeAll, beforeEach, afterAll, describe, expect, it, vi } from 'vites
 import {
   ENV,
   fakeImage,
+  importEdge,
   inertBuilder,
   installFetch,
   invoke,
@@ -84,7 +85,7 @@ beforeAll(async () => {
   void ENV;
   vi.spyOn(crypto, 'randomUUID').mockReturnValue(OBS);
   restoreFetch = installFetch();
-  handler = await loadHandler(() => import('../../supabase/functions/identify-plant/index'));
+  handler = await loadHandler(() => importEdge('index'));
 });
 afterAll(() => restoreFetch());
 beforeEach(() => {

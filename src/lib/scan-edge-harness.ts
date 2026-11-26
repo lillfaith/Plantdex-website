@@ -167,3 +167,60 @@ export async function invoke(handler: Handler, options: InvokeOptions = {}): Pro
   }
   return { status: response.status, text, body };
 }
+
+// ── Loading the edge sources without letting tsc follow them ─────────────────
+/*
+ * `supabase/functions/**` is Deno: its imports carry `.ts` extensions and `npm:` specifiers that this
+ * project's tsconfig rejects (that is why the folder is excluded). A literal import from a test would
+ * pull those files into `npm run typecheck`, so they are loaded through a computed path and described
+ * by the structural types below, which `scan-edge-receipts.test.ts` holds to the real exports at run
+ * time (it calls every one of them). `npm run check:edge` is what type-checks the Deno side.
+ */
+import type { PlantMatch, SpeciesConfidence } from './plant-match';
+
+export async function importEdge<T>(file: 'index' | 'capture'): Promise<T> {
+  const path = ['..', '..', 'supabase', 'functions', 'identify-plant', file].join('/');
+  return (await import(/* @vite-ignore */ path)) as T;
+}
+
+export type RankPosition = 'top' | 'listed';
+export interface ReceiptItemShape {
+  herb_id: string;
+  observed_taxon_key: string;
+  observed_taxon_rank: string;
+  eligibility: string;
+  rank_position: RankPosition;
+  species_confidence: SpeciesConfidence;
+}
+export interface CaptureAskShape {
+  sessionId: string;
+  nonce: string;
+  complete: boolean;
+}
+export type CaptureStateShape = { kind: 'open'; sessionId: string; userId: string } | { kind: 'failed'; code: string };
+export interface PortShape {
+  sessionConsumed(userId: string, sessionId: string): Promise<boolean | null>;
+  consume(args: { userId: string; sessionId: string; nonce: string; observationId: string; digests: string[] }): Promise<{ ok: boolean; replay?: boolean; code?: string; observationId?: string }>;
+  issue(args: { userId: string; sessionId: string; items: ReceiptItemShape[] }): Promise<Array<{ id: string; herbId: string; rankPosition: RankPosition }>>;
+  receiptsForSession(userId: string, sessionId: string): Promise<Array<{ id: string; herbId: string; rankPosition: RankPosition; expiresAt?: string }>>;
+}
+export interface OutcomeShape {
+  candidates: Array<Record<string, unknown> & { captureReceipt?: { id: string; rankPosition: RankPosition; expiresAt: string } }>;
+  capture: { accepted: boolean; code?: string };
+}
+export interface CaptureModule {
+  MIN_CAPTURE_MS: number;
+  RECEIPT_TTL_DAYS: number;
+  readCaptureAsk(form: FormData): CaptureAskShape | null;
+  imageDigests(files: readonly Blob[]): Promise<string[]>;
+  beginCapture(port: PortShape, ask: CaptureAskShape, userId: string | null, observationId: string, files: readonly Blob[]): Promise<CaptureStateShape>;
+  checkReplay(port: PortShape, ask: CaptureAskShape, userId: string | null, files: readonly Blob[]): Promise<{ receipts: Array<{ id: string; herbId: string; rankPosition: RankPosition }> } | null>;
+  issueForCandidates(
+    port: PortShape,
+    state: CaptureStateShape,
+    candidates: ReadonlyArray<{ scientificName: string; score: number } & Record<string, unknown>>,
+    now?: () => number,
+  ): Promise<OutcomeShape>;
+  receiptItemsFor(candidates: ReadonlyArray<{ match: PlantMatch; rankPosition: RankPosition; speciesConfidence: SpeciesConfidence }>): ReceiptItemShape[];
+  supabasePort(admin: unknown): PortShape;
+}
