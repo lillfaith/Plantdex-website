@@ -58,16 +58,12 @@ describe('where the Field Board can be reached from', () => {
     expect(strip(TROPHY)).not.toMatch(/fixed|left-|right-/);
   });
 
-  it('leaves the six bottom navigation tabs exactly as they were', () => {
-    const links = [...NAV.matchAll(/\{ href: '([^']+)', label: '([^']+)'/g)].map((m) => `${m[1]}=${m[2]}`);
-    expect(links).toEqual([
-      '/=Home',
-      '/scan=Scan',
-      '/herbdex=Collection',
-      '/garden=Garden',
-      '/journal=Journal',
-      '/learn=Learn',
-    ]);
+  it('keeps the original six bottom navigation tabs, and the Field Board is not a tab', () => {
+    // Owner decision 2026-11-27 adds Quests as a seventh tab, so this no longer pins the exact list; what it protects is that the
+    // original six destinations stay and that the leaderboard never takes a slot.
+    const links = [...NAV.matchAll(/\{ href: '([^']+)', label: '([^']+)'/g)].map((m) => m[1]);
+    for (const href of ['/', '/scan', '/herbdex', '/garden', '/journal', '/learn']) expect(links).toContain(href);
+    expect(links).not.toContain('/leaderboard');
   });
 
   it('has a Field Board scene in the tour that says joining is a choice and scores are provisional', () => {
