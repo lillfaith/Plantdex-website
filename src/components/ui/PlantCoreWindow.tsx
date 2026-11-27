@@ -9,7 +9,7 @@ import { STAGE_LABEL, nextStageHint, MASTERY_BY_GARDEN_STAGE, type GardenStage }
 import { MASTERY_STAGE_LABEL } from '@/lib/mastery';
 
 /**
- * PROTOTYPE (owner review only): a retro "window" for one plant, adapted from the owner's plant_core.exe reference. Mint pixel frame, pink buttons,
+ * PROTOTYPE (owner review only): a retro "window" for one plant, adapted from the owner's plant_core.exe reference. Lavender (#C5B2DC) pixel frame, pink buttons,
  * a segmented side meter, a sprite stage with sparkles, a name bar with previous/next, and a close button.
  *
  * IT INVENTS NO MECHANIC. Everything shown is read from existing data: the growth stage (from mastery, via `garden.ts`), the mastery word, the
@@ -80,11 +80,11 @@ export function PlantCoreWindow({
             </span>
           </div>
           <div className="pc-namebar mt-1.5 grid grid-cols-[2.5rem_1fr_2.5rem] items-center">
-            <button type="button" onClick={() => step(-1)} aria-label="Previous plant" className="pc-btn pc-mint h-11 text-sm font-black" disabled={plants.length < 2}>
+            <button type="button" onClick={() => step(-1)} aria-label="Previous plant" className="pc-btn pc-lav h-11 text-sm font-black" disabled={plants.length < 2}>
               &#9664;
             </button>
             <span className="truncate px-1 text-center text-[0.72rem] font-extrabold">{herb.commonName}</span>
-            <button type="button" onClick={() => step(1)} aria-label="Next plant" className="pc-btn pc-mint h-11 text-sm font-black" disabled={plants.length < 2}>
+            <button type="button" onClick={() => step(1)} aria-label="Next plant" className="pc-btn pc-lav h-11 text-sm font-black" disabled={plants.length < 2}>
               &#9654;
             </button>
           </div>
@@ -99,7 +99,7 @@ export function PlantCoreWindow({
             <>
               {action(`/herbdex/${herb.id}`, hint === 'Learn its card' ? 'Learn card' : (hint ?? 'Open card'), hint ? 'learn' : 'herbdex')}
               {action('/scan', 'Scan a plant', 'scan')}
-              <Link href={`/herbdex/${herb.id}`} className="pc-btn pc-mint flex min-h-12 items-center justify-center gap-2 px-2 text-[0.8rem] font-extrabold">
+              <Link href={`/herbdex/${herb.id}`} className="pc-btn pc-lav flex min-h-12 items-center justify-center gap-2 px-2 text-[0.8rem] font-extrabold">
                 <PlantdexIcon name="herbdex" className="text-base" aria-hidden="true" />
                 <span>Full card</span>
               </Link>
@@ -117,7 +117,7 @@ export function PlantCoreWindow({
       </div>
 
       <div className="mt-2 flex justify-center">
-        <button type="button" onClick={onClose} className="pc-btn pc-mint tap-44 min-h-11 px-5 text-sm font-extrabold">
+        <button type="button" onClick={onClose} className="pc-btn pc-lav tap-44 min-h-11 px-5 text-sm font-extrabold">
           close
         </button>
       </div>

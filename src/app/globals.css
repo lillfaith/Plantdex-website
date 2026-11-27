@@ -2997,33 +2997,33 @@ body {
 @keyframes cf-nudge { 0% { transform: translateX(0); } 50% { transform: translateX(2px); } }
 
 /*
- * PLANT WINDOW PROTOTYPE (owner review; adapted from the plant_core.exe reference): a mint pixel frame with a checkered desktop edge, pink buttons,
+ * PLANT WINDOW PROTOTYPE (owner review; adapted from the plant_core.exe reference): a lavender (#C5B2DC) pixel frame with a checkered desktop edge, pink buttons,
  * a segmented side meter and a sparkling sprite stage. Used only by the flagged /plant-core-proto routes.
  */
 .pc-window {
-  background: #c9f2e2;
-  border: 3px solid #4a9e86;
+  background: #C5B2DC;
+  border: 3px solid #7a62b4;
   border-radius: 6px;
   padding: 8px;
-  box-shadow: 0 0 0 4px #fff, 0 0 0 7px #b9a4ef, 0 0 24px 8px rgb(255 214 240 / 0.9);
-  color: #1f5a4a;
+  box-shadow: 0 0 0 4px #fff, 0 0 0 7px #9c21f8, 0 0 24px 8px rgb(255 214 240 / 0.9);
+  color: #3d1f6e;
 }
 .pc-titlebar {
-  background: #aeead1;
-  border: 2px solid #4a9e86;
+  background: #d4c6ea;
+  border: 2px solid #7a62b4;
   border-radius: 3px;
   padding: 2px 4px 2px 8px;
 }
-.pc-title { font-size: 0.85rem; font-weight: 800; letter-spacing: 0.02em; color: #1f5a4a; }
+.pc-title { font-size: 0.85rem; font-weight: 800; letter-spacing: 0.02em; color: #3d1f6e; }
 .pc-x {
   display: inline-flex; align-items: center; justify-content: center;
-  width: 44px; height: 30px; background: #d9fbe9; border: 2px solid #4a9e86; border-radius: 3px; color: #1f5a4a;
+  width: 44px; height: 30px; background: #e9e0f6; border: 2px solid #7a62b4; border-radius: 3px; color: #3d1f6e;
 }
 .pc-meter { background: #e6a6d6; border: 2px solid #8b2f9a; border-radius: 4px; }
-.pc-seg { background: #9bd2b0; border: 1px solid #4a9e86; }
+.pc-seg { background: #cfc0e6; border: 1px solid #7a62b4; }
 .pc-seg-on { background: linear-gradient(180deg, #b6ee7a, #5fc263); }
 .pc-stage {
-  border: 2px solid #4a9e86;
+  border: 2px solid #7a62b4;
   border-radius: 4px;
   background: radial-gradient(ellipse at 50% 30%, #ffd9ec 0%, #f6a9cf 55%, #e98cbb 100%);
 }
@@ -3031,12 +3031,12 @@ body {
 .pc-spark-1 { top: 14%; left: 16%; }
 .pc-spark-2 { top: 24%; right: 14%; width: 11px; height: 11px; }
 .pc-spark-3 { top: 52%; left: 8%; width: 6px; height: 6px; }
-.pc-namebar { background: #d9fbe9; border: 2px solid #4a9e86; border-radius: 4px; }
-.pc-btn { border: 2px solid #4a9e86; border-radius: 4px; color: #1f5a4a; box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.7), 0 2px 0 #4a9e86; }
+.pc-namebar { background: #e9e0f6; border: 2px solid #7a62b4; border-radius: 4px; }
+.pc-btn { border: 2px solid #7a62b4; border-radius: 4px; color: #3d1f6e; box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.7), 0 2px 0 #7a62b4; }
 .pc-pink { background: #ffd1e6; border-color: #8b2f9a; box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.8), 0 2px 0 #8b2f9a; color: #5a1a6a; }
-.pc-mint { background: #d9fbe9; }
-.pc-plaque { background: #d9fbe9; border: 2px solid #4a9e86; border-radius: 4px; }
-.pc-note { color: #1f5a4a; }
+.pc-lav { background: #e9e0f6; }
+.pc-plaque { background: #e9e0f6; border: 2px solid #7a62b4; border-radius: 4px; }
+.pc-note { color: #3d1f6e; }
 .pc-backdrop {
   background:
     conic-gradient(#d9d2f0 25%, #ebe6f8 0 50%, #d9d2f0 0 75%, #ebe6f8 0) 0 0 / 28px 28px;
