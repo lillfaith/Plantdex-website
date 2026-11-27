@@ -374,10 +374,7 @@ body {
  * so a coloured page behind it can never tint it, and no backdrop blur (cheaper, and Safari
  * handles it unevenly). Idle icons and labels are a lavender-grey, the active one gold.
  */
-@utility nav-bar {
-  background: var(--color-brand-nav);
-  border: 1px solid var(--color-brand-nav-line);
-}
+/* nav-bar: see SOFT POLISH at the end of this file. */
 
 /* Visible, high-contrast focus for keyboard users on every interactive element. */
 :where(a, button, input, select, summary, [tabindex]):focus-visible {
@@ -3167,10 +3164,19 @@ body {
  * ─────────────────────────────────────────────────────────────────────────────
  */
 [data-ground='lavender'] {
-  --lav-surface: #eee3fd;
-  --lav-surface-2: #ddc8fa;
-  --lav-edge: #8a5bd0;
-  --lav-drop: #b48aee;
+  --lav-surface: #f7f1ff;
+  --lav-surface-2: #eadffb;
+  --lav-edge: #a98be8;
+  --lav-drop: #d9c7f7;
+  --lav-paper: #fcfaff;
+  --lav-pink: #f8c8e4;
+  --lav-pink-pale: #fdeaf5;
+  --lav-butter: #fff0a8;
+  --lav-butter-pale: #fff8d6;
+  --lav-leaf: #7cc47f;
+  --lav-leaf-pale: #e3f4dc;
+  --lav-sky: #9fd3f7;
+  --lav-sky-pale: #e2f1fd;
   --plum-mid: #5b2e91;
   --color-violet-50: #2b0a4a;
   --color-violet-100: #34104f;
@@ -3403,13 +3409,14 @@ body:has([data-ground='lavender']) footer {
   left: 2.15rem;
 }
 /* Garden sample: the same lavender ground as the Collection. */
-body:has(main[data-ground='lavender']) [data-page-theme='garden'] {
-  --pt-a: #c9a4f8;
-  --pt-b: #e2cffc;
-  --pt-c: #b98cf2;
+body:has(main[data-ground='lavender']) [data-page-theme='garden'],
+body:has(main[data-ground='lavender']) [data-page-theme='collection'] {
+  --pt-a: #dcc4fb;
+  --pt-b: #f1e6fe;
+  --pt-c: #ceaff8;
   --pt-accent: #8cc78b;
-  --pt-vignette: 10%;
-  --pt-royal: 8%;
+  --pt-vignette: 6%;
+  --pt-royal: 4%;
 }
 /* Selected profile tab: the card violet with white text (was dark plum with flipped, unreadable ink). */
 [data-ground='lavender'] [role='tab'][aria-selected='true'] {
@@ -3460,19 +3467,19 @@ body:has(main[data-ground='lavender']) [data-page-theme='garden'] {
  * stay the accents; pixel art is untouched.
  * ─────────────────────────────────────────────────────────�
  */
-[data-ground='lavender'][data-shade='home'] { --lav-surface: #f3ebfe; --lav-surface-2: #e3d1fb; --lav-edge: #8a5bd0; --lav-drop: #bb9cf0; }
-[data-ground='lavender'][data-shade='scan'] { --lav-surface: #ece9fe; --lav-surface-2: #d3ccfa; --lav-edge: #7a62d2; --lav-drop: #a99af0; }
-[data-ground='lavender'][data-shade='quests'] { --lav-surface: #f6e8fc; --lav-surface-2: #e6cbf7; --lav-edge: #a558cb; --lav-drop: #d39be9; }
-[data-ground='lavender'][data-shade='journal'] { --lav-surface: #f1e6fa; --lav-surface-2: #dec8f3; --lav-edge: #8657b8; --lav-drop: #bd9ce0; }
-[data-ground='lavender'][data-shade='learn'] { --lav-surface: #eaeafe; --lav-surface-2: #cfd0f9; --lav-edge: #6c6ccb; --lav-drop: #a2a3ee; }
-[data-ground='lavender'][data-shade='profile'] { --lav-surface: #efe1fd; --lav-surface-2: #ddc0fa; --lav-edge: #8a45d0; --lav-drop: #b57ef0; }
+[data-ground='lavender'][data-shade='home'] { --lav-surface: #faf5ff; --lav-surface-2: #efe4fd; --lav-edge: #ab8cea; --lav-drop: #dccaf8; }
+[data-ground='lavender'][data-shade='scan'] { --lav-surface: #f3f3ff; --lav-surface-2: #e6e4fd; --lav-edge: #9d97ec; --lav-drop: #d3d0f7; }
+[data-ground='lavender'][data-shade='quests'] { --lav-surface: #fcf2fd; --lav-surface-2: #f3e1f8; --lav-edge: #c08ae6; --lav-drop: #ecd0f5; }
+[data-ground='lavender'][data-shade='journal'] { --lav-surface: #f9f1fc; --lav-surface-2: #efe3f7; --lav-edge: #b595dc; --lav-drop: #e3d2f1; }
+[data-ground='lavender'][data-shade='learn'] { --lav-surface: #f2f5ff; --lav-surface-2: #e3e8fd; --lav-edge: #8f99e6; --lav-drop: #cdd4f7; }
+[data-ground='lavender'][data-shade='profile'] { --lav-surface: #f8efff; --lav-surface-2: #ecdcfc; --lav-edge: #ab7ee6; --lav-drop: #e0c8f8; }
 
-body:has(main[data-shade='home']) [data-page-theme='home'] { --pt-a: #d6bdf9; --pt-b: #efe4fe; --pt-c: #c8a2f5; --pt-accent: #9c21f8; --pt-accent-2: #f180b4; --pt-b-a: 70%; --pt-c-a: 55%; --pt-vignette: 10%; --pt-royal: 8%; }
-body:has(main[data-shade='profile']) [data-page-theme='home'] { --pt-a: #c79bf5; --pt-b: #e2c9fc; --pt-c: #b57ef0; --pt-accent: #9c21f8; --pt-accent-2: #f180b4; --pt-b-a: 70%; --pt-c-a: 55%; --pt-vignette: 10%; --pt-royal: 8%; }
-body:has(main[data-shade='scan']) [data-page-theme='scan'] { --pt-a: #beb0f6; --pt-b: #dcd5fd; --pt-c: #a99af0; --pt-accent: #6c4fd6; --pt-accent-2: #f180b4; --pt-b-a: 70%; --pt-c-a: 55%; --pt-vignette: 10%; --pt-royal: 8%; }
-body:has(main[data-shade='quests']) [data-page-theme='quests'] { --pt-a: #d4a8f2; --pt-b: #ebd3fb; --pt-c: #c58bec; --pt-accent: #b8329c; --pt-accent-2: #f2c75c; --pt-b-a: 70%; --pt-c-a: 55%; --pt-vignette: 10%; --pt-royal: 8%; }
-body:has(main[data-shade='journal']) [data-page-theme='journal'] { --pt-a: #cbaeea; --pt-b: #e5d3f6; --pt-c: #b994e2; --pt-accent: #9c21f8; --pt-accent-2: #f2c75c; --pt-b-a: 70%; --pt-c-a: 55%; --pt-vignette: 10%; --pt-royal: 8%; }
-body:has(main[data-shade='learn']) [data-page-theme='learn'] { --pt-a: #b7b7f5; --pt-b: #d7d8fc; --pt-c: #a2a3ee; --pt-accent: #5b5bd6; --pt-accent-2: #f2c75c; --pt-b-a: 70%; --pt-c-a: 55%; --pt-vignette: 10%; --pt-royal: 8%; }
+body:has(main[data-shade='home']) [data-page-theme='home'] { --pt-a: #e4d4fc; --pt-b: #f6efff; --pt-c: #d9bffa; --pt-accent: #9c21f8; --pt-accent-2: #f180b4; --pt-b-a: 70%; --pt-c-a: 55%; --pt-vignette: 10%; --pt-royal: 8%; }
+body:has(main[data-shade='profile']) [data-page-theme='home'] { --pt-a: #dcc0fa; --pt-b: #efe0fd; --pt-c: #cda6f6; --pt-accent: #9c21f8; --pt-accent-2: #f180b4; --pt-b-a: 70%; --pt-c-a: 55%; --pt-vignette: 10%; --pt-royal: 8%; }
+body:has(main[data-shade='scan']) [data-page-theme='scan'] { --pt-a: #d4ccf9; --pt-b: #ebe7ff; --pt-c: #c4b9f6; --pt-accent: #6c4fd6; --pt-accent-2: #f180b4; --pt-b-a: 70%; --pt-c-a: 55%; --pt-vignette: 10%; --pt-royal: 8%; }
+body:has(main[data-shade='quests']) [data-page-theme='quests'] { --pt-a: #e6cbf8; --pt-b: #f7e8fd; --pt-c: #dcb2f3; --pt-accent: #b8329c; --pt-accent-2: #f2c75c; --pt-b-a: 70%; --pt-c-a: 55%; --pt-vignette: 10%; --pt-royal: 8%; }
+body:has(main[data-shade='journal']) [data-page-theme='journal'] { --pt-a: #e0cbf3; --pt-b: #f2e8fa; --pt-c: #d2b4ec; --pt-accent: #9c21f8; --pt-accent-2: #f2c75c; --pt-b-a: 70%; --pt-c-a: 55%; --pt-vignette: 10%; --pt-royal: 8%; }
+body:has(main[data-shade='learn']) [data-page-theme='learn'] { --pt-a: #cfd3fb; --pt-b: #e8eafe; --pt-c: #bfc4f8; --pt-accent: #5b5bd6; --pt-accent-2: #f2c75c; --pt-b-a: 70%; --pt-c-a: 55%; --pt-vignette: 10%; --pt-royal: 8%; }
 
 /*
  * Identify page and result surfaces on the lavender ground. The holographic edge and the pink/blue key are kept (they are the Scan
@@ -3531,20 +3538,20 @@ body:has(main[data-shade='learn']) [data-page-theme='learn'] { --pt-a: #b7b7f5; 
  */
 html:has(main[data-ground='lavender']),
 body:has(main[data-ground='lavender']) {
-  background: #c9a4f8;
+  background: #dcc4fb;
 }
-body:has(main[data-shade='home']) { background: #d6bdf9; }
-body:has(main[data-shade='profile']) { background: #c79bf5; }
-body:has(main[data-shade='scan']) { background: #beb0f6; }
-body:has(main[data-shade='quests']) { background: #d4a8f2; }
-body:has(main[data-shade='journal']) { background: #cbaeea; }
-body:has(main[data-shade='learn']) { background: #b7b7f5; }
-html:has(main[data-shade='home']) { background: #d6bdf9; }
-html:has(main[data-shade='profile']) { background: #c79bf5; }
-html:has(main[data-shade='scan']) { background: #beb0f6; }
-html:has(main[data-shade='quests']) { background: #d4a8f2; }
-html:has(main[data-shade='journal']) { background: #cbaeea; }
-html:has(main[data-shade='learn']) { background: #b7b7f5; }
+body:has(main[data-shade='home']) { background: #e4d4fc; }
+body:has(main[data-shade='profile']) { background: #dcc0fa; }
+body:has(main[data-shade='scan']) { background: #d4ccf9; }
+body:has(main[data-shade='quests']) { background: #e6cbf8; }
+body:has(main[data-shade='journal']) { background: #e0cbf3; }
+body:has(main[data-shade='learn']) { background: #cfd3fb; }
+html:has(main[data-shade='home']) { background: #e4d4fc; }
+html:has(main[data-shade='profile']) { background: #dcc0fa; }
+html:has(main[data-shade='scan']) { background: #d4ccf9; }
+html:has(main[data-shade='quests']) { background: #e6cbf8; }
+html:has(main[data-shade='journal']) { background: #e0cbf3; }
+html:has(main[data-shade='learn']) { background: #cfd3fb; }
 /* A hover/pressed tint that was a dark translucent plum is the pale surface on lavender (it stays after a tap on a phone). */
 [data-ground='lavender'] [class*='hover:bg-plum']:hover {
   background-color: var(--lav-surface-2);
@@ -3569,3 +3576,305 @@ html:has(main[data-shade='learn']) { background: #b7b7f5; }
 [data-shade] [class*='hover:bg-violet-200']:hover { background-color: #3d0a63; }
 /* The white "Edit profile" link sits on the pale hero plate here. */
 [data-shade] [class*='tap-44'][class*='absolute'][class~='text-white'] { color: var(--color-violet-200); }
+
+/*
+ * ─────────────────────────────────────────────────────────────────────────────
+ * SOFT POLISH (owner brief 2026-11-27, for approval): softer, cuter, less flat, more cohesive. The same screens, hierarchy and component
+ * placement; only surfaces, edges, depth and accent colours change. Page background colours are NOT touched.
+ *   soft pink      #F8C8E4 / deep #E98FC2     buttery yellow #FFF0A8 / deep #F2C75C     card violet #9C21F8 (the card background)
+ *   bright lavender nav  #B39AF3 -> #A184EA, always darker than every page ground; ink #3D0A63 on it (>= 4.7:1), deep plum pill + butter text
+ * ─────────────────────────────────────────────────────────────────────────────
+ */
+@utility nav-bar {
+  background: linear-gradient(180deg, #bda4f8 0%, #a98ff2 100%);
+  border: 1px solid #8a6ae0;
+  box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.45), 0 -3px 0 0 rgb(249 201 230 / 0.9);
+}
+.nav-bar :is(a, button) {
+  color: #3d0a63;
+}
+.nav-bar :is(a, button):hover:not([aria-current='page']):not([class~='bg-brand-purple']) {
+  background: rgb(255 255 255 / 0.32);
+  color: #3d0a63;
+}
+.nav-bar a[aria-current='page'],
+.nav-bar :is(a, button)[class~='bg-brand-purple'] {
+  background: linear-gradient(180deg, #962af0 0%, #8216d8 100%);
+  color: #fff0a8;
+  box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.3), 0 2px 0 0 #5a0fa8;
+}
+.nav-bar [class*='bg-brand-gold'] {
+  background: #fff0a8;
+}
+/* More panel: the same lavender, the same ink. */
+.nav-bar ul.nav-bar {
+  box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.45), 0 6px 14px -4px rgb(61 10 99 / 0.45);
+}
+/* A strip of pixel flowers and grass along the top of the phone bar: decorative, no meaning, not any real species. */
+@media (max-width: 39.999rem) {
+  .nav-bar::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 100%;
+    height: 16px;
+    background: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2264%22 height=%2216%22 viewBox=%220 0 64 16%22 shape-rendering=%22crispEdges%22%3E%3Crect x=%220%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%222%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%224%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%226%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%228%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%2210%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%2212%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%2214%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%2216%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%2218%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%2220%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%2222%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%2224%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%2226%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%2228%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%2230%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%2232%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%2234%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%2236%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%2238%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%2240%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%2242%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%2244%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%2246%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%2248%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%2250%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%2252%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%2254%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%2256%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%2258%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%2260%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%2262%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%220%22 y=%2212%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3Crect x=%226%22 y=%2212%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3Crect x=%2212%22 y=%2212%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3Crect x=%2226%22 y=%2212%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3Crect x=%2234%22 y=%2212%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3Crect x=%2246%22 y=%2212%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3Crect x=%2254%22 y=%2212%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3Crect x=%2260%22 y=%2212%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3Crect x=%226%22 y=%2210%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3Crect x=%2234%22 y=%2210%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3Crect x=%2254%22 y=%2210%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3Crect x=%2218%22 y=%2210%22 width=%222%22 height=%224%22 fill=%22%236fbf73%22/%3E%3Crect x=%2216%22 y=%226%22 width=%222%22 height=%222%22 fill=%22%23f9a9d4%22/%3E%3Crect x=%2220%22 y=%226%22 width=%222%22 height=%222%22 fill=%22%23f9a9d4%22/%3E%3Crect x=%2218%22 y=%224%22 width=%222%22 height=%222%22 fill=%22%23f9a9d4%22/%3E%3Crect x=%2218%22 y=%228%22 width=%222%22 height=%222%22 fill=%22%23f9a9d4%22/%3E%3Crect x=%2218%22 y=%226%22 width=%222%22 height=%222%22 fill=%22%23fff0a8%22/%3E%3Crect x=%2240%22 y=%2210%22 width=%222%22 height=%224%22 fill=%22%236fbf73%22/%3E%3Crect x=%2238%22 y=%226%22 width=%222%22 height=%222%22 fill=%22%23fff0a8%22/%3E%3Crect x=%2242%22 y=%226%22 width=%222%22 height=%222%22 fill=%22%23fff0a8%22/%3E%3Crect x=%2240%22 y=%224%22 width=%222%22 height=%222%22 fill=%22%23fff0a8%22/%3E%3Crect x=%2240%22 y=%228%22 width=%222%22 height=%222%22 fill=%22%23fff0a8%22/%3E%3Crect x=%2240%22 y=%226%22 width=%222%22 height=%222%22 fill=%22%23f9a9d4%22/%3E%3Crect x=%2258%22 y=%2210%22 width=%222%22 height=%224%22 fill=%22%236fbf73%22/%3E%3Crect x=%2256%22 y=%226%22 width=%222%22 height=%222%22 fill=%22%23ffffff%22/%3E%3Crect x=%2260%22 y=%226%22 width=%222%22 height=%222%22 fill=%22%23ffffff%22/%3E%3Crect x=%2258%22 y=%224%22 width=%222%22 height=%222%22 fill=%22%23ffffff%22/%3E%3Crect x=%2258%22 y=%228%22 width=%222%22 height=%222%22 fill=%22%23ffffff%22/%3E%3Crect x=%2258%22 y=%226%22 width=%222%22 height=%222%22 fill=%22%23fff0a8%22/%3E%3C/svg%3E") repeat-x left bottom / 64px 16px;
+    image-rendering: pixelated;
+    pointer-events: none;
+  }
+}
+
+/* Chips, pills and tabs: card violet for the selected state, buttery yellow for pills, soft pink as the underline. */
+[data-ground='lavender'] .chip-selected-deep {
+  background: linear-gradient(180deg, #a835fa 0%, #9420ee 100%);
+  color: #fff;
+  box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.35), inset 0 -3px 0 0 #f8c8e4;
+}
+[data-ground='lavender'] .lav-pill {
+  background: linear-gradient(180deg, #fff8cf 0%, #fff0a8 100%);
+  border-color: #e0a92f;
+  box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.8), 0 2px 0 0 #e8c76a;
+}
+[data-ground='lavender'] .lav-track {
+  background: linear-gradient(180deg, #d9c2fb 0%, var(--lav-surface-2) 100%);
+  box-shadow: inset 0 2px 4px rgb(91 46 145 / 0.25), 0 3px 0 0 var(--lav-drop);
+}
+/* Buttons that were flat get a top highlight and a pressable bottom edge. */
+[data-ground='lavender'] :is(a, button)[class*='from-gold-500'],
+[data-ground='lavender'] .arcade-key {
+  box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.7), inset 0 -3px 0 rgb(233 143 194 / 0.55), 0 4px 0 0 #c9892a, 0 10px 14px -8px rgb(91 46 145 / 0.45);
+}
+[data-ground='lavender'] :is(a, button)[class*='bg-gold-500'][class*='rounded-full'] {
+  background: linear-gradient(180deg, #fff3b8 0%, #ffd54a 100%);
+  box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.75), inset 0 -3px 0 rgb(233 143 194 / 0.45), 0 3px 0 0 #c9892a;
+}
+/* Deliberate deep-plum buttons: a lit top, a darker foot, a pink hairline. */
+[data-ground='lavender'] :is(a, button)[class~='bg-plum-900'][class*='text-white'],
+[data-shade] [class~='bg-violet-300'] {
+  background: linear-gradient(180deg, #7a4cc0 0%, #5b2e91 100%);
+  box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.28), inset 0 0 0 1px rgb(248 200 228 / 0.5), 0 3px 0 0 #3d1a6d, 0 10px 14px -8px rgb(61 10 99 / 0.5);
+}
+/* Progress tracks sit IN the panel (inner shade); their fills stay buttery yellow to pink. */
+[data-ground='lavender'] [class*='rounded-full'][class~='bg-plum-900'],
+[data-ground='lavender'] [class*='rounded-full'][class~='bg-plum-950'] {
+  box-shadow: inset 0 2px 3px rgb(91 46 145 / 0.3);
+}
+/* Soft pink as a small accent: the selection colour and the section dividers. */
+[data-ground='lavender'] ::selection {
+  background: #f8c8e4;
+  color: #3d0a63;
+}
+[data-ground='lavender'] hr,
+[data-ground='lavender'] [class*='border-t'][class*='border-violet'] {
+  border-color: #f2b5d8;
+}
+
+/* Safety notices are buttery-yellow plates with a gold edge (the warm accent), layered like the panels; wording and placement are untouched. */
+[data-ground='lavender'] [role='note'],
+[data-ground='lavender'] aside {
+  background: linear-gradient(180deg, #fffbe6 0%, #fff3c4 100%);
+  border: 2px solid #d9a22e;
+  box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.9), inset 0 -3px 0 rgb(248 200 228 / 0.55), 0 3px 0 0 #e8c76a, 0 10px 14px -10px rgb(122 79 8 / 0.4);
+}
+[data-ground='lavender'] .learn-tile {
+  box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.9), inset 0 -3px 0 rgb(248 200 228 / 0.55), 0 3px 0 0 var(--lav-drop), 0 10px 14px -10px rgb(91 46 145 / 0.4);
+}
+
+/*
+ * ───────────────────────────────────────────────────────────────────────────── 
+ * SOFT POLISH v2 (owner direction 2026-11-27, for approval): lighter, more colourful, more pixel, nature spread through the UI. The Habitats design is the
+ * benchmark. Same structure and components; light surfaces, selective card violet, hard 3px drops instead of blurred shadows, pixel-stepped meters and
+ * chips, and tiny decorative pixel flowers/leaves/grass (no meaning, no real species) peeking from panel edges.
+ * ─────────────────────────────────────────────────────────────────────────────
+ */
+[data-ground='lavender'] {
+  --spr-flower-pink: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2214%22 height=%2216%22 viewBox=%220 0 14 16%22 shape-rendering=%22crispEdges%22%3E%3Crect x=%226%22 y=%220%22 width=%222%22 height=%222%22 fill=%22%23f48fc3%22/%3E%3Crect x=%224%22 y=%222%22 width=%222%22 height=%222%22 fill=%22%23f48fc3%22/%3E%3Crect x=%226%22 y=%222%22 width=%222%22 height=%222%22 fill=%22%23f48fc3%22/%3E%3Crect x=%228%22 y=%222%22 width=%222%22 height=%222%22 fill=%22%23f48fc3%22/%3E%3Crect x=%222%22 y=%224%22 width=%222%22 height=%222%22 fill=%22%23f48fc3%22/%3E%3Crect x=%224%22 y=%224%22 width=%222%22 height=%222%22 fill=%22%23f48fc3%22/%3E%3Crect x=%226%22 y=%224%22 width=%222%22 height=%222%22 fill=%22%23fff0a8%22/%3E%3Crect x=%228%22 y=%224%22 width=%222%22 height=%222%22 fill=%22%23f48fc3%22/%3E%3Crect x=%2210%22 y=%224%22 width=%222%22 height=%222%22 fill=%22%23f48fc3%22/%3E%3Crect x=%224%22 y=%226%22 width=%222%22 height=%222%22 fill=%22%23f48fc3%22/%3E%3Crect x=%226%22 y=%226%22 width=%222%22 height=%222%22 fill=%22%23f48fc3%22/%3E%3Crect x=%228%22 y=%226%22 width=%222%22 height=%222%22 fill=%22%23f48fc3%22/%3E%3Crect x=%226%22 y=%228%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3Crect x=%224%22 y=%2210%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3Crect x=%226%22 y=%2210%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3Crect x=%226%22 y=%2212%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3Crect x=%2210%22 y=%2212%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3Crect x=%226%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3Crect x=%228%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3C/svg%3E");
+  --spr-flower-blue: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2214%22 height=%2216%22 viewBox=%220 0 14 16%22 shape-rendering=%22crispEdges%22%3E%3Crect x=%226%22 y=%220%22 width=%222%22 height=%222%22 fill=%22%236fb8f0%22/%3E%3Crect x=%224%22 y=%222%22 width=%222%22 height=%222%22 fill=%22%236fb8f0%22/%3E%3Crect x=%226%22 y=%222%22 width=%222%22 height=%222%22 fill=%22%236fb8f0%22/%3E%3Crect x=%228%22 y=%222%22 width=%222%22 height=%222%22 fill=%22%236fb8f0%22/%3E%3Crect x=%222%22 y=%224%22 width=%222%22 height=%222%22 fill=%22%236fb8f0%22/%3E%3Crect x=%224%22 y=%224%22 width=%222%22 height=%222%22 fill=%22%236fb8f0%22/%3E%3Crect x=%226%22 y=%224%22 width=%222%22 height=%222%22 fill=%22%23fff0a8%22/%3E%3Crect x=%228%22 y=%224%22 width=%222%22 height=%222%22 fill=%22%236fb8f0%22/%3E%3Crect x=%2210%22 y=%224%22 width=%222%22 height=%222%22 fill=%22%236fb8f0%22/%3E%3Crect x=%224%22 y=%226%22 width=%222%22 height=%222%22 fill=%22%236fb8f0%22/%3E%3Crect x=%226%22 y=%226%22 width=%222%22 height=%222%22 fill=%22%236fb8f0%22/%3E%3Crect x=%228%22 y=%226%22 width=%222%22 height=%222%22 fill=%22%236fb8f0%22/%3E%3Crect x=%226%22 y=%228%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3Crect x=%224%22 y=%2210%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3Crect x=%226%22 y=%2210%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3Crect x=%226%22 y=%2212%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3Crect x=%2210%22 y=%2212%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3Crect x=%226%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3Crect x=%228%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3C/svg%3E");
+  --spr-flower-butter: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2214%22 height=%2216%22 viewBox=%220 0 14 16%22 shape-rendering=%22crispEdges%22%3E%3Crect x=%226%22 y=%220%22 width=%222%22 height=%222%22 fill=%22%23ffd54a%22/%3E%3Crect x=%224%22 y=%222%22 width=%222%22 height=%222%22 fill=%22%23ffd54a%22/%3E%3Crect x=%226%22 y=%222%22 width=%222%22 height=%222%22 fill=%22%23ffd54a%22/%3E%3Crect x=%228%22 y=%222%22 width=%222%22 height=%222%22 fill=%22%23ffd54a%22/%3E%3Crect x=%222%22 y=%224%22 width=%222%22 height=%222%22 fill=%22%23ffd54a%22/%3E%3Crect x=%224%22 y=%224%22 width=%222%22 height=%222%22 fill=%22%23ffd54a%22/%3E%3Crect x=%226%22 y=%224%22 width=%222%22 height=%222%22 fill=%22%23f48fc3%22/%3E%3Crect x=%228%22 y=%224%22 width=%222%22 height=%222%22 fill=%22%23ffd54a%22/%3E%3Crect x=%2210%22 y=%224%22 width=%222%22 height=%222%22 fill=%22%23ffd54a%22/%3E%3Crect x=%224%22 y=%226%22 width=%222%22 height=%222%22 fill=%22%23ffd54a%22/%3E%3Crect x=%226%22 y=%226%22 width=%222%22 height=%222%22 fill=%22%23ffd54a%22/%3E%3Crect x=%228%22 y=%226%22 width=%222%22 height=%222%22 fill=%22%23ffd54a%22/%3E%3Crect x=%226%22 y=%228%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3Crect x=%224%22 y=%2210%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3Crect x=%226%22 y=%2210%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3Crect x=%226%22 y=%2212%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3Crect x=%2210%22 y=%2212%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3Crect x=%226%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3Crect x=%228%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3C/svg%3E");
+  --spr-leaves: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2218%22 height=%2216%22 viewBox=%220 0 18 16%22 shape-rendering=%22crispEdges%22%3E%3Crect x=%224%22 y=%220%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%226%22 y=%220%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%2210%22 y=%220%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%2212%22 y=%220%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%222%22 y=%222%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%224%22 y=%222%22 width=%222%22 height=%222%22 fill=%22%237cc47f%22/%3E%3Crect x=%226%22 y=%222%22 width=%222%22 height=%222%22 fill=%22%237cc47f%22/%3E%3Crect x=%228%22 y=%222%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%2210%22 y=%222%22 width=%222%22 height=%222%22 fill=%22%237cc47f%22/%3E%3Crect x=%2212%22 y=%222%22 width=%222%22 height=%222%22 fill=%22%237cc47f%22/%3E%3Crect x=%2214%22 y=%222%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%222%22 y=%224%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%224%22 y=%224%22 width=%222%22 height=%222%22 fill=%22%237cc47f%22/%3E%3Crect x=%226%22 y=%224%22 width=%222%22 height=%222%22 fill=%22%237cc47f%22/%3E%3Crect x=%228%22 y=%224%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%2210%22 y=%224%22 width=%222%22 height=%222%22 fill=%22%237cc47f%22/%3E%3Crect x=%2212%22 y=%224%22 width=%222%22 height=%222%22 fill=%22%237cc47f%22/%3E%3Crect x=%2214%22 y=%224%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%224%22 y=%226%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%226%22 y=%226%22 width=%222%22 height=%222%22 fill=%22%237cc47f%22/%3E%3Crect x=%228%22 y=%226%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%2210%22 y=%226%22 width=%222%22 height=%222%22 fill=%22%237cc47f%22/%3E%3Crect x=%2212%22 y=%226%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%226%22 y=%228%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%228%22 y=%228%22 width=%222%22 height=%222%22 fill=%22%237cc47f%22/%3E%3Crect x=%2210%22 y=%228%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%228%22 y=%2210%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%228%22 y=%2212%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%228%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3C/svg%3E");
+  --spr-grass: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2218%22 height=%228%22 viewBox=%220 0 18 8%22 shape-rendering=%22crispEdges%22%3E%3Crect x=%222%22 y=%220%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3Crect x=%2210%22 y=%220%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3Crect x=%222%22 y=%222%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3Crect x=%226%22 y=%222%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3Crect x=%2210%22 y=%222%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3Crect x=%2214%22 y=%222%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3Crect x=%220%22 y=%224%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3Crect x=%222%22 y=%224%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3Crect x=%226%22 y=%224%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3Crect x=%228%22 y=%224%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3Crect x=%2210%22 y=%224%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3Crect x=%2214%22 y=%224%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3Crect x=%2216%22 y=%224%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3Crect x=%220%22 y=%226%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3Crect x=%222%22 y=%226%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3Crect x=%224%22 y=%226%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3Crect x=%226%22 y=%226%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3Crect x=%228%22 y=%226%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3Crect x=%2210%22 y=%226%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3Crect x=%2212%22 y=%226%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3Crect x=%2214%22 y=%226%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3Crect x=%2216%22 y=%226%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3C/svg%3E");
+}
+
+/* Panels: a near-white lavender paper, a 2px soft outline, a lit top edge and a HARD 3px drop (no blur). Variants carry the other colours. */
+[data-ground='lavender'] :is(.panel, .game-panel, .field-panel, .science-panel, .character-panel, .panel-raised) {
+  position: relative;
+  background: linear-gradient(180deg, var(--lav-paper) 0%, var(--lav-surface) 100%);
+  border: 2px solid var(--lav-edge);
+  box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.95), 0 3px 0 0 var(--lav-drop);
+}
+[data-ground='lavender'] .game-panel {
+  background: linear-gradient(180deg, #fffdf0 0%, var(--lav-butter-pale) 100%);
+  border-color: #e3c55c;
+  box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.95), 0 3px 0 0 #f3e3a0;
+}
+[data-ground='lavender'] .science-panel {
+  background: linear-gradient(180deg, #f4faff 0%, var(--lav-sky-pale) 100%);
+  border-color: #86c4ee;
+  box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.95), 0 3px 0 0 #c5e2f8;
+}
+[data-ground='lavender'] .field-panel {
+  background: linear-gradient(180deg, #f7fdf3 0%, var(--lav-leaf-pale) 100%);
+  border-color: #8ccf86;
+  box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.95), 0 3px 0 0 #cde9c4;
+}
+[data-ground='lavender'] .character-panel {
+  background: linear-gradient(180deg, #fff6fb 0%, var(--lav-pink-pale) 100%);
+  border-color: #eaa1cf;
+  box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.95), 0 3px 0 0 #f6d0e6;
+}
+/* Key surfaces carry the card violet: the raised panels and the holographic Scan frames get a restrained violet glow. */
+[data-ground='lavender'] .panel-raised,
+[data-ground='lavender'] .holo-border {
+  box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.95), 0 3px 0 0 var(--lav-drop), 0 0 0 3px rgb(156 33 248 / 0.1);
+}
+[data-ground='lavender'] .panel-raised {
+  border-color: #9c21f8;
+}
+/* Info wells: a different pastel each, so a row of stat tiles is not one flat purple. */
+[data-ground='lavender'] .sunken {
+  background: var(--lav-sky-pale);
+  border-color: #a5d2f3;
+}
+[data-ground='lavender'] li.sunken:nth-child(4n + 2) { background: var(--lav-pink-pale); border-color: #f0b4d6; }
+[data-ground='lavender'] li.sunken:nth-child(4n + 3) { background: var(--lav-butter-pale); border-color: #ecd67f; }
+[data-ground='lavender'] li.sunken:nth-child(4n + 4) { background: var(--lav-leaf-pale); border-color: #a8d9a2; }
+
+/* Pixel-stepped meters: square-ish tracks, fills cut into 2px-on / 6px-off pixel steps. */
+[data-ground='lavender'] :is(.lav-track, [class*='rounded-full'][class~='bg-plum-900'], [class*='rounded-full'][class~='bg-plum-950']) {
+  border-radius: 3px;
+}
+[data-ground='lavender'] .path-fill {
+  border-radius: 2px;
+  background-image: repeating-linear-gradient(90deg, rgb(255 255 255 / 0.42) 0 2px, transparent 2px 8px);
+}
+/* Pixel-stepped chips: notched corners instead of round ones. */
+[data-ground='lavender'] :is(.chip-selected-deep, .chip-card-violet, .lav-pill) {
+  border-radius: 0;
+  clip-path: polygon(0 4px, 2px 4px, 2px 2px, 4px 2px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 2px, calc(100% - 2px) 2px, calc(100% - 2px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 2px) calc(100% - 4px), calc(100% - 2px) calc(100% - 2px), calc(100% - 4px) calc(100% - 2px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 2px), 2px calc(100% - 2px), 2px calc(100% - 4px), 0 calc(100% - 4px));
+}
+/* Pixel dividers. */
+[data-ground='lavender'] hr {
+  border: 0;
+  height: 4px;
+  background: repeating-linear-gradient(90deg, #f2b5d8 0 4px, transparent 4px 8px);
+}
+
+/* NATURE, SPREAD THROUGH THE UI: pixel flowers and leaves peek over the top edge of the large panels, grass sits on the bottom edge of some, and a leaf follows page titles. Decorative only. */
+[data-ground='lavender'] > :is(.panel, .game-panel, .field-panel, .science-panel, .character-panel, .panel-raised):not(a):nth-of-type(3n + 1)::before,
+[data-ground='lavender'] > :is(div, section) > :is(.panel, .game-panel, .field-panel, .science-panel, .character-panel):not(a):nth-of-type(3n + 1)::before {
+  content: '';
+  position: absolute;
+  left: 18px;
+  bottom: calc(100% - 1px);
+  width: 14px;
+  height: 16px;
+  background: var(--spr-flower-pink) no-repeat center bottom / 14px 16px;
+  image-rendering: pixelated;
+  pointer-events: none;
+}
+[data-ground='lavender'] > :is(.panel, .game-panel, .field-panel, .science-panel, .character-panel, .panel-raised):not(a):nth-of-type(3n + 2)::before,
+[data-ground='lavender'] > :is(div, section) > :is(.panel, .game-panel, .field-panel, .science-panel, .character-panel):not(a):nth-of-type(3n + 2)::before {
+  content: '';
+  position: absolute;
+  right: 26px;
+  bottom: calc(100% - 1px);
+  width: 14px;
+  height: 16px;
+  background: var(--spr-flower-blue) no-repeat center bottom / 14px 16px;
+  image-rendering: pixelated;
+  pointer-events: none;
+}
+[data-ground='lavender'] > :is(.panel, .game-panel, .field-panel, .science-panel, .character-panel, .panel-raised):not(a):nth-of-type(3n)::before,
+[data-ground='lavender'] > :is(div, section) > :is(.panel, .game-panel, .field-panel, .science-panel, .character-panel):not(a):nth-of-type(3n)::before {
+  content: '';
+  position: absolute;
+  left: 40px;
+  bottom: calc(100% - 1px);
+  width: 18px;
+  height: 16px;
+  background: var(--spr-leaves) no-repeat center bottom / 18px 16px;
+  image-rendering: pixelated;
+  pointer-events: none;
+}
+[data-ground='lavender'] > :is(.panel, .game-panel, .field-panel, .science-panel, .character-panel, .panel-raised):not(a):nth-of-type(2n)::after,
+[data-ground='lavender'] > :is(div, section) > :is(.panel, .game-panel, .field-panel, .science-panel, .character-panel):not(a):nth-of-type(2n)::after {
+  content: '';
+  position: absolute;
+  right: 22px;
+  top: calc(100% - 1px);
+  width: 18px;
+  height: 8px;
+  background: var(--spr-grass) no-repeat center top / 18px 8px;
+  image-rendering: pixelated;
+  pointer-events: none;
+}
+[data-shade]:not([data-shade='home']) h1:not([class*='flex'])::after {
+  content: '';
+  display: inline-block;
+  width: 14px;
+  height: 16px;
+  margin-left: 8px;
+  vertical-align: -2px;
+  background: var(--spr-flower-butter) no-repeat center bottom / 14px 16px;
+  image-rendering: pixelated;
+}
+
+[data-ground='lavender'] {
+  --spr-dots: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2224%22 height=%226%22 viewBox=%220 0 24 6%22 shape-rendering=%22crispEdges%22%3E%3Crect x=%220%22 y=%220%22 width=%226%22 height=%226%22 fill=%22%23f48fc3%22 stroke=%22%237d5bb8%22 stroke-width=%221%22/%3E%3Crect x=%228%22 y=%220%22 width=%226%22 height=%226%22 fill=%22%23fff0a8%22 stroke=%22%237d5bb8%22 stroke-width=%221%22/%3E%3Crect x=%2216%22 y=%220%22 width=%226%22 height=%226%22 fill=%22%237cc47f%22 stroke=%22%237d5bb8%22 stroke-width=%221%22/%3E%3C/svg%3E");
+}
+/* Nostalgic window-control dots (pink, butter, leaf) in the top corner of the coloured panels. */
+[data-ground='lavender'] .science-panel {
+  background: var(--spr-dots) no-repeat right 12px top 6px, linear-gradient(180deg, #f4faff 0%, var(--lav-sky-pale) 100%);
+}
+[data-ground='lavender'] .field-panel {
+  background: var(--spr-dots) no-repeat right 12px top 6px, linear-gradient(180deg, #f7fdf3 0%, var(--lav-leaf-pale) 100%);
+}
+[data-ground='lavender'] .character-panel {
+  background: var(--spr-dots) no-repeat right 12px top 6px, linear-gradient(180deg, #fff6fb 0%, var(--lav-pink-pale) 100%);
+}
+/* More nature: the Quests/Habitats tab track and the Scan frames carry a flower or leaves peeking over the top edge. */
+[data-ground='lavender'] .lav-track {
+  position: relative;
+}
+[data-ground='lavender'] .lav-track::before {
+  content: '';
+  position: absolute;
+  left: 14px;
+  bottom: calc(100% - 2px);
+  width: 18px;
+  height: 16px;
+  background: var(--spr-leaves) no-repeat center bottom / 18px 16px;
+  image-rendering: pixelated;
+  pointer-events: none;
+}
+[data-ground='lavender'] .lav-track::after {
+  content: '';
+  position: absolute;
+  right: 18px;
+  bottom: calc(100% - 2px);
+  width: 14px;
+  height: 16px;
+  background: var(--spr-flower-blue) no-repeat center bottom / 14px 16px;
+  image-rendering: pixelated;
+  pointer-events: none;
+}
+[data-ground='lavender'] .holo-border {
+  position: relative;
+}
+[data-ground='lavender'] .holo-border::before {
+  content: '';
+  position: absolute;
+  left: 26px;
+  bottom: calc(100% - 2px);
+  width: 14px;
+  height: 16px;
+  background: var(--spr-flower-pink) no-repeat center bottom / 14px 16px;
+  image-rendering: pixelated;
+  pointer-events: none;
+}
+[data-ground='lavender'] p.holo-border::before {
+  left: auto;
+  right: 34px;
+  background-image: var(--spr-flower-butter);
+}
