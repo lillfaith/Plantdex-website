@@ -68,7 +68,7 @@ describe('the server refuses independently of the button', () => {
   const fn = readFileSync('supabase/functions/identify-plant/index.ts', 'utf8');
   it('lowers the floor to one for purpose=collect only, in both places', () => {
     expect(fn).toContain('const MIN_COLLECT_IMAGES = 1;');
-    expect(fn).toContain('readCaptureAsk(form) ? MIN_COLLECT_IMAGES : MIN_IMAGES_FLOOR');
+    expect(fn).toContain('captureAsk ? MIN_COLLECT_IMAGES : MIN_IMAGES_FLOOR');
     expect(fn).toContain('earlyFiles.length >= MIN_COLLECT_IMAGES && earlyFiles.length <= MAX_IMAGES');
     expect(fn).toContain('files.length < imageFloor');
     // The ceiling is untouched, and the non-collect floor still comes from the shared resolver.
