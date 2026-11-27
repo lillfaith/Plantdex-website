@@ -3549,3 +3549,23 @@ html:has(main[data-shade='learn']) { background: #b7b7f5; }
 [data-ground='lavender'] [class*='hover:bg-plum']:hover {
   background-color: var(--lav-surface-2);
 }
+
+/*
+ * CONTRAST FIXES FROM A BROWSER-MEASURED AUDIT (every text node against its composited background, 4.5:1, or 3:1 for large text). Scoped to
+ * `[data-shade]`, which only the new pages carry, so the approved Collection, card profile and Garden are not touched.
+ */
+[data-shade] {
+  --color-violet-400: #52257f;
+  --color-gold-300: #5c3505;
+  --color-gold-400: #6b3f06;
+}
+[data-shade] .text-mystery-pink { color: #8f2557; }
+[data-shade] .text-mystery-orchid { color: #6f2a86; }
+[data-shade] .text-mystery-mauve { color: #5f2f7a; }
+[data-shade] .text-mystery-purple { color: #4f1d82; }
+[data-shade] .text-stat-temp { color: #9a2a12; }
+/* A pale button that used the (now ink) violet-300 as its fill: deep plum with white text, the same CTA in lavender's terms. */
+[data-shade] [class~='bg-violet-300'] { background-color: var(--plum-mid); color: #fff; }
+[data-shade] [class*='hover:bg-violet-200']:hover { background-color: #3d0a63; }
+/* The white "Edit profile" link sits on the pale hero plate here. */
+[data-shade] [class*='tap-44'][class*='absolute'][class~='text-white'] { color: var(--color-violet-200); }
