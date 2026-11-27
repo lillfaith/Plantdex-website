@@ -3518,3 +3518,25 @@ body:has(main[data-shade='learn']) [data-page-theme='learn'] { --pt-a: #b7b7f5; 
 [data-ground='lavender'] .text-mystery-pink {
   color: #a8326a;
 }
+
+/*
+ * THE PAGE ITSELF IS LAVENDER, NOT ONLY THE FIXED LAYER. The atmosphere is `position: fixed`, so it covers whatever the viewport shows and
+ * nothing else: in a stitched full-page capture, in overscroll bounce and behind a keyboard, the dark global ground showed through as a plum
+ * band under the first screen. Painting the canvas the same shade removes that without touching the fixed layer.
+ */
+html:has(main[data-ground='lavender']),
+body:has(main[data-ground='lavender']) {
+  background: #c9a4f8;
+}
+body:has(main[data-shade='home']) { background: #d6bdf9; }
+body:has(main[data-shade='profile']) { background: #c79bf5; }
+body:has(main[data-shade='scan']) { background: #beb0f6; }
+body:has(main[data-shade='quests']) { background: #d4a8f2; }
+body:has(main[data-shade='journal']) { background: #cbaeea; }
+body:has(main[data-shade='learn']) { background: #b7b7f5; }
+html:has(main[data-shade='home']) { background: #d6bdf9; }
+html:has(main[data-shade='profile']) { background: #c79bf5; }
+html:has(main[data-shade='scan']) { background: #beb0f6; }
+html:has(main[data-shade='quests']) { background: #d4a8f2; }
+html:has(main[data-shade='journal']) { background: #cbaeea; }
+html:has(main[data-shade='learn']) { background: #b7b7f5; }
