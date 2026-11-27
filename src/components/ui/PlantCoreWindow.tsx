@@ -97,7 +97,7 @@ export function PlantCoreWindow({
           </div>
           {variant === 'garden' ? (
             <>
-              {action(`/herbdex/${herb.id}`, hint ?? 'Open card', hint ? 'learn' : 'herbdex')}
+              {action(`/herbdex/${herb.id}`, hint === 'Learn its card' ? 'Learn card' : (hint ?? 'Open card'), hint ? 'learn' : 'herbdex')}
               {action('/scan', 'Scan a plant', 'scan')}
               <Link href={`/herbdex/${herb.id}`} className="pc-btn pc-mint flex min-h-12 items-center justify-center gap-2 px-2 text-[0.8rem] font-extrabold">
                 <PlantdexIcon name="herbdex" className="text-base" aria-hidden="true" />
