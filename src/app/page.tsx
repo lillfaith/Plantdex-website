@@ -118,7 +118,7 @@ export default function HomePage() {
           favicon is `src/app/icon.png`, a separate file, and the nav badge is the player's
           own avatar rather than the logo.
         */}
-        <h1 className="relative mt-3">
+        <h1 className="relative mt-1">
           <span className="sr-only">Plantdex</span>
           <span
             aria-hidden="true"
@@ -134,12 +134,12 @@ export default function HomePage() {
             className="mx-auto h-auto w-30 sm:w-39"
           />
         </h1>
-        <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-violet-200 sm:text-lg">
+        <p className="mx-auto mt-2 max-w-xl text-base leading-relaxed text-violet-200 sm:text-lg">
           Common wild medicinal plants around you, as a collectible deck.
         </p>
 
         {/* A rule with a sparkle on it: the break between the promise and the characters. */}
-        <div aria-hidden="true" className="mx-auto mt-5 flex max-w-sm items-center gap-3">
+        <div aria-hidden="true" className="mx-auto mt-3 flex max-w-sm items-center gap-3">
           <span className="h-px flex-1 bg-gradient-to-r from-transparent to-band-leaf/45" />
           <PlantdexIcon name="sprout" className="text-sm text-gold-400" />
           <span className="h-px flex-1 bg-gradient-to-l from-transparent to-band-leaf/45" />
@@ -164,7 +164,7 @@ export default function HomePage() {
         */}
         <ul
           aria-label="Plant characters from the deck"
-          className="mx-auto mt-8 flex w-full max-w-2xl items-end justify-center gap-2 sm:gap-4"
+          className="mx-auto mt-3 flex w-full max-w-2xl items-end justify-center gap-2 sm:gap-4"
         >
           {HERO_CREATURES.map((herbId) => {
             const herb = getPrintedCard(herbId);
@@ -245,7 +245,7 @@ export default function HomePage() {
           the button, and crowding it against the sentence underneath would group it with the
           wrong element.
         */}
-        <div className="mt-12">
+        <div className="mt-5">
           <DeckCta placement="home" />
         </div>
 
