@@ -3488,19 +3488,28 @@ body:has(main[data-shade='learn']) [data-page-theme='learn'] { --pt-a: #b7b7f5; 
 [data-ground='lavender'] .holo-fill {
   color: #2b0a4a;
 }
-[data-ground='lavender'] [class*='bg-plum-800'],
-[data-ground='lavender'] [class*='bg-plum-700'],
-[data-ground='lavender'] [class*='bg-plum-600'] {
+/* Dark fills behind flipped ink become the pale surface. An element that names its own white text (a deliberate plum button) keeps its plum. */
+[data-ground='lavender'] [class~='bg-plum-800']:not([class*='text-white']),
+[data-ground='lavender'] [class~='bg-plum-700']:not([class*='text-white']),
+[data-ground='lavender'] [class~='bg-plum-600']:not([class*='text-white']),
+[data-ground='lavender'] [class~='bg-plum-800/40']:not([class*='text-white']),
+[data-ground='lavender'] [class~='bg-plum-800/50']:not([class*='text-white']),
+[data-ground='lavender'] [class~='bg-plum-800/60']:not([class*='text-white']),
+[data-ground='lavender'] [class~='bg-plum-700/70']:not([class*='text-white']) {
   background-color: var(--lav-surface-2);
 }
-[data-ground='lavender'] [class*='bg-plum-900'] {
+[data-ground='lavender'] [class~='bg-plum-900']:not([class*='text-white']):not(button):not(a),
+[data-ground='lavender'] [class~='bg-plum-950']:not([class*='text-white']):not(button):not(a) {
   background-color: var(--lav-surface-2);
   border-color: var(--lav-edge);
 }
-[data-ground='lavender'] [class*='bg-violet-600/'] {
+[data-ground='lavender'] [class~='bg-violet-600/15']:not([class*='text-white']) {
   background-color: var(--lav-surface-2);
   border-color: var(--lav-edge);
 }
+/* New pages only: a gold FILL stays gold (the flipped token is for text, and made progress segments dark brown). */
+[data-shade] [class~='bg-gold-400'] { background-color: #ffd54a; }
+[data-shade] [class~='bg-gold-300'] { background-color: #ffe27a; }
 [data-ground='lavender'] .learn-tile {
   background:
     radial-gradient(120% 70% at 50% 0%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 70%),
