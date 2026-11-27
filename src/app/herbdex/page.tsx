@@ -22,6 +22,12 @@ export const metadata: Metadata = {
     'Track the wild plants you have found in real life, earn XP, and complete your Plantdex collection.',
 };
 
+/** STYLE LAB (owner review): 'a' or 'b' at build time shows an experimental look on this page only; unset (the default) is the shipped look. */
+const COLLECTION_STYLE =
+  process.env.NEXT_PUBLIC_COLLECTION_STYLE === 'a' || process.env.NEXT_PUBLIC_COLLECTION_STYLE === 'b'
+    ? process.env.NEXT_PUBLIC_COLLECTION_STYLE
+    : undefined;
+
 export default function HerbdexPage() {
   const herbs = printedCardsInDeckOrder();
   /*
@@ -33,7 +39,7 @@ export default function HerbdexPage() {
   const fieldCards = [...FIELD_CARDS].sort((a, b) => a.cardNumber - b.cardNumber);
 
   return (
-    <main id="main" data-ground="lavender" className="mx-auto max-w-6xl px-4 py-8">
+    <main id="main" data-ground="lavender" data-collection-style={COLLECTION_STYLE} className="mx-auto max-w-6xl px-4 py-8">
       <PageAtmosphere theme="collection" />
       <TrackView event="herbdex_opened" />
       {/* Above the header, because it is about that progress, and inline in the page flow
@@ -43,7 +49,7 @@ export default function HerbdexPage() {
       <CollectionHeader />
 
       {/* The Field Board's door, directly beneath your progress. */}
-      <div className="mt-3">
+      <div className="mt-3" data-part="board">
         <FieldBoardCard />
       </div>
 
@@ -51,11 +57,11 @@ export default function HerbdexPage() {
           the page no longer has a row of shortcuts for a first-time player to find it in. */}
       <FirstQuestCard />
 
-      <div className="mt-3">
+      <div className="mt-3" data-part="recent">
         <RecentFindsStrip />
       </div>
 
-      <div className="mt-3">
+      <div className="mt-3" data-part="research">
         <ResearchTeaser />
       </div>
 
@@ -84,7 +90,7 @@ export default function HerbdexPage() {
         </p>
       </nav>
 
-      <div className="mt-8 flex items-center gap-3">
+      <div className="mt-8 flex items-center gap-3" data-part="title">
         <span aria-hidden="true" className="h-0.5 flex-1 bg-gradient-to-r from-transparent to-gold-500" />
         <h1 className="font-display flex items-center gap-3 px-1 text-3xl font-extrabold text-violet-50"><span aria-hidden="true" className="pixel-diamond" />My Collection<span aria-hidden="true" className="pixel-diamond" /></h1>
         <span aria-hidden="true" className="h-0.5 flex-1 bg-gradient-to-l from-transparent to-gold-500" />
