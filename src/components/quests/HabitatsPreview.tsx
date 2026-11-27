@@ -50,7 +50,7 @@ function Poster({ habitat, label, height = 'h-52', children }: { habitat: string
       ))}
       <span className="absolute top-3 left-3 rounded-full bg-[#f9c9e6] px-3 py-1 text-lg font-extrabold text-violet-900">{label}</span>
       {height !== 'h-12' && (
-        <span data-placeholder-art className="absolute top-3 right-3 rounded-full bg-white/80 px-2 py-0.5 text-[0.62rem] font-bold tracking-wide text-violet-900 uppercase">
+        <span data-placeholder-art className="absolute top-3 right-3 rounded-full bg-white/80 px-2 py-0.5 text-[0.72rem] font-bold tracking-wide text-violet-900 uppercase">
           Placeholder scene
         </span>
       )}
