@@ -43,12 +43,15 @@ import {
   type ObservationChannel,
 } from '@/lib/scan-flow';
 import { decideConfirm, shouldClaim, shouldFetchRules } from '@/lib/scan-receipt';
+import { claimDiscovery, fetchDiscoveryRules } from '@/lib/scan-capture-session';
 import {
-  claimDiscovery,
-  fetchDiscoveryRules,
-  openCaptureSession,
-  type CaptureSession,
-} from '@/lib/scan-capture-session';
+  captureSessionFailure,
+  clearCaptureSessions,
+  currentCaptureSession,
+  ensureCaptureSession,
+  spendCaptureSession,
+} from '@/lib/scan-session-holder';
+import { captureUnavailableMessage } from '@/lib/scan-capture-copy';
 import { isCameraCaptureEnabled } from '@/lib/scan-capture';
 
 /** How many candidates the result list opens with; the rest are one tap away. */
@@ -104,18 +107,19 @@ export function ScanPanel() {
   const [confirmBlock, setConfirmBlock] = useState<string | null>(null);
   const confirmingRef = useRef(false);
   /*
-   * THE CAPTURE SESSION, in memory only (its nonce is a bearer secret). Opened when the camera
-   * screen opens and the player is signed in; spent by the next collect identify. A failure to
-   * open one is not an error: the scan still identifies, and the confirm step says what it can.
+   * THE CAPTURE SESSION lives in `scan-session-holder` (module level, memory only, one per account),
+   * not in this component: a ref here was forgotten on every navigation and every remount, and each
+   * camera open then stranded one more server session until three of them locked the player out.
+   * Opening the camera now only ASKS for a session; an existing valid one is reused and concurrent
+   * asks share one request. A failure to open one is not an error: the scan still identifies, and
+   * the confirm step says what it can.
    */
-  const captureSession = useRef<CaptureSession | null>(null);
   const openSession = useCallback(() => {
     if (!user) return;
-    const current = captureSession.current;
-    if (current && Date.now() - current.openedAtMs < 9 * 60 * 1000) return;
-    void openCaptureSession().then((opened) => {
-      captureSession.current = opened.ok ? opened.session : null;
-    });
+    void ensureCaptureSession(user.id);
+  }, [user]);
+  useEffect(() => {
+    if (!user) clearCaptureSessions();
   }, [user]);
 
   /*
@@ -330,17 +334,14 @@ export function ScanPanel() {
       setSentChannel(channel);
       setReceiptNote(null);
       setConfirmBlock(null);
-      // A session is single-use: whichever way this call goes, it is spent.
-      const session = channel === 'collect' ? captureSession.current : null;
-      captureSession.current = null;
+      // The session is READ here, not taken: it is dropped only once the server has answered about
+      // it (below), so a failed or unreachable request can be retried with the same one.
+      const session = channel === 'collect' && user ? currentCaptureSession(user.id) : null;
       if (channel === 'collect' && !session && photos.length < minPhotosFor('lookup')) {
         // One camera photo is enough only with an open capture session; without one this is a
-        // lookup, which needs two. Say so rather than letting the generic refusal blame the count.
-        setProblem(
-          user
-            ? 'The camera session could not be started, so this photo can only look a plant up. Add another photo of the same plant, or try the camera again.'
-            : 'Sign in to collect a plant from a camera photo. Signed out, a photo can only look a plant up: add another photo of the same plant, or sign in and try again.',
-        );
+        // lookup, which needs two. Say what is actually true: signed out, no session was ever
+        // opened, the account has too many open, or the one it had has expired.
+        setProblem(captureUnavailableMessage(user ? captureSessionFailure(user.id) ?? 'expired' : 'signed_out'));
         setStage('idle');
         return;
       }
@@ -363,6 +364,12 @@ export function ScanPanel() {
         consentScope: consent.scope,
         capture: session ? { sessionId: session.sessionId, nonce: session.nonce } : undefined,
       });
+
+      // Spent only on an answer that says so: any real answer (accepted, refused or replayed) used it up;
+      // a failure keeps it unless the backend reported the session consumed and not handed back.
+      if (session && user && (!isScanFailure(answer) || (answer.kind === 'error' && answer.captureSpent))) {
+        spendCaptureSession(user.id, session.sessionId);
+      }
 
       if (isScanFailure(answer)) {
         if (answer.kind === 'rateLimited') {

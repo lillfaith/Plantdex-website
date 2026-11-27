@@ -57,3 +57,38 @@ export function captureStateCopy(state: CaptureState): CaptureStateCopy {
       return { message: 'The camera could not be started. You can try again or identify from a library photo.', canOpen: true };
   }
 }
+
+/**
+ * Why a camera photo cannot collect right now, said truthfully. This used to be one sentence
+ * ("The camera session could not be started") for every cause, including a dropped connection
+ * and an expired session, so "try the camera again" was advice that could not work.
+ * Every variant ends at what the player can actually do, and none implies a route to a card
+ * that bypasses the camera: a second photo only LOOKS the plant up.
+ */
+export type CaptureUnavailable =
+  | 'signed_out'
+  | 'too_many_open_sessions'
+  | 'daily_session_limit'
+  | 'network'
+  | 'not-deployed'
+  | 'not_signed_in'
+  | 'expired';
+
+export function captureUnavailableMessage(why: CaptureUnavailable): string {
+  switch (why) {
+    case 'signed_out':
+    case 'not_signed_in':
+      return 'Sign in to collect a plant from a camera photo. Signed out, a photo can only look a plant up: add another photo of the same plant, or sign in and try again.';
+    case 'too_many_open_sessions':
+      return 'Earlier camera tries are still open and clear within about ten minutes. You can add another photo of the same plant to look it up now, or open the camera again in a few minutes to collect.';
+    case 'daily_session_limit':
+      return 'You have reached today’s limit of camera collections. Add another photo of the same plant to look it up, or try the camera again tomorrow.';
+    case 'network':
+      return 'Plantdex could not reach the server to prepare the camera. Check your connection, then open the camera and take the photo again to collect, or add another photo of the same plant to look it up.';
+    case 'not-deployed':
+      return 'Collecting from the camera is not available here yet. Add another photo of the same plant to look it up.';
+    case 'expired':
+    default:
+      return 'This camera capture has timed out. Open the camera and take the photo again to collect, or add another photo of the same plant to look it up.';
+  }
+}
