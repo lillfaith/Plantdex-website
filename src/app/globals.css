@@ -374,10 +374,7 @@ body {
  * so a coloured page behind it can never tint it, and no backdrop blur (cheaper, and Safari
  * handles it unevenly). Idle icons and labels are a lavender-grey, the active one gold.
  */
-@utility nav-bar {
-  background: var(--color-brand-nav);
-  border: 1px solid var(--color-brand-nav-line);
-}
+/* nav-bar: see SOFT POLISH at the end of this file. */
 
 /* Visible, high-contrast focus for keyboard users on every interactive element. */
 :where(a, button, input, select, summary, [tabindex]):focus-visible {
@@ -3569,3 +3566,113 @@ html:has(main[data-shade='learn']) { background: #b7b7f5; }
 [data-shade] [class*='hover:bg-violet-200']:hover { background-color: #3d0a63; }
 /* The white "Edit profile" link sits on the pale hero plate here. */
 [data-shade] [class*='tap-44'][class*='absolute'][class~='text-white'] { color: var(--color-violet-200); }
+
+/*
+ * ─────────────────────────────────────────────────────────────────────────────
+ * SOFT POLISH (owner brief 2026-11-27, for approval): softer, cuter, less flat, more cohesive. The same screens, hierarchy and component
+ * placement; only surfaces, edges, depth and accent colours change. Page background colours are NOT touched.
+ *   soft pink      #F8C8E4 / deep #E98FC2     buttery yellow #FFF0A8 / deep #F2C75C     card violet #9C21F8 (the card background)
+ *   bright lavender nav  #B39AF3 -> #A184EA, always darker than every page ground; ink #3D0A63 on it (>= 4.7:1), deep plum pill + butter text
+ * ─────────────────────────────────────────────────────────────────────────────
+ */
+@utility nav-bar {
+  background: linear-gradient(180deg, #b39af3 0%, #a184ea 100%);
+  border: 1px solid #7f5fd0;
+  box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.45), 0 -3px 0 0 rgb(249 201 230 / 0.9);
+}
+.nav-bar :is(a, button) {
+  color: #3d0a63;
+}
+.nav-bar :is(a, button):hover:not([aria-current='page']):not([class*='bg-brand-purple']) {
+  background: rgb(255 255 255 / 0.32);
+  color: #3d0a63;
+}
+.nav-bar a[aria-current='page'],
+.nav-bar :is(a, button)[class*='bg-brand-purple'] {
+  background: linear-gradient(180deg, #7a4cc0 0%, #5b2e91 100%);
+  color: #fff0a8;
+  box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.28), 0 2px 0 0 #3d1a6d;
+}
+.nav-bar [class*='bg-brand-gold'] {
+  background: #fff0a8;
+}
+/* More panel: the same lavender, the same ink. */
+.nav-bar ul.nav-bar {
+  box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.45), 0 6px 14px -4px rgb(61 10 99 / 0.45);
+}
+/* A strip of pixel flowers and grass along the top of the phone bar: decorative, no meaning, not any real species. */
+@media (max-width: 39.999rem) {
+  .nav-bar::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 100%;
+    height: 16px;
+    background: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2264%22 height=%2216%22 viewBox=%220 0 64 16%22 shape-rendering=%22crispEdges%22%3E%3Crect x=%220%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%222%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%224%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%226%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%228%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%2210%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%2212%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%2214%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%2216%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%2218%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%2220%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%2222%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%2224%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%2226%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%2228%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%2230%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%2232%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%2234%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%2236%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%2238%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%2240%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%2242%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%2244%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%2246%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%2248%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%2250%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%2252%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%2254%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%2256%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%2258%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%2260%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%2262%22 y=%2214%22 width=%222%22 height=%222%22 fill=%22%234f9a5c%22/%3E%3Crect x=%220%22 y=%2212%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3Crect x=%226%22 y=%2212%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3Crect x=%2212%22 y=%2212%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3Crect x=%2226%22 y=%2212%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3Crect x=%2234%22 y=%2212%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3Crect x=%2246%22 y=%2212%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3Crect x=%2254%22 y=%2212%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3Crect x=%2260%22 y=%2212%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3Crect x=%226%22 y=%2210%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3Crect x=%2234%22 y=%2210%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3Crect x=%2254%22 y=%2210%22 width=%222%22 height=%222%22 fill=%22%236fbf73%22/%3E%3Crect x=%2218%22 y=%2210%22 width=%222%22 height=%224%22 fill=%22%236fbf73%22/%3E%3Crect x=%2216%22 y=%226%22 width=%222%22 height=%222%22 fill=%22%23f9a9d4%22/%3E%3Crect x=%2220%22 y=%226%22 width=%222%22 height=%222%22 fill=%22%23f9a9d4%22/%3E%3Crect x=%2218%22 y=%224%22 width=%222%22 height=%222%22 fill=%22%23f9a9d4%22/%3E%3Crect x=%2218%22 y=%228%22 width=%222%22 height=%222%22 fill=%22%23f9a9d4%22/%3E%3Crect x=%2218%22 y=%226%22 width=%222%22 height=%222%22 fill=%22%23fff0a8%22/%3E%3Crect x=%2240%22 y=%2210%22 width=%222%22 height=%224%22 fill=%22%236fbf73%22/%3E%3Crect x=%2238%22 y=%226%22 width=%222%22 height=%222%22 fill=%22%23fff0a8%22/%3E%3Crect x=%2242%22 y=%226%22 width=%222%22 height=%222%22 fill=%22%23fff0a8%22/%3E%3Crect x=%2240%22 y=%224%22 width=%222%22 height=%222%22 fill=%22%23fff0a8%22/%3E%3Crect x=%2240%22 y=%228%22 width=%222%22 height=%222%22 fill=%22%23fff0a8%22/%3E%3Crect x=%2240%22 y=%226%22 width=%222%22 height=%222%22 fill=%22%23f9a9d4%22/%3E%3Crect x=%2258%22 y=%2210%22 width=%222%22 height=%224%22 fill=%22%236fbf73%22/%3E%3Crect x=%2256%22 y=%226%22 width=%222%22 height=%222%22 fill=%22%23ffffff%22/%3E%3Crect x=%2260%22 y=%226%22 width=%222%22 height=%222%22 fill=%22%23ffffff%22/%3E%3Crect x=%2258%22 y=%224%22 width=%222%22 height=%222%22 fill=%22%23ffffff%22/%3E%3Crect x=%2258%22 y=%228%22 width=%222%22 height=%222%22 fill=%22%23ffffff%22/%3E%3Crect x=%2258%22 y=%226%22 width=%222%22 height=%222%22 fill=%22%23fff0a8%22/%3E%3C/svg%3E") repeat-x left bottom / 64px 16px;
+    image-rendering: pixelated;
+    pointer-events: none;
+  }
+}
+
+/* Layered panels: a light top highlight, a soft inner shade, a chunky drop, and a card-violet rim along the top that ties every panel to the cards. */
+[data-ground='lavender'] :is(.panel, .game-panel, .field-panel, .science-panel, .character-panel, .panel-raised) {
+  background: linear-gradient(180deg, #fcf9ff 0%, var(--lav-surface) 34%, var(--lav-surface) 100%);
+  border: 2px solid var(--lav-edge);
+  border-top: 4px solid #9c21f8;
+  box-shadow:
+    inset 0 2px 0 rgb(255 255 255 / 0.9),
+    inset 0 -3px 0 rgb(156 33 248 / 0.1),
+    0 3px 0 0 var(--lav-drop),
+    0 12px 16px -10px rgb(91 46 145 / 0.4);
+}
+[data-ground='lavender'] .holo-border {
+  box-shadow:
+    inset 0 2px 0 rgb(255 255 255 / 0.9),
+    0 3px 0 0 var(--lav-drop),
+    0 10px 14px -10px rgb(91 46 145 / 0.4);
+}
+/* Chips, pills and tabs: card violet for the selected state, buttery yellow for pills, soft pink as the underline. */
+[data-ground='lavender'] .chip-selected-deep {
+  background: linear-gradient(180deg, #b24dff 0%, #9c21f8 100%);
+  color: #fff;
+  box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.35), inset 0 -3px 0 0 #f8c8e4;
+}
+[data-ground='lavender'] .lav-pill {
+  background: linear-gradient(180deg, #fff8cf 0%, #fff0a8 100%);
+  border-color: #e0a92f;
+  box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.8), 0 2px 0 0 #e8c76a;
+}
+[data-ground='lavender'] .lav-track {
+  background: linear-gradient(180deg, #d9c2fb 0%, var(--lav-surface-2) 100%);
+  box-shadow: inset 0 2px 4px rgb(91 46 145 / 0.25), 0 3px 0 0 var(--lav-drop);
+}
+/* Buttons that were flat get a top highlight and a pressable bottom edge. */
+[data-ground='lavender'] :is(a, button)[class*='from-gold-500'],
+[data-ground='lavender'] .arcade-key {
+  box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.7), inset 0 -3px 0 rgb(233 143 194 / 0.55), 0 4px 0 0 #c9892a, 0 10px 14px -8px rgb(91 46 145 / 0.45);
+}
+[data-ground='lavender'] :is(a, button)[class*='bg-gold-500'][class*='rounded-full'] {
+  background: linear-gradient(180deg, #fff3b8 0%, #ffd54a 100%);
+  box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.75), inset 0 -3px 0 rgb(233 143 194 / 0.45), 0 3px 0 0 #c9892a;
+}
+/* Deliberate deep-plum buttons: a lit top, a darker foot, a pink hairline. */
+[data-ground='lavender'] :is(a, button)[class~='bg-plum-900'][class*='text-white'],
+[data-shade] [class~='bg-violet-300'] {
+  background: linear-gradient(180deg, #7a4cc0 0%, #5b2e91 100%);
+  box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.28), inset 0 0 0 1px rgb(248 200 228 / 0.5), 0 3px 0 0 #3d1a6d, 0 10px 14px -8px rgb(61 10 99 / 0.5);
+}
+/* Progress tracks sit IN the panel (inner shade); their fills stay buttery yellow to pink. */
+[data-ground='lavender'] [class*='rounded-full'][class~='bg-plum-900'],
+[data-ground='lavender'] [class*='rounded-full'][class~='bg-plum-950'] {
+  box-shadow: inset 0 2px 3px rgb(91 46 145 / 0.3);
+}
+/* Soft pink as a small accent: the selection colour and the section dividers. */
+[data-ground='lavender'] ::selection {
+  background: #f8c8e4;
+  color: #3d0a63;
+}
+[data-ground='lavender'] hr,
+[data-ground='lavender'] [class*='border-t'][class*='border-violet'] {
+  border-color: #f2b5d8;
+}
