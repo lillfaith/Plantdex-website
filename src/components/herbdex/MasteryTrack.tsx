@@ -91,7 +91,7 @@ function EvolutionPath({
               {done && (
                 <span
                   aria-hidden="true"
-                  className={`absolute -inset-x-2 -top-2 bottom-3 rounded-full ${
+                  className={`absolute -inset-x-2 -top-2 bottom-7 rounded-full ${
                     current
                       ? 'bg-[radial-gradient(closest-side,rgba(255,214,102,0.55),transparent_75%)]'
                       : 'bg-[radial-gradient(closest-side,rgba(255,214,102,0.28),transparent_75%)]'
@@ -378,7 +378,7 @@ export function MasteryTrack({ herb }: { herb: Herb }) {
                   <button
                     type="button"
                     onClick={openFieldLog}
-                    className="mt-2 min-h-11 rounded-full border border-gold-500/60 bg-gold-500/15 px-4 text-xs font-bold text-gold-300 transition-colors hover:bg-gold-500/30 hover:text-gold-200"
+                    className="pd-btn mt-3 text-sm"
                   >
                     Log a sighting
                   </button>

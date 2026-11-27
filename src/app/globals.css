@@ -3250,6 +3250,162 @@ main[data-shade='home'] .home-stage {
 main[data-shade='home'] .home-stage .home-name-strip { left: 6px; right: 6px; bottom: 6px; }
 
 /*
+ * SHARED COMPONENT RULES (Palette V2), the consistency pass.
+ * One vocabulary for every surface that carries information: a LIGHT lavender/orchid/pink fill, a 2px edge in a
+ * DARKER tone of the same family, a solid 3px "bevel" foot in a deeper tone still, dark-plum ink, and the deep
+ * card violet kept for the one thing that is selected or primary. Gold is a small accent (a foot, a badge), never a
+ * panel. Dark fills are reserved for pills, selected tabs and primary buttons so they read as emphasis.
+ *   .pd-panel   a content panel          .pd-tile    a small information tile (data-tone: leaf | pink | gold)
+ *   .pd-badge   a pill label             .pd-btn / .pd-btn-quiet   primary and secondary actions
+ * Existing herbal-* utilities are re-expressed in these terms rather than duplicated.
+ */
+[data-ground='lavender'] {
+  --pd-ink: #38204f;
+  --pd-ink-soft: #5f2f94;
+  --pd-edge: var(--card-violet-300);
+  --pd-bevel: var(--card-violet-700);
+}
+.pd-panel {
+  background: linear-gradient(180deg, #fff 0%, var(--card-violet-50) 100%);
+  border: 2px solid var(--card-violet-300);
+  border-radius: 16px;
+  box-shadow: inset 0 2px 0 #fff, 0 3px 0 0 var(--card-violet-700);
+  color: #38204f;
+}
+.pd-tile {
+  background: linear-gradient(180deg, #fff 0%, var(--card-orchid-50) 100%);
+  border: 2px solid var(--card-orchid-300);
+  border-radius: 12px;
+  box-shadow: inset 0 2px 0 #fff, 0 3px 0 0 var(--card-orchid-700);
+  color: #38204f;
+}
+.pd-tile[data-tone='leaf'] { background: linear-gradient(180deg, #fff, var(--card-leaf-100)); border-color: var(--card-leaf-500); box-shadow: inset 0 2px 0 #fff, 0 3px 0 0 var(--card-leaf-700); }
+.pd-tile[data-tone='pink'] { background: linear-gradient(180deg, #fff, var(--card-pink-200)); border-color: var(--card-pink-500); box-shadow: inset 0 2px 0 #fff, 0 3px 0 0 var(--card-pink-700); }
+.pd-tile[data-tone='gold'] { background: linear-gradient(180deg, #fff, var(--card-gold-100)); border-color: var(--card-gold-500); box-shadow: inset 0 2px 0 #fff, 0 3px 0 0 var(--card-gold-700); }
+.pd-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 1.5rem;
+  padding: 0 0.6rem;
+  border-radius: 999px;
+  border: 2px solid var(--card-violet-500);
+  background: var(--card-violet-50);
+  color: #38204f;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.pd-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  padding: 0 1.25rem;
+  border-radius: 999px;
+  border: 2px solid var(--card-violet-700);
+  background: linear-gradient(180deg, var(--card-violet-300) 0%, var(--card-violet-500) 100%);
+  box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.45), 0 4px 0 0 var(--card-violet-900);
+  color: #fff;
+  font-weight: 800;
+  text-shadow: 0 1px 0 rgb(77 25 130 / 0.6);
+}
+.pd-btn:active { transform: translateY(2px); box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.45), 0 2px 0 0 var(--card-violet-900); }
+.pd-btn-quiet {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  padding: 0 1.1rem;
+  border-radius: 999px;
+  border: 2px solid var(--card-violet-500);
+  background: #fff;
+  box-shadow: 0 3px 0 0 var(--card-violet-700);
+  color: #38204f;
+  font-weight: 800;
+}
+
+/* Selected tab: deep card violet with white ink (the lavender token remap had turned the old fill pale under white text). */
+[data-ground='lavender'] button[role='tab'][aria-selected='true'] {
+  background: linear-gradient(180deg, #b04bfa 0%, var(--card-violet-500) 100%);
+  color: #fff;
+  border-bottom-color: var(--card-violet-700);
+  box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.4), 0 3px 0 0 var(--card-violet-700);
+}
+[data-ground='lavender'] button[role='tab']:not([aria-selected='true']) { color: #38204f; }
+
+/* Herbalism: the data frame, panels and tiles become light lavender/orchid with darker edges (they were dark plum under dark ink). */
+[data-ground='lavender'] .herbal-frame {
+  background: linear-gradient(180deg, var(--card-violet-50), var(--card-orchid-50));
+  box-shadow: 0 0 0 2px var(--card-violet-300), 0 4px 0 0 var(--card-violet-700), inset 0 3px 0 #fff;
+  border-radius: 14px;
+}
+[data-ground='lavender'] .herbal-panel {
+  background: linear-gradient(180deg, #fff, var(--card-violet-50));
+  box-shadow: 0 0 0 2px var(--card-orchid-300), 0 3px 0 0 var(--card-orchid-700), inset 0 2px 0 #fff;
+  border-radius: 12px;
+}
+[data-ground='lavender'] .pixel-tile {
+  background: linear-gradient(180deg, #fff, var(--card-orchid-50));
+  box-shadow: 0 0 0 2px var(--card-orchid-300), 0 3px 0 0 var(--card-gold-700), inset 0 2px 0 #fff;
+  border-radius: 8px;
+  color: #38204f;
+}
+[data-ground='lavender'] .pixel-tile * { color: #38204f; }
+[data-ground='lavender'] .herbal-strip { background: var(--card-violet-100); box-shadow: inset 0 2px 0 #fff; color: #38204f; }
+[data-ground='lavender'] .herbal-strip * { color: #38204f; }
+[data-ground='lavender'] .herbal-frame p,
+[data-ground='lavender'] .herbal-frame li,
+[data-ground='lavender'] .herbal-frame dd,
+[data-ground='lavender'] .herbal-frame dt,
+[data-ground='lavender'] .herbal-frame summary { color: #38204f; }
+[data-ground='lavender'] .herbal-frame a:not(.pd-btn) { color: #4d1982; text-decoration: underline; }
+/* The pill header is the deep-tone emphasis on each panel; cream on deep violet is ~9:1. */
+[data-ground='lavender'] .panel-pill { background: linear-gradient(90deg, #8f3fe0, #5b2a9e); color: #fff6cf; }
+/* The botanical record photo is the card's own artwork and keeps its crop; it is just not allowed to fill the whole page. */
+[data-ground='lavender'] .herbal-frame .herbal-hero { max-width: 28rem; margin-inline: auto; }
+@media (max-width: 640px) { [data-ground='lavender'] .herbal-frame .herbal-hero { max-width: 100%; } }
+
+/* Traditional Uses: three separate botanical tiles instead of one grey strip. */
+.uses-tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.5rem; overflow: visible; border-radius: 0; background: none; }
+.uses-tiles > li { min-height: 4.25rem; justify-content: center; }
+.uses-tiles > li span { color: #38204f; }
+@media (max-width: 360px) { .uses-tiles { gap: 0.35rem; } }
+
+/* Herbalism panels share one width and the paired panels one height; nothing sits as a narrow island in a wide frame. */
+[data-ground='lavender'] .herbal-frame .max-w-2xl { max-width: none; }
+[data-ground='lavender'] .herbal-frame .grid[class*='5fr_7fr'] { align-items: stretch; }
+@media (max-width: 640px) { [data-ground='lavender'] .herbal-frame .grid[class*='5fr_7fr'] { grid-template-columns: 1fr; } }
+
+/* Challenges and Progress read as one centred column on wide screens, so the rail, the steps and the primary action line up. */
+@media (min-width: 900px) {
+  [data-ground='lavender'] [role='tabpanel'].pt-4 > * { max-width: 46rem; margin-inline: auto; }
+}
+
+/* Mastery: the three stages are ONE connected progression (a bevelled rail with a solid pixel path between the stages), centred and
+   capped in width, instead of three islands spread across a full-width panel. */
+[data-ground='lavender'] ol[aria-label='Growth stages'] {
+  max-width: 34rem;
+  margin-inline: auto;
+  padding: 0.9rem 0.75rem 0.6rem;
+  background: linear-gradient(180deg, var(--card-orchid-50), var(--card-violet-50));
+  border: 2px solid var(--card-violet-300);
+  border-radius: 16px;
+  box-shadow: inset 0 2px 0 #fff, 0 3px 0 0 var(--card-violet-700);
+}
+[data-ground='lavender'] ol[aria-label='Growth stages'] .evo-path {
+  background: none;
+  height: 0;
+  width: 1.75rem;
+  border-top: 4px dotted var(--card-violet-500);
+  opacity: 1;
+}
+[data-ground='lavender'] ol[aria-label='Growth stages'] .evo-path-lit { border-top: 4px solid var(--card-violet-500); }
+
+/*
  * BOSS FORM CHALLENGES: every motion here runs a FIXED number of times and then rests, because
  * this app does not use ambient motion that repeats forever. Opacity and transform only, never
  * blur or filter (blur measurably halved the discovery reveal's frame rate), so it stays cheap

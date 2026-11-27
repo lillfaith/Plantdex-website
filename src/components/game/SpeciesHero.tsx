@@ -154,9 +154,13 @@ export function SpeciesHero({
             <PlantdexIcon name="leaves" className="text-sm" />
             Traditional Uses
           </h2>
-          <ul className="uses-tiles mt-1.5 grid grid-cols-3 overflow-hidden rounded-2xl">
-            {herb.back.healingTraits.slice(0, 3).map((trait) => (
-              <li key={trait} className="flex flex-col items-center gap-1 px-1.5 py-2.5 text-center">
+          <ul className="uses-tiles mt-2">
+            {herb.back.healingTraits.slice(0, 3).map((trait, i) => (
+              <li
+                key={trait}
+                data-tone={['leaf', 'pink', 'gold'][i % 3]}
+                className="pd-tile flex flex-col items-center gap-1 px-1.5 py-2.5 text-center"
+              >
                 <span
                   aria-hidden="true"
                   className="block w-[22px]"
@@ -171,7 +175,7 @@ export function SpeciesHero({
               </li>
             ))}
           </ul>
-          <p className="mt-1.5 text-center text-[0.72rem] text-pink-accent/90 italic">
+          <p className="mt-2 text-center text-[0.72rem] font-semibold text-violet-300 italic">
             Traditional use, not proven treatment.
           </p>
         </div>
