@@ -487,19 +487,19 @@ describe('the autonomous live run workflow stays TEST-only, deliberate and bound
     expect(LCR_CODE).toMatch(/name: Delete only the accounts this run created\s*\n\s+if: always\(\)/);
     expect(LCR_CODE).toContain('python3 scripts/live_run.py preflight');
   });
-  it('never writes the service-role key anywhere: not to a file, not to the environment file, not to a log', () => {
-    expect(LIVE_RUN_PY).not.toMatch(/append_env\([^)]*service/);
-    expect(LIVE_RUN_PY).not.toMatch(/print\([^)]*service[^_]/);
-    expect(LIVE_RUN_PY).not.toMatch(/save_state\([^)]*service/);
+  it('obtains no service-role key at all, and masks every credential it handles', () => {
+    expect(LIVE_RUN_PY).not.toMatch(/reveal=true|\/auth\/v1\/admin\/|admin_headers|service_role"/);
     expect(LIVE_RUN_PY).toContain('mask(key)');
+    expect(LIVE_RUN_PY).toContain('mask(password)');
+    expect(LIVE_RUN_PY).not.toMatch(/save_state\([^)]*password/);
   });
   it('deletes only accounts it created: exact id AND exact email, from this run id', () => {
-    expect(LIVE_RUN_PY).toContain('body.get("email") != expect[role]');
+    expect(LIVE_RUN_PY).toContain("and email = {sql_literal(expect[role])} returning id::text");
     expect(LIVE_RUN_PY).toContain('plantdex-e2e-capture-{role}-{stamp}@mailinator.com');
     expect(LIVE_RUN_PY).not.toMatch(/like\s+'/i);
   });
   it('a prerequisite that cannot be verified is a failure, never a pass', () => {
-    expect(LIVE_RUN_PY).toContain('Credentials are therefore UNVERIFIED, which is a failure');
+    expect(LIVE_RUN_PY).toContain('credentials are UNVERIFIED, which is a failure');
     expect(LIVE_RUN_PY).toContain('sys.exit(1)');
   });
 });

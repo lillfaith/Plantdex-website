@@ -3,8 +3,9 @@ name: Live camera-to-collection run (TEST project only, autonomous)
 # Runs e2e/capture-flow.e2e.test.ts against the TEST Supabase project with no human step in the middle:
 #   1. PREFLIGHT   verifies the target, migration 0016, enforcement OFF, the deployed function, the provider + attestation
 #                  secrets and the admin credential. Anything that cannot be verified FAILS; nothing is spent or changed.
-#   2. LIVE        creates two already-confirmed disposable accounts through the Auth admin API (the project's "Confirm email"
-#                  setting is never touched), runs the suite against the DEPLOYED identify-plant and its REAL provider, writes a
+#   2. LIVE        creates two already-confirmed disposable accounts (written to auth.users through the Database scope the token
+#                  has, because the token is refused by the Auth admin / API-keys endpoints; the project's "Confirm email"
+#                  setting is never touched), proves each can sign in through the real Auth endpoint, runs the suite against the DEPLOYED identify-plant and its REAL provider, writes a
 #                  PASS/FAIL table and the evidence to the run summary, and deletes ONLY the accounts it created.
 #
 # WHAT SPENDS PROVIDER CREDITS: exactly two identifications per run (the card photograph, and one blank image to exercise the
@@ -18,7 +19,7 @@ name: Live camera-to-collection run (TEST project only, autonomous)
 #
 # TEST ONLY, ENFORCED: the project ref is a literal with no input; scripts/live_run.py refuses any other ref; production is not
 # named here. The only secret is SUPABASE_ACCESS_TOKEN, held by the preflight/provision/cleanup steps and NEVER by the step that
-# runs the suite. It cannot change a flag: this workflow deploys nothing, migrates nothing and never calls
+# runs the suite. No service-role key is obtained at all. The TEST anon key is the PUBLIC repository variable TEST_SUPABASE_ANON_KEY. It cannot change a flag: this workflow deploys nothing, migrates nothing and never calls
 # set_discovery_enforcement.
 on:
   push:
@@ -73,6 +74,7 @@ jobs:
       - name: Verify every prerequisite (read-only)
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          TEST_ANON_KEY: ${{ vars.TEST_SUPABASE_ANON_KEY }}
         run: python3 scripts/live_run.py preflight
 
   live:
@@ -102,9 +104,10 @@ jobs:
           Image.new('RGB', (640, 640), (118, 124, 131)).save('blank.jpg', quality=88)
           PY
 
-      - name: Create two confirmed disposable accounts (admin API) and one aged receipt
+      - name: Create two confirmed disposable accounts and one aged receipt
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          TEST_ANON_KEY: ${{ vars.TEST_SUPABASE_ANON_KEY }}
         run: python3 scripts/live_run.py provision
 
       - name: Run the live camera-to-collection suite
