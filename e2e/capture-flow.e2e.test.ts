@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs';
+import { readFileSync, writeFileSync } from 'node:fs';
 import { createClient, type SupabaseClient, type User } from '@supabase/supabase-js';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 
@@ -29,6 +29,16 @@ const PHOTO = process.env.E2E_PHOTO;
 const HERB = process.env.E2E_HERB_ID ?? 'taraxacum-officinale';
 const ENFORCING = process.env.E2E_ENFORCEMENT === 'on';
 const configured = Boolean(SB_URL && KEY && PHOTO);
+/** Disposable, already-confirmed accounts created by the workflow's admin step; absent on a manual run (then the suite signs up). */
+const PROVISIONED = {
+  alice: { email: process.env.E2E_ALICE_EMAIL, password: process.env.E2E_ALICE_PASSWORD },
+  bob: { email: process.env.E2E_BOB_EMAIL, password: process.env.E2E_BOB_PASSWORD },
+};
+const EXPIRED_RECEIPT = process.env.E2E_EXPIRED_RECEIPT_ID;
+const NONPLANT_PHOTO = process.env.E2E_NONPLANT_PHOTO;
+const EVIDENCE_FILE = process.env.E2E_EVIDENCE_FILE;
+/** Non-secret facts the run observed, written for the run summary. Never a password, key or token. */
+const evidence: Record<string, unknown> = {};
 
 const TEST_REF = 'vgjehmwcpavflbfhbbrp';
 if (SB_URL && new URL(SB_URL).hostname !== `${TEST_REF}.supabase.co`) {
@@ -41,7 +51,13 @@ type Row = Record<string, unknown>;
 const fresh = (): SupabaseClient =>
   createClient(SB_URL!, KEY!, { auth: { persistSession: false, autoRefreshToken: false } });
 
-async function signUpAndIn(client: SupabaseClient, tag: string): Promise<{ user: User; email: string; password: string }> {
+async function signUpAndIn(client: SupabaseClient, tag: 'alice' | 'bob'): Promise<{ user: User; email: string; password: string }> {
+  const given = PROVISIONED[tag];
+  if (given.email && given.password) {
+    const { data, error } = await client.auth.signInWithPassword({ email: given.email, password: given.password });
+    if (error || !data.user) throw new Error(`signIn failed for the provisioned ${tag} account: ${error?.message}`);
+    return { user: data.user, email: given.email, password: given.password };
+  }
   const email = `plantdex-e2e-capture-${tag}-${STAMP}@mailinator.com`;
   const password = `Test-Passw0rd-${Math.random().toString(36).slice(2, 10)}`;
   const { error: upErr } = await client.auth.signUp({ email, password });
@@ -74,6 +90,7 @@ async function identify(client: SupabaseClient, session: { session_id: string; n
 describe.skipIf(!configured)('V1 camera-to-collection, live (TEST project)', () => {
   let alice: SupabaseClient;
   let bob: SupabaseClient;
+  let bobUser: User;
   let aliceUser: User;
   let aliceCreds: { email: string; password: string };
   let photo: Uint8Array;
@@ -88,13 +105,15 @@ describe.skipIf(!configured)('V1 camera-to-collection, live (TEST project)', () 
     const a = await signUpAndIn(alice, 'alice');
     aliceUser = a.user;
     aliceCreds = a;
-    await signUpAndIn(bob, 'bob');
+    bobUser = (await signUpAndIn(bob, 'bob')).user;
+    evidence.accounts = { provisioned: Boolean(PROVISIONED.alice.email), alice: aliceUser.id, bob: bobUser.id };
   });
 
   afterAll(async () => {
     // Disposable accounts are removed by the project's cleanup SQL (docs/release/v1-test-deployment.md).
     await alice?.auth.signOut();
     await bob?.auth.signOut();
+    if (EVIDENCE_FILE) writeFileSync(EVIDENCE_FILE, JSON.stringify(evidence, null, 2));
   });
 
   it('the database reports its rules, and the switch state matches what this run expects', async () => {
@@ -102,11 +121,13 @@ describe.skipIf(!configured)('V1 camera-to-collection, live (TEST project)', () 
     expect(error, JSON.stringify(error)).toBeNull();
     expect((data as Row).enforcing).toBe(ENFORCING);
     expect((data as Row).min_capture_ms).toBe(0);
+    evidence.rules = data;
   });
 
   it('STEP 1 - Camera: a signed-in player opens a capture session', async () => {
     sessionA = await openSession(alice);
     expect(sessionA.nonce).toMatch(/^[0-9a-f]{64}$/);
+    evidence.session = { id: sessionA.session_id, nonceIsHex64: true };
   });
 
   it('STEP 2 - Identify: ONE photograph through the DEPLOYED function and its real provider', async () => {
@@ -119,6 +140,11 @@ describe.skipIf(!configured)('V1 camera-to-collection, live (TEST project)', () 
     expect(capture.accepted, JSON.stringify(capture)).toBe(true);
     const candidates = (data!.candidates ?? []) as Row[];
     expect(candidates.length, 'the provider returned no candidates for this photograph').toBeGreaterThan(0);
+    evidence.provider = {
+      name: data!.provider,
+      observationId: data!.observationId,
+      candidates: candidates.slice(0, 5).map((c) => ({ scientificName: c.scientificName, score: c.score, hasReceipt: Boolean(c.captureReceipt) })),
+    };
   });
 
   it('STEP 3 - Receipt: the server issued a receipt for the deck card, from ITS OWN match', async () => {
@@ -132,6 +158,7 @@ describe.skipIf(!configured)('V1 camera-to-collection, live (TEST project)', () 
     ).toBeTruthy();
     receiptId = String((mine!.captureReceipt as Row).id);
     expect(receiptId).toMatch(/^rcpt_[0-9a-f]{32}$/);
+    evidence.receipt = { id: receiptId, ...(mine!.captureReceipt as Row) };
   });
 
   it('STEP 4 - Collect: claiming the receipt writes the discovery, once', async () => {
@@ -149,6 +176,7 @@ describe.skipIf(!configured)('V1 camera-to-collection, live (TEST project)', () 
     const { data: rows } = await alice.from('discoveries').select('herb_id,discovered_at,recorded_at').eq('user_id', aliceUser.id);
     const herbs = (rows ?? []).map((r) => (r as Row).herb_id);
     expect(herbs.filter((h) => h === (claim.data as Row).herb_id)).toHaveLength(1);
+    evidence.claim = { first: claim.data, second: again.data, discoveryRowsForCard: herbs.filter((h) => h === HERB).length };
   });
 
   it('STEP 5 - Saved progress: a FRESH sign-in reads the collection back from the server', async () => {
@@ -160,6 +188,7 @@ describe.skipIf(!configured)('V1 camera-to-collection, live (TEST project)', () 
     const { data: receipts } = await again.from('capture_receipts').select('id,claimed_at').eq('id', receiptId!);
     expect((receipts ?? [])[0]).toMatchObject({ id: receiptId });
     expect(((receipts ?? [])[0] as Row).claimed_at).not.toBeNull();
+    evidence.persistence = { discoveriesAfterFreshSignIn: (data ?? []).map((r) => (r as Row).herb_id), receiptClaimedAt: ((receipts ?? [])[0] as Row).claimed_at };
   });
 
   it('REPLAY: the identical request again returns the SAME receipts, spends no provider call, and mints nothing new', async () => {
@@ -190,6 +219,66 @@ describe.skipIf(!configured)('V1 camera-to-collection, live (TEST project)', () 
     const stolen = await openSession(alice);
     const { data } = await identify(bob, stolen, photo);
     expect(((data?.capture ?? {}) as Row).accepted).toBe(false);
+  });
+
+  it('FORGED RECEIPT: a well-formed receipt id that the server never issued is refused and writes nothing', async () => {
+    const forged = `rcpt_${[...crypto.getRandomValues(new Uint8Array(16))].map((b) => b.toString(16).padStart(2, '0')).join('')}`;
+    const before = await bob.from('discoveries').select('herb_id').eq('user_id', bobUser.id);
+    const claim = await bob.rpc('claim_discovery', { p_receipt_id: forged });
+    expect((claim.data as Row)?.ok, JSON.stringify(claim.data)).toBe(false);
+    expect((claim.data as Row)?.code).toBe('receipt_unknown');
+    const malformed = await bob.rpc('claim_discovery', { p_receipt_id: "rcpt_' or true --" });
+    expect((malformed.data as Row)?.ok).toBe(false);
+    const after = await bob.from('discoveries').select('herb_id').eq('user_id', bobUser.id);
+    expect((after.data ?? []).length).toBe((before.data ?? []).length);
+    evidence.forged = { code: (claim.data as Row)?.code };
+  });
+
+  it.skipIf(!EXPIRED_RECEIPT)('EXPIRED RECEIPT: a real receipt past its expiry cannot be claimed, and nothing is written', async () => {
+    // The receipt row was AGED by the workflow's admin step (it could not otherwise be tested without waiting a month).
+    // It is the player's own receipt; claim_discovery, the real function, is what judges it.
+    const mine = await bob.from('capture_receipts').select('id,herb_id,claimed_at,expires_at').eq('id', EXPIRED_RECEIPT!);
+    expect((mine.data ?? []).length, 'the aged receipt fixture is missing for this account').toBe(1);
+    expect(new Date(String(((mine.data ?? [])[0] as Row).expires_at)).getTime()).toBeLessThan(Date.now());
+    const claim = await bob.rpc('claim_discovery', { p_receipt_id: EXPIRED_RECEIPT });
+    expect((claim.data as Row)?.ok, JSON.stringify(claim.data)).toBe(false);
+    expect((claim.data as Row)?.code).toBe('receipt_expired');
+    const { data } = await bob.from('discoveries').select('herb_id').eq('user_id', bobUser.id).eq('herb_id', 'urtica-dioica');
+    expect(data ?? []).toHaveLength(0);
+    evidence.expired = { code: (claim.data as Row)?.code };
+  });
+
+  it.skipIf(!NONPLANT_PHOTO)('PROVIDER, REAL: a photograph with no plant in it is handled without a reward, a leak or a stuck session', async () => {
+    // A real provider call with input it cannot identify. This is NOT an outage: a genuine provider outage (timeout, 5xx)
+    // cannot be induced against the live provider without faking it, and that path (session handed back, allowance refunded)
+    // stays proven by the unit and local-database tests only. What this proves live is the failure SHAPE.
+    const blank = new Uint8Array(readFileSync(NONPLANT_PHOTO!));
+    const session = await openSession(bob);
+    const before = await bob.from('discoveries').select('herb_id').eq('user_id', bobUser.id);
+    const { data, error } = await identify(bob, session, blank, 'scan-blank.jpg');
+    let status = 200;
+    let body: Row | null = data;
+    if (error) {
+      const res = (error as { context?: Response }).context;
+      status = res?.status ?? 0;
+      body = res ? ((await res.json().catch(() => null)) as Row | null) : null;
+    }
+    expect(body, `no readable body (HTTP ${status})`).toBeTruthy();
+    expect([200, 502], `HTTP ${status}: ${JSON.stringify(body)}`).toContain(status);
+    expect(JSON.stringify(body), 'the response must never carry a provider key or URL').not.toMatch(/api-key|api_key|key=|apikey/i);
+    if (status === 502) {
+      expect(['provider', 'timeout', 'network', 'rateLimited', 'schema']).toContain(String(body!.code));
+      if ((body!.capture as Row | undefined)?.retryable) expect(['refunded', 'not_refunded']).toContain(String(body!.allowance));
+    } else {
+      const cands = (body!.candidates ?? []) as Row[];
+      expect((body!.capture as Row)?.accepted).toBe(true);
+      // Whatever the provider guessed, a receipt exists only for a candidate that the server itself judged eligible.
+      const issued = await bob.from('capture_receipts').select('id').eq('observation_id', String(body!.observationId));
+      expect((issued.data ?? []).length).toBe(cands.filter((c) => c.captureReceipt).length);
+    }
+    const after = await bob.from('discoveries').select('herb_id').eq('user_id', bobUser.id);
+    expect((after.data ?? []).length, 'identification alone must never write a discovery').toBe((before.data ?? []).length);
+    evidence.nonPlant = { httpStatus: status, code: body!.code ?? null, providerFoundNothing: body!.providerFoundNothing ?? null, notAPlant: body!.notAPlant ?? null, candidates: ((body!.candidates ?? []) as Row[]).length, retryable: (body!.capture as Row | undefined)?.retryable ?? null, allowance: body!.allowance ?? null };
   });
 
   it('DIRECT API: no client can write a receipt, a session, a digest, a refund ledger or flip the switch', async () => {

@@ -450,6 +450,60 @@ describe('the live camera-to-collection workflow stays TEST-only, secret-free an
   });
 });
 
+/* The AUTONOMOUS live run: one deliberate trigger, TEST only, one credential and never in the step that runs the suite. */
+const LCR_TEXT = read('.github/workflows/live-capture-run.yml');
+const LCR_CODE = LCR_TEXT.replace(/^\s*#.*$/gm, '');
+const LIVE_RUN_PY = read('scripts/live_run.py');
+
+describe('the autonomous live run workflow stays TEST-only, deliberate and bounded', () => {
+  it('can start only from a push to integration that changes the request file', () => {
+    expect(LCR_CODE).toMatch(/on:\s*\n\s{2}push:\s*\n\s{4}branches:\s*\n\s{6}- integration\s*\n\s{4}paths:\s*\n\s{6}- docs\/release\/live-run-request\.json\s*\n/);
+    expect(LCR_CODE).not.toMatch(/^\s{2}(pull_request|pull_request_target|schedule|workflow_dispatch|workflow_run|issue_comment):/m);
+  });
+  it('names the TEST project as a literal, takes no project input and never names production', () => {
+    expect(LCR_CODE).toContain('PROJECT_REF: vgjehmwcpavflbfhbbrp');
+    expect(LCR_CODE).not.toContain('vygiamigomwlvnwkryyl');
+    expect(LCR_CODE).not.toMatch(/inputs\./);
+    expect(LIVE_RUN_PY).toContain('def require_test_only()');
+  });
+  it('refuses a re-run, a wrong ref, and a request that is not TEST-only, owner-authorised, enforcement-off, capped and unexpired', () => {
+    for (const needle of ['GITHUB_RUN_ATTEMPT', 'refs/heads/integration', '.target == "TEST vgjehmwcpavflbfhbbrp"', '.authorized_by == "owner"', '.enforcement == "off"', '. <= 2', 'fromdateiso8601 > now']) {
+      expect(LCR_CODE, needle).toContain(needle);
+    }
+  });
+  it('holds exactly one secret, SUPABASE_ACCESS_TOKEN, and the step that runs the suite holds none', () => {
+    expect([...new Set([...LCR_CODE.matchAll(/secrets\.([A-Z_]+)/g)].map((m) => m[1]))]).toEqual(['SUPABASE_ACCESS_TOKEN']);
+    const suiteStep = LCR_CODE.slice(LCR_CODE.indexOf('- name: Run the live camera-to-collection suite'), LCR_CODE.indexOf('- name: Summarise'));
+    expect(suiteStep).toContain('npx vitest run');
+    expect(suiteStep).not.toMatch(/secrets\.|SUPABASE_ACCESS_TOKEN|SERVICE_ROLE|service_role/i);
+  });
+  it('is read-only on the repository and deploys, migrates and flips nothing', () => {
+    expect(LCR_CODE).toMatch(/permissions:\s*\n\s*contents: read/);
+    expect(LCR_CODE).not.toMatch(/functions deploy|run-migration|database\/query|set_discovery_enforcement/i);
+    expect(LIVE_RUN_PY).not.toMatch(/\.rpc\(|set_discovery_enforcement\s*\(/);
+  });
+  it('verifies before it spends: the live job needs the preflight job, and cleanup always runs', () => {
+    expect(LCR_CODE).toMatch(/live:\s*\n\s+needs: preflight/);
+    expect(LCR_CODE).toMatch(/name: Delete only the accounts this run created\s*\n\s+if: always\(\)/);
+    expect(LCR_CODE).toContain('python3 scripts/live_run.py preflight');
+  });
+  it('never writes the service-role key anywhere: not to a file, not to the environment file, not to a log', () => {
+    expect(LIVE_RUN_PY).not.toMatch(/append_env\([^)]*service/);
+    expect(LIVE_RUN_PY).not.toMatch(/print\([^)]*service[^_]/);
+    expect(LIVE_RUN_PY).not.toMatch(/save_state\([^)]*service/);
+    expect(LIVE_RUN_PY).toContain('mask(key)');
+  });
+  it('deletes only accounts it created: exact id AND exact email, from this run id', () => {
+    expect(LIVE_RUN_PY).toContain('body.get("email") != expect[role]');
+    expect(LIVE_RUN_PY).toContain('plantdex-e2e-capture-{role}-{stamp}@mailinator.com');
+    expect(LIVE_RUN_PY).not.toMatch(/like\s+'/i);
+  });
+  it('a prerequisite that cannot be verified is a failure, never a pass', () => {
+    expect(LIVE_RUN_PY).toContain('Credentials are therefore UNVERIFIED, which is a failure');
+    expect(LIVE_RUN_PY).toContain('sys.exit(1)');
+  });
+});
+
 describe('the live suite itself', () => {
   it('refuses any project but TEST and skips without credentials', () => {
     expect(LCF_SPEC).toContain("const TEST_REF = 'vgjehmwcpavflbfhbbrp'");
@@ -460,6 +514,9 @@ describe('the live suite itself', () => {
     expect(LCF_SPEC).toContain("functions.invoke('identify-plant'");
     expect(LCF_SPEC).toContain("rpc('open_capture_session')");
     expect(LCF_SPEC).toContain("rpc('claim_discovery'");
+  });
+  it('covers forged, expired and wrong-account receipts, replay, reuse and the real provider no-plant answer', () => {
+    for (const t of ['FORGED RECEIPT', 'EXPIRED RECEIPT', 'CROSS-ACCOUNT', 'REPLAY', 'REUSE', 'PROVIDER, REAL']) expect(LCF_SPEC, t).toContain(t);
   });
   it('never carries a service-role key', () => {
     expect(LCF_SPEC).not.toMatch(/SERVICE_ROLE|service_role_key|sb_secret_/i);
