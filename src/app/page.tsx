@@ -139,7 +139,7 @@ export default function HomePage() {
         </p>
 
         {/* A rule with a sparkle on it: the break between the promise and the characters. */}
-        <div aria-hidden="true" className="mx-auto mt-3 flex max-w-sm items-center gap-3">
+        <div aria-hidden="true" className="mx-auto mt-3 hidden max-w-sm items-center gap-3 sm:flex">
           <span className="h-px flex-1 bg-gradient-to-r from-transparent to-band-leaf/45" />
           <PlantdexIcon name="sprout" className="text-sm text-gold-400" />
           <span className="h-px flex-1 bg-gradient-to-l from-transparent to-band-leaf/45" />
@@ -264,7 +264,7 @@ export default function HomePage() {
           busier", and a bordered explainer between the creatures and the call to action would
           be exactly that.
         */}
-        <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-violet-200">
+        <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-violet-200">
           Find plants outside. Scan them. Build your collection. Learn each card and grow your
           Garden.
         </p>
