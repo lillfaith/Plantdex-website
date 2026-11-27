@@ -64,12 +64,14 @@ function isActive(pathname: string, href: string): boolean {
 
 export function SiteNav() {
   const pathname = usePathname();
-  const [moreOpen, setMoreOpen] = useState(false);
+  // "Open" is derived from the page it was opened on, so navigating anywhere closes it without an effect that sets state.
+  const [openOn, setOpenOn] = useState<string | null>(null);
+  const moreOpen = openOn === pathname;
+  const setMoreOpen = (open: boolean) => setOpenOn(open ? pathname : null);
 
-  useEffect(() => setMoreOpen(false), [pathname]);
   useEffect(() => {
     if (!moreOpen) return;
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setMoreOpen(false);
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setOpenOn(null);
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, [moreOpen]);
@@ -126,7 +128,7 @@ export function SiteNav() {
               type="button"
               aria-expanded={moreOpen}
               aria-controls="nav-more"
-              onClick={() => setMoreOpen((open) => !open)}
+              onClick={() => setMoreOpen(!moreOpen)}
               className={tabClass(moreActive || moreOpen)}
             >
               {(moreActive || moreOpen) && marker}
