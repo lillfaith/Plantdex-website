@@ -175,7 +175,7 @@ export default function HomePage() {
               <li key={herbId} className="min-w-0 flex-1">
                 <Link
                   href={`/herbdex/${herb.id}`}
-                  className="flex flex-col items-center rounded-2xl px-1 py-1 transition-transform hover:-translate-y-1 motion-reduce:hover:translate-y-0"
+                  className="flex flex-col items-center rounded-2xl px-0 py-1 min-[360px]:px-1 transition-transform hover:-translate-y-1 motion-reduce:hover:translate-y-0"
                 >
                   {/*
                     A LIT PATCH OF GROUND UNDER EACH CREATURE. Every sprite is authored on a
@@ -203,7 +203,7 @@ export default function HomePage() {
                     A decoration that eats the word it decorates is not a decoration, so on a
                     phone the label goes back to what it was.
                   */}
-                  <span className="relative z-10 mt-3 max-w-full truncate px-0.5 py-[3px] text-center text-[0.75rem] font-bold text-violet-deep sm:text-xs">
+                  <span className="relative z-10 mt-3 max-w-full truncate px-0 py-[3px] text-center text-[0.75rem] font-bold text-violet-deep sm:text-xs">
                     {herb.commonName}
                   </span>
                 </Link>
