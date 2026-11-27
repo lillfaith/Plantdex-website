@@ -164,7 +164,7 @@ export default function HomePage() {
         */}
         <ul
           aria-label="Plant characters from the deck"
-          className="home-stage relative mx-auto mt-4 flex w-full max-w-2xl items-end justify-center gap-1 min-[360px]:gap-2 sm:mt-3 sm:gap-4"
+          className="home-stage relative mx-auto mt-3 flex w-full max-w-2xl items-end justify-center gap-1 min-[360px]:gap-2 sm:mt-3 sm:gap-4"
         >
           {/* A thin light-lavender strip runs under all four names, so the dark lettering always sits on a pale ground. Decorative. */}
           <li aria-hidden="true" className="home-name-strip pointer-events-none absolute -inset-x-1 bottom-0 h-[2.15rem] flex-none" />
