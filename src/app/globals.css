@@ -3148,6 +3148,111 @@ main[data-shade='home'] > section::after {
 }
 .nav-bar [class*='bg-brand-gold'] { background: #ffe27a; }
 
+:root {
+  /* CARD-DERIVED PALETTE. Anchors verified against the 54 approved card fronts (hue-family pixel clustering): violet #9C24FC (45% of the violet family), orchid #CC6CF4,
+     botanical pink #E4BCDC, sunflower gold #FCDC14, turquoise #64ACCC. Leaf green is diffuse (photographed foliage, median about #8AA25A to #96AE5A); the owner anchor
+     #A4BA4F sits at its light end and is kept. Scale: 50 / 100 / 200 / 300 are lighter and softer (fills, panels, glows), 500 is the anchor, 700 / 900 are darker (outlines,
+     pixel details, rules). 700 and 900 are NOT text colours except violet and turquoise on 100: text stays the deep plum ink. */
+  --card-violet-50: #F5E9FE;
+  --card-violet-100: #EBD3FE;
+  --card-violet-200: #D8A6FC;
+  --card-violet-300: #BF6FFA;
+  --card-violet-500: #9D21F8;
+  --card-violet-700: #751DBD;
+  --card-violet-900: #4D1982;
+  --card-orchid-50: #FAF0FE;
+  --card-orchid-100: #F5E2FD;
+  --card-orchid-200: #EBC5FA;
+  --card-orchid-300: #DEA0F7;
+  --card-orchid-500: #CC6DF3;
+  --card-orchid-700: #944FBA;
+  --card-orchid-900: #5B3081;
+  --card-pink-50: #FCF8FC;
+  --card-pink-100: #F9F1F8;
+  --card-pink-200: #F4E3F2;
+  --card-pink-300: #EDD2EA;
+  --card-pink-500: #E3B9DE;
+  --card-pink-700: #A380AC;
+  --card-pink-900: #62477B;
+  --card-gold-50: #FFFBE8;
+  --card-gold-100: #FFF8D0;
+  --card-gold-200: #FFF1A2;
+  --card-gold-300: #FFE868;
+  --card-gold-500: #FFDB16;
+  --card-gold-700: #B5962A;
+  --card-gold-900: #6B513F;
+  --card-turq-50: #EFF7FA;
+  --card-turq-100: #DFEFF6;
+  --card-turq-200: #BFDFEC;
+  --card-turq-300: #98CAE0;
+  --card-turq-500: #60AED0;
+  --card-turq-700: #4D79A3;
+  --card-turq-900: #3B4476;
+  --card-leaf-50: #F6F8ED;
+  --card-leaf-100: #EDF1DC;
+  --card-leaf-200: #DBE3B9;
+  --card-leaf-300: #C4D28D;
+  --card-leaf-500: #A4BA4F;
+  --card-leaf-700: #7A814F;
+  --card-leaf-900: #4F4750;
+}
+
+/*
+ * CARD PALETTE IN USE (Collection and Garden first; `data-palette='card'` on the page's <main>). Lavender and near-white lilac stay the ground; the card colours arrive in
+ * selected tabs, stat tiles, panel edges, the sprite glows (by growth stage) and small secondary panels. Nothing here darkens a page.
+ */
+main[data-palette='card'] .herb-strip {
+  background: linear-gradient(180deg, var(--card-violet-50), var(--card-violet-100));
+  border-top: 2px solid var(--card-violet-500);
+}
+main[data-palette='card'] > section.panel-accent {
+  border-top-color: var(--card-violet-500);
+  background: linear-gradient(180deg, #fff 0%, var(--card-violet-50) 100%);
+}
+/* Stat tiles take the colour of what they count: card (violet), leaf (green), medal (sunflower). */
+main[data-palette='card'] dl.grid > div { border: 2px solid; border-radius: 10px; padding: 8px 2px; }
+main[data-palette='card'] dl.grid > div:nth-child(1) { background: var(--card-violet-50); border-color: var(--card-violet-300); }
+main[data-palette='card'] dl.grid > div:nth-child(2) { background: var(--card-leaf-50); border-color: var(--card-leaf-300); }
+main[data-palette='card'] dl.grid > div:nth-child(3) { background: var(--card-gold-50); border-color: var(--card-gold-300); }
+main[data-palette='card'] dl.grid { gap: 8px; }
+main[data-palette='card'] [data-part='board'] a { background: linear-gradient(180deg, var(--card-orchid-50), var(--card-orchid-100)); border: 2px solid var(--card-orchid-300); }
+main[data-palette='card'] [data-part='recent'] section { background: linear-gradient(180deg, var(--card-pink-50), var(--card-pink-200)); border: 2px solid var(--card-pink-500); }
+main[data-palette='card'] [data-part='research'] a { background: linear-gradient(180deg, var(--card-turq-50), var(--card-turq-100)); border: 2px solid var(--card-turq-300); }
+main[data-palette='card'] [data-part='research'] a > span:nth-last-child(2) { background: var(--card-gold-300); color: #3d0a63; border: 1px solid var(--card-gold-700); }
+main[data-palette='card'] .lav-track.grid-cols-4 { background: var(--card-violet-50); border-color: var(--card-violet-300); }
+main[data-palette='card'] .lav-track.grid-cols-4 > button[aria-selected='true'] {
+  background: linear-gradient(180deg, var(--card-violet-300), var(--card-violet-500));
+  color: #fff;
+  box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.35), inset 0 -3px 0 var(--card-pink-500);
+  clip-path: none;
+}
+main[data-palette='card'] .lav-input { border-color: var(--card-orchid-300); background: #fff; }
+main[data-palette='card'] button[class*='h-[1.875rem]'] { border-color: var(--card-violet-300); background: #fff; }
+/* Garden: the bed is a soft leaf-to-lilac display; tiles glow by growth stage (sprout leaf green, growing orchid, flowering sunflower); the side panels each take a card colour. */
+main[data-palette='card'] [data-tour='garden-bed'] {
+  background: linear-gradient(180deg, var(--card-leaf-50) 0%, #fff 45%, var(--card-violet-50) 100%);
+  border: 2px solid var(--card-leaf-300);
+}
+main[data-palette='card'] [data-glow='violet'] { --sg: rgb(196 210 141 / 0.95); --shadow-card: 0 0 0 2px var(--card-leaf-500), 0 0 12px 3px rgb(237 241 220 / 0.9), 0 0 24px 6px rgb(196 210 141 / 0.6); }
+main[data-palette='card'] [data-glow='pink'] { --sg: rgb(222 160 247 / 0.95); }
+main[data-palette='card'] [data-glow='gold'] { --sg: rgb(255 232 104 / 0.95); }
+main[data-palette='card'] [data-tour='garden-bed'] + div.panel { background: linear-gradient(180deg, var(--card-turq-50), var(--card-turq-100)); border: 2px solid var(--card-turq-300); }
+main[data-palette='card'] > a[href^='/seed-shelf'] { background: linear-gradient(180deg, var(--card-pink-50), var(--card-pink-200)); border: 2px solid var(--card-pink-500); }
+main[data-palette='card'] > a[href^='/seasons'] { background: linear-gradient(180deg, var(--card-gold-50), var(--card-gold-100)); border: 2px solid var(--card-gold-300); }
+
+/*
+ * HOME HERO, CONNECTED: the four creatures, their names strip and the grass fringe are one lit stage (a pale lilac plate with a violet edge), so the row reads as a single object
+ * between the logo above and the button below, instead of sprites floating over a separate pill.
+ */
+main[data-shade='home'] .home-stage {
+  padding: 14px 6px 6px;
+  background: linear-gradient(180deg, rgb(255 255 255 / 0.55) 0%, rgb(246 240 255 / 0.85) 100%);
+  border: 2px solid var(--card-violet-300);
+  border-radius: 16px;
+  box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.9), 0 0 16px 2px rgb(255 214 240 / 0.6);
+}
+main[data-shade='home'] .home-stage .home-name-strip { left: 6px; right: 6px; bottom: 6px; }
+
 /*
  * BOSS FORM CHALLENGES: every motion here runs a FIXED number of times and then rests, because
  * this app does not use ambient motion that repeats forever. Opacity and transform only, never
