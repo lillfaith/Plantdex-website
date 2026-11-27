@@ -48,10 +48,10 @@ export default function ScanPage() {
           className="absolute top-3 left-2 h-1.5 w-28 -rotate-[28deg] rounded-full bg-gradient-to-r from-transparent via-pink-accent/70 to-cyan-accent/80"
         />
         <ScanScout className="w-20 shrink-0" />
-        <h1 className="font-display mt-1 flex items-center gap-3 text-3xl font-extrabold text-gold-plate">
-          <span aria-hidden="true" className="h-2 w-2 rotate-45 bg-gold-300" />
-          Identify a Plant
-          <span aria-hidden="true" className="h-2 w-2 rotate-45 bg-gold-300" />
+        <h1 className="scan-title font-display relative mt-2 flex items-center gap-2 text-4xl font-extrabold">
+          <span aria-hidden="true" className="scan-star scan-star-l" />
+          <span className="scan-title-text">Identify a Plant</span>
+          <span aria-hidden="true" className="scan-star scan-star-r" />
         </h1>
         <div aria-hidden="true" className="mt-2 flex w-full max-w-xs items-center gap-3">
           <span className="h-px flex-1 bg-violet-500/60" />

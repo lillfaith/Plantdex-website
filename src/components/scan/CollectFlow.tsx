@@ -15,6 +15,8 @@ import { getPrintedCard } from '@/lib/deck';
  * step four. Under `prefers-reduced-motion` every animation is off and each scene shows its finished state, so the static version is the whole explanation.
  */
 const EXAMPLE = 'taraxacum-officinale';
+/** The first scene shows a different plant being found; the scan, card and collection scenes show the example card. */
+const START = 'trifolium-pratense';
 
 const STEPS: { label: string; hint: string }[] = [
   { label: 'Find', hint: 'a plant outdoors' },
@@ -37,7 +39,7 @@ export function CollectFlow() {
                 <>
                   <span aria-hidden="true" className="cf-meadow absolute inset-0" />
                   <span className="absolute inset-x-[12%] bottom-[10%] block">
-                    <PlantSprite herbId={herb.id} alt="" stage="flowering" fit className="w-full" />
+                    <PlantSprite herbId={i === 0 ? START : herb.id} alt="" stage="flowering" fit className="w-full" />
                   </span>
                 </>
               )}
@@ -51,7 +53,7 @@ export function CollectFlow() {
               {i === 2 && (
                 <>
                   <span aria-hidden="true" className="cf-scene-card absolute inset-0" />
-                  <span className="cf-card absolute inset-x-[20%] top-[8%] bottom-[8%] block overflow-hidden rounded-md">
+                  <span className="cf-card absolute top-[7%] left-1/2 block aspect-[356/576] h-[86%] -translate-x-1/2 overflow-hidden rounded-md">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={cardArt} alt="" className="h-full w-full object-cover" />
                   </span>
@@ -60,7 +62,7 @@ export function CollectFlow() {
               {i === 3 && (
                 <>
                   <span aria-hidden="true" className="cf-scene-card absolute inset-0" />
-                  <span className="cf-stack absolute inset-x-[18%] top-[20%] bottom-[10%] block">
+                  <span className="cf-stack absolute top-[16%] left-1/2 block aspect-[356/576] h-[76%] -translate-x-1/2">
                     <span className="cf-stack-back absolute inset-0 rounded-md" />
                     <span className="cf-stack-mid absolute inset-0 rounded-md" />
                     <span className="cf-stack-top absolute inset-0 block overflow-hidden rounded-md">
