@@ -216,3 +216,21 @@ select (select count(*) from public.capture_receipts r where not exists (select 
        (select count(*) from public.discoveries d where not exists (select 1 from auth.users u where u.id = d.user_id));
 ```
 Expected `0, 0, 0`.
+
+
+## Autonomous live run (replaces the manual Step F once enabled)
+
+`.github/workflows/live-capture-run.yml` runs the live suite with no human step: a read-only PREFLIGHT job (target is exactly TEST,
+0016 tables/functions/triggers present, enforcement OFF, `identify-plant` ACTIVE, attestation and provider secrets present, admin
+credential obtainable), then a LIVE job that creates two already-confirmed disposable accounts through the Auth admin API (the
+"Confirm email" setting is never changed), runs `e2e/capture-flow.e2e.test.ts`, writes a PASS/FAIL table and the evidence to the run
+summary, and deletes only the accounts it created (exact id and exact email).
+
+- Started only by a push to `integration` that changes `docs/release/live-run-request.json`; a re-run is refused.
+- Spends two provider identifications (the card photograph and one blank image). The request file caps this at 2.
+- One secret, `SUPABASE_ACCESS_TOKEN`, never present in the step that runs the suite. The service-role key is fetched at run time,
+  masked, held in one process and never written anywhere.
+- The only fabricated row is an AGED receipt for the second account, so expiry can be tested without waiting; the real
+  `claim_discovery` judges it.
+- NOT proven live: a genuine provider outage (session handed back, allowance refunded). That needs a failing provider and stays
+  covered by the unit and local-database tests.
