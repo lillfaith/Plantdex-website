@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { ScanPanel } from '@/components/scan/ScanPanel';
 import { ScanScout } from '@/components/scan/ScanScout';
+import { CollectFlow } from '@/components/scan/CollectFlow';
 import { PlantdexIcon } from '@/components/icons/PlantdexIcon';
 import { PageAtmosphere } from '@/components/PageAtmosphere';
 import { ContaminationNote, SafetyNotice } from '@/components/SafetyNotice';
@@ -72,10 +73,7 @@ export default function ScanPage() {
       <p className="mx-auto mt-3 max-w-sm text-center text-base leading-relaxed text-violet-100">
         Photograph something growing and see what Plantdex thinks it might be.
       </p>
-      <p className="mx-auto mt-2 max-w-sm text-center text-xs leading-relaxed text-violet-300">
-        A plant we have a card for can join your collection; anything else can go on your Seed
-        Shelf.
-      </p>
+      <CollectFlow />
       <p className="mx-auto mt-1.5 max-w-sm text-center text-xs leading-relaxed font-semibold text-violet-100">
         The answer is a suggestion to check, not a verdict.
       </p>
