@@ -102,7 +102,23 @@ async function identify(client: SupabaseClient, session: { session_id: string; n
   form.append('capture_session_id', session.session_id);
   form.append('capture_nonce', session.nonce);
   const { data, error } = await client.functions.invoke('identify-plant', { body: form });
-  return { data: data as Row | null, error };
+  if (error) {
+    // A refusal (409), a quota answer (429) or a validation answer (400) is a non-2xx: read its JSON body so tests can assert on it.
+    const res = (error as { context?: Response }).context;
+    if (res) return { data: ((await res.clone().json().catch(() => null)) as Row | null), error, status: res.status };
+  }
+  return { data: data as Row | null, error, status: 200 };
+}
+
+/** A collect request with NO photograph at all, sent the way the app would: validation must refuse it before any allowance is charged. */
+async function identifyWithoutPhoto(client: SupabaseClient, session: { session_id: string; nonce: string }) {
+  const form = new FormData();
+  form.append('purpose', 'collect');
+  form.append('capture_session_id', session.session_id);
+  form.append('capture_nonce', session.nonce);
+  const { data, error } = await client.functions.invoke('identify-plant', { body: form });
+  const res = (error as { context?: Response } | null)?.context;
+  return { data: res ? ((await res.clone().json().catch(() => null)) as Row | null) : (data as Row | null), status: res?.status ?? 200 };
 }
 
 describe.skipIf(!configured)('V1 camera-to-collection, live (TEST project)', () => {
@@ -230,12 +246,18 @@ describe.skipIf(!configured)('V1 camera-to-collection, live (TEST project)', () 
     expect((after.data ?? []).length).toBe((before.data ?? []).length);
   });
 
-  it('REUSE: the same session with a DIFFERENT image is refused', async () => {
+  it('REUSE: the same session with a DIFFERENT image is refused BEFORE any allowance is charged and before the provider', async () => {
     const other = new Uint8Array([...photo.slice(0, photo.length - 1), (photo[photo.length - 1]! + 1) & 0xff]);
-    const { data } = await identify(alice, sessionA, other, 'scan-other.jpg');
+    const cpBefore = await checkpoint('before-reuse');
+    const { data, status } = await identify(alice, sessionA, other, 'scan-other.jpg');
+    const cpAfter = await checkpoint('after-reuse');
+    expect(status, JSON.stringify(data)).toBe(409);
     const capture = (data?.capture ?? {}) as Row;
     expect(capture.accepted).toBe(false);
     expect(capture.code).toBe('capture_session_used');
+    expect(data?.candidates, 'a refused capture must not return an identification (no provider call)').toBeUndefined();
+    evidence.refusedReuse = { status, code: capture.code, quotaBefore: cpBefore, quotaAfter: cpAfter };
+    if (cpBefore && cpAfter) expect(cpAfter.alice_quota, 'a refused reuse must not spend the caller allowance').toBe(cpBefore.alice_quota);
   });
 
   it("CROSS-ACCOUNT: Bob cannot claim Alice's receipt or read it", async () => {
@@ -245,10 +267,40 @@ describe.skipIf(!configured)('V1 camera-to-collection, live (TEST project)', () 
     expect(data ?? []).toHaveLength(0);
   });
 
-  it("CROSS-ACCOUNT: Bob cannot use Alice's session", async () => {
+  it("CROSS-ACCOUNT: Bob cannot use Alice's session; nobody is charged and Alice's session is not burned", async () => {
     const stolen = await openSession(alice);
-    const { data } = await identify(bob, stolen, photo);
+    const cpBefore = await checkpoint('before-stolen');
+    const { data, status } = await identify(bob, stolen, photo);
+    const cpAfter = await checkpoint('after-stolen');
+    expect(status, JSON.stringify(data)).toBe(409);
     expect(((data?.capture ?? {}) as Row).accepted).toBe(false);
+    expect(data?.candidates).toBeUndefined();
+    expect(JSON.stringify(data)).not.toContain(stolen.session_id);
+    evidence.refusedForeign = { status, code: ((data?.capture ?? {}) as Row).code, quotaBefore: cpBefore, quotaAfter: cpAfter };
+    if (cpBefore && cpAfter) {
+      expect(cpAfter.bob_quota, "Bob's refused attempt must not spend his allowance").toBe(cpBefore.bob_quota);
+      expect(cpAfter.alice_quota, "Alice's allowance must not be touched").toBe(cpBefore.alice_quota);
+      expect(cpAfter.alice_sessions_consumed, "Alice's open session must not be consumed by Bob").toBe(cpBefore.alice_sessions_consumed);
+    }
+  });
+
+  it('SIGNED-OUT COLLECT: refused with a sign-in message and no identification', async () => {
+    const anon = fresh();
+    const { data, status } = await identify(anon, { session_id: crypto.randomUUID(), nonce: 'ab'.repeat(32) }, photo);
+    expect(status, JSON.stringify(data)).toBe(409);
+    expect(((data?.capture ?? {}) as Row).code).toBe('capture_not_signed_in');
+    expect(data?.candidates).toBeUndefined();
+    evidence.signedOut = { status, code: ((data?.capture ?? {}) as Row).code };
+  });
+
+  it('NO PHOTOGRAPH: refused by validation before any allowance is charged', async () => {
+    const session = await openSession(alice);
+    const cpBefore = await checkpoint('before-nophoto');
+    const { data, status } = await identifyWithoutPhoto(alice, session);
+    const cpAfter = await checkpoint('after-nophoto');
+    expect(status, JSON.stringify(data)).toBe(400);
+    evidence.noPhoto = { status, code: data?.code ?? null, quotaBefore: cpBefore, quotaAfter: cpAfter };
+    if (cpBefore && cpAfter) expect(cpAfter.alice_quota).toBe(cpBefore.alice_quota);
   });
 
   it('FORGED RECEIPT: a well-formed receipt id that the server never issued is refused and writes nothing', async () => {
