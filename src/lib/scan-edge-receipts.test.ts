@@ -308,3 +308,29 @@ describe('what the edge code may and may not touch (source-level)', () => {
     expect(capture).not.toMatch(/set_discovery_enforcement|NEXT_PUBLIC_/);
   });
 });
+
+/** The harness's CaptureModule type is lane-owned; read the new exports without editing it. */
+const refusalApi = () =>
+  edge as unknown as {
+    captureRefusal: (code: (typeof CAPTURE_CODES)[number]) => { error: string; code: string; capture: { accepted: boolean; code: string } };
+    CAPTURE_REFUSAL_STATUS: number;
+  };
+
+describe('captureRefusal (the answer to a collect request whose capture cannot be accepted)', () => {
+  it('has a sentence for every refusal code, keeps the contract code, and never says anything about whose session it was', async () => {
+    const { captureRefusal, CAPTURE_REFUSAL_STATUS } = refusalApi();
+    expect(CAPTURE_REFUSAL_STATUS).toBe(409);
+    for (const code of CAPTURE_CODES) {
+      const r = captureRefusal(code);
+      expect(r.code).toBe('captureRefused');
+      expect(r.capture).toEqual({ accepted: false, code });
+      expect(r.error.length).toBeGreaterThan(10);
+      expect(r.error).not.toMatch(/[0-9a-f]{8}-[0-9a-f]{4}|session id|belongs|another (player|account)|someone else/i);
+    }
+  });
+  it('an unknown, a foreign and a mismatched session read identically', async () => {
+    const { captureRefusal } = refusalApi();
+    expect(captureRefusal('capture_session_unknown').error).toBe(captureRefusal('capture_session_nonce').error);
+    expect(captureRefusal('capture_session_unknown').error).toBe(captureRefusal('capture_purpose_missing').error);
+  });
+});

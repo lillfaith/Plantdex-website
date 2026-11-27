@@ -79,6 +79,35 @@ function fakeAdmin(script: Script = {}): { admin: AdminFake; calls: Calls } {
 
 const collect = { purpose: 'collect', capture_session_id: SESSION, capture_nonce: NONCE };
 
+/*
+ * A REFUSED CAPTURE, ASSERTED ONLY BY WHAT HOLDS UNDER BOTH HANDLERS.
+ *
+ * Until 2026-11-27 a collect request whose capture was refused was served as an education lookup: HTTP 200 with the identification, a
+ * provider call and a spent allowance, plus `capture: {accepted: false, code}`. The owner then directed that invalid collect requests
+ * fail BEFORE the allowance claim and the provider (see docs/release/v1-refused-attempts-allowance.md). Contract first, feature second:
+ * this contract PR lets these tests pass under either answer, and the feature PR (scan lane) pins the new one strictly in
+ * `scan-edge-refuse.test.ts`. What must hold under both: the capture is reported honestly with its code, no receipt is issued, the
+ * provider is called at most once, and a 200 still carries the identification.
+ */
+/** The same RPCs were made, whichever of the claim and the capture came first; the session is always consumed before receipts are issued. */
+function expectCalls(calls: Calls, names: string[]): void {
+  const seen = calls.rpc.map(([n]) => n);
+  expect([...seen].sort()).toEqual([...names].sort());
+  if (seen.includes('consume_capture_session') && seen.includes('issue_capture_receipts')) {
+    expect(seen.indexOf('consume_capture_session')).toBeLessThan(seen.indexOf('issue_capture_receipts'));
+  }
+}
+const rpcArgs = (calls: Calls, name: string): Record<string, unknown> => calls.rpc.find(([n]) => n === name)![1];
+
+function expectRefusedCapture(out: { status: number; body: Record<string, unknown> }, code: string, calls?: Calls): void {
+  expect([200, 409]).toContain(out.status);
+  expect(out.body.capture).toEqual({ accepted: false, code });
+  expect(provider.calls).toBeLessThanOrEqual(1);
+  if (out.status === 200) expect(JSON.stringify(out.body.candidates)).toBe(CANDIDATES);
+  else expect(out.body.candidates).toBeUndefined();
+  if (calls) expect(calls.rpc.map(([n]) => n)).not.toContain('issue_capture_receipts');
+}
+
 let handler: Awaited<ReturnType<typeof loadHandler>>;
 let restoreFetch: () => void;
 
@@ -167,9 +196,9 @@ describe('purpose=collect', () => {
     const out = await invoke(handler, { token: 'tok-alice', images, fields: collect });
     expect(out.status).toBe(200);
     expect(provider.calls).toBe(1);
-    expect(calls.rpc.map(([n]) => n)).toEqual(['claim_scan_pair', 'consume_capture_session', 'issue_capture_receipts']);
+    expectCalls(calls, ['claim_scan_pair', 'consume_capture_session', 'issue_capture_receipts']);
 
-    const consume = calls.rpc[1]![1];
+    const consume = rpcArgs(calls, 'consume_capture_session');
     const sha = async (f: File) => [...new Uint8Array(await crypto.subtle.digest('SHA-256', await f.arrayBuffer()))].map((b) => b.toString(16).padStart(2, '0')).join('');
     expect(consume).toEqual({
       p_user: ALICE,
@@ -179,7 +208,7 @@ describe('purpose=collect', () => {
       p_image_digests: [await sha(images[0]!), await sha(images[1]!)],
     });
 
-    const issue = calls.rpc[2]![1];
+    const issue = rpcArgs(calls, 'issue_capture_receipts');
     expect(issue.p_user).toBe(ALICE);
     expect(issue.p_session).toBe(SESSION);
     expect(issue.p_items).toEqual([
@@ -223,18 +252,14 @@ describe('purpose=collect', () => {
     ['capture_too_fast'],
     ['capture_images_invalid'],
     ['capture_images_invalid'],
-  ])('a refused consume (%s) still returns the identification, with the code and no receipt', async (code) => {
+  ])('a refused consume (%s) reports its code and issues no receipt', async (code) => {
     const { admin, calls } = fakeAdmin({ consume: () => ({ data: { ok: false, code }, error: null }) });
     router.admin = admin;
     const out = await invoke(handler, { token: 'tok-alice', fields: collect });
-    expect(out.status).toBe(200);
-    expect(provider.calls).toBe(1);
-    expect(out.body.capture).toEqual({ accepted: false, code });
-    expect(JSON.stringify(out.body.candidates)).toBe(CANDIDATES);
-    expect(calls.rpc.map(([n]) => n)).not.toContain('issue_capture_receipts');
+    expectRefusedCapture(out, code, calls);
   });
 
-  it('a consume that throws or that the database does not have is capture_unavailable, never a failure', async () => {
+  it('a consume that throws or that the database does not have is capture_unavailable, with no receipt', async () => {
     for (const consume of [
       () => { throw new Error('boom'); },
       () => ({ data: null, error: { message: 'function not found', code: 'PGRST202' } }),
@@ -242,10 +267,9 @@ describe('purpose=collect', () => {
     ]) {
       const { admin } = fakeAdmin({ consume });
       router.admin = admin;
+      provider.calls = 0;
       const out = await invoke(handler, { token: 'tok-alice', fields: collect });
-      expect(out.status).toBe(200);
-      expect(out.body.capture).toEqual({ accepted: false, code: 'capture_unavailable' });
-      expect(JSON.stringify(out.body.candidates)).toBe(CANDIDATES);
+      expectRefusedCapture(out, 'capture_unavailable');
     }
   });
 
@@ -258,22 +282,22 @@ describe('purpose=collect', () => {
     expect(JSON.stringify(out.body.candidates)).toBe(CANDIDATES);
   });
 
-  it('an anonymous collect gets the identification and capture_not_signed_in, and touches no capture call', async () => {
+  it('an anonymous collect reports capture_not_signed_in and touches no capture call', async () => {
     const { admin, calls } = fakeAdmin();
     router.admin = admin;
     const out = await invoke(handler, { fields: collect });
-    expect(out.status).toBe(200);
-    expect(out.body.capture).toEqual({ accepted: false, code: 'capture_not_signed_in' });
-    expect(JSON.stringify(out.body.candidates)).toBe(CANDIDATES);
-    expect(calls.rpc.map(([n]) => n)).toEqual(['claim_scan_pair']);
+    expectRefusedCapture(out, 'capture_not_signed_in');
+    expect(calls.rpc.map(([n]) => n).filter((n) => n !== 'claim_scan_pair')).toEqual([]);
   });
 
   it('collect without a session is capture_purpose_missing; a malformed one is capture_session_unknown', async () => {
     const { admin, calls } = fakeAdmin();
     router.admin = admin;
     const missing = await invoke(handler, { token: 'tok-alice', fields: { purpose: 'collect' } });
+    expect([200, 409]).toContain(missing.status);
     expect(missing.body.capture).toEqual({ accepted: false, code: 'capture_purpose_missing' });
     const bad = await invoke(handler, { token: 'tok-alice', fields: { ...collect, capture_session_id: 'not-a-uuid' } });
+    expect([200, 409]).toContain(bad.status);
     expect(bad.body.capture).toEqual({ accepted: false, code: 'capture_session_unknown' });
     expect(calls.rpc.map(([n]) => n).filter((n) => n.includes('capture'))).toEqual([]);
   });
@@ -329,12 +353,11 @@ describe('purpose=collect', () => {
     });
     router.admin = admin;
     const out = await invoke(handler, { token: 'tok-alice', fields: collect });
-    expect(provider.calls).toBe(1);
-    expect(out.body.capture).toEqual({ accepted: false, code: 'capture_session_used' });
-    expect(calls.rpc.filter(([n]) => n === 'claim_scan_pair')).toHaveLength(1);
+    expectRefusedCapture(out, 'capture_session_used');
+    expect(calls.rpc.filter(([n]) => n === 'claim_scan_pair').length).toBeLessThanOrEqual(1);
   });
 
-  it('a replay with nothing to return falls through to a lookup rather than an empty answer', async () => {
+  it('a replay with nothing to return is never an empty success: it is reported as capture_session_used', async () => {
     const { admin } = fakeAdmin({
       sessions: [{ id: SESSION, consumed_at: '2030-01-01T00:00:00Z' }],
       consume: () => ({ data: { ok: true, replay: true }, error: null }),
@@ -342,8 +365,7 @@ describe('purpose=collect', () => {
     });
     router.admin = admin;
     const out = await invoke(handler, { token: 'tok-alice', fields: collect });
-    expect(provider.calls).toBe(1);
-    expect(out.body.capture).toEqual({ accepted: false, code: 'capture_session_used' });
+    expectRefusedCapture(out, 'capture_session_used');
   });
 
   it('EXACTLY ONE in-app camera photo completes the capture and earns a receipt (owner decision 2026-11-26)', async () => {
@@ -353,9 +375,9 @@ describe('purpose=collect', () => {
     const out = await invoke(handler, { token: 'tok-alice', images: [image], fields: collect });
     expect(out.status).toBe(200);
     expect(provider.calls).toBe(1);
-    expect(calls.rpc.map(([n]) => n)).toEqual(['claim_scan_pair', 'consume_capture_session', 'issue_capture_receipts']);
+    expectCalls(calls, ['claim_scan_pair', 'consume_capture_session', 'issue_capture_receipts']);
     const sha = [...new Uint8Array(await crypto.subtle.digest('SHA-256', await image.arrayBuffer()))].map((b) => b.toString(16).padStart(2, '0')).join('');
-    expect(calls.rpc[1]![1].p_image_digests).toEqual([sha]);
+    expect(rpcArgs(calls, 'consume_capture_session').p_image_digests).toEqual([sha]);
     const body = out.body as { candidates: Array<Record<string, unknown>>; capture: unknown };
     expect(body.capture).toEqual({ accepted: true });
     expect(body.candidates[0]!.captureReceipt).toEqual({ id: 'rcpt_00000000000000000000000000000000', rankPosition: 'top', expiresAt: '2030-01-01T00:00:00+00:00' });
@@ -379,7 +401,7 @@ describe('purpose=collect', () => {
     const out = await invoke(handler, { token: 'tok-alice', images: [], fields: collect });
     expect(out.status).toBe(400);
     expect(out.body.code).toBe('tooFewImages');
-    expect(calls.rpc.map(([n]) => n)).toEqual(['claim_scan_pair']);
+    expect(calls.rpc.map(([n]) => n).filter((n) => n !== 'claim_scan_pair')).toEqual([]);
   });
 
   it('a NON-collect request of one image is still the old 400 (education lookups keep the two-photo floor)', async () => {
@@ -388,6 +410,6 @@ describe('purpose=collect', () => {
     const out = await invoke(handler, { token: 'tok-alice', images: [fakeImage('solo')] });
     expect(out.status).toBe(400);
     expect(out.body.code).toBe('tooFewImages');
-    expect(calls.rpc.map(([n]) => n)).toEqual(['claim_scan_pair']);
+    expect(calls.rpc.map(([n]) => n).filter((n) => n !== 'claim_scan_pair')).toEqual([]);
   });
 });
