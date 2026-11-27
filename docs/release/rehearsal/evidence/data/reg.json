@@ -1,0 +1,37 @@
+{
+ "out": {
+  "opensAfter5CameraOpens": 1,
+  "opensAfterNavigatingAwayAndBack": 1,
+  "identifyPostsAfterDecline": 0,
+  "offlineMessage": "The identification service could not be reached. Your photos are still here: check your connection and try again. ",
+  "misleadingMessageShown": false,
+  "retryIdentifyPosts": 1,
+  "opensDuringRetry": 0,
+  "retryShowsResult": true,
+  "retryOffersConfirm": true,
+  "celebration": "Your Herbalist Journey Begins! / Ragweed / Ambrosia artemisiifolia / #04 / Ragweed discovered. 100 XP earned. Level 1, Seedling. Achievement unlocked: First Find, Roadside Botanist. Card frame unlocked: Amber Ring. / +10",
+  "claimCalls": 1,
+  "repeatSessionOpensForNewPhoto": 1,
+  "repeatAlreadyInCollection": true,
+  "repeatOffersConfirm": 0,
+  "claimCallsTotal": 1,
+  "xpLine": "Lv. 1 / 100 /  / 250 /  XP / 150 XP to Level 2 · 500 XP to n",
+  "openSessionResults": [
+   "200 {\"ok\": true, \"nonce\": \"1a259c535bd644b6bf25e8e8051ca29b3",
+   "200 {\"ok\": true, \"nonce\": \"43573050c4274bfa8baf2c498da360377"
+  ]
+ },
+ "log": [
+  "POST /rest/v1/rpc/open_capture_session 200 {\"ok\": true, \"nonce\": \"1a259c535bd644b6bf25e8e8051ca29b37e7913e84df4210b10b5e95198244fa\", \"ttl_s\": 600, \"issue",
+  "POST /functions/v1/identify-plant 200 {\"candidates\":[{\"scientificName\":\"Ambrosia artemisiifolia\",\"commonName\":\"Annual ragweed\",\"commonNames\":[\"Annua",
+  "POST /rest/v1/scans 201 ",
+  "POST /rest/v1/rpc/claim_discovery 200 {\"ok\": true, \"status\": \"claimed\", \"herb_id\": \"ambrosia-artemisiifolia\", \"discovered_at\": \"2026-11-27T21:45:24.",
+  "POST /rest/v1/sightings 201 ",
+  "POST /rest/v1/discoveries 201 ",
+  "POST /rest/v1/unlocked_achievements 201 ",
+  "POST /rest/v1/rpc/confirm_scan 200 ",
+  "POST /rest/v1/rpc/open_capture_session 200 {\"ok\": true, \"nonce\": \"43573050c4274bfa8baf2c498da360377a4461f03bd049fcaebe5bd6686048b6\", \"ttl_s\": 600, \"issue",
+  "POST /functions/v1/identify-plant 200 {\"candidates\":[{\"scientificName\":\"Ambrosia artemisiifolia\",\"commonName\":\"Annual ragweed\",\"commonNames\":[\"Annua",
+  "POST /rest/v1/scans 201 "
+ ]
+}

@@ -93,3 +93,19 @@ node docs/release/rehearsal/scripts/journey.js            # onboarding -> sign u
 node docs/release/rehearsal/scripts/newstate.js x && STATE=/tmp/rehearsal/state-x.json node docs/release/rehearsal/scripts/scen.js library   # also: blank offdeck offline notnow denied repeat georgia
 ```
 Each run signs up fresh throwaway accounts and spends about one PlantNet call per scenario that identifies. The scripts expect Playwright (global) and ffmpeg.
+
+## 7. Fix verification: capture-session lifecycle (PR #128, branch `agent/scan/session-lifecycle`)
+
+Live regression of the fixed build against TEST (real backend and provider; `scripts/regression-session-fix.js`, evidence `evidence/data/reg.json`, `evidence/reg-*.jpg`). One fresh throwaway account, one real ragweed photograph through the fake camera:
+
+| Check | Result |
+|---|---|
+| Open the camera and cancel five times | PASS: **1** `open_capture_session` call in total (was one per open) |
+| Navigate to Collection and back, open the camera again | PASS: still 1 session |
+| Take a photo, decline consent | PASS: 0 identify requests sent |
+| Accept, connection drops during identify | PASS: "The identification service could not be reached. Your photos are still here: check your connection and try again." The old "camera session could not be started" message did not appear |
+| Retry with the same photo, no retake | PASS: identified (ragweed), 0 new sessions, 1 identify call reached the server in total |
+| Confirm | PASS: +100 XP, First Find, Roadside Botanist, Amber Ring; exactly 1 `claim_discovery` |
+| Same plant photographed again | PASS: a new session was opened for the new photo (correct), result says "Already in your collection", no confirm offered, no second claim, XP still 100 |
+
+Not changed: server functions, migrations, eligibility, rewards, enforcement. Residual: a full page reload still forgets the in-memory session (its nonce is never stored), so repeated reloads inside ten minutes can still accumulate server sessions; the message in that case now names the real cause and the wait.
