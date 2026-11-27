@@ -3556,10 +3556,10 @@ html:has(main[data-shade='learn']) { background: #b7b7f5; }
  */
 [data-shade] {
   --color-violet-400: #52257f;
-  --color-gold-300: #5c3505;
-  --color-gold-400: #6b3f06;
+  --color-gold-300: #4d2c04;
+  --color-gold-400: #5c3505;
 }
-[data-shade] .text-mystery-pink { color: #8f2557; }
+[data-shade] .text-mystery-pink { color: #7a1f4a; }
 [data-shade] .text-mystery-orchid { color: #6f2a86; }
 [data-shade] .text-mystery-mauve { color: #5f2f7a; }
 [data-shade] .text-mystery-purple { color: #4f1d82; }
