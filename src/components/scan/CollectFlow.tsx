@@ -15,7 +15,7 @@ import { getPrintedCard } from '@/lib/deck';
  * step four. Under `prefers-reduced-motion` every animation is off and each scene shows its finished state, so the static version is the whole explanation.
  */
 const EXAMPLE = 'taraxacum-officinale';
-/** The first scene shows a different plant being found; the scan, card and collection scenes show the example card. */
+/** The Find and Scan scenes show the same plant; the Unlock and Collect scenes show the example card. */
 const START = 'trifolium-pratense';
 
 const STEPS: { label: string; hint: string }[] = [
@@ -39,7 +39,7 @@ export function CollectFlow() {
                 <>
                   <span aria-hidden="true" className="cf-meadow absolute inset-0" />
                   <span className="absolute inset-x-[12%] bottom-[10%] block">
-                    <PlantSprite herbId={i === 0 ? START : herb.id} alt="" stage="flowering" fit className="w-full" />
+                    <PlantSprite herbId={START} alt="" stage="flowering" fit className="w-full" />
                   </span>
                 </>
               )}
