@@ -46,8 +46,8 @@ export function PlantCoreWindow({
   const mastery = MASTERY_STAGE_LABEL[MASTERY_BY_GARDEN_STAGE[current.stage]];
   const step = (d: number) => setIndex((i) => (i + d + plants.length) % plants.length);
 
-  const action = (href: string, label: string, icon: IconName) => (
-    <Link href={href} className="pc-btn pc-pink flex min-h-12 items-center justify-center gap-2 px-2 text-[0.8rem] font-extrabold">
+  const action = (href: string, label: string, icon: IconName, tone: 'cream' | 'sky' | 'violet') => (
+    <Link href={href} className={`pc-btn pc-${tone} flex min-h-12 items-center justify-center gap-2 px-2 text-[0.8rem] font-extrabold`}>
       <PlantdexIcon name={icon} className="text-base" aria-hidden="true" />
       <span>{label}</span>
     </Link>
@@ -62,11 +62,13 @@ export function PlantCoreWindow({
         </button>
       </div>
 
-      <div className="mt-2 grid grid-cols-[2.2rem_1fr_7.6rem] gap-2">
+      <div className="mt-2 grid grid-cols-[2.6rem_1fr_7.6rem] gap-2">
         {/* The three existing growth stages, as a segmented meter. Display only. */}
         <div role="img" aria-label={`Growth stage ${stageIdx + 1} of 3: ${STAGE_LABEL[current.stage]}`} className="pc-meter flex flex-col-reverse gap-1 p-1">
           {STAGES.map((s, i) => (
-            <span key={s} className={`pc-seg flex-1 ${i <= stageIdx ? 'pc-seg-on' : ''}`} />
+            <span key={s} className={`pc-seg flex flex-1 items-center justify-center ${i <= stageIdx ? 'pc-seg-on' : ''}`}>
+              <PlantdexIcon name={s === 'sprout' ? 'sprout' : s === 'growing' ? 'leaves' : 'flower'} className="text-base" aria-hidden="true" />
+            </span>
           ))}
         </div>
 
@@ -75,16 +77,17 @@ export function PlantCoreWindow({
             <span aria-hidden="true" className="pc-spark pc-spark-1" />
             <span aria-hidden="true" className="pc-spark pc-spark-2" />
             <span aria-hidden="true" className="pc-spark pc-spark-3" />
-            <span className="absolute inset-x-[6%] bottom-[10%] block">
+            <span aria-hidden="true" className="pc-scenery" />
+            <span className="absolute inset-x-[0%] bottom-[9%] block">
               <PlantSprite herbId={herb.id} alt={herb.commonName} stage={current.stage} fit className="w-full" />
             </span>
           </div>
           <div className="pc-namebar mt-1.5 grid grid-cols-[2.5rem_1fr_2.5rem] items-center">
-            <button type="button" onClick={() => step(-1)} aria-label="Previous plant" className="pc-btn pc-lav h-11 text-sm font-black" disabled={plants.length < 2}>
+            <button type="button" onClick={() => step(-1)} aria-label="Previous plant" className="pc-btn pc-cream h-11 text-sm font-black" disabled={plants.length < 2}>
               &#9664;
             </button>
             <span className="truncate px-1 text-center text-[0.72rem] font-extrabold">{herb.commonName}</span>
-            <button type="button" onClick={() => step(1)} aria-label="Next plant" className="pc-btn pc-lav h-11 text-sm font-black" disabled={plants.length < 2}>
+            <button type="button" onClick={() => step(1)} aria-label="Next plant" className="pc-btn pc-cream h-11 text-sm font-black" disabled={plants.length < 2}>
               &#9654;
             </button>
           </div>
@@ -97,9 +100,9 @@ export function PlantCoreWindow({
           </div>
           {variant === 'garden' ? (
             <>
-              {action(`/herbdex/${herb.id}`, hint === 'Learn its card' ? 'Learn card' : (hint ?? 'Open card'), hint ? 'learn' : 'herbdex')}
-              {action('/scan', 'Scan a plant', 'scan')}
-              <Link href={`/herbdex/${herb.id}`} className="pc-btn pc-lav flex min-h-12 items-center justify-center gap-2 px-2 text-[0.8rem] font-extrabold">
+              {action(`/herbdex/${herb.id}`, hint === 'Learn its card' ? 'Learn card' : (hint ?? 'Open card'), hint ? 'learn' : 'herbdex', 'cream')}
+              {action('/scan', 'Scan a plant', 'scan', 'sky')}
+              <Link href={`/herbdex/${herb.id}`} className="pc-btn pc-violet flex min-h-12 items-center justify-center gap-2 px-2 text-[0.8rem] font-extrabold">
                 <PlantdexIcon name="herbdex" className="text-base" aria-hidden="true" />
                 <span>Full card</span>
               </Link>
@@ -107,7 +110,7 @@ export function PlantCoreWindow({
           ) : (
             <>
               <p className="pc-note px-1 text-[0.72rem] leading-snug">{hint ? `Next: ${hint.toLowerCase()}.` : 'Fully grown.'}</p>
-              <Link href={`/herbdex/${herb.id}`} className="pc-btn pc-pink flex min-h-12 items-center justify-center gap-2 px-2 text-[0.8rem] font-extrabold">
+              <Link href={`/herbdex/${herb.id}`} className="pc-btn pc-violet flex min-h-12 items-center justify-center gap-2 px-2 text-[0.8rem] font-extrabold">
                 <PlantdexIcon name="herbdex" className="text-base" aria-hidden="true" />
                 <span>Open card</span>
               </Link>
@@ -117,7 +120,7 @@ export function PlantCoreWindow({
       </div>
 
       <div className="mt-2 flex justify-center">
-        <button type="button" onClick={onClose} className="pc-btn pc-lav tap-44 min-h-11 px-5 text-sm font-extrabold">
+        <button type="button" onClick={onClose} className="pc-btn pc-blush tap-44 min-h-11 px-5 text-sm font-extrabold">
           close
         </button>
       </div>
