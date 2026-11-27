@@ -190,9 +190,8 @@ export function ObservationPhotos({
         </span>
         {cameraOn ? (
           <span>
-            Take <span className="font-semibold text-gold-300">one photo of the plant</span> with
-            the camera. More angles are optional and only help the identifier&rsquo;s accuracy
-            &mdash; keep them to the same plant.
+            Take <span className="font-semibold text-gold-300">one photo</span> with the camera.
+            More angles are optional &mdash; keep them to the same plant.
           </span>
         ) : (
           <span>
