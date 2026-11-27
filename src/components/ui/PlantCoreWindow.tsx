@@ -69,14 +69,14 @@ export function PlantCoreWindow({
         </button>
       </div>
 
-      <div className="mt-1.5 grid grid-cols-[3.8rem_1fr_7.3rem] gap-2">
+      <div className="mt-1.5 grid grid-cols-[4.1rem_1fr_7.2rem] gap-2">
         {/* The three existing growth stages, as a segmented meter. Display only. */}
         <div role="img" aria-label={`Growth stage ${stageIdx + 1} of 3: ${STAGE_LABEL[current.stage]}`} className="pc-meter flex flex-col-reverse gap-[2px] p-[2px]">
           {STAGES.map((s, i) => (
             <span key={s} className={`pc-seg flex flex-1 items-center justify-center ${i <= stageIdx ? 'pc-seg-on' : ''}`}>
               <span className="flex flex-col items-center gap-0.5 leading-none">
                 <PlantdexIcon name={s === 'sprout' ? 'sprout' : s === 'growing' ? 'leaves' : 'flower'} className="text-lg" aria-hidden="true" />
-                <span className="text-[0.72rem] font-medium">{STAGE_LABEL[s]}</span>
+                <span className="text-[0.72rem] font-medium tracking-[-0.03em]">{STAGE_LABEL[s]}</span>
               </span>
             </span>
           ))}
