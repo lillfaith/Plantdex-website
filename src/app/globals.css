@@ -3397,6 +3397,7 @@ main[data-shade='home'] .home-stage .home-name-strip { left: 6px; right: 6px; bo
 .photo-slot[data-slot-role='primary'] .photo-glyph { color: var(--card-violet-500); }
 .photo-slot[data-held='true'] { border-style: solid; border-color: var(--card-violet-700); background: #fff; }
 .photo-slot-next:not([data-slot-role='primary']):not([data-held='true']) { border-style: solid; }
+.photo-slot[data-slot-role='optional'] { max-height: 8.5rem; min-height: 6rem; }
 .photo-slot:active:not(:disabled) { transform: translateY(2px); }
 .photo-slot:focus-visible { outline: 3px solid var(--card-violet-700); outline-offset: 2px; }
 
