@@ -21,11 +21,14 @@ name: Live camera-to-collection run (TEST project only, autonomous)
 # named here. The only secret is SUPABASE_ACCESS_TOKEN, held by the preflight/provision/cleanup steps and NEVER by the step that
 # runs the suite. No service-role key is obtained at all. The TEST anon key is the PUBLIC repository variable TEST_SUPABASE_ANON_KEY. It cannot change a flag: this workflow deploys nothing, migrates nothing and never calls
 # set_discovery_enforcement.
-# TRIGGER DISABLED after run 2 (2026-11-27). To authorise another credit-spending run, a reviewed PR restores the `push:` block that
-# watches docs/release/live-run-request.json (see git history of this file). `workflow_dispatch` is kept only so the file stays a
-# valid workflow; the gate step refuses anything that is not a push to integration, so a dispatch fails before spending anything.
+# THIS TRIGGER IS TEMPORARY AND IS RESTORED ONLY FOR THE OWNER-APPROVED RUNS 3 AND 4 (combined cap: four provider calls). It is removed
+# again by a reviewed PR once they are reported. The gate step refuses anything that is not a push to integration.
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - integration
+    paths:
+      - docs/release/live-run-request.json
 
 concurrency:
   group: live-capture-run
@@ -43,6 +46,8 @@ jobs:
     timeout-minutes: 10
     outputs:
       herb_id: ${{ steps.request.outputs.herb_id }}
+      enforcement: ${{ steps.request.outputs.enforcement }}
+      skip_blank: ${{ steps.request.outputs.skip_blank }}
     steps:
       - uses: actions/checkout@v4
 
@@ -61,14 +66,18 @@ jobs:
           jq -e '
             .target == "TEST vgjehmwcpavflbfhbbrp"
             and .authorized_by == "owner"
-            and .enforcement == "off"
-            and (.max_provider_calls | type == "number" and . <= 2)
+            and (.enforcement == "off" or .enforcement == "on")
+            and (.skip_blank | type == "boolean")
+            and (.max_provider_calls | type == "number" and . >= 1 and . <= 2)
+            and ((.skip_blank and .max_provider_calls == 1) or ((.skip_blank | not) and .max_provider_calls == 2))
             and (.request_id | type == "string" and test("^[a-z0-9-]{6,60}$"))
             and (.herb_id | type == "string" and test("^[a-z0-9-]{3,60}$"))
             and (.expires_at | type == "string" and (fromdateiso8601 > now))
           ' "$f" > /dev/null || { echo "::error::$f does not carry a valid, unexpired, TEST-only authorisation."; exit 1; }
           echo "herb_id=$(jq -r .herb_id "$f")" >> "$GITHUB_OUTPUT"
-          echo "Request $(jq -r .request_id "$f") accepted: TEST only, enforcement off, at most 2 provider calls."
+          echo "enforcement=$(jq -r .enforcement "$f")" >> "$GITHUB_OUTPUT"
+          echo "skip_blank=$(jq -r .skip_blank "$f")" >> "$GITHUB_OUTPUT"
+          echo "Request $(jq -r .request_id "$f") accepted: TEST only, enforcement $(jq -r .enforcement "$f") for the run, $(jq -r .max_provider_calls "$f") provider call(s)."
 
       - name: Verify every prerequisite (read-only)
         env:
@@ -109,18 +118,37 @@ jobs:
           TEST_ANON_KEY: ${{ vars.TEST_SUPABASE_ANON_KEY }}
         run: python3 scripts/live_run.py provision
 
+      - name: Start the counter helper (holds the token; the suite does not)
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          E2E_CHECKPOINT_DIR: ${{ runner.temp }}/cp
+        run: |
+          mkdir -p "$E2E_CHECKPOINT_DIR"
+          nohup python3 scripts/live_run.py watch > "$RUNNER_TEMP/watch.log" 2>&1 &
+          echo "started"
+
+      - name: Switch TEST enforcement ON (only when the request says so)
+        if: needs.preflight.outputs.enforcement == 'on'
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          REQUEST_ENFORCEMENT: ${{ needs.preflight.outputs.enforcement }}
+        run: python3 scripts/live_run.py enforce on
+
       - name: Run the live camera-to-collection suite
         # No Supabase credential of any kind is in this step's environment: the suite signs in as the two ordinary players.
         env:
           HERB_ID: ${{ needs.preflight.outputs.herb_id }}
+          ENFORCEMENT: ${{ needs.preflight.outputs.enforcement }}
+          SKIP_BLANK: ${{ needs.preflight.outputs.skip_blank }}
+          E2E_CHECKPOINT_DIR: ${{ runner.temp }}/cp
         run: |
           set -euo pipefail
           export NEXT_PUBLIC_SUPABASE_URL="https://$PROJECT_REF.supabase.co"
           export NEXT_PUBLIC_SUPABASE_ANON_KEY="$E2E_ANON_KEY"
           export E2E_PHOTO="$GITHUB_WORKSPACE/photo.jpg"
-          export E2E_NONPLANT_PHOTO="$GITHUB_WORKSPACE/blank.jpg"
+          if [ "$SKIP_BLANK" != "true" ]; then export E2E_NONPLANT_PHOTO="$GITHUB_WORKSPACE/blank.jpg"; fi
           export E2E_HERB_ID="$HERB_ID"
-          export E2E_ENFORCEMENT=off
+          export E2E_ENFORCEMENT="$ENFORCEMENT"
           export E2E_EVIDENCE_FILE="$RUNNER_TEMP/evidence.json"
           npx vitest run --config vitest.e2e.config.ts e2e/capture-flow.e2e.test.ts \
             --reporter=verbose --reporter=json --outputFile.json="$RUNNER_TEMP/results.json"
@@ -128,6 +156,17 @@ jobs:
       - name: Summarise (PASS/FAIL per test and the evidence)
         if: always()
         run: python3 scripts/live_run.py summary
+
+      - name: Prove TEST enforcement is OFF (switches it OFF first when this run switched it ON)
+        if: always()
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          REQUEST_ENFORCEMENT: ${{ needs.preflight.outputs.enforcement }}
+        run: python3 scripts/live_run.py enforce off
+
+      - name: Stop the counter helper
+        if: always()
+        run: touch "$RUNNER_TEMP/cp/stop" || true
 
       - name: Delete only the accounts this run created
         if: always()

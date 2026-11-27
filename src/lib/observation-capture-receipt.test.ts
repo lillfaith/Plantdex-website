@@ -454,12 +454,12 @@ describe('the live camera-to-collection workflow stays TEST-only, secret-free an
 const LCR_TEXT = read('.github/workflows/live-capture-run.yml');
 const LCR_CODE = LCR_TEXT.replace(/^\s*#.*$/gm, '');
 const LIVE_RUN_PY = read('scripts/live_run.py');
+const LCR_SPEC_CP = read('e2e/capture-flow.e2e.test.ts');
 
 describe('the autonomous live run workflow stays TEST-only, deliberate and bounded', () => {
-  it('has no live trigger: dispatch only, and the gate refuses anything but a push to integration', () => {
-    expect(LCR_CODE).toMatch(/on:\s*\n\s{2}workflow_dispatch:\s*\n/);
-    expect(LCR_CODE).not.toMatch(/^\s{2}(push|pull_request|pull_request_target|schedule|workflow_run|issue_comment):/m);
-    expect(LCR_CODE).toContain('"$GITHUB_EVENT_NAME" != "push"');
+  it('can start only from a push to integration that changes the request file', () => {
+    expect(LCR_CODE).toMatch(/on:\s*\n\s{2}push:\s*\n\s{4}branches:\s*\n\s{6}- integration\s*\n\s{4}paths:\s*\n\s{6}- docs\/release\/live-run-request\.json\s*\n/);
+    expect(LCR_CODE).not.toMatch(/^\s{2}(pull_request|pull_request_target|schedule|workflow_dispatch|workflow_run|issue_comment):/m);
   });
   it('names the TEST project as a literal, takes no project input and never names production', () => {
     expect(LCR_CODE).toContain('PROJECT_REF: vgjehmwcpavflbfhbbrp');
@@ -468,7 +468,7 @@ describe('the autonomous live run workflow stays TEST-only, deliberate and bound
     expect(LIVE_RUN_PY).toContain('def require_test_only()');
   });
   it('refuses a re-run, a wrong ref, and a request that is not TEST-only, owner-authorised, enforcement-off, capped and unexpired', () => {
-    for (const needle of ['GITHUB_RUN_ATTEMPT', 'refs/heads/integration', '.target == "TEST vgjehmwcpavflbfhbbrp"', '.authorized_by == "owner"', '.enforcement == "off"', '. <= 2', 'fromdateiso8601 > now']) {
+    for (const needle of ['GITHUB_RUN_ATTEMPT', 'refs/heads/integration', '.target == "TEST vgjehmwcpavflbfhbbrp"', '.authorized_by == "owner"', '(.enforcement == "off" or .enforcement == "on")', '. <= 2', '.skip_blank', 'fromdateiso8601 > now']) {
       expect(LCR_CODE, needle).toContain(needle);
     }
   });
@@ -481,7 +481,20 @@ describe('the autonomous live run workflow stays TEST-only, deliberate and bound
   it('is read-only on the repository and deploys, migrates and flips nothing', () => {
     expect(LCR_CODE).toMatch(/permissions:\s*\n\s*contents: read/);
     expect(LCR_CODE).not.toMatch(/functions deploy|run-migration|database\/query|set_discovery_enforcement/i);
-    expect(LIVE_RUN_PY).not.toMatch(/\.rpc\(|set_discovery_enforcement\s*\(/);
+    expect(LIVE_RUN_PY).not.toMatch(/\.rpc\(/);
+  });
+  it('flips the TEST switch only when the request asks, proves it OFF afterwards, and always does', () => {
+    expect((LIVE_RUN_PY.match(/sql\("select public\.set_discovery_enforcement\(/g) ?? []).length).toBe(2);
+    const fn = LIVE_RUN_PY.slice(LIVE_RUN_PY.indexOf('def cmd_enforce()'), LIVE_RUN_PY.indexOf('def cmd_summary()'));
+    expect(fn).toContain('the request does not ask for enforcement ON');
+    expect(fn).toContain('enforcement is not verifiably OFF before the switch');
+    expect(fn).toContain('ENFORCEMENT IS NOT PROVEN OFF');
+    expect(LCR_CODE).toMatch(/if: needs\.preflight\.outputs\.enforcement == 'on'\s*\n(?:.*\n){1,4}\s+run: python3 scripts\/live_run\.py enforce on/);
+    expect(LCR_CODE).toMatch(/name: Prove TEST enforcement is OFF[^\n]*\n\s+if: always\(\)/);
+  });
+  it('gives the suite counters without giving it the token: a separate helper process answers file checkpoints', () => {
+    expect(LCR_CODE).toContain('python3 scripts/live_run.py watch');
+    expect(LCR_SPEC_CP).toContain('E2E_CHECKPOINT_DIR');
   });
   it('verifies before it spends: the live job needs the preflight job, and cleanup always runs', () => {
     expect(LCR_CODE).toMatch(/live:\s*\n\s+needs: preflight/);

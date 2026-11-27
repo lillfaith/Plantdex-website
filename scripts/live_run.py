@@ -31,6 +31,7 @@ import os
 import re
 import secrets
 import sys
+import time
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -473,6 +474,86 @@ def cmd_cleanup() -> None:
     print("CLEANUP COMPLETE: only this run's accounts were removed.")
 
 
+# ── checkpoints: let the suite ask for a PRIVILEGED read without holding any credential ───────────────────────────────
+def snapshot() -> dict:
+    """Counters the suite cannot read for itself (the quota table has no client policy). Ids come from this run's own state file."""
+    try:
+        acc = json.load(open(state_path())).get("accounts", {})
+    except Exception:
+        return {"note": "no accounts yet"}
+    ids = {r: a.get("id") for r, a in acc.items() if isinstance(a, dict)}
+    if not all(isinstance(v, str) and re.fullmatch(r"[0-9a-f-]{36}", v) for v in ids.values()) or not ids:
+        return {"note": "accounts incomplete"}
+    parts = []
+    for role, uid in ids.items():
+        parts.append(f"(select coalesce(sum(count), 0) from public.scan_quota where bucket = 'user:{uid}' and day = (now() at time zone 'utc')::date) as {role}_quota")
+        parts.append(f"(select count(*) from public.capture_receipts where user_id = '{uid}') as {role}_receipts")
+        parts.append(f"(select count(*) from public.capture_sessions where user_id = '{uid}' and consumed_at is not null) as {role}_sessions_consumed")
+    parts.append("(select coalesce(sum(count), 0) from public.scan_quota where bucket = 'global' and day = (now() at time zone 'utc')::date) as global_quota")
+    status, body = sql("select " + ", ".join(parts))
+    if status in (200, 201) and isinstance(body, list) and body and isinstance(body[0], dict):
+        return {k: int(v) for k, v in body[0].items()}
+    return {"error": f"HTTP {status}"}
+
+
+def cmd_watch() -> None:
+    """Background helper. The suite writes <name>.req into E2E_CHECKPOINT_DIR and waits for <name>.ack; this answers with <name>.json.
+    It holds the Database-scope token; the suite does not."""
+    require_test_only()
+    d = os.environ.get("E2E_CHECKPOINT_DIR", "")
+    if not d:
+        die("E2E_CHECKPOINT_DIR is not set.")
+    os.makedirs(d, exist_ok=True)
+    seen: set[str] = set()
+    deadline = time.time() + 900
+    while time.time() < deadline and not os.path.exists(os.path.join(d, "stop")):
+        for f in sorted(os.listdir(d)):
+            if f.endswith(".req") and f not in seen and re.fullmatch(r"[a-z0-9-]+\.req", f):
+                seen.add(f)
+                name = f[:-4]
+                with open(os.path.join(d, name + ".json"), "w") as out:
+                    json.dump(snapshot(), out)
+                open(os.path.join(d, name + ".ack"), "w").close()
+        time.sleep(0.2)
+
+
+# ── the enforcement switch: TEST only, only when the request says so, and always proven OFF afterwards ───────────────
+def read_switch() -> bool | None:
+    status, body = sql("select enforce from public.discovery_enforcement where singleton")
+    if status in (200, 201) and isinstance(body, list) and body and isinstance(body[0], dict) and isinstance(body[0].get("enforce"), bool):
+        return body[0]["enforce"]
+    return None
+
+
+def cmd_enforce() -> None:
+    require_test_only()
+    action = sys.argv[2] if len(sys.argv) > 2 else ""
+    requested = os.environ.get("REQUEST_ENFORCEMENT", "off")
+    if action == "on":
+        if requested != "on":
+            die("the request does not ask for enforcement ON; refusing to switch it.")
+        if read_switch() is not False:
+            die("enforcement is not verifiably OFF before the switch; refusing.")
+        status, body = sql("select public.set_discovery_enforcement(true, now() - interval '1 second', 'ENFORCE NEW DISCOVERIES') as r")
+        if status not in (200, 201):
+            die(f"switching ON failed: HTTP {status}")
+        if read_switch() is not True:
+            die("enforcement did not read back as ON after the switch.")
+        ok("TEST enforcement is ON for this run (it is switched OFF again in an always-run step)")
+    elif action == "off":
+        if requested == "on":
+            status, _ = sql("select public.set_discovery_enforcement(false, null, 'x') as r")
+            if status not in (200, 201):
+                print(f"::error::switching OFF failed: HTTP {status}")
+        state = read_switch()
+        if state is False:
+            ok("TEST enforcement reads OFF (proved by reading the switch back)")
+        else:
+            die(f"ENFORCEMENT IS NOT PROVEN OFF (read: {state!r}). Run: select public.set_discovery_enforcement(false, null, 'x');")
+    else:
+        die("usage: live_run.py enforce on|off")
+
+
 def cmd_summary() -> None:
     """Markdown for the run summary: one PASS/FAIL line per live test, then the non-secret evidence the suite recorded."""
     tmp = os.environ.get("RUNNER_TEMP", "/tmp")
@@ -499,6 +580,13 @@ def cmd_summary() -> None:
         out += ["### Evidence recorded by the suite (no passwords, keys or tokens)", "", "```json", json.dumps(ev, indent=2)[:6000], "```"]
     except Exception:
         out.append("No evidence file was written.")
+    cp_dir = os.path.join(tmp, "cp")
+    try:
+        cps = {f[:-5]: json.load(open(os.path.join(cp_dir, f))) for f in sorted(os.listdir(cp_dir)) if f.endswith(".json")}
+        if cps:
+            out += ["", "### Privileged counters read at each checkpoint (quota is today's UTC bucket)", "", "```json", json.dumps(cps, indent=2)[:4000], "```"]
+    except Exception:
+        pass
     text = "\n".join(out)
     path = os.environ.get("GITHUB_STEP_SUMMARY")
     if path:
@@ -522,7 +610,7 @@ def cmd_selftest() -> None:
 
 
 if __name__ == "__main__":
-    cmds = {"preflight": cmd_preflight, "provision": cmd_provision, "cleanup": cmd_cleanup, "summary": cmd_summary, "selftest": cmd_selftest}
-    if len(sys.argv) != 2 or sys.argv[1] not in cmds:
-        die("usage: live_run.py preflight|provision|cleanup|summary|selftest")
+    cmds = {"preflight": cmd_preflight, "provision": cmd_provision, "cleanup": cmd_cleanup, "summary": cmd_summary, "watch": cmd_watch, "enforce": cmd_enforce, "selftest": cmd_selftest}
+    if len(sys.argv) not in (2, 3) or sys.argv[1] not in cmds:
+        die("usage: live_run.py preflight|provision|cleanup|summary|watch|enforce on|off|selftest")
     cmds[sys.argv[1]]()
