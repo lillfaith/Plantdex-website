@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { createClient, type SupabaseClient, type User } from '@supabase/supabase-js';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 
@@ -37,6 +37,24 @@ const PROVISIONED = {
 const EXPIRED_RECEIPT = process.env.E2E_EXPIRED_RECEIPT_ID;
 const NONPLANT_PHOTO = process.env.E2E_NONPLANT_PHOTO;
 const EVIDENCE_FILE = process.env.E2E_EVIDENCE_FILE;
+const CHECKPOINT_DIR = process.env.E2E_CHECKPOINT_DIR;
+
+/**
+ * Ask the workflow for a PRIVILEGED read (quota counters have no client policy) without holding any credential: write
+ * `<name>.req`, wait for `<name>.ack`, return what the helper recorded. Absent a checkpoint directory (a manual run) it is a no-op.
+ */
+async function checkpoint(name: string): Promise<Row | null> {
+  if (!CHECKPOINT_DIR) return null;
+  mkdirSync(CHECKPOINT_DIR, { recursive: true });
+  writeFileSync(`${CHECKPOINT_DIR}/${name}.req`, '');
+  for (let i = 0; i < 100; i++) {
+    if (existsSync(`${CHECKPOINT_DIR}/${name}.ack`)) {
+      return JSON.parse(readFileSync(`${CHECKPOINT_DIR}/${name}.json`, 'utf8')) as Row;
+    }
+    await new Promise((r) => setTimeout(r, 200));
+  }
+  throw new Error(`checkpoint ${name} was not acknowledged: the workflow's counter helper is not running`);
+}
 /** Non-secret facts the run observed, written for the run summary. Never a password, key or token. */
 const evidence: Record<string, unknown> = {};
 
@@ -131,8 +149,10 @@ describe.skipIf(!configured)('V1 camera-to-collection, live (TEST project)', () 
   });
 
   it('STEP 2 - Identify: ONE photograph through the DEPLOYED function and its real provider', async () => {
+    evidence.cpBeforeIdentify = await checkpoint('before-identify');
     const { data, error } = await identify(alice, sessionA, photo);
     expect(error, JSON.stringify(error)).toBeNull();
+    evidence.cpAfterIdentify = await checkpoint('after-identify');
     firstResponse = data;
     const capture = data!.capture as Row;
     expect(capture, JSON.stringify(data)).toBeTruthy();
@@ -159,6 +179,9 @@ describe.skipIf(!configured)('V1 camera-to-collection, live (TEST project)', () 
     receiptId = String((mine!.captureReceipt as Row).id);
     expect(receiptId).toMatch(/^rcpt_[0-9a-f]{32}$/);
     evidence.receipt = { id: receiptId, ...(mine!.captureReceipt as Row) };
+    // The receipt rows are the player's own (RLS select): they say WHICH rule earned each receipt, live.
+    const rows = await alice.from('capture_receipts').select('herb_id,observed_taxon_key,eligibility,rank_position,species_confidence').eq('observation_id', String(firstResponse!.observationId));
+    evidence.receiptRows = rows.data;
   });
 
   it('STEP 4 - Collect: claiming the receipt writes the discovery, once', async () => {
@@ -193,9 +216,16 @@ describe.skipIf(!configured)('V1 camera-to-collection, live (TEST project)', () 
 
   it('REPLAY: the identical request again returns the SAME receipts, spends no provider call, and mints nothing new', async () => {
     const before = await alice.from('capture_receipts').select('id').eq('user_id', aliceUser.id);
+    const cpBefore = await checkpoint('before-replay');
     const { data, error } = await identify(alice, sessionA, photo);
     expect(error, JSON.stringify(error)).toBeNull();
     expect((data!.capture as Row).accepted).toBe(true);
+    const cpAfter = await checkpoint('after-replay');
+    evidence.replay = { response: { replay: (data!.capture as Row).replay, candidates: ((data!.candidates ?? []) as Row[]).length }, quotaBefore: cpBefore, quotaAfter: cpAfter };
+    if (cpBefore && cpAfter) {
+      expect(cpAfter.alice_quota, 'a replay must not spend the caller allowance').toBe(cpBefore.alice_quota);
+      // The shared counter is recorded, not asserted: any other TEST player scanning in this one-second window would move it.
+    }
     const after = await alice.from('capture_receipts').select('id').eq('user_id', aliceUser.id);
     expect((after.data ?? []).length).toBe((before.data ?? []).length);
   });
@@ -255,7 +285,9 @@ describe.skipIf(!configured)('V1 camera-to-collection, live (TEST project)', () 
     const blank = new Uint8Array(readFileSync(NONPLANT_PHOTO!));
     const session = await openSession(bob);
     const before = await bob.from('discoveries').select('herb_id').eq('user_id', bobUser.id);
+    evidence.cpBeforeBlank = await checkpoint('before-blank');
     const { data, error } = await identify(bob, session, blank, 'scan-blank.jpg');
+    evidence.cpAfterBlank = await checkpoint('after-blank');
     let status = 200;
     let body: Row | null = data;
     if (error) {
@@ -278,6 +310,9 @@ describe.skipIf(!configured)('V1 camera-to-collection, live (TEST project)', () 
     }
     const after = await bob.from('discoveries').select('herb_id').eq('user_id', bobUser.id);
     expect((after.data ?? []).length, 'identification alone must never write a discovery').toBe((before.data ?? []).length);
+    const blankRows = await bob.from('capture_receipts').select('herb_id,observed_taxon_key,eligibility,rank_position,species_confidence').eq('observation_id', String(body!.observationId ?? ''));
+    evidence.nonPlantCandidates = ((body!.candidates ?? []) as Row[]).map((c) => ({ scientificName: c.scientificName, score: c.score, hasReceipt: Boolean(c.captureReceipt) }));
+    evidence.nonPlantReceiptRows = blankRows.data;
     evidence.nonPlant = { httpStatus: status, code: body!.code ?? null, providerFoundNothing: body!.providerFoundNothing ?? null, notAPlant: body!.notAPlant ?? null, candidates: ((body!.candidates ?? []) as Row[]).length, candidatesWithReceipt: ((body!.candidates ?? []) as Row[]).filter((c) => c.captureReceipt).length, retryable: (body!.capture as Row | undefined)?.retryable ?? null, allowance: body!.allowance ?? null };
   });
 
