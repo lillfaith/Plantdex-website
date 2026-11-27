@@ -35,7 +35,9 @@ type Call = [string, Record<string, unknown>];
 interface Script {
   consume?: (n: number, args: Record<string, unknown>) => Reply;
   claim?: () => Reply;
-  release?: 'ok' | 'throw';
+  release?: 'ok' | 'throw' | 'false';
+  /** Rows the advisory allowance read sees (scan_quota); absent = the table reads as empty. */
+  quota?: unknown;
 }
 function fakeAdmin(script: Script = {}) {
   const rpc: Call[] = [];
@@ -48,12 +50,15 @@ function fakeAdmin(script: Script = {}) {
       if (name === 'issue_capture_receipts') return { data: [{ id: 'rcpt_' + '0'.repeat(32), herb_id: 'taraxacum-officinale', rank_position: 'top' }], error: null };
       if (name === 'release_capture_session') {
         if (script.release === 'throw') throw new Error('boom');
-        return { data: true, error: null };
+        return { data: script.release !== 'false', error: null };
       }
       if (name === 'refund_scan_claim') return { data: true, error: null };
       return { data: null, error: { message: `unexpected rpc ${name}` } };
     },
-    from() {
+    from(table) {
+      if (table === 'scan_quota' && script.quota !== undefined) {
+        return { select: () => ({ eq: () => ({ in: () => Promise.resolve({ data: script.quota, error: null }) }) }), delete: () => inertBuilder() };
+      }
       return inertBuilder();
     },
   };
@@ -125,7 +130,7 @@ describe('a collect request whose capture cannot be accepted costs nothing and r
     }
   });
 
-  it("another player's session is charged to NOBODY: the refusal is identical to an unknown session and leaks nothing", async () => {
+  it("the refusal body adds nothing of its own: a foreign and an unknown session read identically (ownership itself is SQL, proven locally and live)", async () => {
     const { admin, rpc } = fakeAdmin({ consume: () => ({ data: { ok: false, code: 'capture_session_unknown' }, error: null }) });
     router.admin = admin;
     const foreign = await invoke(handler, { token: 'tok-bob', fields: collect });
@@ -211,7 +216,7 @@ describe('educational lookups are unchanged', () => {
   });
 });
 
-describe('simultaneous identical requests', () => {
+describe('simultaneous identical requests (the handler\'s reaction to the database\'s answer; atomicity itself is the database\'s, shown by a 12-way local consume)', () => {
   it('two at once: exactly one is admitted, charged and identified; the other is refused and costs nothing', async () => {
     // The database is atomic: the first consume wins, the second finds the same session already spent by an identical request that has
     // no receipts yet (the winner is still mid-provider), which is reported as used, not as a free lookup.
@@ -236,5 +241,71 @@ describe('simultaneous identical requests', () => {
     expect(outs.filter((o) => o.status === 409)).toHaveLength(11);
     expect(count(rpc, 'claim_scan_pair')).toBe(1);
     expect(provider.calls).toBe(1);
+  });
+});
+
+describe('an exhausted caller writes nothing (advisory read before the capture is admitted)', () => {
+  it('over the caller\'s own limit: 429 before any consume, claim, release or provider', async () => {
+    const { admin, rpc } = fakeAdmin({ quota: [{ bucket: `user:${ALICE}`, count: 10 }] });
+    router.admin = admin;
+    const out = await invoke(handler, { token: 'tok-alice', fields: collect });
+    expect(out.status).toBe(429);
+    expect(out.body.code).toBe('rateLimited');
+    expect(rpc).toEqual([]);
+    expect(provider.calls).toBe(0);
+  });
+  it('the shared pool spent: 429 globalLimit before any consume', async () => {
+    const { admin, rpc } = fakeAdmin({ quota: [{ bucket: 'global', count: 450 }] });
+    router.admin = admin;
+    const out = await invoke(handler, { token: 'tok-alice', fields: collect });
+    expect(out.status).toBe(429);
+    expect(out.body.code).toBe('globalLimit');
+    expect(rpc).toEqual([]);
+  });
+  it('under the limits, or an odd or failing read, simply continues to the authoritative claim', async () => {
+    for (const quota of [[{ bucket: `user:${ALICE}`, count: 3 }], 'garbage', null, []]) {
+      const { admin, rpc } = fakeAdmin({ quota });
+      router.admin = admin;
+      provider.calls = 0;
+      const out = await invoke(handler, { token: 'tok-alice', fields: collect });
+      expect(out.status).toBe(200);
+      expect(names(rpc)).toEqual(['consume_capture_session', 'claim_scan_pair', 'issue_capture_receipts']);
+    }
+  });
+  it('another player\'s counter never decides this caller\'s answer', async () => {
+    const { admin, rpc } = fakeAdmin({ quota: [{ bucket: `user:${BOB}`, count: 999 }] });
+    router.admin = admin;
+    const out = await invoke(handler, { token: 'tok-alice', fields: collect });
+    expect(out.status).toBe(200);
+    expect(count(rpc, 'claim_scan_pair')).toBe(1);
+  });
+});
+
+describe('the allowance answer is validated, and a hand-back that fails changes nothing the player sees', () => {
+  it.each([null, 'x', undefined])('an allowance answer of %s is a 500, the session is handed back and the provider is never called', async (bad) => {
+    const { admin, rpc } = fakeAdmin({ claim: () => ({ data: bad as never, error: null }) });
+    router.admin = admin;
+    const out = await invoke(handler, { token: 'tok-alice', fields: collect });
+    expect(out.status).toBe(500);
+    expect(provider.calls).toBe(0);
+    expect(count(rpc, 'release_capture_session')).toBe(1);
+  });
+  it('a release that answers false (not handed back) leaves the 429 exactly as it was', async () => {
+    const { admin, rpc } = fakeAdmin({ claim: () => ({ data: -1, error: null }), release: 'false' });
+    router.admin = admin;
+    const out = await invoke(handler, { token: 'tok-alice', fields: collect });
+    expect(out.status).toBe(429);
+    expect(out.body.code).toBe('rateLimited');
+    expect(count(rpc, 'release_capture_session')).toBe(1);
+    expect(provider.calls).toBe(0);
+  });
+  it('a provider failure after admission still hands the session back and refunds the caller\'s own unit', async () => {
+    const { admin, rpc } = fakeAdmin();
+    router.admin = admin;
+    provider.plan = { mode: 'fail', names: [] };
+    const out = await invoke(handler, { token: 'tok-alice', fields: collect });
+    expect(out.status).toBe(502);
+    expect(names(rpc)).toEqual(['consume_capture_session', 'claim_scan_pair', 'release_capture_session', 'refund_scan_claim']);
+    expect(rpc[3]![1].p_bucket).toBe(`user:${ALICE}`);
   });
 });

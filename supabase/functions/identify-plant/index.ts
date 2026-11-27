@@ -482,6 +482,45 @@ Deno.serve(async (req: Request) => {
     }
   }
 
+  const bucket = userId ? `user:${userId}` : await anonBucket(callerAddress(req), day);
+  const limit = userId ? USER_DAILY_LIMIT : ANON_DAILY_LIMIT;
+  const ownLimitResponse = () =>
+    json(
+      {
+        error: userId
+          ? `You have used all ${USER_DAILY_LIMIT} identifications for today.`
+          : `You have used all ${ANON_DAILY_LIMIT} identifications for today. They reset at midnight UTC.`,
+        code: 'rateLimited',
+        limit,
+        signedIn: Boolean(userId),
+      },
+      429,
+    );
+  const sharedLimitResponse = () =>
+    json({ error: 'Plant identification has hit its limit for today. Please try again tomorrow.', code: 'globalLimit' }, 429);
+
+  /*
+   * A READ-ONLY LOOK AT THE ALLOWANCE BEFORE A CAPTURE SESSION IS SPENT (review finding, PR #109).
+   *
+   * Admitting a capture writes (the session, and up to three image digests that a hand-back deliberately leaves). A caller already
+   * over their own daily limit, or a day whose shared pool is spent, would otherwise add those rows on every request at no cost,
+   * because the claim that refuses them comes after. This reads the two counters and refuses first, so an exhausted caller writes
+   * nothing. It is advisory only: the claim below stays the authority, a race between two requests merely reaches the claim, and any
+   * error or odd answer here simply continues to it.
+   */
+  if (captureAsk && userId) {
+    try {
+      const { data: rows } = await admin.from('scan_quota').select('bucket,count').eq('day', day).in('bucket', [bucket, 'global']);
+      const counts = new Map<string, number>(
+        (Array.isArray(rows) ? rows : []).map((r: { bucket?: string; count?: number }) => [String(r.bucket), Number(r.count)]),
+      );
+      if ((counts.get(bucket) ?? 0) >= limit) return ownLimitResponse();
+      if ((counts.get('global') ?? 0) >= GLOBAL_DAILY_LIMIT) return sharedLimitResponse();
+    } catch {
+      /* advisory: fall through to the authoritative claim */
+    }
+  }
+
   /*
    * The id that ties the two comparison rows, the client's own scan row and any capture receipt to one set of photographs.
    * Minted BEFORE the capture is admitted because the capture session is consumed against it.
@@ -500,7 +539,11 @@ Deno.serve(async (req: Request) => {
   if (capture?.kind === 'failed') {
     return json({ ...captureRefusal(capture.code), signedIn: Boolean(userId) }, CAPTURE_REFUSAL_STATUS);
   }
-  /** An admitted session is handed back when the request then cannot be served, so the same photographs may be sent again. */
+  /**
+   * An admitted session is handed back when the request then cannot be served, so the same photographs may be sent again. Best effort and
+   * FAIL-SAFE: if the release itself fails the session stays spent, the same photographs then read as `capture_session_used`, and the player
+   * simply opens a new capture (bounded by the per-day session limit). Nothing is ever granted by a failed release.
+   */
   const handBack = async (): Promise<void> => {
     if (capture?.kind === 'open') {
       try {
@@ -511,16 +554,15 @@ Deno.serve(async (req: Request) => {
     }
   };
 
-  const bucket = userId ? `user:${userId}` : await anonBucket(callerAddress(req), day);
-  const limit = userId ? USER_DAILY_LIMIT : ANON_DAILY_LIMIT;
-
   const { data: claimed, error: quotaError } = await admin.rpc('claim_scan_pair', {
     p_bucket: bucket,
     p_day: day,
     p_limit: limit,
     p_global_limit: GLOBAL_DAILY_LIMIT,
   });
-  if (quotaError) {
+  // An error, or an answer that is not a number at all, is "could not check": the request is refused rather than
+  // being allowed to reach the provider unclaimed.
+  if (quotaError || typeof claimed !== 'number') {
     await handBack();
     return json({ error: 'Could not check your daily allowance.' }, 500);
   }
@@ -530,27 +572,11 @@ Deno.serve(async (req: Request) => {
   // back tomorrow", the other is "this is not your fault".
   if (claimed === -1) {
     await handBack();
-    return json(
-      {
-        error: userId
-          ? `You have used all ${USER_DAILY_LIMIT} identifications for today.`
-          : `You have used all ${ANON_DAILY_LIMIT} identifications for today. They reset at midnight UTC.`,
-        code: 'rateLimited',
-        limit,
-        signedIn: Boolean(userId),
-      },
-      429,
-    );
+    return ownLimitResponse();
   }
   if (claimed === -2) {
     await handBack();
-    return json(
-      {
-        error: 'Plant identification has hit its limit for today. Please try again tomorrow.',
-        code: 'globalLimit',
-      },
-      429,
-    );
+    return sharedLimitResponse();
   }
 
   /*
