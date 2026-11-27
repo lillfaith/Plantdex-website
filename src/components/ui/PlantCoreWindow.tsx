@@ -79,12 +79,12 @@ export function PlantCoreWindow({
               <PlantSprite herbId={herb.id} alt={herb.commonName} stage={current.stage} fit className="w-full" />
             </span>
           </div>
-          <div className="pc-namebar mt-1.5 grid grid-cols-[2rem_1fr_2rem] items-center">
-            <button type="button" onClick={() => step(-1)} aria-label="Previous plant" className="pc-btn pc-mint tap-44 h-8 text-sm font-black" disabled={plants.length < 2}>
+          <div className="pc-namebar mt-1.5 grid grid-cols-[2.75rem_1fr_2.75rem] items-center">
+            <button type="button" onClick={() => step(-1)} aria-label="Previous plant" className="pc-btn pc-mint h-11 text-sm font-black" disabled={plants.length < 2}>
               &#9664;
             </button>
             <span className="truncate px-1 text-center text-[0.8rem] font-extrabold">{herb.commonName}</span>
-            <button type="button" onClick={() => step(1)} aria-label="Next plant" className="pc-btn pc-mint tap-44 h-8 text-sm font-black" disabled={plants.length < 2}>
+            <button type="button" onClick={() => step(1)} aria-label="Next plant" className="pc-btn pc-mint h-11 text-sm font-black" disabled={plants.length < 2}>
               &#9654;
             </button>
           </div>

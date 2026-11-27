@@ -3017,7 +3017,7 @@ body {
 .pc-title { font-size: 0.85rem; font-weight: 800; letter-spacing: 0.02em; color: #1f5a4a; }
 .pc-x {
   display: inline-flex; align-items: center; justify-content: center;
-  width: 28px; height: 28px; background: #d9fbe9; border: 2px solid #4a9e86; border-radius: 3px; color: #1f5a4a;
+  width: 44px; height: 30px; background: #d9fbe9; border: 2px solid #4a9e86; border-radius: 3px; color: #1f5a4a;
 }
 .pc-meter { background: #e6a6d6; border: 2px solid #8b2f9a; border-radius: 4px; }
 .pc-seg { background: #9bd2b0; border: 1px solid #4a9e86; }
