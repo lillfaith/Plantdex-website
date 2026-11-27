@@ -168,6 +168,12 @@ export function ObservationPhotos({
   const minimum = minPhotosFor(channel);
   const ready = count >= minimum;
   const closeRequired = minimum > 1;
+  /*
+   * WHICH SLOTS ARE REQUIRED FOLLOWS THE FLOOR TOO. The leaf-and-stem slot is declared required for a two-photo lookup, but with ONE camera
+   * photograph needed it said "Required" (to a screen reader) and showed no "(optional)" beside a footer reading "1 camera photo needed", so the
+   * page contradicted itself. Only the whole-plant slot stays required in a collect; the close-up becomes optional with the rest.
+   */
+  const isRequired = (slot: (typeof SLOTS)[number]): boolean => (slot.key === 'close' ? closeRequired : slot.required);
 
   const firstEmpty = SLOTS.find((slot) => !held[slot.key]);
 
@@ -258,7 +264,7 @@ export function ObservationPhotos({
                 />
                 {slot.label}
               </p>
-              {!(slot.required || (slot.key === 'close' && closeRequired)) && (
+              {!isRequired(slot) && (
                 <p className="text-[0.72rem] leading-tight text-violet-300">(optional)</p>
               )}
               <input
@@ -280,7 +286,7 @@ export function ObservationPhotos({
                 }}
               />
               <span className="sr-only">
-                {index + 1}. {slot.required || (slot.key === 'close' && closeRequired) ? 'Required' : 'Optional'}. {slot.instruction}
+                {index + 1}. {isRequired(slot) ? 'Required' : 'Optional'}. {slot.instruction}
               </span>
             </li>
           );

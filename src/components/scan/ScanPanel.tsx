@@ -337,7 +337,9 @@ export function ScanPanel() {
         // One camera photo is enough only with an open capture session; without one this is a
         // lookup, which needs two. Say so rather than letting the generic refusal blame the count.
         setProblem(
-          'The camera session could not be started, so this photo can only look a plant up. Add another photo of the same plant, or try the camera again.',
+          user
+            ? 'The camera session could not be started, so this photo can only look a plant up. Add another photo of the same plant, or try the camera again.'
+            : 'Sign in to collect a plant from a camera photo. Signed out, a photo can only look a plant up: add another photo of the same plant, or sign in and try again.',
         );
         setStage('idle');
         return;
@@ -559,7 +561,9 @@ export function ScanPanel() {
               ? COLLECT_NOTE
               : photos.length > 0
                 ? LOOKUP_NOTICE.heading
-                : 'Camera preview (test). Photos taken with the in-app camera can collect a new card; library photos identify only.'}
+                : user
+                  ? 'Camera preview (test). Photos taken with the in-app camera can collect a new card; library photos identify only.'
+                  : 'Camera preview (test). Sign in to collect a new card from an in-app camera photo; signed out, photos identify only.'}
           </p>
         )}
 
