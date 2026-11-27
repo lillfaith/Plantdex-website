@@ -3217,7 +3217,7 @@ main[data-palette='card'] dl.grid > div:nth-child(3) { background: var(--card-go
 main[data-palette='card'] dl.grid { gap: 8px; }
 main[data-palette='card'] [data-part='board'] a { background: linear-gradient(180deg, var(--card-orchid-50), var(--card-orchid-100)); border: 2px solid var(--card-orchid-300); }
 main[data-palette='card'] [data-part='recent'] section { background: linear-gradient(180deg, var(--card-pink-50), var(--card-pink-200)); border: 2px solid var(--card-pink-500); }
-main[data-palette='card'] [data-part='research'] a { background: linear-gradient(180deg, var(--card-turq-50), var(--card-turq-100)); border: 2px solid var(--card-turq-300); }
+main[data-palette='card'] [data-part='research'] a { background: linear-gradient(180deg, #fff, var(--card-violet-50)); border: 2px solid var(--card-violet-200); border-left: 5px solid var(--card-turq-500); }
 main[data-palette='card'] [data-part='research'] a > span:nth-last-child(2) { background: var(--card-gold-300); color: #3d0a63; border: 1px solid var(--card-gold-700); }
 main[data-palette='card'] .lav-track.grid-cols-4 { background: var(--card-violet-50); border-color: var(--card-violet-300); }
 main[data-palette='card'] .lav-track.grid-cols-4 > button[aria-selected='true'],
@@ -3230,16 +3230,12 @@ main[data-palette='card'] .lav-track.grid-cols-4 > .chip-selected-deep {
 main[data-palette='card'] .lav-input { border-color: var(--card-orchid-300); background: #fff; }
 main[data-palette='card'] button[class*='h-[1.875rem]'] { border-color: var(--card-violet-300); background: #fff; }
 /* Garden: the bed is a soft leaf-to-lilac display; tiles glow by growth stage (sprout leaf green, growing orchid, flowering sunflower); the side panels each take a card colour. */
-main[data-palette='card'] [data-tour='garden-bed'] {
-  background: linear-gradient(180deg, var(--card-leaf-50) 0%, #fff 45%, var(--card-violet-50) 100%);
-  border: 2px solid var(--card-leaf-300);
-}
 main[data-palette='card'] [data-glow='violet'] { --sg: rgb(196 210 141 / 0.95); --shadow-card: 0 0 0 2px var(--card-leaf-500), 0 0 12px 3px rgb(237 241 220 / 0.9), 0 0 24px 6px rgb(196 210 141 / 0.6); }
 main[data-palette='card'] [data-glow='pink'] { --sg: rgb(222 160 247 / 0.95); }
 main[data-palette='card'] [data-glow='gold'] { --sg: rgb(255 232 104 / 0.95); }
-main[data-palette='card'] [data-tour='garden-bed'] + div.panel { background: linear-gradient(180deg, var(--card-turq-50), var(--card-turq-100)); border: 2px solid var(--card-turq-300); }
-main[data-palette='card'] > a[href^='/seed-shelf'] { background: linear-gradient(180deg, var(--card-pink-50), var(--card-pink-200)); border: 2px solid var(--card-pink-500); }
-main[data-palette='card'] > a[href^='/seasons'] { background: linear-gradient(180deg, var(--card-gold-50), var(--card-gold-100)); border: 2px solid var(--card-gold-300); }
+main[data-palette='card'] [data-tour='garden-bed'] + div.panel { background: linear-gradient(180deg, #fff, var(--card-violet-50)); border: 2px solid var(--card-violet-200); border-top: 4px solid var(--card-turq-300); }
+main[data-palette='card'] > a[href^='/seed-shelf'] { background: linear-gradient(180deg, #fff, var(--card-pink-100)); border: 2px solid var(--card-pink-300); }
+main[data-palette='card'] > a[href^='/seasons'] { background: linear-gradient(180deg, #fff, var(--card-violet-50)); border: 2px solid var(--card-violet-200); border-bottom: 4px solid var(--card-gold-500); }
 
 /*
  * HOME HERO, CONNECTED: the four creatures, their names strip and the grass fringe are one lit stage (a pale lilac plate with a violet edge), so the row reads as a single object
@@ -3247,10 +3243,9 @@ main[data-palette='card'] > a[href^='/seasons'] { background: linear-gradient(18
  */
 main[data-shade='home'] .home-stage {
   padding: 8px 6px 6px;
-  background: linear-gradient(180deg, rgb(255 255 255 / 0.55) 0%, rgb(246 240 255 / 0.85) 100%);
-  border: 2px solid var(--card-violet-300);
-  border-radius: 16px;
-  box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.9), 0 0 16px 2px rgb(255 214 240 / 0.6);
+  background: radial-gradient(ellipse 80% 90% at 50% 55%, rgb(255 255 255 / 0.7) 0%, rgb(250 240 252 / 0.45) 55%, rgb(250 240 252 / 0) 100%);
+  border: 0;
+  border-radius: 24px;
 }
 main[data-shade='home'] .home-stage .home-name-strip { left: 6px; right: 6px; bottom: 6px; }
 
