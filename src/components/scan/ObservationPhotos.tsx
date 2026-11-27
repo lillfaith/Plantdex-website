@@ -188,6 +188,11 @@ export function ObservationPhotos({
    */
   const isRequired = (slot: (typeof SLOTS)[number]): boolean => (slot.key === 'close' ? closeRequired : slot.required);
 
+  /* What the player is TOLD about each slot. With the live camera and nothing held yet, one camera photo is all that is needed, so the supporting
+     angles read as optional; the floor itself (`minPhotosFor`) is untouched and still decides when the button enables. */
+  const readsOptional = (slot: (typeof SLOTS)[number]): boolean =>
+    !isRequired(slot) || (cameraOn && count === 0 && slot.key !== SLOTS[0]!.key);
+
   const firstEmpty = SLOTS.find((slot) => !held[slot.key]);
 
   return (
@@ -285,7 +290,7 @@ export function ObservationPhotos({
                 />
                 {slot.label}
               </p>
-              {!isRequired(slot) && (
+              {readsOptional(slot) && (
                 <p className="pd-badge mt-1 !min-h-0 !px-2 !py-0.5 !text-[0.72rem]">optional</p>
               )}
               <input
@@ -307,7 +312,7 @@ export function ObservationPhotos({
                 }}
               />
               <span className="sr-only">
-                {index + 1}. {isRequired(slot) ? 'Required' : 'Optional'}. {slot.instruction}
+                {index + 1}. {readsOptional(slot) ? 'Optional' : 'Required'}. {slot.instruction}
               </span>
             </li>
           );
