@@ -10,6 +10,7 @@ import { assetPath } from '@/lib/asset-path';
 import { PlantdexIcon } from '@/components/icons/PlantdexIcon';
 import { TakeTourButton } from '@/components/start/TakeTourButton';
 import { EYEBROW } from '@/components/ui/accents';
+import { PageAtmosphere } from '@/components/PageAtmosphere';
 
 /**
  * The four species whose creatures lead the landing page.
@@ -66,7 +67,8 @@ export default function HomePage() {
   );
 
   return (
-    <main id="main" className="mx-auto max-w-5xl px-4 py-10 sm:py-16">
+    <main id="main" data-ground="lavender" data-shade="home" className="mx-auto max-w-5xl px-4 py-10 sm:py-16">
+      <PageAtmosphere theme="home" />
       <section className="text-center">
         {/* Species count, not card count: the printed deck is 47 cards because it also
             carries an icon guide and a disclaimer. /shop states both; saying "45-card deck"

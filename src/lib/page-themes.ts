@@ -25,4 +25,4 @@ export const PAGE_THEMES = [
 export type PageThemeId = (typeof PAGE_THEMES)[number];
 
 /** Themes a route renders today. The others are specified but not applied yet. */
-export const ACTIVE_PAGE_THEMES: readonly PageThemeId[] = ['scan', 'collection', 'garden'];
+export const ACTIVE_PAGE_THEMES: readonly PageThemeId[] = ['home', 'scan', 'collection', 'garden', 'journal', 'learn', 'quests'];

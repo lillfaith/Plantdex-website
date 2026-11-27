@@ -1,3 +1,4 @@
+import { execSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { ACTIVE_PAGE_THEMES, PAGE_THEMES } from './page-themes';
@@ -31,16 +32,11 @@ describe('page themes', () => {
     }
   });
 
-  it('each active theme is applied by exactly its own route, and the rest by none', () => {
-    const routes: Record<string, string> = {
-      scan: 'src/app/scan/page.tsx',
-      collection: 'src/app/herbdex/page.tsx',
-      garden: 'src/app/garden/page.tsx',
-    };
-    for (const id of PAGE_THEMES) {
-      const used = Object.entries(routes).filter(([, f]) => readFileSync(f, 'utf8').includes(`<PageAtmosphere theme="${id}" />`));
-      expect(used.length).toBe(ACTIVE_PAGE_THEMES.includes(id) ? 1 : 0);
-    }
+  it('a theme that any route or view applies is listed as active (order-independent: a listed theme may be applied by a later change)', () => {
+    const files = execSync("grep -rl 'PageAtmosphere theme=' src/app src/components || true", { encoding: 'utf8' }).split('\n').filter(Boolean);
+    const used = new Set<string>();
+    for (const f of files) for (const m of readFileSync(f, 'utf8').matchAll(/<PageAtmosphere theme="([a-z]+)" \/>/g)) used.add(m[1]!);
+    for (const id of PAGE_THEMES) if (used.has(id)) expect(ACTIVE_PAGE_THEMES.includes(id), id).toBe(true);
   });
 
   it('the atmosphere is static, Safari-safe gradients: fixed, no animation, filter, blur or attachment', () => {

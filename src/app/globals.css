@@ -3443,3 +3443,129 @@ body:has(main[data-ground='lavender']) [data-page-theme='garden'] {
 [data-ground='lavender'] [class*='text-botanical-400'] {
   color: #1f6a35;
 }
+
+/*
+ * ─────────────────────────────────────────────────────────�
+ * LAVENDER V3, EXTENDED (owner decision 2026-11-27, for owner approval before merge). The approved V3 system above (the `data-ground`
+ * block, glows, ink tokens, pale surfaces) is reused unchanged; each page only picks its own SHADE of the family, so Home, Scan, Quests,
+ * Journal, Learn and Profile read as one world without being the same flat colour. Collection, card profile and Garden are untouched.
+ *   shade        ground     feel
+ *   home         #D6BDF9    pearl: the lightest, with the pink glint
+ *   scan         #BEB0F6    periwinkle: cooler, for the page used outdoors
+ *   quests       #D4A8F2    orchid: warmer
+ *   journal      #CBAEEA    mauve: dusty
+ *   learn        #B7B7F5    blue-lilac
+ *   profile      #C79BF5    card violet, the richest
+ * Ink stays #3D0A63 (measured >= 5.07:1 on the darkest pool of every shade). Dark plum stays on nav, CTAs and selected states; gold and pink
+ * stay the accents; pixel art is untouched.
+ * ─────────────────────────────────────────────────────────�
+ */
+[data-ground='lavender'][data-shade='home'] { --lav-surface: #f3ebfe; --lav-surface-2: #e3d1fb; --lav-edge: #8a5bd0; --lav-drop: #bb9cf0; }
+[data-ground='lavender'][data-shade='scan'] { --lav-surface: #ece9fe; --lav-surface-2: #d3ccfa; --lav-edge: #7a62d2; --lav-drop: #a99af0; }
+[data-ground='lavender'][data-shade='quests'] { --lav-surface: #f6e8fc; --lav-surface-2: #e6cbf7; --lav-edge: #a558cb; --lav-drop: #d39be9; }
+[data-ground='lavender'][data-shade='journal'] { --lav-surface: #f1e6fa; --lav-surface-2: #dec8f3; --lav-edge: #8657b8; --lav-drop: #bd9ce0; }
+[data-ground='lavender'][data-shade='learn'] { --lav-surface: #eaeafe; --lav-surface-2: #cfd0f9; --lav-edge: #6c6ccb; --lav-drop: #a2a3ee; }
+[data-ground='lavender'][data-shade='profile'] { --lav-surface: #efe1fd; --lav-surface-2: #ddc0fa; --lav-edge: #8a45d0; --lav-drop: #b57ef0; }
+
+body:has(main[data-shade='home']) [data-page-theme='home'] { --pt-a: #d6bdf9; --pt-b: #efe4fe; --pt-c: #c8a2f5; --pt-accent: #9c21f8; --pt-accent-2: #f180b4; --pt-b-a: 70%; --pt-c-a: 55%; --pt-vignette: 10%; --pt-royal: 8%; }
+body:has(main[data-shade='profile']) [data-page-theme='home'] { --pt-a: #c79bf5; --pt-b: #e2c9fc; --pt-c: #b57ef0; --pt-accent: #9c21f8; --pt-accent-2: #f180b4; --pt-b-a: 70%; --pt-c-a: 55%; --pt-vignette: 10%; --pt-royal: 8%; }
+body:has(main[data-shade='scan']) [data-page-theme='scan'] { --pt-a: #beb0f6; --pt-b: #dcd5fd; --pt-c: #a99af0; --pt-accent: #6c4fd6; --pt-accent-2: #f180b4; --pt-b-a: 70%; --pt-c-a: 55%; --pt-vignette: 10%; --pt-royal: 8%; }
+body:has(main[data-shade='quests']) [data-page-theme='quests'] { --pt-a: #d4a8f2; --pt-b: #ebd3fb; --pt-c: #c58bec; --pt-accent: #b8329c; --pt-accent-2: #f2c75c; --pt-b-a: 70%; --pt-c-a: 55%; --pt-vignette: 10%; --pt-royal: 8%; }
+body:has(main[data-shade='journal']) [data-page-theme='journal'] { --pt-a: #cbaeea; --pt-b: #e5d3f6; --pt-c: #b994e2; --pt-accent: #9c21f8; --pt-accent-2: #f2c75c; --pt-b-a: 70%; --pt-c-a: 55%; --pt-vignette: 10%; --pt-royal: 8%; }
+body:has(main[data-shade='learn']) [data-page-theme='learn'] { --pt-a: #b7b7f5; --pt-b: #d7d8fc; --pt-c: #a2a3ee; --pt-accent: #5b5bd6; --pt-accent-2: #f2c75c; --pt-b-a: 70%; --pt-c-a: 55%; --pt-vignette: 10%; --pt-royal: 8%; }
+
+/*
+ * Identify page and result surfaces on the lavender ground. The holographic edge and the pink/blue key are kept (they are the Scan
+ * page's identity); only the dark plum FILL behind the text becomes the pale surface, so the flipped ink reads. Class rules, not token
+ * overrides, for the same reason as the text fixes above.
+ */
+[data-ground='lavender'] .holo-border {
+  background:
+    linear-gradient(var(--lav-surface), var(--lav-surface)) padding-box,
+    linear-gradient(125deg, #ff9bd8 0%, #c9a8ff 22%, #8fd6ff 46%, #ffb4e6 68%, #a9c6ff 88%, #ff9bd8 100%) border-box;
+  box-shadow: 0 3px 0 0 var(--lav-drop);
+}
+[data-ground='lavender'] .holo-fill {
+  color: #2b0a4a;
+}
+/*
+ * Any dark plum FILL token (solid or translucent, e.g. bg-plum-800, bg-plum-700/30) behind flipped ink becomes the pale surface. The match is on
+ * a token that STARTS with bg-plum-, so `hover:bg-plum-*` and `backdrop:bg-plum-*` are untouched, and an element that names its own white text (a
+ * deliberate plum button) keeps its plum.
+ */
+[data-ground='lavender'] :is([class*=' bg-plum-'], [class^='bg-plum-']):not([class*='text-white']) {
+  background-color: var(--lav-surface-2);
+}
+[data-ground='lavender'] :is([class*=' bg-plum-9'], [class^='bg-plum-9']):not([class*='text-white']):not(button):not(a) {
+  border-color: var(--lav-edge);
+}
+[data-ground='lavender'] [class~='bg-violet-600/15']:not([class*='text-white']) {
+  background-color: var(--lav-surface-2);
+  border-color: var(--lav-edge);
+}
+/* New pages only: a gold FILL stays gold (the flipped token is for text, and made progress segments dark brown). */
+[data-shade] [class~='bg-gold-400'] { background-color: #ffd54a; }
+[data-shade] [class~='bg-gold-300'] { background-color: #ffe27a; }
+[data-ground='lavender'] .learn-tile {
+  background:
+    radial-gradient(120% 70% at 50% 0%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 70%),
+    var(--lav-surface);
+  box-shadow: 0 3px 0 0 var(--lav-drop);
+}
+[data-ground='lavender'] .sunken {
+  background: var(--lav-surface-2);
+  border-color: var(--lav-edge);
+}
+[data-ground='lavender'] [class*='bg-plum-950'] {
+  background-color: var(--lav-surface-2);
+  border: 1px solid var(--lav-edge);
+}
+[data-ground='lavender'] .text-mystery-pink {
+  color: #a8326a;
+}
+
+/*
+ * THE PAGE ITSELF IS LAVENDER, NOT ONLY THE FIXED LAYER. The atmosphere is `position: fixed`, so it covers whatever the viewport shows and
+ * nothing else: in a stitched full-page capture, in overscroll bounce and behind a keyboard, the dark global ground showed through as a plum
+ * band under the first screen. Painting the canvas the same shade removes that without touching the fixed layer.
+ */
+html:has(main[data-ground='lavender']),
+body:has(main[data-ground='lavender']) {
+  background: #c9a4f8;
+}
+body:has(main[data-shade='home']) { background: #d6bdf9; }
+body:has(main[data-shade='profile']) { background: #c79bf5; }
+body:has(main[data-shade='scan']) { background: #beb0f6; }
+body:has(main[data-shade='quests']) { background: #d4a8f2; }
+body:has(main[data-shade='journal']) { background: #cbaeea; }
+body:has(main[data-shade='learn']) { background: #b7b7f5; }
+html:has(main[data-shade='home']) { background: #d6bdf9; }
+html:has(main[data-shade='profile']) { background: #c79bf5; }
+html:has(main[data-shade='scan']) { background: #beb0f6; }
+html:has(main[data-shade='quests']) { background: #d4a8f2; }
+html:has(main[data-shade='journal']) { background: #cbaeea; }
+html:has(main[data-shade='learn']) { background: #b7b7f5; }
+/* A hover/pressed tint that was a dark translucent plum is the pale surface on lavender (it stays after a tap on a phone). */
+[data-ground='lavender'] [class*='hover:bg-plum']:hover {
+  background-color: var(--lav-surface-2);
+}
+
+/*
+ * CONTRAST FIXES FROM A BROWSER-MEASURED AUDIT (every text node against its composited background, 4.5:1, or 3:1 for large text). Scoped to
+ * `[data-shade]`, which only the new pages carry, so the approved Collection, card profile and Garden are not touched.
+ */
+[data-shade] {
+  --color-violet-400: #52257f;
+  --color-gold-300: #4d2c04;
+  --color-gold-400: #5c3505;
+}
+[data-shade] .text-mystery-pink { color: #7a1f4a; }
+[data-shade] .text-mystery-orchid { color: #6f2a86; }
+[data-shade] .text-mystery-mauve { color: #5f2f7a; }
+[data-shade] .text-mystery-purple { color: #4f1d82; }
+[data-shade] .text-stat-temp { color: #9a2a12; }
+/* A pale button that used the (now ink) violet-300 as its fill: deep plum with white text, the same CTA in lavender's terms. */
+[data-shade] [class~='bg-violet-300'] { background-color: var(--plum-mid); color: #fff; }
+[data-shade] [class*='hover:bg-violet-200']:hover { background-color: #3d0a63; }
+/* The white "Edit profile" link sits on the pale hero plate here. */
+[data-shade] [class*='tap-44'][class*='absolute'][class~='text-white'] { color: var(--color-violet-200); }
