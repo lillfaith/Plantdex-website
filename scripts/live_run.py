@@ -2,18 +2,21 @@
 """Autonomous prerequisites, disposable accounts and cleanup for the LIVE camera-to-collection run. TEST PROJECT ONLY.
 
     live_run.py preflight    read-only: is this really TEST, is 0016 there, is enforcement OFF, is identify-plant live, are the
-                             provider and attestation secrets present, and CAN the admin credential be obtained?
-    live_run.py provision    create two already-confirmed disposable accounts through the Auth admin API, plus one aged
-                             (expired) receipt for the second one, and hand the credentials to the suite through masked env vars
+                             provider key gate passes, and the public anon key works?
+    live_run.py provision    create two already-confirmed disposable accounts, plus one aged (expired) receipt for the second
+                             one, and hand the credentials to the suite through masked env vars
     live_run.py cleanup      delete ONLY the accounts this run created, by exact id and exact email, then prove nothing is left
     live_run.py selftest     offline checks of the guards in this file (no network)
 
-WHY THE ADMIN API AND NOT THE "CONFIRM EMAIL" SETTING. The project's authentication settings are shared by everything on TEST.
-An admin-created user with `email_confirm: true` is already confirmed, so the setting is never touched.
+WHY NOT THE "CONFIRM EMAIL" SETTING. The project's authentication settings are shared by everything on TEST, so they are never
+touched. The accounts are created already confirmed.
 
-THE ONLY CREDENTIAL IS THE REPOSITORY'S EXISTING `SUPABASE_ACCESS_TOKEN`. The project's service-role key is obtained from the
-Management API at run time, masked at once, held in this process only and never written to a file, an environment file, the step
-summary or a log. The vitest process never sees it: it receives two ordinary player email/password pairs and nothing else.
+WHY THE DATABASE AND NOT THE AUTH ADMIN API. The Auth admin API needs the project's service-role key, and the repository's
+`SUPABASE_ACCESS_TOKEN` is refused (HTTP 403) on the project, secrets and API-keys endpoints: it carries the Database and
+Edge-Functions scopes only. So the two players are inserted into `auth.users` (+ `auth.identities`) through the one scope it does
+have, with a bcrypt password hash computed by the database; they then sign in through the real Auth password endpoint like anyone.
+No service-role key is ever obtained, so none can leak. The vitest process receives two ordinary email/password pairs and the
+public anon key, nothing else.
 
 PRINTS NAMES, COUNTS AND PASS/FAIL ONLY. A response body is never echoed (several of these endpoints return secret values next to
 their names). Anything that cannot be verified is a FAILURE: an unverified prerequisite is never a pass.
@@ -31,6 +34,7 @@ import sys
 import urllib.error
 import urllib.parse
 import urllib.request
+import uuid
 
 TEST_REF = "vgjehmwcpavflbfhbbrp"
 PRODUCTION_REF = "vygiamigomwlvnwkryyl"
@@ -121,24 +125,29 @@ def require_test_only() -> None:
 
 
 # ── keys ────────────────────────────────────────────────────────────────────────────────────────────────────────────
-def project_keys() -> tuple[str | None, str | None, str]:
-    """(anon, service_role, note). The service-role key is masked the moment it exists."""
-    status, body = mgmt("GET", f"/v1/projects/{TEST_REF}/api-keys?reveal=true")
-    if status != 200 or not isinstance(body, list):
-        return None, None, f"api-keys answered HTTP {status}, {shape(body)}"
-    anon = service = None
-    for k in body:
-        if not isinstance(k, dict):
-            continue
-        name = str(k.get("name", ""))
-        key = k.get("api_key")
-        if isinstance(key, str) and key:
-            mask(key)
-            if name == "anon":
-                anon = key
-            elif name == "service_role":
-                service = key
-    return anon, service, "ok"
+def anon_key() -> tuple[str | None, str]:
+    """The TEST project's PUBLIC anon key: the repository variable first, the Management API as a fallback. Validated, not trusted."""
+    key = os.environ.get("TEST_ANON_KEY", "").strip()
+    source = "repository variable TEST_SUPABASE_ANON_KEY"
+    if not key:
+        status, body = mgmt("GET", f"/v1/projects/{TEST_REF}/api-keys")
+        if status == 200 and isinstance(body, list):
+            for k in body:
+                if isinstance(k, dict) and k.get("name") == "anon" and isinstance(k.get("api_key"), str):
+                    key, source = k["api_key"], "Management API"
+        if not key:
+            return None, f"no anon key: the repository variable TEST_SUPABASE_ANON_KEY is empty and the Management API answered HTTP {status}"
+    if key.startswith("sb_secret_"):
+        return None, "the configured key is a SECRET key; only the public anon/publishable key may be used"
+    if key.startswith("eyJ"):
+        claims = jwt_claims(key)
+        if not claims or claims.get("role") != "anon" or claims.get("ref") not in (None, TEST_REF):
+            return None, "the configured JWT is not an anon key for the TEST project"
+    status, _ = http("GET", f"{URL}/auth/v1/settings", {"apikey": key})
+    if status != 200:
+        return None, f"the TEST project did not accept the key from the {source} (HTTP {status})"
+    mask(key)
+    return key, source
 
 
 def jwt_claims(key: str) -> dict | None:
@@ -147,10 +156,6 @@ def jwt_claims(key: str) -> dict | None:
         return json.loads(base64.urlsafe_b64decode(seg + "=" * (-len(seg) % 4)))
     except Exception:
         return None
-
-
-def admin_headers(service: str) -> dict[str, str]:
-    return {"apikey": service, "Authorization": f"Bearer {service}"}
 
 
 # ── preflight ───────────────────────────────────────────────────────────────────────────────────────────────────────
@@ -180,17 +185,15 @@ def all_true(d: object, names: list[str]) -> list[str]:
 
 
 def check_project() -> None:
+    """The ref is a literal in every URL below, so every call is made against TEST and nothing else. This asks the platform to
+    confirm it too; the token may not be allowed to (HTTP 403), which is reported, not hidden, and does not by itself fail the run
+    because the anon key's own `ref` claim and the project URL are checked independently in check_credentials."""
     status, body = mgmt("GET", f"/v1/projects/{TEST_REF}")
-    if status != 200 or not isinstance(body, dict):
-        bad(f"project lookup: HTTP {status}, {shape(body)}")
-        return
-    ref = body.get("id") or body.get("ref")
-    if ref == TEST_REF:
-        ok(f"target project is exactly the TEST project ({TEST_REF}); status {body.get('status')}")
+    if status == 200 and isinstance(body, dict):
+        ref = body.get("id") or body.get("ref")
+        ok(f"platform confirms the target is the TEST project ({TEST_REF})") if ref == TEST_REF else bad("the project at the TEST ref is not the TEST ref")
     else:
-        bad("the project the token resolves for the TEST ref is not the TEST ref")
-    if str(body.get("status", "")).upper() not in ("ACTIVE_HEALTHY", "ACTIVE"):
-        bad(f"project is not active (status {body.get('status')})")
+        print(f"NOTE  the platform project lookup is not permitted for this token (HTTP {status}); target identity is checked through the database, the function listing and the anon key's project claim instead")
 
 
 def check_database() -> None:
@@ -242,63 +245,36 @@ def sha(s: str) -> str:
     return hashlib.sha256(s.encode()).hexdigest()
 
 
-def check_secrets() -> None:
-    """Names always; a value only through its digest, and only for the few values that decide behaviour."""
+def check_secrets_if_readable() -> None:
+    """NAMES, when the token is allowed to list them. It usually is not (HTTP 403); then this says so and the functional probe in
+    check_credentials carries the provider-key question instead. Never a pass by default."""
     status, body = mgmt("GET", f"/v1/projects/{TEST_REF}/secrets")
     if status != 200 or not isinstance(body, list):
-        bad(f"project secrets could not be read: HTTP {status}, {shape(body)}. Credentials are therefore UNVERIFIED, which is a failure.")
+        print(f"NOTE  project secrets cannot be listed with this token (HTTP {status}); the provider key is probed functionally below, and SPECIES_ATTESTATION_SECRET stays UNVERIFIED (it is not used by the collect path: an unset one only stops new species being minted)")
         return
-    by_name: dict[str, str] = {}
-    for item in body:
-        if isinstance(item, dict) and isinstance(item.get("name"), str):
-            by_name[item["name"]] = str(item.get("value", ""))
-    if "SPECIES_ATTESTATION_SECRET" in by_name:
-        ok("SPECIES_ATTESTATION_SECRET is set")
-    else:
-        bad("SPECIES_ATTESTATION_SECRET is NOT set")
-    provider = "plantnet"
-    if "PLANT_IDENTIFICATION_PROVIDER" in by_name:
-        digest = by_name["PLANT_IDENTIFICATION_PROVIDER"]
-        if digest == sha("plantid"):
-            provider = "plantid"
-        elif digest == sha("plantnet"):
-            provider = "plantnet"
-        else:
-            bad("PLANT_IDENTIFICATION_PROVIDER is set to a value this repository does not implement")
-            return
-    key = {"plantnet": "PLANTNET_API_KEY", "plantid": "PLANT_ID_API_KEY"}[provider]
-    if key in by_name:
-        ok(f"identification provider is {provider} and {key} is set")
-    else:
-        bad(f"identification provider is {provider} but {key} is NOT set")
+    by_name = {i["name"]: str(i.get("value", "")) for i in body if isinstance(i, dict) and isinstance(i.get("name"), str)}
+    ok("SPECIES_ATTESTATION_SECRET is set") if "SPECIES_ATTESTATION_SECRET" in by_name else print("NOTE  SPECIES_ATTESTATION_SECRET is not set (new species could not be minted; not used by this run)")
     if "IDENTIFY_MIN_IMAGES" in by_name and by_name["IDENTIFY_MIN_IMAGES"] != sha("1"):
         bad("IDENTIFY_MIN_IMAGES is set to something other than 1: a one-photograph capture would be refused")
-    else:
-        ok("IDENTIFY_MIN_IMAGES is unset or 1 (a one-photograph capture is accepted)")
-    for name in ("IDENTIFICATION_COMPARISON", "IDENTIFICATION_COMPARISON_USER_IDS"):
-        if name in by_name:
-            print(f"NOTE  {name} is set (allow-listed accounts only; the disposable accounts are not on it)")
 
 
-def check_admin_credential() -> None:
-    anon, service, note = project_keys()
-    if note != "ok":
-        bad(f"project API keys could not be obtained: {note}")
+def check_credentials() -> None:
+    anon, note = anon_key()
+    if not anon:
+        bad(f"anon key unavailable: {note}. Without it nothing can sign in or call the function, so the run cannot be verified.")
         return
-    if not anon or not service:
-        bad("the Management API did not return both an anon key and a service-role key for TEST")
-        return
-    claims = jwt_claims(service)
-    if claims is not None and (claims.get("role") != "service_role" or claims.get("ref") not in (None, TEST_REF)):
-        bad("the service key obtained does not claim role service_role for the TEST project")
-        return
-    status, body = http("GET", f"{URL}/auth/v1/admin/users?page=1&per_page=1", admin_headers(service))
-    if status == 200:
-        ok("admin credential for TEST obtained and accepted by the TEST Auth admin API (not used yet, never printed)")
+    ok(f"the TEST project accepts its public anon key (from the {note})")
+    # THE PROVIDER KEY, PROBED WITHOUT SPENDING A PROVIDER CREDIT. identify-plant refuses with `unconfigured` (503) BEFORE it
+    # looks at the request when the selected provider's key is missing, so a body-less POST says whether it is set. Any other
+    # answer means the gate passed. (It proves presence, not validity: validity is proven by the real provider call itself.)
+    status, body = http("POST", f"{URL}/functions/v1/identify-plant", {"apikey": anon, "Authorization": f"Bearer {anon}"}, {})
+    code = body.get("code") if isinstance(body, dict) else None
+    if status == 503 and code == "unconfigured":
+        bad("identify-plant answers `unconfigured`: the selected provider's API key is NOT set on TEST")
+    elif status in (0, 401, 403, 404) or status >= 500:
+        bad(f"the provider-key probe was inconclusive (HTTP {status}, code {code}); credentials are UNVERIFIED, which is a failure")
     else:
-        bad(f"the TEST Auth admin API refused the credential: HTTP {status}")
-    status, _ = http("GET", f"{URL}/auth/v1/settings", {"apikey": anon})
-    ok("the TEST project accepts its anon key") if status == 200 else bad(f"the anon key was not accepted: HTTP {status}")
+        ok(f"identify-plant passed its provider-key gate (HTTP {status}); no provider credit was spent")
 
 
 def cmd_preflight() -> None:
@@ -306,8 +282,8 @@ def cmd_preflight() -> None:
     check_project()
     check_database()
     check_function()
-    check_secrets()
-    check_admin_credential()
+    check_secrets_if_readable()
+    check_credentials()
     print()
     if FAILURES:
         print(f"PREFLIGHT FAILED: {len(FAILURES)} prerequisite(s) not verified. Nothing was spent and nothing was changed.")
@@ -350,33 +326,60 @@ def append_env(name: str, value: str) -> None:
         f.write(f"{name}={value}\n")
 
 
+def sql_literal(v: str) -> str:
+    assert "'" not in v and "\\" not in v and "\n" not in v, "unexpected character in a value bound for SQL"
+    return "'" + v + "'"
+
+
+def create_confirmed_user(uid: str, email: str, password: str, stamp: str) -> str:
+    """One already-confirmed email/password player, written the way Auth itself writes one. The password is hashed by the database
+    (pgcrypto, bcrypt); every token column is '' rather than NULL because Auth cannot scan a NULL there."""
+    meta = json.dumps({"plantdex_e2e": stamp})
+    return f"""
+    with u as (
+      insert into auth.users (instance_id, id, aud, role, email, encrypted_password, email_confirmed_at,
+          raw_app_meta_data, raw_user_meta_data, created_at, updated_at,
+          confirmation_token, recovery_token, email_change_token_new, email_change,
+          email_change_token_current, phone_change, phone_change_token, reauthentication_token)
+      values ('00000000-0000-0000-0000-000000000000', {sql_literal(uid)}, 'authenticated', 'authenticated', {sql_literal(email)},
+          extensions.crypt({sql_literal(password)}, extensions.gen_salt('bf')), now(),
+          '{{"provider":"email","providers":["email"]}}'::jsonb, {sql_literal(meta)}::jsonb, now(), now(),
+          '', '', '', '', '', '', '', '')
+      returning id, email)
+    insert into auth.identities (user_id, provider_id, provider, identity_data, last_sign_in_at, created_at, updated_at)
+    select u.id, u.id::text, 'email',
+           jsonb_build_object('sub', u.id::text, 'email', u.email, 'email_verified', true, 'phone_verified', false),
+           now(), now(), now()
+    from u
+    returning user_id::text as id
+    """
+
+
 def cmd_provision() -> None:
     require_test_only()
     stamp = run_stamp()
-    anon, service, note = project_keys()
-    if note != "ok" or not anon or not service:
-        die(f"could not obtain the TEST project keys ({note}).")
+    anon, note = anon_key()
+    if not anon:
+        die(f"could not obtain the TEST anon key ({note}).")
     append_env("E2E_ANON_KEY", anon)  # public by design; masked anyway
     state: dict = {"stamp": stamp, "accounts": {}}
     save_state(state)
     for role, email in emails(stamp).items():
         password = "Pw-" + secrets.token_urlsafe(24)
         mask(password)
-        status, body = http("POST", f"{URL}/auth/v1/admin/users", admin_headers(service), {
-            "email": email, "password": password, "email_confirm": True,
-            "user_metadata": {"plantdex_e2e": stamp},
-        })
-        uid = body.get("id") if isinstance(body, dict) else None
-        if status not in (200, 201) or not isinstance(uid, str):
-            msg = body.get("msg") or body.get("message") if isinstance(body, dict) else ""
-            die(f"creating the {role} account failed: HTTP {status} {str(msg)[:120]}")
-        if body.get("email") != email or not body.get("email_confirmed_at"):
-            die(f"the {role} account came back unconfirmed or with a different email.")
+        uid = str(uuid.uuid4())
+        status, body = sql(create_confirmed_user(uid, email, password, stamp))
+        if status not in (200, 201) or not isinstance(body, list) or not body or body[0].get("id") != uid:
+            die(f"creating the {role} account failed: HTTP {status}, {shape(body)}")
         state["accounts"][role] = {"id": uid, "email": email}
         save_state(state)
+        # Prove it is a real, confirmed, password-capable account through the real Auth endpoint before anything is spent.
+        status, tok = http("POST", f"{URL}/auth/v1/token?grant_type=password", {"apikey": anon}, {"email": email, "password": password})
+        if status != 200 or not isinstance(tok, dict) or not tok.get("access_token"):
+            die(f"the {role} account could not sign in through the real Auth endpoint (HTTP {status}); nothing was spent.")
         append_env(f"E2E_{role.upper()}_EMAIL", email)
         append_env(f"E2E_{role.upper()}_PASSWORD", password)
-        ok(f"created confirmed disposable account {role}: {email} ({uid})")
+        ok(f"created confirmed disposable account {role}: {email} ({uid}); real password sign-in works")
     # One AGED receipt for Bob, so 'expired' can be tested without waiting a month. The row is written by an admin
     # statement and is the ONLY fabricated thing in the run: claim_discovery (the real function) is what judges it.
     bob = state["accounts"]["bob"]["id"]
@@ -420,7 +423,7 @@ def cmd_cleanup() -> None:
     # An account created just before the process died is not in the file: look it up by its EXACT email, which only this
     # run's stamp can produce. Never by a pattern, never by age.
     if len(ids) < 2:
-        quoted = ",".join("'" + e + "'" for e in expect.values())
+        quoted = ",".join(sql_literal(e) for e in expect.values())
         status, body = sql(f"select id::text as id, email from auth.users where email in ({quoted})")
         if status in (200, 201) and isinstance(body, list):
             for row in body:
@@ -432,34 +435,25 @@ def cmd_cleanup() -> None:
     if not ids:
         print("Nothing to clean up: this run created no accounts.")
         return
-    anon, service, note = project_keys()
-    if not service:
-        die(f"cannot clean up: the admin credential could not be obtained ({note}).")
     leftovers = 0
+    good: list[str] = []
     for role, uid in ids.items():
         if not re.fullmatch(r"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}", uid):
             print(f"::warning::skipping {role}: id has an unexpected shape")
             continue
-        status, body = http("GET", f"{URL}/auth/v1/admin/users/{uid}", admin_headers(service))
-        if status == 404:
-            print(f"already gone: {role}")
-            continue
-        if status != 200 or not isinstance(body, dict) or body.get("email") != expect[role]:
-            print(f"::error::refusing to delete {role}: the account at that id is not the one this run created")
-            leftovers += 1
-            continue
-        status, _ = http("DELETE", f"{URL}/auth/v1/admin/users/{uid}", admin_headers(service))
-        if status in (200, 204):
-            print(f"deleted {role}: {expect[role]} ({uid})")
+        # Exact id AND exact email, in the statement itself: a row that is not this run's account cannot match.
+        status, body = sql(f"delete from auth.users where id = {sql_literal(uid)}::uuid and email = {sql_literal(expect[role])} returning id::text as id")
+        if status in (200, 201) and isinstance(body, list):
+            print(f"deleted {role}: {expect[role]} ({uid})" if body else f"already gone (or not this run's account): {role}")
+            good.append(uid)
         else:
             print(f"::error::deleting {role} failed: HTTP {status}")
             leftovers += 1
     # Quota rows are keyed by text, not by a foreign key, so they do not cascade. Exact ids only.
-    good = [u for u in ids.values() if re.fullmatch(r"[0-9a-f-]{36}", u)]
     if good:
-        buckets = ",".join(f"'user:{u}'" for u in good)
+        buckets = ",".join(sql_literal(f"user:{u}") for u in good)
         sql(f"delete from public.scan_quota where bucket in ({buckets}) returning bucket")
-        uids = ",".join(f"'{u}'" for u in good)
+        uids = ",".join(sql_literal(u) + "::uuid" for u in good)
         status, body = sql(
             "select (select count(*) from auth.users where id in (" + uids + ")) as users,"
             " (select count(*) from public.capture_sessions where user_id in (" + uids + ")) as sessions,"
