@@ -64,7 +64,7 @@ Reproduce the browser column with `scripts/make-cameras.sh`, `scripts/journey.js
 | 10 | Georgia quests reflect the find | PASS (`georgia-1`: Ragweed "Found") | open |
 | 11 | Sign out then in restores everything | PASS (`20` empty signed out, `22`/`23`/`24` restored) | open |
 | 12 | Library photos cannot unlock a card | PASS (`library.json`: no collect offer, 0 XP, no `claim_discovery`) | open |
-| 13 | Repeating a find does not duplicate rewards | REPEAT_RESULT | open |
+| 13 | Repeating a find does not duplicate rewards | PASS (`repeat.json`: the same photo identified again shows "Already in your collection", offers no confirm, no `claim_discovery`, XP stays 100) | open |
 | 14 | A non-plant gives a usable result, no reward | PASS (`blank.json`: "Nothing was recognised", 0 XP) | open |
 | 15 | A species with no card offers the Seed Shelf, pays nothing | PASS (`offdeck.json`: packet saved, 0 XP) | open |
 | 16 | Network loss during identify gives an honest message | PASS (message) / **FAIL (recovery)**: see blocker 2 | open |
@@ -82,7 +82,7 @@ Reproduce the browser column with `scripts/make-cameras.sh`, `scripts/journey.js
 
 ## 5. Cleanup record
 
-Throwaway accounts used: see `accounts.json` names in the run (all `rehearsal-<stamp>@example.com`). Deleted through the app's own delete-account function (CLEANUP_RESULT). The global `species_packets` row for Magnolia grandiflora cannot be deleted by design. No production resource was read or written.
+Eight throwaway accounts were used (all `rehearsal-<stamp>@example.com`). All eight were deleted through the app's own `delete-account` function (each returned `{ok:true}` and each sign-in afterwards was refused), which also shows that function works on TEST. The global `species_packets` row for Magnolia grandiflora cannot be deleted by design. No production resource was read or written.
 
 ## 6. How to reproduce the browser run
 
