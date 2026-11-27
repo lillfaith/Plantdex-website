@@ -82,7 +82,7 @@ describe('the scanner is reachable from anywhere', () => {
      * unchanged.
      */
     const links = NAV.match(/href: '\/[a-z-]*'/g) ?? [];
-    expect(links.length).toBe(6);
+    expect(links.length).toBe(7); // Quests became the seventh tab (owner decision 2026-11-27); the 320px fit is measured in docs/release/v1-nav-measurement.md
   });
 });
 

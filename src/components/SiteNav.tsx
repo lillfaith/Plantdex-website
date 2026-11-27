@@ -7,8 +7,12 @@ import { PlantdexIcon, type IconName } from './icons/PlantdexIcon';
 /**
  * Primary navigation.
  *
- * Six destinations, no sub-menus: minor features live inside "Learn" rather than earning
- * their own top-level slot. On a phone this is a fixed bottom bar within thumb reach,
+ * THE LABEL IS "CARDS", MEASURED (docs/release/v1-nav-measurement.md): with seven slots "Collection" overflowed the bar at 320px and left no slack
+ * at 360-430px; "Cards" fits all of them with 3-10px to spare. The page it opens is still titled "My Collection".
+ *
+ * Seven destinations, no sub-menus: minor features live inside "Learn" rather than earning
+ * their own top-level slot. Quests is the seventh (owner decision 2026-11-27); it was reachable only by typing
+ * the address before that, because nothing in the app linked to it. On a phone this is a fixed bottom bar within thumb reach,
  * which is where navigation belongs when the app is being used outdoors one-handed; on
  * wider screens it moves to the top.
  *
@@ -37,8 +41,9 @@ import { PlantdexIcon, type IconName } from './icons/PlantdexIcon';
 const LINKS: { href: string; label: string; icon: IconName }[] = [
   { href: '/', label: 'Home', icon: 'home' },
   { href: '/scan', label: 'Scan', icon: 'scan' },
-  { href: '/herbdex', label: 'Collection', icon: 'herbdex' },
+  { href: '/herbdex', label: 'Cards', icon: 'herbdex' },
   { href: '/garden', label: 'Garden', icon: 'garden' },
+  { href: '/quests', label: 'Quests', icon: 'compass' },
   { href: '/journal', label: 'Journal', icon: 'journal' },
   { href: '/learn', label: 'Learn', icon: 'learn' },
 ];
