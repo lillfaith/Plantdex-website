@@ -1,0 +1,11 @@
+{
+  "target": "TEST vgjehmwcpavflbfhbbrp",
+  "authorized_by": "owner",
+  "enforcement": "off",
+  "skip_blank": true,
+  "max_provider_calls": 1,
+  "request_id": "live-run-5-refuse-before-quota-20261127",
+  "herb_id": "taraxacum-officinale",
+  "expires_at": "2026-11-27T20:00:00Z",
+  "note": "Run 5 (owner-approved 2026-11-27, the last of four provider calls): identify-plant with refuse-before-quota deployed to TEST. Proves live that refused attempts (reuse, foreign session, signed out, no photograph) charge nobody and return no identification, and that the happy path still works. Enforcement stays OFF."
+}

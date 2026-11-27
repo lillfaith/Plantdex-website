@@ -15,11 +15,14 @@ name: Live camera-to-collection run (TEST project only, autonomous)
 # docs/release/live-run-request.json. Every run needs a new commit to that file, which must name the TEST project, say the owner
 # authorised it, state enforcement OFF, cap the provider calls at 2, carry a fresh request id and an unexpired time. A re-run of
 # the same run is refused (run_attempt must be 1), so a credit-spending run can never be repeated by pressing a button.
-# TRIGGER DISABLED after run 4 (2026-11-27). To authorise another credit-spending run, a reviewed PR restores the `push:` block that
-# watches docs/release/live-run-request.json (see git history of this file). `workflow_dispatch` is kept only so the file stays a
-# valid workflow; the gate step refuses anything that is not a push to integration, so a dispatch fails before spending anything.
+# THIS TRIGGER IS TEMPORARY AND IS RESTORED ONLY FOR THE OWNER-APPROVED RUN 5 (one provider call: the last of the four approved). It is removed
+# again by a reviewed PR once the run is reported. The gate step refuses anything that is not a push to integration.
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - integration
+    paths:
+      - docs/release/live-run-request.json
 
 concurrency:
   group: live-capture-run
