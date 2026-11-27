@@ -9,6 +9,7 @@ import { CardShowcase } from '@/components/game/CardShowcase';
 import { assetPath } from '@/lib/asset-path';
 import { PlantdexIcon } from '@/components/icons/PlantdexIcon';
 import { TakeTourButton } from '@/components/start/TakeTourButton';
+import { HomeQuestEntry } from '@/components/start/HomeQuestEntry';
 import { EYEBROW } from '@/components/ui/accents';
 import { PageAtmosphere } from '@/components/PageAtmosphere';
 
@@ -317,6 +318,10 @@ export default function HomePage() {
           >
             Explore the collection
           </Link>
+        </div>
+        {/* THE REGIONAL QUEST ENTRY (owner decision 2026-11-27): one prominent card under the two free actions, below the buy button's group. */}
+        <div className="mx-auto mt-4 max-w-md">
+          <HomeQuestEntry />
         </div>
       </section>
 

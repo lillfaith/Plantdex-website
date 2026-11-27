@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { ScanPanel } from '@/components/scan/ScanPanel';
 import { ScanScout } from '@/components/scan/ScanScout';
+import { CollectFlow } from '@/components/scan/CollectFlow';
 import { PlantdexIcon } from '@/components/icons/PlantdexIcon';
 import { PageAtmosphere } from '@/components/PageAtmosphere';
 import { ContaminationNote, SafetyNotice } from '@/components/SafetyNotice';
@@ -24,7 +25,7 @@ export const metadata: Metadata = {
  */
 export default function ScanPage() {
   return (
-    <main id="main" className="mx-auto max-w-2xl px-4 py-8">
+    <main id="main" data-ground="lavender" data-shade="scan" className="mx-auto max-w-2xl px-4 py-8">
       <PageAtmosphere theme="scan" />
       {/*
         THE SCOUT SITS BESIDE THE HEADING, AND ON ITS LEFT.
@@ -47,10 +48,10 @@ export default function ScanPage() {
           className="absolute top-3 left-2 h-1.5 w-28 -rotate-[28deg] rounded-full bg-gradient-to-r from-transparent via-pink-accent/70 to-cyan-accent/80"
         />
         <ScanScout className="w-20 shrink-0" />
-        <h1 className="font-display mt-1 flex items-center gap-3 text-3xl font-extrabold text-gold-plate">
-          <span aria-hidden="true" className="h-2 w-2 rotate-45 bg-gold-300" />
-          Identify a Plant
-          <span aria-hidden="true" className="h-2 w-2 rotate-45 bg-gold-300" />
+        <h1 className="scan-title font-display relative mt-2 flex items-center gap-2.5 text-3xl font-extrabold">
+          <span aria-hidden="true" className="scan-pip" />
+          <span className="scan-title-text">Identify a Plant</span>
+          <span aria-hidden="true" className="scan-pip" />
         </h1>
         <div aria-hidden="true" className="mt-2 flex w-full max-w-xs items-center gap-3">
           <span className="h-px flex-1 bg-violet-500/60" />
@@ -72,10 +73,7 @@ export default function ScanPage() {
       <p className="mx-auto mt-3 max-w-sm text-center text-base leading-relaxed text-violet-100">
         Photograph something growing and see what Plantdex thinks it might be.
       </p>
-      <p className="mx-auto mt-2 max-w-sm text-center text-xs leading-relaxed text-violet-300">
-        A plant we have a card for can join your collection; anything else can go on your Seed
-        Shelf.
-      </p>
+      <CollectFlow />
       <p className="mx-auto mt-1.5 max-w-sm text-center text-xs leading-relaxed font-semibold text-violet-100">
         The answer is a suggestion to check, not a verdict.
       </p>
@@ -87,7 +85,7 @@ export default function ScanPage() {
       <div className="mt-8 space-y-3">
         <SafetyNotice
           variant="standard"
-          context="An identification from a photograph is a starting point, not proof. Never eat, drink or apply a wild plant on one."
+          context="An identification from a photograph is a starting point, not proof."
         />
         {/*
           THE TWO NOTES ANSWER DIFFERENT QUESTIONS, which is why this is not one longer block.

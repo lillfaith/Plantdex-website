@@ -155,9 +155,10 @@ export function ProfileHero({
       </h2>
 
       {/* ── Identity row ─────────────────────────────────────────────────── */}
-      <div className="flex items-start gap-3 sm:gap-5">
+      <div className="flex flex-col items-center gap-3 text-center sm:flex-row sm:items-start sm:gap-5 sm:text-left">
         <span className="relative shrink-0">
           <ProfileAvatar
+            size="xl"
             herbId={profile.avatarHerbId}
             herbName={avatarHerb?.commonName}
             frame={profile.frame}
@@ -170,7 +171,7 @@ export function ProfileHero({
               on the rank line below, so nothing depends on reading a badge. */}
           <span
             aria-hidden="true"
-            className="absolute -right-1.5 -bottom-1.5 z-20 flex h-8 w-8 items-center justify-center rounded-full border-2 border-plum-950 bg-gold-500 text-sm font-extrabold text-violet-deep tabular-nums sm:h-9 sm:w-9 sm:text-base"
+            className="absolute -right-2 -bottom-2 z-20 flex h-10 w-10 items-center justify-center rounded-full border-2 border-plum-950 bg-gold-500 text-base font-extrabold text-violet-deep tabular-nums sm:h-9 sm:w-9 sm:text-base"
           >
             {progress.level}
           </span>
@@ -184,11 +185,12 @@ export function ProfileHero({
 
         <div className="min-w-0 flex-1 sm:pr-44">
           <p className={`${EYEBROW} text-mystery-lilac`}>Field naturalist</p>
-          <p className="font-display mt-0.5 truncate text-2xl font-extrabold text-gold-plate sm:text-4xl">
+          <p className="font-display mt-0.5 truncate text-4xl leading-tight font-extrabold text-gold-plate sm:text-5xl">
             {profile.displayName ?? 'Unnamed'}
           </p>
-          <p className="mt-0.5 truncate text-sm font-semibold text-violet-200 sm:text-base">
-            {title}
+          <p className="mt-1.5 inline-flex max-w-full items-center gap-1.5 truncate rounded-full border-2 border-gold-500/70 bg-gold-500/15 px-4 py-1 text-base font-extrabold text-gold-300 sm:text-lg">
+            <PlantdexIcon name="laurel" className="shrink-0 text-base" aria-hidden="true" />
+            <span className="truncate">{title}</span>
           </p>
           {/*
             With no title chosen the line above IS the level name, so printing
@@ -223,11 +225,11 @@ export function ProfileHero({
         the XP figure was clipped by the card's edge and the collection count sat behind it
         entirely. `sm:pr-52` is the card's width plus its right offset plus a gutter.
       */}
-      <div className="mt-4 flex items-end gap-4 sm:mt-6 sm:pr-52">
+      <div className="mt-4 flex items-end gap-3 sm:mt-5 sm:pr-52">
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-0.5">
             <p className={`${MICRO_LABEL} text-violet-300`}>Experience</p>
-            <p className="glow-gold text-sm font-bold text-gold-300 tabular-nums">
+            <p className="text-xs font-bold text-gold-300 tabular-nums">
               {progress.xp.toLocaleString()}
               {progress.nextLevelXp !== null && (
                 <span className="font-semibold text-violet-400">
@@ -243,7 +245,7 @@ export function ProfileHero({
               time something re-renders. */}
           <div className="relative mt-1.5">
             <div
-              className="h-3 overflow-hidden rounded-full bg-plum-950/80 ring-1 ring-violet-600/40"
+              className="h-1.5 overflow-hidden rounded-full bg-plum-950/80 ring-1 ring-violet-600/40"
               role="progressbar"
               aria-valuenow={xpPct}
               aria-valuemin={0}
@@ -263,7 +265,7 @@ export function ProfileHero({
                 other place a player reads their standing, so the two must agree. */}
             <XpMilestones progress={progress} />
           </div>
-          <p className="mt-1 text-[0.9rem] leading-snug text-violet-200">{progressionSubtext(progress)}</p>
+          <p className="mt-1 text-xs leading-snug text-violet-300">{progressionSubtext(progress)}</p>
 
           <div className="mt-3 flex flex-wrap items-baseline justify-between gap-x-3 gap-y-0.5">
             <p className={`${MICRO_LABEL} text-violet-300`}>Collection</p>
@@ -272,7 +274,7 @@ export function ProfileHero({
               <span className="font-semibold text-violet-400"> / {stats.deckSize}</span>
             </p>
           </div>
-          <div className="mt-1.5 h-2 overflow-hidden rounded-full bg-plum-950/80 ring-1 ring-violet-600/40">
+          <div className="mt-1 h-1 overflow-hidden rounded-full bg-plum-950/80 ring-1 ring-violet-600/40">
             <div
               className="path-fill h-full rounded-full bg-cyan-accent"
               style={{ '--fill': `${stats.completionPct}%` } as React.CSSProperties}
