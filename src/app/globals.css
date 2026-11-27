@@ -3032,6 +3032,48 @@ body {
 .cf-scene { border-color: #9c21f8; }
 
 /*
+ * TARGETED FOLLOW-UPS (owner 2026-11-27): the Home name strip, the light-lavender Home button, and the Scan title.
+ */
+.home-name-strip {
+  background: #ece3fc;
+  border: 2px solid #c5b2dc;
+  border-radius: 6px;
+  box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.9);
+}
+[data-ground='lavender'] a[href^='/shop'][class*='bg-violet-300'] {
+  background: linear-gradient(180deg, #f1eafd 0%, #dccdf6 100%);
+  color: #3d0a63;
+  border: 2px solid #9c21f8;
+  box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.9), 0 0 12px 2px rgb(255 214 240 / 0.85);
+}
+[data-ground='lavender'] a[href^='/shop'][class*='bg-violet-300']:hover {
+  background: linear-gradient(180deg, #f7f2fe 0%, #e6d9f9 100%);
+}
+/* Scan title: card violet letters with a butter hard shadow and a pink one behind it, flanked by pixel sparkles. Text stays real text. */
+.scan-title { justify-content: center; }
+.scan-title-text {
+  color: #9c21f8;
+  letter-spacing: 0.01em;
+  text-shadow: 2px 2px 0 #ffe27a, 4px 4px 0 #f48fc3, 0 0 14px rgb(255 214 240 / 0.95);
+  -webkit-text-stroke: 1px #3d0a63;
+  paint-order: stroke fill;
+}
+.scan-star {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  background: #ffe27a;
+  clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
+  filter: drop-shadow(0 0 4px rgb(244 143 195 / 0.9));
+}
+.scan-star-r { background: #f9a8d4; width: 14px; height: 14px; margin-top: -14px; }
+@media (prefers-reduced-motion: no-preference) {
+  .scan-star { animation: scan-twinkle 2.2s steps(2, end) infinite; }
+  .scan-star-r { animation-delay: 1.1s; }
+}
+@keyframes scan-twinkle { 0%, 100% { transform: scale(1); } 50% { transform: scale(0.65); } }
+
+/*
  * BOSS FORM CHALLENGES: every motion here runs a FIXED number of times and then rests, because
  * this app does not use ambient motion that repeats forever. Opacity and transform only, never
  * blur or filter (blur measurably halved the discovery reveal's frame rate), so it stays cheap

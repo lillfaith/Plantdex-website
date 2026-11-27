@@ -164,8 +164,10 @@ export default function HomePage() {
         */}
         <ul
           aria-label="Plant characters from the deck"
-          className="mx-auto mt-3 flex w-full max-w-2xl items-end justify-center gap-2 sm:gap-4"
+          className="relative mx-auto mt-3 flex w-full max-w-2xl items-end justify-center gap-2 sm:gap-4"
         >
+          {/* A thin light-lavender strip runs under all four names, so the dark lettering always sits on a pale ground. Decorative. */}
+          <li aria-hidden="true" className="home-name-strip pointer-events-none absolute inset-x-0 bottom-1 h-7 flex-none" />
           {HERO_CREATURES.map((herbId) => {
             const herb = getPrintedCard(herbId);
             if (!herb) return null;
@@ -201,7 +203,7 @@ export default function HomePage() {
                     A decoration that eats the word it decorates is not a decoration, so on a
                     phone the label goes back to what it was.
                   */}
-                  <span className="mt-2 max-w-full truncate text-center text-[0.72rem] font-semibold text-violet-200 sm:mt-2 sm:rounded-full sm:border sm:border-gold-500/35 sm:bg-plum-800/70 sm:px-2.5 sm:py-0.5 sm:text-xs">
+                  <span className="relative z-10 mt-2 max-w-full truncate text-center text-[0.72rem] font-bold text-violet-deep sm:text-xs">
                     {herb.commonName}
                   </span>
                 </Link>
