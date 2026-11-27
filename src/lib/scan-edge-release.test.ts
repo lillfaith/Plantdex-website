@@ -182,14 +182,16 @@ describe('everything else calls neither', () => {
     neither(rpc);
   });
 
-  it('a refused capture (session already used) that then hits a provider failure releases nothing', async () => {
+  it('a refused capture (session already used) never reaches the provider, so there is nothing to release or refund', async () => {
     mode = 'status502';
     const { admin, rpc } = fakeAdmin({ consume: { data: { ok: false, code: 'capture_session_used' }, error: null } });
     router.admin = admin;
     const out = await invoke(handler, { token: 'tok-alice', fields: collect });
-    expect(out.status).toBe(502);
-    expect(out.body.capture).toBeUndefined();
+    expect(out.status).toBe(409);
+    expect(out.body.capture).toEqual({ accepted: false, code: 'capture_session_used' });
     expect(count(rpc, 'release_capture_session')).toBe(0);
+    expect(count(rpc, 'refund_scan_claim')).toBe(0);
+    expect(count(rpc, 'claim_scan_pair')).toBe(0);
   });
 
   it('a success', async () => {
@@ -242,15 +244,16 @@ describe('anonymous callers', () => {
     expect(String(claim.p_bucket)).not.toBe('global');
   });
 
-  it('a signed-out collect request has no capture to release', async () => {
+  it('a signed-out collect request is refused before any allowance or provider, with nothing to release or refund', async () => {
     mode = 'status500';
     const { admin, rpc } = fakeAdmin();
     router.admin = admin;
     const out = await invoke(handler, { fields: collect });
-    expect(out.status).toBe(502);
-    expect(count(rpc, 'release_capture_session')).toBe(0);
-    expect(count(rpc, 'refund_scan_claim')).toBe(1);
+    expect(out.status).toBe(409);
+    expect(out.body.capture).toEqual({ accepted: false, code: 'capture_not_signed_in' });
+    expect(rpc).toEqual([]);
   });
+
 });
 
 /*
