@@ -76,7 +76,7 @@ export function ProfileAvatar({
   // Measured from the sheet, per sprite and per stage — see `contentFit`. Resolving the
   // sprite here rather than inside PlantSprite keeps that component a renderer: it takes a
   // class and a transform and knows nothing about why they were chosen.
-  const fit = size === 'xs' ? contentFit(herbId ? spriteFor(herbId, stage) : null) : null;
+  const fit = size === 'xs' || size === 'xl' ? contentFit(herbId ? spriteFor(herbId, stage) : null) : null;
 
   return (
     <span className={`relative inline-flex shrink-0 ${box}`}>
