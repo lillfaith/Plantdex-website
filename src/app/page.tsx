@@ -247,7 +247,7 @@ export default function HomePage() {
           the button, and crowding it against the sentence underneath would group it with the
           wrong element.
         */}
-        <div className="mt-5">
+        <div className="mt-4">
           <DeckCta placement="home" />
         </div>
 
@@ -264,7 +264,7 @@ export default function HomePage() {
           busier", and a bordered explainer between the creatures and the call to action would
           be exactly that.
         */}
-        <p className="mx-auto mt-6 max-w-md text-sm leading-relaxed text-violet-200">
+        <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-violet-200">
           Find plants outside. Scan them. Build your collection. Learn each card and grow your
           Garden.
         </p>
@@ -304,7 +304,7 @@ export default function HomePage() {
           The 48 above and 8+16+24 below also keep the button optically centred between the
           creatures and the sentence, which is where it was put deliberately.
         */}
-        <div className="mx-auto mt-4 flex max-w-md flex-row items-stretch justify-center gap-2">
+        <div className="mx-auto mt-3 flex max-w-md flex-row items-stretch justify-center gap-2">
           <Link
             href="/scan"
             className="flex min-h-12 flex-1 items-center justify-center rounded-full bg-gradient-to-r from-gold-500 to-pink-accent px-3 text-center text-sm leading-tight font-bold text-violet-deep shadow-card transition-transform hover:scale-[1.03] motion-reduce:hover:scale-100 sm:px-6 sm:text-base"
