@@ -3036,18 +3036,38 @@ body {
  */
 .home-name-strip {
   background: #ece3fc;
-  border: 2px solid #c5b2dc;
-  border-radius: 6px;
-  box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.9);
+  border: 1px solid #c5b2dc;
+  border-radius: 999px;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.9);
 }
+/* "See the deck": the same light-lavender pill as the name strip, framed and footed in the card background violet (#9C21F8), with card-violet pixel diamonds either side of the label. */
 [data-ground='lavender'] a[href^='/shop'][class*='bg-violet-300'] {
-  background: linear-gradient(180deg, #f1eafd 0%, #dccdf6 100%);
+  position: relative;
+  background: linear-gradient(180deg, #f6f0ff 0%, #e4d6fa 100%);
   color: #3d0a63;
   border: 2px solid #9c21f8;
-  box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.9), 0 0 12px 2px rgb(255 214 240 / 0.85);
+  border-radius: 999px;
+  box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.95), 0 4px 0 0 #9c21f8, 0 0 14px 3px rgb(255 214 240 / 0.8);
+  letter-spacing: 0.01em;
 }
+[data-ground='lavender'] a[href^='/shop'][class*='bg-violet-300']::before,
+[data-ground='lavender'] a[href^='/shop'][class*='bg-violet-300']::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  background: #9c21f8;
+  transform: translateY(-50%) rotate(45deg);
+}
+[data-ground='lavender'] a[href^='/shop'][class*='bg-violet-300']::before { left: 20px; }
+[data-ground='lavender'] a[href^='/shop'][class*='bg-violet-300']::after { right: 20px; }
 [data-ground='lavender'] a[href^='/shop'][class*='bg-violet-300']:hover {
-  background: linear-gradient(180deg, #f7f2fe 0%, #e6d9f9 100%);
+  background: linear-gradient(180deg, #fbf8ff 0%, #ecdffc 100%);
+}
+[data-ground='lavender'] a[href^='/shop'][class*='bg-violet-300']:active {
+  transform: translateY(3px);
+  box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.95), 0 1px 0 0 #9c21f8;
 }
 /* Scan title: card violet letters with a butter hard shadow and a pink one behind it, flanked by pixel sparkles. Text stays real text. */
 .scan-title { justify-content: center; }

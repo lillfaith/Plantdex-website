@@ -167,7 +167,7 @@ export default function HomePage() {
           className="relative mx-auto mt-3 flex w-full max-w-2xl items-end justify-center gap-2 sm:gap-4"
         >
           {/* A thin light-lavender strip runs under all four names, so the dark lettering always sits on a pale ground. Decorative. */}
-          <li aria-hidden="true" className="home-name-strip pointer-events-none absolute inset-x-0 bottom-1 h-7 flex-none" />
+          <li aria-hidden="true" className="home-name-strip pointer-events-none absolute inset-x-0 bottom-[0.3rem] h-[1.45rem] flex-none" />
           {HERO_CREATURES.map((herbId) => {
             const herb = getPrintedCard(herbId);
             if (!herb) return null;
