@@ -3488,19 +3488,15 @@ body:has(main[data-shade='learn']) [data-page-theme='learn'] { --pt-a: #b7b7f5; 
 [data-ground='lavender'] .holo-fill {
   color: #2b0a4a;
 }
-/* Dark fills behind flipped ink become the pale surface. An element that names its own white text (a deliberate plum button) keeps its plum. */
-[data-ground='lavender'] [class~='bg-plum-800']:not([class*='text-white']),
-[data-ground='lavender'] [class~='bg-plum-700']:not([class*='text-white']),
-[data-ground='lavender'] [class~='bg-plum-600']:not([class*='text-white']),
-[data-ground='lavender'] [class~='bg-plum-800/40']:not([class*='text-white']),
-[data-ground='lavender'] [class~='bg-plum-800/50']:not([class*='text-white']),
-[data-ground='lavender'] [class~='bg-plum-800/60']:not([class*='text-white']),
-[data-ground='lavender'] [class~='bg-plum-700/70']:not([class*='text-white']) {
+/*
+ * Any dark plum FILL token (solid or translucent, e.g. bg-plum-800, bg-plum-700/30) behind flipped ink becomes the pale surface. The match is on
+ * a token that STARTS with bg-plum-, so `hover:bg-plum-*` and `backdrop:bg-plum-*` are untouched, and an element that names its own white text (a
+ * deliberate plum button) keeps its plum.
+ */
+[data-ground='lavender'] :is([class*=' bg-plum-'], [class^='bg-plum-']):not([class*='text-white']) {
   background-color: var(--lav-surface-2);
 }
-[data-ground='lavender'] [class~='bg-plum-900']:not([class*='text-white']):not(button):not(a),
-[data-ground='lavender'] [class~='bg-plum-950']:not([class*='text-white']):not(button):not(a) {
-  background-color: var(--lav-surface-2);
+[data-ground='lavender'] :is([class*=' bg-plum-9'], [class^='bg-plum-9']):not([class*='text-white']):not(button):not(a) {
   border-color: var(--lav-edge);
 }
 [data-ground='lavender'] [class~='bg-violet-600/15']:not([class*='text-white']) {
