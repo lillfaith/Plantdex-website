@@ -1,0 +1,11 @@
+{
+  "target": "TEST vgjehmwcpavflbfhbbrp",
+  "authorized_by": "owner",
+  "enforcement": "off",
+  "skip_blank": false,
+  "max_provider_calls": 2,
+  "request_id": "live-run-3-replay-blank-20261127",
+  "herb_id": "taraxacum-officinale",
+  "expires_at": "2026-11-27T16:00:00Z",
+  "note": "Run 3 of the owner-approved pair (combined cap 4 provider calls): replay quota read and blank-image receipts, enforcement OFF."
+}
