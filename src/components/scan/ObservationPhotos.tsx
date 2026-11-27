@@ -188,7 +188,13 @@ export function ObservationPhotos({
         <span aria-hidden="true" className="shrink-0 text-2xl text-violet-300">
           <PlantdexIcon name="scan" />
         </span>
-        {cameraOn ? (
+        {cameraOn && channel === 'lookup' && count > 0 ? (
+          <span>
+            A library photo can <span className="font-semibold text-gold-300">identify</span> a plant but
+            not collect it. Add <span className="font-semibold text-gold-300">2 or 3 photos of the same plant</span>,
+            or use the camera to collect.
+          </span>
+        ) : cameraOn ? (
           <span>
             Take <span className="font-semibold text-gold-300">one photo</span> with the camera.
             More angles are optional &mdash; keep them to the same plant.

@@ -30,14 +30,10 @@ export function ScanCaution() {
         A suggestion, not an identification
       </p>
       <p className="mt-2 text-sm leading-relaxed text-violet-100">
-        This is a guess made from a photograph. It is <strong>not</strong> confirmation that
-        you have found this plant, and it says nothing at all about whether the plant can be
-        eaten, drunk, applied or handled without harm.
-      </p>
-      <p className="mt-2 text-sm leading-relaxed text-violet-200">
-        Check it against the card and against a second source before you act on it. Never
-        consume or apply a wild plant on an identification you are not certain of &mdash;
-        including a certain-looking one from a phone.
+        A photo can suggest which plant this might be. It is <strong>not</strong> confirmation, and it
+        says nothing about whether the plant can be eaten, drunk, applied or handled without harm. Check
+        it against the card and a second source, and never consume or apply a wild plant on a phone&rsquo;s
+        identification.
       </p>
     </aside>
   );
