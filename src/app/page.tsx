@@ -67,7 +67,7 @@ export default function HomePage() {
   );
 
   return (
-    <main id="main" data-ground="lavender" data-shade="home" className="mx-auto max-w-5xl px-4 pt-10 pb-[calc(6.5rem+env(safe-area-inset-bottom))] sm:py-16">
+    <main id="main" data-ground="lavender" data-shade="home" className="mx-auto max-w-5xl px-4 pt-7 pb-[calc(6.5rem+env(safe-area-inset-bottom))] sm:py-16">
       <PageAtmosphere theme="home" />
       <section className="text-center">
         {/* Species count, not card count: the printed deck is 47 cards because it also
@@ -247,7 +247,7 @@ export default function HomePage() {
           the button, and crowding it against the sentence underneath would group it with the
           wrong element.
         */}
-        <div className="mt-4">
+        <div className="mt-3">
           <DeckCta placement="home" />
         </div>
 
