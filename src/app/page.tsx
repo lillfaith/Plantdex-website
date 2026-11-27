@@ -11,6 +11,7 @@ import { PlantdexIcon } from '@/components/icons/PlantdexIcon';
 import { TakeTourButton } from '@/components/start/TakeTourButton';
 import { HomeQuestEntry } from '@/components/start/HomeQuestEntry';
 import { EYEBROW } from '@/components/ui/accents';
+import { PageAtmosphere } from '@/components/PageAtmosphere';
 
 /**
  * The four species whose creatures lead the landing page.
@@ -67,7 +68,8 @@ export default function HomePage() {
   );
 
   return (
-    <main id="main" className="mx-auto max-w-5xl px-4 py-10 sm:py-16">
+    <main id="main" data-ground="lavender" data-shade="home" className="mx-auto max-w-5xl px-4 pt-7 pb-[calc(6.5rem+env(safe-area-inset-bottom))] sm:py-16">
+      <PageAtmosphere theme="home" />
       <section className="text-center">
         {/* Species count, not card count: the printed deck is 47 cards because it also
             carries an icon guide and a disclaimer. /shop states both; saying "45-card deck"
@@ -77,7 +79,7 @@ export default function HomePage() {
           far end rather than stopping, so the line reads as light catching an edge instead
           of as a border somebody drew. `aria-hidden` on both: the sentence is the content.
         */}
-        <p className="flex items-center justify-center gap-3 text-xs font-bold tracking-[0.25em] text-violet-300 uppercase">
+        <p className="home-eyebrow flex items-center justify-center gap-3 text-xs font-bold tracking-[0.25em] text-violet-300 uppercase">
           <span
             aria-hidden="true"
             className="hidden h-px w-16 bg-gradient-to-r from-transparent to-gold-500/50 sm:block"
@@ -117,11 +119,11 @@ export default function HomePage() {
           favicon is `src/app/icon.png`, a separate file, and the nav badge is the player's
           own avatar rather than the logo.
         */}
-        <h1 className="relative mt-3">
+        <h1 className="relative mt-1">
           <span className="sr-only">Plantdex</span>
           <span
             aria-hidden="true"
-            className="absolute top-1/2 left-1/2 -z-10 h-33 w-33 -translate-x-1/2 -translate-y-1/2 rounded-full bg-gold-500/15 blur-2xl sm:h-42 sm:w-42"
+            className="home-logo-halo absolute top-1/2 left-1/2 -z-10 h-44 w-44 -translate-x-1/2 -translate-y-1/2 rounded-full sm:h-56 sm:w-56"
           />
           <Image
             src={assetPath('/plantdex-logo.png')}
@@ -130,15 +132,15 @@ export default function HomePage() {
             width={640}
             height={683}
             priority
-            className="mx-auto h-auto w-30 sm:w-39"
+            className="mx-auto h-auto w-[8.5rem] sm:w-44"
           />
         </h1>
-        <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-violet-200 sm:text-lg">
+        <p className="mx-auto mt-2 max-w-xl text-base leading-relaxed text-violet-200 sm:text-lg">
           Common wild medicinal plants around you, as a collectible deck.
         </p>
 
         {/* A rule with a sparkle on it: the break between the promise and the characters. */}
-        <div aria-hidden="true" className="mx-auto mt-5 flex max-w-sm items-center gap-3">
+        <div aria-hidden="true" className="mx-auto mt-3 hidden max-w-sm items-center gap-3 sm:flex">
           <span className="h-px flex-1 bg-gradient-to-r from-transparent to-band-leaf/45" />
           <PlantdexIcon name="sprout" className="text-sm text-gold-400" />
           <span className="h-px flex-1 bg-gradient-to-l from-transparent to-band-leaf/45" />
@@ -163,8 +165,10 @@ export default function HomePage() {
         */}
         <ul
           aria-label="Plant characters from the deck"
-          className="mx-auto mt-8 flex w-full max-w-2xl items-end justify-center gap-2 sm:gap-4"
+          className="home-stage relative mx-auto mt-3 flex w-full max-w-2xl items-end justify-center gap-1 min-[360px]:gap-2 sm:mt-3 sm:gap-4"
         >
+          {/* A thin light-lavender strip runs under all four names, so the dark lettering always sits on a pale ground. Decorative. */}
+          <li aria-hidden="true" className="home-name-strip pointer-events-none absolute -inset-x-1 bottom-0 h-[2.15rem] flex-none" />
           {HERO_CREATURES.map((herbId) => {
             const herb = getPrintedCard(herbId);
             if (!herb) return null;
@@ -172,7 +176,7 @@ export default function HomePage() {
               <li key={herbId} className="min-w-0 flex-1">
                 <Link
                   href={`/herbdex/${herb.id}`}
-                  className="flex flex-col items-center rounded-2xl px-1 py-1 transition-transform hover:-translate-y-1 motion-reduce:hover:translate-y-0"
+                  className="flex flex-col items-center rounded-2xl px-0 py-1 min-[360px]:px-1 transition-transform hover:-translate-y-1 motion-reduce:hover:translate-y-0"
                 >
                   {/*
                     A LIT PATCH OF GROUND UNDER EACH CREATURE. Every sprite is authored on a
@@ -200,7 +204,7 @@ export default function HomePage() {
                     A decoration that eats the word it decorates is not a decoration, so on a
                     phone the label goes back to what it was.
                   */}
-                  <span className="mt-2 max-w-full truncate text-center text-[0.72rem] font-semibold text-violet-200 sm:mt-2 sm:rounded-full sm:border sm:border-gold-500/35 sm:bg-plum-800/70 sm:px-2.5 sm:py-0.5 sm:text-xs">
+                  <span className="relative z-10 mt-3 max-w-full truncate px-0 py-[3px] text-center text-[0.75rem] font-bold text-violet-deep sm:text-xs">
                     {herb.commonName}
                   </span>
                 </Link>
@@ -244,7 +248,7 @@ export default function HomePage() {
           the button, and crowding it against the sentence underneath would group it with the
           wrong element.
         */}
-        <div className="mt-12">
+        <div className="mt-3">
           <DeckCta placement="home" />
         </div>
 
@@ -261,7 +265,7 @@ export default function HomePage() {
           busier", and a bordered explainer between the creatures and the call to action would
           be exactly that.
         */}
-        <p className="mx-auto mt-6 max-w-md text-sm leading-relaxed text-violet-200">
+        <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-violet-200">
           Find plants outside. Scan them. Build your collection. Learn each card and grow your
           Garden.
         </p>
@@ -301,7 +305,7 @@ export default function HomePage() {
           The 48 above and 8+16+24 below also keep the button optically centred between the
           creatures and the sentence, which is where it was put deliberately.
         */}
-        <div className="mx-auto mt-4 flex max-w-md flex-row items-stretch justify-center gap-2">
+        <div className="mx-auto mt-3 flex max-w-md scroll-mb-28 flex-row items-stretch justify-center gap-2">
           <Link
             href="/scan"
             className="flex min-h-12 flex-1 items-center justify-center rounded-full bg-gradient-to-r from-gold-500 to-pink-accent px-3 text-center text-sm leading-tight font-bold text-violet-deep shadow-card transition-transform hover:scale-[1.03] motion-reduce:hover:scale-100 sm:px-6 sm:text-base"

@@ -33,7 +33,7 @@ export default function HerbdexPage() {
   const fieldCards = [...FIELD_CARDS].sort((a, b) => a.cardNumber - b.cardNumber);
 
   return (
-    <main id="main" data-ground="lavender" className="mx-auto max-w-6xl px-4 py-8">
+    <main id="main" data-ground="lavender" data-palette="card" className="mx-auto max-w-6xl px-4 py-8">
       <PageAtmosphere theme="collection" />
       <TrackView event="herbdex_opened" />
       {/* Above the header, because it is about that progress, and inline in the page flow
@@ -43,7 +43,7 @@ export default function HerbdexPage() {
       <CollectionHeader />
 
       {/* The Field Board's door, directly beneath your progress. */}
-      <div className="mt-3">
+      <div className="mt-3" data-part="board">
         <FieldBoardCard />
       </div>
 
@@ -51,11 +51,11 @@ export default function HerbdexPage() {
           the page no longer has a row of shortcuts for a first-time player to find it in. */}
       <FirstQuestCard />
 
-      <div className="mt-3">
+      <div className="mt-3" data-part="recent">
         <RecentFindsStrip />
       </div>
 
-      <div className="mt-3">
+      <div className="mt-3" data-part="research">
         <ResearchTeaser />
       </div>
 
