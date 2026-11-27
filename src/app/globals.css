@@ -2915,6 +2915,88 @@ body {
 }
 
 /*
+ * COLLECT FLOW (Scan): Find -> Scan -> Unlock -> Collect. Four 1:1 pixel scenes on one 8s loop, each lit in turn. Everything is gradients, borders and
+ * transforms (no image besides the deck's own card art). `prefers-reduced-motion` turns every animation off and shows the finished state of each scene.
+ */
+.cf-scene {
+  border: 2px solid #9d8ae6;
+  background: #f4eefe;
+  box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.9);
+}
+.cf-meadow {
+  background:
+    linear-gradient(180deg, transparent 62%, #86cf78 62% 78%, #5fb35c 78% 100%),
+    linear-gradient(180deg, #bfe0fb 0 40%, #d6ecfc 40% 62%);
+}
+.cf-scene-card {
+  background: linear-gradient(180deg, #fde6f3 0%, #efe3fd 100%);
+}
+.cf-brackets {
+  --b: #9c21f8;
+  background:
+    linear-gradient(var(--b) 0 0) top left / 10px 3px no-repeat, linear-gradient(var(--b) 0 0) top left / 3px 10px no-repeat,
+    linear-gradient(var(--b) 0 0) top right / 10px 3px no-repeat, linear-gradient(var(--b) 0 0) top right / 3px 10px no-repeat,
+    linear-gradient(var(--b) 0 0) bottom left / 10px 3px no-repeat, linear-gradient(var(--b) 0 0) bottom left / 3px 10px no-repeat,
+    linear-gradient(var(--b) 0 0) bottom right / 10px 3px no-repeat, linear-gradient(var(--b) 0 0) bottom right / 3px 10px no-repeat;
+}
+.cf-flash {
+  background: #fff;
+  opacity: 0;
+}
+.cf-card {
+  border: 2px solid #9c21f8;
+  box-shadow: 0 0 10px 2px rgb(255 214 240 / 0.95), 0 0 18px 4px rgb(222 190 255 / 0.8);
+}
+.cf-stack-back,
+.cf-stack-mid {
+  background: #cfa6f7;
+  border: 2px solid #9c21f8;
+}
+.cf-stack-back { transform: translate(5px, -5px); background: #e8cdfb; }
+.cf-stack-mid { transform: translate(2.5px, -2.5px); }
+.cf-stack-top {
+  border: 2px solid #9c21f8;
+  box-shadow: 0 0 10px 2px rgb(255 214 240 / 0.95);
+}
+.cf-plus {
+  color: #3d0a63;
+  background: #ffe27a;
+  border: 2px solid #3d0a63;
+  padding: 0 4px;
+  line-height: 1.2;
+}
+.cf-label { color: #33205f; }
+.cf-hint { color: #52257f; }
+.cf-rule { color: #33205f; }
+.cf-arrow { color: #9c21f8; }
+@media (prefers-reduced-motion: no-preference) {
+  .cf-scene { animation: cf-lit 8s steps(1, end) infinite; }
+  .cf-step-2 .cf-scene { animation-delay: 2s; }
+  .cf-step-3 .cf-scene { animation-delay: 4s; }
+  .cf-step-4 .cf-scene { animation-delay: 6s; }
+  .cf-flash { animation: cf-flash 8s linear infinite 2.6s; }
+  .cf-brackets { animation: cf-brackets 8s steps(2, end) infinite 2s; }
+  .cf-card { animation: cf-reveal 8s steps(5, end) infinite 4s; }
+  .cf-stack-top { animation: cf-drop 8s steps(4, end) infinite 6s; }
+  .cf-plus { animation: cf-pop 8s steps(3, end) infinite 6.4s; }
+  .cf-arrow { animation: cf-nudge 2s steps(2, end) infinite; }
+}
+@keyframes cf-lit {
+  0%, 24.9% { transform: translateY(-2px); border-color: #9c21f8; box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.9), 0 0 0 2px #ffe27a, 0 0 14px 3px rgb(255 214 240 / 0.95); }
+  25%, 100% { transform: none; border-color: #9d8ae6; box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.9); }
+}
+@keyframes cf-flash { 0%, 100% { opacity: 0; } 2% { opacity: 0.85; } 6% { opacity: 0; } }
+@keyframes cf-brackets { 0% { inset: 2%; } 50%, 100% { inset: 9%; } }
+@keyframes cf-reveal {
+  0% { filter: brightness(0.2) saturate(0); transform: scale(0.9); }
+  18%, 80% { filter: none; transform: scale(1); }
+  90%, 100% { filter: brightness(0.2) saturate(0); transform: scale(0.9); }
+}
+@keyframes cf-drop { 0% { transform: translateY(-60%); } 14%, 80% { transform: none; } 90%, 100% { transform: translateY(-60%); } }
+@keyframes cf-pop { 0%, 100% { opacity: 0; transform: translateY(6px); } 14%, 70% { opacity: 1; transform: none; } }
+@keyframes cf-nudge { 0% { transform: translateX(0); } 50% { transform: translateX(2px); } }
+
+/*
  * BOSS FORM CHALLENGES: every motion here runs a FIXED number of times and then rests, because
  * this app does not use ambient motion that repeats forever. Opacity and transform only, never
  * blur or filter (blur measurably halved the discovery reveal's frame rate), so it stays cheap
