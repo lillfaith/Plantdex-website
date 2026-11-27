@@ -51,7 +51,7 @@ export function PlantCoreWindow({
   const step = (d: number) => setIndex((i) => (i + d + plants.length) % plants.length);
 
   const action = (href: string, label: string, icon: IconName, tone: 'blush' | 'lav' | 'violet') => (
-    <Link href={href} className={`pc-btn pc-${tone} flex min-h-10 items-center justify-center gap-1.5 px-1.5 text-[0.8rem] font-bold`}>
+    <Link href={href} className={`pc-btn pc-${tone} flex min-h-10 items-center justify-center gap-1.5 px-1.5 text-[0.78rem] font-bold`}>
       <PlantdexIcon name={icon} className="text-base" aria-hidden="true" />
       <span>{label}</span>
     </Link>
@@ -69,7 +69,7 @@ export function PlantCoreWindow({
         </button>
       </div>
 
-      <div className="mt-1.5 grid grid-cols-[4rem_1fr_6.9rem] gap-2">
+      <div className="mt-1.5 grid grid-cols-[3.8rem_1fr_7.3rem] gap-2">
         {/* The three existing growth stages, as a segmented meter. Display only. */}
         <div role="img" aria-label={`Growth stage ${stageIdx + 1} of 3: ${STAGE_LABEL[current.stage]}`} className="pc-meter flex flex-col-reverse gap-[2px] p-[2px]">
           {STAGES.map((s, i) => (
@@ -109,7 +109,7 @@ export function PlantCoreWindow({
             <>
               {action(`/herbdex/${herb.id}`, hint === 'Learn its card' ? 'Learn card' : (hint ?? 'Open card'), hint ? 'learn' : 'herbdex', 'blush')}
               {action('/scan', 'Scan a plant', 'scan', 'lav')}
-              <Link href={`/herbdex/${herb.id}`} className="pc-btn pc-violet flex min-h-10 items-center justify-center gap-1.5 px-1.5 text-[0.8rem] font-bold">
+              <Link href={`/herbdex/${herb.id}`} className="pc-btn pc-violet flex min-h-10 items-center justify-center gap-1.5 px-1.5 text-[0.78rem] font-bold">
                 <PlantdexIcon name="herbdex" className="text-base" aria-hidden="true" />
                 <span>Full card</span>
               </Link>
@@ -117,7 +117,7 @@ export function PlantCoreWindow({
           ) : (
             <>
               <p className="pc-note px-1 text-[0.75rem] leading-snug">{hint ? `Next: ${hint.toLowerCase()}.` : 'Fully grown.'}</p>
-              <Link href={`/herbdex/${herb.id}`} className="pc-btn pc-violet flex min-h-10 items-center justify-center gap-1.5 px-1.5 text-[0.8rem] font-bold">
+              <Link href={`/herbdex/${herb.id}`} className="pc-btn pc-violet flex min-h-10 items-center justify-center gap-1.5 px-1.5 text-[0.78rem] font-bold">
                 <PlantdexIcon name="herbdex" className="text-base" aria-hidden="true" />
                 <span>Open card</span>
               </Link>
