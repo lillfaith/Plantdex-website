@@ -3073,7 +3073,7 @@ body {
 /* Scan title: card violet letters with a butter hard shadow and a pink one behind it, flanked by pixel sparkles. Text stays real text. */
 .scan-title { justify-content: center; }
 .scan-title-text {
-  color: #9c21f8;
+  color: #7a12cf;
   letter-spacing: 0.01em;
   text-shadow: 2px 2px 0 #ffe27a, 4px 4px 0 #f48fc3, 0 0 14px rgb(255 214 240 / 0.95);
   -webkit-text-stroke: 1px #3d0a63;
