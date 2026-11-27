@@ -3058,7 +3058,10 @@ body {
   background: repeating-conic-gradient(var(--pc-light) 0 25%, #BDA3DF 0 50%) 0 0 / 2px 2px;
   box-shadow: inset 1px 1px 0 var(--pc-dark), inset -1px -1px 0 var(--pc-light), inset 2px 2px 0 var(--pc-shade);
 }
-.pc-stage { background: var(--pc-light); }
+.pc-stage { background: linear-gradient(180deg, #fbf3ff 0%, #F8EEFF 60%, #efdcf8 100%); }
+/* A plain dithered floor line under the plant (Paint-style fill pattern), so the sprite stands in the canvas rather than floating. */
+.pc-floor { position: absolute; inset-inline: 2px; bottom: 2px; height: 14%; background: repeating-conic-gradient(#e6cdf0 0 25%, #F8EEFF 0 50%) 0 0 / 4px 4px; border-top: 1px solid var(--pc-shade); }
+.pc-sprite { transform: scale(1.08); transform-origin: 50% 100%; }
 .pc-namebar { background: transparent; box-shadow: none; padding: 0; }
 .pc-field { background: var(--pc-light); line-height: 2rem; }
 /* Raised buttons: pale top-left, plum bottom-right; pressed inverts and nudges the label. */

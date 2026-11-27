@@ -69,19 +69,23 @@ export function PlantCoreWindow({
         </button>
       </div>
 
-      <div className="mt-1.5 grid grid-cols-[2.6rem_1fr_7.6rem] gap-2">
+      <div className="mt-1.5 grid grid-cols-[4rem_1fr_6.9rem] gap-2">
         {/* The three existing growth stages, as a segmented meter. Display only. */}
         <div role="img" aria-label={`Growth stage ${stageIdx + 1} of 3: ${STAGE_LABEL[current.stage]}`} className="pc-meter flex flex-col-reverse gap-[2px] p-[2px]">
           {STAGES.map((s, i) => (
             <span key={s} className={`pc-seg flex flex-1 items-center justify-center ${i <= stageIdx ? 'pc-seg-on' : ''}`}>
-              <PlantdexIcon name={s === 'sprout' ? 'sprout' : s === 'growing' ? 'leaves' : 'flower'} className="text-base" aria-hidden="true" />
+              <span className="flex flex-col items-center gap-0.5 leading-none">
+                <PlantdexIcon name={s === 'sprout' ? 'sprout' : s === 'growing' ? 'leaves' : 'flower'} className="text-lg" aria-hidden="true" />
+                <span className="text-[0.72rem] font-medium">{STAGE_LABEL[s]}</span>
+              </span>
             </span>
           ))}
         </div>
 
         <div className="flex flex-col">
           <div className="pc-stage relative aspect-[3/4] overflow-hidden">
-            <span className="absolute inset-x-[2%] bottom-[8%] block">
+            <span aria-hidden="true" className="pc-floor" />
+            <span className="pc-sprite absolute inset-x-[-6%] bottom-[14%] block">
               <PlantSprite herbId={herb.id} alt={herb.commonName} stage={current.stage} fit className="w-full" />
             </span>
           </div>
