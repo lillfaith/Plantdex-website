@@ -2890,6 +2890,31 @@ body {
 }
 
 /*
+ * ─────────────────────────────────────────────────────────────────────────────
+ * LUMINOUS GLOWS, NOT MUDDY SHADOWS (owner 2026-11-27). On the lavender ground, the dark `drop-shadow-[...]` utilities that sit under sprites and
+ * card art (plum/black at 45-70%) read as dirty smudges. Here they become a light halo: a 1px violet edge, a pink-white bloom, a lilac diffusion.
+ * `filter: drop-shadow` only ADDS light around the alpha edge; it never blurs the sprite, so pixel edges stay crisp. It applies to collectibles and
+ * featured sprites (the utilities already name them); ordinary panels and buttons are untouched. Glows already authored as 0-offset glows are kept.
+ * ─────────────────────────────────────────────────────────────────────────────
+ */
+[data-ground='lavender'] [class*='drop-shadow-[']:not([class*='drop-shadow-[0_0_']) {
+  filter: drop-shadow(0 0 1px rgb(156 33 248 / 0.55)) drop-shadow(0 0 7px rgb(255 214 240 / 0.95)) drop-shadow(0 0 18px rgb(222 190 255 / 0.85));
+}
+/* The grounding blob under a companion sprite was a dark violet smudge; it is a pool of pink-white light. */
+[data-ground='lavender'] [class*='bg-violet-900/50'][class*='blur'] {
+  background-color: rgb(255 214 240 / 0.8);
+}
+/* Locked-card silhouettes stay shadows by design (they are the thing hidden), but their grounding drop is light on lavender. */
+[data-ground='lavender'] .plant-silhouette {
+  filter: brightness(0) saturate(0) drop-shadow(0 0 6px rgb(255 255 255 / 0.55));
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-ground='lavender'] [class*='drop-shadow-[']:not([class*='drop-shadow-[0_0_']) {
+    transition: filter 240ms ease-out;
+  }
+}
+
+/*
  * BOSS FORM CHALLENGES: every motion here runs a FIXED number of times and then rests, because
  * this app does not use ambient motion that repeats forever. Opacity and transform only, never
  * blur or filter (blur measurably halved the discovery reveal's frame rate), so it stays cheap
@@ -3569,28 +3594,3 @@ html:has(main[data-shade='learn']) { background: #b7b7f5; }
 [data-shade] [class*='hover:bg-violet-200']:hover { background-color: #3d0a63; }
 /* The white "Edit profile" link sits on the pale hero plate here. */
 [data-shade] [class*='tap-44'][class*='absolute'][class~='text-white'] { color: var(--color-violet-200); }
-
-/*
- * ─────────────────────────────────────────────────────────────────────────────
- * LUMINOUS GLOWS, NOT MUDDY SHADOWS (owner 2026-11-27). On the lavender ground, the dark `drop-shadow-[...]` utilities that sit under sprites and
- * card art (plum/black at 45-70%) read as dirty smudges. Here they become a light halo: a 1px violet edge, a pink-white bloom, a lilac diffusion.
- * `filter: drop-shadow` only ADDS light around the alpha edge; it never blurs the sprite, so pixel edges stay crisp. It applies to collectibles and
- * featured sprites (the utilities already name them); ordinary panels and buttons are untouched. Glows already authored as 0-offset glows are kept.
- * ─────────────────────────────────────────────────────────────────────────────
- */
-[data-ground='lavender'] [class*='drop-shadow-[']:not([class*='drop-shadow-[0_0_']) {
-  filter: drop-shadow(0 0 1px rgb(156 33 248 / 0.55)) drop-shadow(0 0 7px rgb(255 214 240 / 0.95)) drop-shadow(0 0 18px rgb(222 190 255 / 0.85));
-}
-/* The grounding blob under a companion sprite was a dark violet smudge; it is a pool of pink-white light. */
-[data-ground='lavender'] [class*='bg-violet-900/50'][class*='blur'] {
-  background-color: rgb(255 214 240 / 0.8);
-}
-/* Locked-card silhouettes stay shadows by design (they are the thing hidden), but their grounding drop is light on lavender. */
-[data-ground='lavender'] .plant-silhouette {
-  filter: brightness(0) saturate(0) drop-shadow(0 0 6px rgb(255 255 255 / 0.55));
-}
-@media (prefers-reduced-motion: no-preference) {
-  [data-ground='lavender'] [class*='drop-shadow-[']:not([class*='drop-shadow-[0_0_']) {
-    transition: filter 240ms ease-out;
-  }
-}
