@@ -38,7 +38,7 @@ export function ProfileAvatar({
   frame: FieldFrame;
   stage?: GardenStage;
   /**
-   * `lg` is the identity banner, `sm` a picker swatch, `xs` the sitewide badge.
+   * `xl` is the profile hero (the player is the focal point), `lg` the identity banner elsewhere, `sm` a picker swatch, `xs` the sitewide badge.
    *
    * `xs` FRAMES THE PLANT RATHER THAN THE CANVAS. Every stage is drawn on one canvas
    * against a shared ground line, so a seedling occupies under half of it and, at 36px,
@@ -48,7 +48,7 @@ export function ProfileAvatar({
    * has earned; it is simply framed as a portrait. The larger sizes have room to spare and
    * keep the authored composition, ground line and all.
    */
-  size?: 'xs' | 'sm' | 'lg';
+  size?: 'xs' | 'sm' | 'lg' | 'xl';
   /**
    * Hold frame 0 instead of playing.
    *
@@ -63,9 +63,15 @@ export function ProfileAvatar({
   // because the hero has to keep the name, title, both meters and the signature card above
   // the fold at 390px — see ProfileHero.
   const box =
-    size === 'lg' ? 'h-20 w-20 sm:h-28 sm:w-28' : size === 'sm' ? 'h-14 w-14' : 'h-9 w-9';
+    size === 'xl'
+      ? 'h-36 w-36 sm:h-44 sm:w-44'
+      : size === 'lg'
+        ? 'h-20 w-20 sm:h-28 sm:w-28'
+        : size === 'sm'
+          ? 'h-14 w-14'
+          : 'h-9 w-9';
   const radius =
-    size === 'lg' ? 'rounded-[1.4rem]' : size === 'sm' ? 'rounded-xl' : 'rounded-full';
+    size === 'xl' ? 'rounded-[2rem]' : size === 'lg' ? 'rounded-[1.4rem]' : size === 'sm' ? 'rounded-xl' : 'rounded-full';
 
   // Measured from the sheet, per sprite and per stage — see `contentFit`. Resolving the
   // sprite here rather than inside PlantSprite keeps that component a renderer: it takes a
