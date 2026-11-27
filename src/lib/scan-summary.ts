@@ -179,7 +179,11 @@ export function summariseScan(
       level: 'genus',
       genus,
       headline: vernacular ? `Looks like a ${vernacular.toLowerCase()}` : `Looks like a ${genus} of some kind`,
-      qualifier: `Genus: ${genus} · exact species uncertain`,
+      // A candidate Plantdex accepts as a synonym of a deck card is not a genus-level answer: say so instead of "exact species uncertain".
+      qualifier:
+        top.match.eligibility === 'synonym'
+          ? `${top.scientificName} \u00b7 an accepted synonym of a card Plantdex has \u00b7 moderate match`
+          : `Genus: ${genus} · exact species uncertain`,
       /*
        * TWO WAYS TO BE UNSURE ABOUT A SPECIES, AND THEY DO NOT READ THE SAME. "Several close
        * matches" is false of a result whose leader is alone out in front — which is the

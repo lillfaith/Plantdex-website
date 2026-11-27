@@ -73,8 +73,8 @@ export default function ScanPage() {
         Photograph something growing and see what Plantdex thinks it might be.
       </p>
       <p className="mx-auto mt-2 max-w-sm text-center text-xs leading-relaxed text-violet-300">
-        If it is a plant we have a card for, you can add it to your collection. Anything else
-        can go on your Seed Shelf.
+        A plant we have a card for can join your collection; anything else can go on your Seed
+        Shelf.
       </p>
       <p className="mx-auto mt-1.5 max-w-sm text-center text-xs leading-relaxed font-semibold text-violet-100">
         The answer is a suggestion to check, not a verdict.

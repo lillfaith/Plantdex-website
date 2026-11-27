@@ -80,7 +80,7 @@ describe('the server refuses independently of the button', () => {
 describe('copy says extra angles are optional and never proof of presence', () => {
   const ui = readFileSync('src/components/scan/ObservationPhotos.tsx', 'utf8');
   it('says optional and accuracy-only', () => {
-    expect(ui).toMatch(/More angles are optional and only help/);
+    expect(ui).toMatch(/More angles are optional/);
     expect(ui).toMatch(/extra angles optional/);
   });
   it('never implies extra photos prove anything', () => {

@@ -43,7 +43,8 @@ export function RegionPicker({ className = '' }: { className?: string }) {
         }}
         className="mt-2 min-h-11 w-full rounded-lg border border-violet-700 bg-plum-900 px-3 text-base text-violet-100 disabled:opacity-60"
       >
-        <option value="">Everywhere &mdash; show the whole collection</option>
+        {/* Short enough for a 320px select: "Everywhere &mdash; show the whole collection" was cut off mid-word. The whole collection is what "Everywhere" means. */}
+        <option value="">Everywhere</option>
         {regions.map((entry) => (
           <option key={entry.id} value={entry.id}>
             {entry.name}
