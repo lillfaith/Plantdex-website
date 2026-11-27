@@ -3761,8 +3761,8 @@ html:has(main[data-shade='learn']) { background: #cfd3fb; }
 }
 
 /* NATURE, SPREAD THROUGH THE UI: pixel flowers and leaves peek over the top edge of the large panels, grass sits on the bottom edge of some, and a leaf follows page titles. Decorative only. */
-[data-ground='lavender'] > :is(.panel, .game-panel, .field-panel, .science-panel, .character-panel, .panel-raised):nth-of-type(3n + 1)::before,
-[data-ground='lavender'] > :is(div, section) > :is(.panel, .game-panel, .field-panel, .science-panel, .character-panel):nth-of-type(3n + 1)::before {
+[data-ground='lavender'] > :is(.panel, .game-panel, .field-panel, .science-panel, .character-panel, .panel-raised):not(a):nth-of-type(3n + 1)::before,
+[data-ground='lavender'] > :is(div, section) > :is(.panel, .game-panel, .field-panel, .science-panel, .character-panel):not(a):nth-of-type(3n + 1)::before {
   content: '';
   position: absolute;
   left: 18px;
@@ -3773,8 +3773,8 @@ html:has(main[data-shade='learn']) { background: #cfd3fb; }
   image-rendering: pixelated;
   pointer-events: none;
 }
-[data-ground='lavender'] > :is(.panel, .game-panel, .field-panel, .science-panel, .character-panel, .panel-raised):nth-of-type(3n + 2)::before,
-[data-ground='lavender'] > :is(div, section) > :is(.panel, .game-panel, .field-panel, .science-panel, .character-panel):nth-of-type(3n + 2)::before {
+[data-ground='lavender'] > :is(.panel, .game-panel, .field-panel, .science-panel, .character-panel, .panel-raised):not(a):nth-of-type(3n + 2)::before,
+[data-ground='lavender'] > :is(div, section) > :is(.panel, .game-panel, .field-panel, .science-panel, .character-panel):not(a):nth-of-type(3n + 2)::before {
   content: '';
   position: absolute;
   right: 26px;
@@ -3785,8 +3785,8 @@ html:has(main[data-shade='learn']) { background: #cfd3fb; }
   image-rendering: pixelated;
   pointer-events: none;
 }
-[data-ground='lavender'] > :is(.panel, .game-panel, .field-panel, .science-panel, .character-panel, .panel-raised):nth-of-type(3n)::before,
-[data-ground='lavender'] > :is(div, section) > :is(.panel, .game-panel, .field-panel, .science-panel, .character-panel):nth-of-type(3n)::before {
+[data-ground='lavender'] > :is(.panel, .game-panel, .field-panel, .science-panel, .character-panel, .panel-raised):not(a):nth-of-type(3n)::before,
+[data-ground='lavender'] > :is(div, section) > :is(.panel, .game-panel, .field-panel, .science-panel, .character-panel):not(a):nth-of-type(3n)::before {
   content: '';
   position: absolute;
   left: 40px;
@@ -3797,8 +3797,8 @@ html:has(main[data-shade='learn']) { background: #cfd3fb; }
   image-rendering: pixelated;
   pointer-events: none;
 }
-[data-ground='lavender'] > :is(.panel, .game-panel, .field-panel, .science-panel, .character-panel, .panel-raised):nth-of-type(2n)::after,
-[data-ground='lavender'] > :is(div, section) > :is(.panel, .game-panel, .field-panel, .science-panel, .character-panel):nth-of-type(2n)::after {
+[data-ground='lavender'] > :is(.panel, .game-panel, .field-panel, .science-panel, .character-panel, .panel-raised):not(a):nth-of-type(2n)::after,
+[data-ground='lavender'] > :is(div, section) > :is(.panel, .game-panel, .field-panel, .science-panel, .character-panel):not(a):nth-of-type(2n)::after {
   content: '';
   position: absolute;
   right: 22px;
@@ -3809,7 +3809,7 @@ html:has(main[data-shade='learn']) { background: #cfd3fb; }
   image-rendering: pixelated;
   pointer-events: none;
 }
-[data-shade] h1:not([class*='flex'])::after {
+[data-shade]:not([data-shade='home']) h1:not([class*='flex'])::after {
   content: '';
   display: inline-block;
   width: 14px;
@@ -3818,4 +3818,63 @@ html:has(main[data-shade='learn']) { background: #cfd3fb; }
   vertical-align: -2px;
   background: var(--spr-flower-butter) no-repeat center bottom / 14px 16px;
   image-rendering: pixelated;
+}
+
+[data-ground='lavender'] {
+  --spr-dots: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2224%22 height=%226%22 viewBox=%220 0 24 6%22 shape-rendering=%22crispEdges%22%3E%3Crect x=%220%22 y=%220%22 width=%226%22 height=%226%22 fill=%22%23f48fc3%22 stroke=%22%237d5bb8%22 stroke-width=%221%22/%3E%3Crect x=%228%22 y=%220%22 width=%226%22 height=%226%22 fill=%22%23fff0a8%22 stroke=%22%237d5bb8%22 stroke-width=%221%22/%3E%3Crect x=%2216%22 y=%220%22 width=%226%22 height=%226%22 fill=%22%237cc47f%22 stroke=%22%237d5bb8%22 stroke-width=%221%22/%3E%3C/svg%3E");
+}
+/* Nostalgic window-control dots (pink, butter, leaf) in the top corner of the coloured panels. */
+[data-ground='lavender'] .science-panel {
+  background: var(--spr-dots) no-repeat right 12px top 6px, linear-gradient(180deg, #f4faff 0%, var(--lav-sky-pale) 100%);
+}
+[data-ground='lavender'] .field-panel {
+  background: var(--spr-dots) no-repeat right 12px top 6px, linear-gradient(180deg, #f7fdf3 0%, var(--lav-leaf-pale) 100%);
+}
+[data-ground='lavender'] .character-panel {
+  background: var(--spr-dots) no-repeat right 12px top 6px, linear-gradient(180deg, #fff6fb 0%, var(--lav-pink-pale) 100%);
+}
+/* More nature: the Quests/Habitats tab track and the Scan frames carry a flower or leaves peeking over the top edge. */
+[data-ground='lavender'] .lav-track {
+  position: relative;
+}
+[data-ground='lavender'] .lav-track::before {
+  content: '';
+  position: absolute;
+  left: 14px;
+  bottom: calc(100% - 2px);
+  width: 18px;
+  height: 16px;
+  background: var(--spr-leaves) no-repeat center bottom / 18px 16px;
+  image-rendering: pixelated;
+  pointer-events: none;
+}
+[data-ground='lavender'] .lav-track::after {
+  content: '';
+  position: absolute;
+  right: 18px;
+  bottom: calc(100% - 2px);
+  width: 14px;
+  height: 16px;
+  background: var(--spr-flower-blue) no-repeat center bottom / 14px 16px;
+  image-rendering: pixelated;
+  pointer-events: none;
+}
+[data-ground='lavender'] .holo-border {
+  position: relative;
+}
+[data-ground='lavender'] .holo-border::before {
+  content: '';
+  position: absolute;
+  left: 26px;
+  bottom: calc(100% - 2px);
+  width: 14px;
+  height: 16px;
+  background: var(--spr-flower-pink) no-repeat center bottom / 14px 16px;
+  image-rendering: pixelated;
+  pointer-events: none;
+}
+[data-ground='lavender'] p.holo-border::before {
+  left: auto;
+  right: 34px;
+  background-image: var(--spr-flower-butter);
 }
