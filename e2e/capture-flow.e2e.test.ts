@@ -278,7 +278,7 @@ describe.skipIf(!configured)('V1 camera-to-collection, live (TEST project)', () 
     }
     const after = await bob.from('discoveries').select('herb_id').eq('user_id', bobUser.id);
     expect((after.data ?? []).length, 'identification alone must never write a discovery').toBe((before.data ?? []).length);
-    evidence.nonPlant = { httpStatus: status, code: body!.code ?? null, providerFoundNothing: body!.providerFoundNothing ?? null, notAPlant: body!.notAPlant ?? null, candidates: ((body!.candidates ?? []) as Row[]).length, retryable: (body!.capture as Row | undefined)?.retryable ?? null, allowance: body!.allowance ?? null };
+    evidence.nonPlant = { httpStatus: status, code: body!.code ?? null, providerFoundNothing: body!.providerFoundNothing ?? null, notAPlant: body!.notAPlant ?? null, candidates: ((body!.candidates ?? []) as Row[]).length, candidatesWithReceipt: ((body!.candidates ?? []) as Row[]).filter((c) => c.captureReceipt).length, retryable: (body!.capture as Row | undefined)?.retryable ?? null, allowance: body!.allowance ?? null };
   });
 
   it('DIRECT API: no client can write a receipt, a session, a digest, a refund ledger or flip the switch', async () => {
