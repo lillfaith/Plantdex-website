@@ -81,6 +81,7 @@ export type IconName =
   | 'laurel'
   | 'trophy'
   | 'compass'
+  | 'more'
   | 'fallen-leaf'
   | 'plot'
   // Plant parts, for the usable-parts grid on a card page. `sprout`, `leaves`, `flower`
@@ -437,6 +438,13 @@ const ICONS: Record<IconName, React.ReactNode> = {
     <>
       <circle cx="12" cy="12" r="8.8" />
       <path d="M15.4 8.6 13.6 13.6 8.6 15.4 10.4 10.4Z" />
+    </>
+  ),
+  more: (
+    <>
+      <circle cx="5.4" cy="12" r="1.6" />
+      <circle cx="12" cy="12" r="1.6" />
+      <circle cx="18.6" cy="12" r="1.6" />
     </>
   ),
   'fallen-leaf': (
