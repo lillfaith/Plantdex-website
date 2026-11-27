@@ -612,7 +612,7 @@ export function ScanPanel() {
             : consentPending
               ? 'Review where your photos are sent, above, to continue.'
               : canIdentify
-              ? `Ready with ${photos.length} photo${photos.length === 1 ? '' : 's'}.${photoMinimum === 1 && photos.length < 3 ? ' Extra angles are optional and only help accuracy.' : ''}`
+              ? `Ready with ${photos.length} photo${photos.length === 1 ? '' : 's'}.${photoMinimum === 1 && photos.length < 3 ? ' Extra angles are optional.' : ''}`
               : `Add ${photoMinimum - photos.length} more photo${photoMinimum - photos.length === 1 ? '' : 's'} to identify.`}
         </p>
         <span
@@ -1134,7 +1134,10 @@ export function ScanPanel() {
                            */
                           <p className="mt-2 text-xs font-semibold text-gold-300">
                             {confirmed?.herbId === herb.id
-                              ? 'Added \u2713'
+                              ? // Two candidates can name the same card (a synonym and its section). Only the first row carries the tick.
+                                result.candidates.findIndex((one) => one.match.herbId === herb.id) === index
+                                ? 'Added \u2713'
+                                : 'Same card as above'
                               : 'Already in your collection.'}
                           </p>
                         ) : !collectAllowed(sentChannel) ? (

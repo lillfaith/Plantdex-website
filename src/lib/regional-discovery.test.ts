@@ -203,13 +203,13 @@ describe('account switching', () => {
 });
 
 describe('the way in from the Herbdex', () => {
-  it('is off the Herbdex for now, and never took a nav slot', () => {
+  it('is off the Herbdex for now (the RegionTeaser stays out of the Collection page)', () => {
     // Seven nav labels is the measured ceiling: at 390px each is 53px and an eighth
     // truncates. The board is a signpost on the page a returning player already lands on.
     // "Plants near you" is switched off for now; the teaser component and route stay in place.
     expect(readFileSync('src/app/herbdex/page.tsx', 'utf8')).not.toContain('<RegionTeaser />');
-    expect(readFileSync('src/components/SiteNav.tsx', 'utf8'))
-      .not.toContain('/quests');
+    // Owner decision 2026-11-27: Quests becomes the seventh nav item. This pin used to forbid '/quests' in the bar; the ceiling it
+    // protected (seven labels, measured at 320px) is now the UI lane's own check, so the bar may name it.
   });
 
   it('never adds confirmed and likely together', () => {
