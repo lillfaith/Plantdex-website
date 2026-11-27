@@ -1,5 +1,13 @@
 # PROPOSAL (not implemented): which candidates may earn a collection receipt
 
+## Owner decisions, 2026-11-27 (these override the open items at the end)
+- **Approved direction:** keep identification SUGGESTIONS, the confidence DISPLAY and COLLECTIBLE eligibility as three separate things.
+- **NOT approved:** the numbers (0.15, 0.25, 0.5x, rank <= 3, plant.id 0.30). They are **provisional, not V1 rules**. Evidence so far says wrong
+  answers can outscore right ones, so no number is to be implemented until more representative **field-photo** evidence exists (section 8).
+- **Ambiguity:** conservative V1. Show the suggestions, grant no receipt, ask the player to retake (or add angles where supported). No "choose among
+  plausible candidates" (O3 is closed).
+- **No new migration** to store scores unless a need is demonstrated (O2 is closed: no). **0016 is not modified.** Receipts keep today's columns.
+
 Status: **for owner approval. No code, SQL, flag or deployment has changed.** Production enforcement stays OFF.
 Evidence labels: **LIVE** = observed against the deployed TEST project and real PlantNet; **LOCAL** = the repository's own code run by the
 coordinator; **UNIT** = existing automated tests with fakes; **DOC** = recorded measurements in `docs/identification-benchmark.md`.
@@ -117,3 +125,15 @@ LIVE (needs approved credits): the dandelion photo still earns its `synonym` rec
 - O3 Ambiguity: no receipts (proposed) vs. let the player choose among plausible candidates.
 - O4 Rollout: flag, TEST first, redeploy identify-plant to TEST, one approved live run (2 provider calls) to prove the three LIVE cases.
 - O5 Whether refused capture attempts should consume allowance (observed LIVE; unrelated to this policy, but visible in the counters).
+
+## 8. Evidence to gather before any number is chosen (nothing run yet)
+Goal: the distribution of the provider's score for (a) correct deck-species answers, (b) wrong-card answers, (c) junk and non-plant inputs, on
+FIELD photographs, so a floor is set from data and its cost in refused real finds is stated.
+- **Protocol already exists:** `docs/field-validation-phase-1.md` and `-phase-2.md` (ground truth written BEFORE scanning, same-individual sets,
+  PlantNet only, within the daily allowance). It needs the owner's real photographs; this cannot be done from CI. It is the one input that decides the numbers.
+- **What to add to the existing report, not new tooling:** per candidate `score`, rank position, `eligibility` and whether it matched the written ground truth,
+  then plot correct vs wrong scores and find the best floor and its false-refusal rate with a confidence interval.
+- **Cheap, repeatable stand-in that is clearly labelled an upper bound:** `scripts/identify_web_images.py` benchmark mode on Commons photographs (DOC says Commons is cleaner than field photos).
+  Spends provider credits and shared allowance, so it needs explicit approval before any run.
+- **Decision rule to write down first:** the floor is chosen so that no observed junk input earns a receipt AND the share of correct field answers refused is under an
+  agreed figure (suggest 5 percent, owner to set). If the distributions overlap, we keep the floor low and accept the residual rather than refuse real finds.
