@@ -20,7 +20,6 @@ import { AchievementsSection } from './AchievementsSection';
 import { PinnedAchievements } from './PinnedAchievements';
 import { ProfileHero } from './ProfileHero';
 import { RecentFinds } from './RecentFinds';
-import { PageAtmosphere } from '@/components/PageAtmosphere';
 
 /**
  * The profile, assembled.
@@ -76,8 +75,7 @@ export function ProfileView() {
   };
 
   return (
-    <main id="main" data-ground="lavender" data-shade="profile" className="mx-auto max-w-4xl px-4 pt-6 pb-8">
-      <PageAtmosphere theme="home" />
+    <main id="main" className="mx-auto max-w-4xl px-4 pt-6 pb-8">
       <nav aria-label="Breadcrumb" className="mb-2">
         <Link
           href="/"

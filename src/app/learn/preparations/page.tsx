@@ -3,7 +3,6 @@ import Link from 'next/link';
 import { GlossaryTermLink } from '@/components/learn/GlossaryTermLink';
 import { SafetyNotice } from '@/components/SafetyNotice';
 import { PlantdexIcon, type IconName } from '@/components/icons/PlantdexIcon';
-import { PageAtmosphere } from '@/components/PageAtmosphere';
 
 export const metadata: Metadata = {
   title: 'Preparation guides',
@@ -121,8 +120,7 @@ const GUIDES: Guide[] = [
 
 export default function PreparationsPage() {
   return (
-    <main id="main" data-ground="lavender" data-shade="learn" className="mx-auto max-w-3xl px-4 py-8">
-      <PageAtmosphere theme="learn" />
+    <main id="main" className="mx-auto max-w-3xl px-4 py-8">
       <nav aria-label="Breadcrumb" className="mb-4">
         <Link href="/learn" className="text-xs font-semibold text-violet-300 hover:text-gold-400">
           ← Learn

@@ -5,7 +5,6 @@ import { TrackView } from '@/components/analytics/TrackView';
 import { GeorgiaQuestGate } from '@/components/quests/GeorgiaQuestGate';
 import { SafetyNotice } from '@/components/SafetyNotice';
 import { georgiaQuestPreviewEnabled } from '@/lib/region-quest';
-import { PageAtmosphere } from '@/components/PageAtmosphere';
 
 export const metadata: Metadata = {
   title: 'Georgia Habitat Trail (preview)',
@@ -23,8 +22,7 @@ export const metadata: Metadata = {
 export default function GeorgiaTrailPage() {
   if (!georgiaQuestPreviewEnabled()) notFound();
   return (
-    <main id="main" data-ground="lavender" data-shade="quests" className="mx-auto max-w-4xl px-4 py-10 sm:py-14">
-      <PageAtmosphere theme="quests" />
+    <main id="main" className="mx-auto max-w-4xl px-4 py-10 sm:py-14">
       <TrackView event="quest_board_opened" />
       <header>
         <h1 className="font-display text-3xl leading-tight font-extrabold text-gold-plate sm:text-4xl">
