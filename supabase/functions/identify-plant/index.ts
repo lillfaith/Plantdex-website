@@ -13,6 +13,8 @@ import {
 } from '../_shared/herbdex/species-attestation.ts';
 import {
   beginCapture,
+  CAPTURE_REFUSAL_STATUS,
+  captureRefusal,
   captureWithoutCandidates,
   checkReplay,
   issueForCandidates,
@@ -435,6 +437,80 @@ Deno.serve(async (req: Request) => {
     }
   }
 
+  /*
+   * EVERYTHING THAT CAN BE REFUSED WITHOUT A PROVIDER IS REFUSED BEFORE THE ALLOWANCE IS CLAIMED (owner direction 2026-11-27).
+   *
+   * Run 3 measured that a refused capture and a malformed request still cost the caller one personal unit and one shared unit, and
+   * (by reading this file) a refused capture was then served as a lookup and so also reached the provider. Nothing here lets anybody
+   * charge ANOTHER player (the bucket is the caller's own, from the verified token), so this was a waste rather than a hole, but a
+   * waste that bought an attacker nothing is worth not paying: invalid requests now fail first, and cost nothing.
+   *
+   * Order: parse and validate the photographs -> for a collect request, admit the capture session (the one state change) -> only then
+   * claim the allowance. A lookup (no `purpose`) is exactly what it was, apart from being validated before it is charged.
+   */
+  let form: FormData;
+  try {
+    form = await readForm();
+  } catch {
+    return json({ error: 'Send the photograph as multipart form data.' }, 400);
+  }
+  const files = form.getAll('image').filter((one): one is File => one instanceof File);
+  // `readCaptureAsk` is non-null only for an explicit `purpose=collect`, so this is the one place the
+  // lower floor applies; a lookup (or a request with no purpose at all) keeps the resolved floor.
+  const captureAsk: CaptureAsk | null = readCaptureAsk(form);
+  const imageFloor = captureAsk ? MIN_COLLECT_IMAGES : MIN_IMAGES_FLOOR;
+  if (files.length < imageFloor) {
+    return json(
+      {
+        // The NUMBER the caller must actually satisfy, not the default. A deployment that
+        // lowered the floor and then told people to add two would be lying to them.
+        error:
+          imageFloor === 1
+            ? 'Add a photograph of the plant.'
+            : `Add ${imageFloor} photographs of the same plant \u2014 the whole plant and a close-up.`,
+        code: 'tooFewImages',
+      },
+      400,
+    );
+  }
+  if (files.length > MAX_IMAGES) {
+    return json({ error: `At most ${MAX_IMAGES} photographs.`, code: 'tooManyImages' }, 400);
+  }
+  for (const file of files) {
+    if (file.size > MAX_IMAGE_BYTES) {
+      return json({ error: 'That photograph is too large. Images are resized before upload.' }, 413);
+    }
+  }
+
+  /*
+   * The id that ties the two comparison rows, the client's own scan row and any capture receipt to one set of photographs.
+   * Minted BEFORE the capture is admitted because the capture session is consumed against it.
+   */
+  const observationId = crypto.randomUUID();
+
+  /*
+   * THE CAPTURE CONTRACT (docs/discoveries/discovery-receipt-contract.md 3.2), steps 1-2, now ahead of the allowance. Only an
+   * explicit `purpose=collect` reaches this. A capture that cannot be accepted (not signed in, unknown or foreign session, wrong nonce,
+   * expired, already used for other photographs, bad images, or the capture store unavailable) is refused here: no allowance claimed,
+   * no provider called, no receipt. The refusal says what to do and nothing about whose session it was.
+   */
+  const capture: CaptureState | null = captureAsk
+    ? await beginCapture(capturePort, captureAsk, userId, observationId, files)
+    : null;
+  if (capture?.kind === 'failed') {
+    return json({ ...captureRefusal(capture.code), signedIn: Boolean(userId) }, CAPTURE_REFUSAL_STATUS);
+  }
+  /** An admitted session is handed back when the request then cannot be served, so the same photographs may be sent again. */
+  const handBack = async (): Promise<void> => {
+    if (capture?.kind === 'open') {
+      try {
+        await capturePort.release(capture.userId, capture.sessionId);
+      } catch {
+        /* best effort: the player simply opens a new capture */
+      }
+    }
+  };
+
   const bucket = userId ? `user:${userId}` : await anonBucket(callerAddress(req), day);
   const limit = userId ? USER_DAILY_LIMIT : ANON_DAILY_LIMIT;
 
@@ -444,12 +520,16 @@ Deno.serve(async (req: Request) => {
     p_limit: limit,
     p_global_limit: GLOBAL_DAILY_LIMIT,
   });
-  if (quotaError) return json({ error: 'Could not check your daily allowance.' }, 500);
+  if (quotaError) {
+    await handBack();
+    return json({ error: 'Could not check your daily allowance.' }, 500);
+  }
 
   // -1 is this caller over their own allowance; -2 is the shared pool exhausted, with this
   // caller's unit refunded. Both are 429s, and they must stay distinguishable: one is "come
   // back tomorrow", the other is "this is not your fault".
   if (claimed === -1) {
+    await handBack();
     return json(
       {
         error: userId
@@ -463,6 +543,7 @@ Deno.serve(async (req: Request) => {
     );
   }
   if (claimed === -2) {
+    await handBack();
     return json(
       {
         error: 'Plant identification has hit its limit for today. Please try again tomorrow.',
@@ -502,51 +583,6 @@ Deno.serve(async (req: Request) => {
   (globalThis as { EdgeRuntime?: { waitUntil?: (promise: Promise<unknown>) => void } })
     .EdgeRuntime?.waitUntil?.(housekeeping);
 
-  // ── The image ────────────────────────────────────────────────────────────
-  let form: FormData;
-  try {
-    form = await readForm();
-  } catch {
-    return json({ error: 'Send the photograph as multipart form data.' }, 400);
-  }
-  /*
-   * TWO TO THREE PHOTOGRAPHS OF ONE PLANT, VALIDATED HERE AS WELL AS IN THE BROWSER.
-   *
-   * The client disables its own button below two, but this endpoint is reachable without it,
-   * and the count is the whole basis of the identification: both providers treat the set as
-   * ONE individual, so a caller that sent pictures of two different plants would be asking
-   * for a blended answer and getting a confident one.
-   *
-   * `getAll` rather than `get` is the change. The old code read a single `image` and appended
-   * one `organs` field — the multi-image shape PlantNet documents was already half-wired.
-   */
-  const files = form.getAll('image').filter((one): one is File => one instanceof File);
-  // `readCaptureAsk` is non-null only for an explicit `purpose=collect`, so this is the one place the
-  // lower floor applies; a lookup (or a request with no purpose at all) keeps the resolved floor.
-  const imageFloor = readCaptureAsk(form) ? MIN_COLLECT_IMAGES : MIN_IMAGES_FLOOR;
-  if (files.length < imageFloor) {
-    return json(
-      {
-        // The NUMBER the caller must actually satisfy, not the default. A deployment that
-        // lowered the floor and then told people to add two would be lying to them.
-        error:
-          imageFloor === 1
-            ? 'Add a photograph of the plant.'
-            : `Add ${imageFloor} photographs of the same plant \u2014 the whole plant and a close-up.`,
-        code: 'tooFewImages',
-      },
-      400,
-    );
-  }
-  if (files.length > MAX_IMAGES) {
-    return json({ error: `At most ${MAX_IMAGES} photographs.`, code: 'tooManyImages' }, 400);
-  }
-  for (const file of files) {
-    if (file.size > MAX_IMAGE_BYTES) {
-      return json({ error: 'That photograph is too large. Images are resized before upload.' }, 413);
-    }
-  }
-
   /*
    * Organ tags ride alongside, one per image and in the same order. An absent or unrecognised
    * tag becomes `auto` rather than an error: a wrong organ label costs a little accuracy, and
@@ -568,6 +604,7 @@ Deno.serve(async (req: Request) => {
    * and a normalizer in `_shared`, not a change to the matcher, the scan UI or the reducer.
    */
   if (PROVIDER_ID !== 'plantnet' && PROVIDER_ID !== 'plantid') {
+    await handBack();
     return json(
       {
         error: 'Plant identification is not set up correctly on this deployment.',
@@ -592,25 +629,6 @@ Deno.serve(async (req: Request) => {
 
   const run = (id: 'plantnet' | 'plantid', key: string) =>
     id === 'plantid' ? identifyWithPlantId(images, key) : identifyWithPlantNet(images, key);
-
-  /*
-   * The id that ties the two comparison rows — and the client's own scan row, and any capture
-   * receipt — to one set of photographs. Minted BEFORE the provider call because the capture session
-   * is consumed against it.
-   */
-  const observationId = crypto.randomUUID();
-
-  /*
-   * THE CAPTURE CONTRACT (docs/discoveries/discovery-receipt-contract.md 3.2), step 1-2. Only an
-   * explicit `purpose=collect` reaches this; a request without one skips it entirely and everything
-   * below behaves as it did before. Whatever happens here is swallowed into `capture.code` — a failed
-   * capture is an education lookup, never a failed identification — and the quota claimed above is
-   * unchanged and counts once either way.
-   */
-  const captureAsk: CaptureAsk | null = readCaptureAsk(form);
-  const capture: CaptureState | null = captureAsk
-    ? await beginCapture(capturePort, captureAsk, userId, observationId, files)
-    : null;
 
   const [identification, alternate] = await Promise.all([
     run(PROVIDER_ID, activeKey),
