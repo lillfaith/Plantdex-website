@@ -315,6 +315,41 @@ export async function checkReplay(
   }
 }
 
+/**
+ * THE ANSWER TO A COLLECT REQUEST WHOSE CAPTURE CANNOT BE ACCEPTED (owner direction 2026-11-27).
+ *
+ * It used to be "serve it as an education lookup": HTTP 200, a provider call, a spent allowance, no receipt. That made every refused attempt
+ * cost real provider money for nothing. A collect request is by definition a camera capture, so one that cannot be accepted is refused
+ * BEFORE the allowance claim and BEFORE the provider. Educational lookups carry no `purpose` and are untouched.
+ *
+ * The sentence says what to DO and nothing about whose session it was: an unknown, foreign or mismatched session all read the same, so a
+ * refusal teaches an attacker nothing about another player's sessions. `code` is stable for the client; `capture.code` is the contract code.
+ */
+export const CAPTURE_REFUSAL_STATUS = 409;
+
+const REFUSAL_SENTENCE: Readonly<Record<Exclude<CaptureCode, 'no_eligible_candidate'>, string>> = {
+  capture_not_signed_in: 'Sign in to collect a plant from a camera photo.',
+  capture_purpose_missing: 'This photo could not be matched to a camera capture. Please take the photo again.',
+  capture_session_unknown: 'This photo could not be matched to a camera capture. Please take the photo again.',
+  capture_session_nonce: 'This photo could not be matched to a camera capture. Please take the photo again.',
+  capture_session_expired: 'This capture timed out. Please take the photo again.',
+  capture_session_used: 'This capture was already used. Please take a new photo.',
+  capture_too_fast: 'That was too quick. Please take the photo again.',
+  capture_images_invalid: 'This photo could not be used for collecting. Please take one clear photo again.',
+  capture_unavailable: 'Collecting is unavailable right now. Please try again in a moment.',
+};
+
+export interface CaptureRefusal {
+  readonly error: string;
+  readonly code: 'captureRefused';
+  readonly capture: { readonly accepted: false; readonly code: CaptureCode };
+}
+
+export function captureRefusal(code: CaptureCode): CaptureRefusal {
+  const sentence = code === 'no_eligible_candidate' ? REFUSAL_SENTENCE.capture_unavailable : REFUSAL_SENTENCE[code];
+  return { error: sentence, code: 'captureRefused', capture: { accepted: false, code } };
+}
+
 /** The `capture` field for an answer with no candidates at all (not a plant, or nothing found). */
 export function captureWithoutCandidates(state: CaptureState): { accepted: boolean; code?: CaptureCode } {
   return state.kind === 'failed'
