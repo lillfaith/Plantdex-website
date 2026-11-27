@@ -3036,10 +3036,26 @@ body {
  * TARGETED FOLLOW-UPS (owner 2026-11-27): the Home name strip, the light-lavender Home button, and the Scan title.
  */
 .home-name-strip {
-  background: #ece3fc;
-  border: 1px solid #c5b2dc;
+  background: #efe7fd;
+  border: 1px solid #b9a3e0;
+  border-bottom: 2px solid #9c20f8;
   border-radius: 999px;
   box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.9);
+}
+/* The crest sits in a soft lavender-and-pink halo (light, behind the artwork, never a shadow). The logo image itself is untouched. */
+.home-logo-halo {
+  background: radial-gradient(closest-side, rgb(255 226 244 / 0.95) 0%, rgb(236 214 255 / 0.8) 48%, rgb(220 196 251 / 0) 100%);
+}
+/* A little deep plum and card violet: the eyebrow is deep plum between two card-violet pixel diamonds. */
+.home-eyebrow { color: #38204f; }
+.home-eyebrow::before,
+.home-eyebrow::after {
+  content: '';
+  width: 7px;
+  height: 7px;
+  background: #9c20f8;
+  transform: rotate(45deg);
+  flex: none;
 }
 /* "See the deck": the same light-lavender pill as the name strip, framed and footed in the card background violet (#9C21F8), with card-violet pixel diamonds either side of the label. */
 [data-ground='lavender'] a[href^='/shop'][class*='bg-violet-300'] {

@@ -78,7 +78,7 @@ export default function HomePage() {
           far end rather than stopping, so the line reads as light catching an edge instead
           of as a border somebody drew. `aria-hidden` on both: the sentence is the content.
         */}
-        <p className="flex items-center justify-center gap-3 text-xs font-bold tracking-[0.25em] text-violet-300 uppercase">
+        <p className="home-eyebrow flex items-center justify-center gap-3 text-xs font-bold tracking-[0.25em] text-violet-300 uppercase">
           <span
             aria-hidden="true"
             className="hidden h-px w-16 bg-gradient-to-r from-transparent to-gold-500/50 sm:block"
@@ -122,7 +122,7 @@ export default function HomePage() {
           <span className="sr-only">Plantdex</span>
           <span
             aria-hidden="true"
-            className="absolute top-1/2 left-1/2 -z-10 h-33 w-33 -translate-x-1/2 -translate-y-1/2 rounded-full bg-gold-500/15 blur-2xl sm:h-42 sm:w-42"
+            className="home-logo-halo absolute top-1/2 left-1/2 -z-10 h-44 w-44 -translate-x-1/2 -translate-y-1/2 rounded-full sm:h-56 sm:w-56"
           />
           <Image
             src={assetPath('/plantdex-logo.png')}
@@ -131,7 +131,7 @@ export default function HomePage() {
             width={640}
             height={683}
             priority
-            className="mx-auto h-auto w-30 sm:w-39"
+            className="mx-auto h-auto w-[8.5rem] sm:w-44"
           />
         </h1>
         <p className="mx-auto mt-2 max-w-xl text-base leading-relaxed text-violet-200 sm:text-lg">
@@ -167,7 +167,7 @@ export default function HomePage() {
           className="relative mx-auto mt-3 flex w-full max-w-2xl items-end justify-center gap-2 sm:gap-4"
         >
           {/* A thin light-lavender strip runs under all four names, so the dark lettering always sits on a pale ground. Decorative. */}
-          <li aria-hidden="true" className="home-name-strip pointer-events-none absolute inset-x-0 bottom-[0.3rem] h-[1.45rem] flex-none" />
+          <li aria-hidden="true" className="home-name-strip pointer-events-none absolute -inset-x-1 bottom-0 h-[2.15rem] flex-none" />
           {HERO_CREATURES.map((herbId) => {
             const herb = getPrintedCard(herbId);
             if (!herb) return null;
@@ -203,7 +203,7 @@ export default function HomePage() {
                     A decoration that eats the word it decorates is not a decoration, so on a
                     phone the label goes back to what it was.
                   */}
-                  <span className="relative z-10 mt-2 max-w-full truncate text-center text-[0.72rem] font-bold text-violet-deep sm:text-xs">
+                  <span className="relative z-10 mt-3 max-w-full truncate px-0.5 py-[3px] text-center text-[0.75rem] font-bold text-violet-deep sm:text-xs">
                     {herb.commonName}
                   </span>
                 </Link>
@@ -304,7 +304,7 @@ export default function HomePage() {
           The 48 above and 8+16+24 below also keep the button optically centred between the
           creatures and the sentence, which is where it was put deliberately.
         */}
-        <div className="mx-auto mt-3 flex max-w-md flex-row items-stretch justify-center gap-2">
+        <div className="mx-auto mt-3 flex max-w-md scroll-mb-28 flex-row items-stretch justify-center gap-2">
           <Link
             href="/scan"
             className="flex min-h-12 flex-1 items-center justify-center rounded-full bg-gradient-to-r from-gold-500 to-pink-accent px-3 text-center text-sm leading-tight font-bold text-violet-deep shadow-card transition-transform hover:scale-[1.03] motion-reduce:hover:scale-100 sm:px-6 sm:text-base"
