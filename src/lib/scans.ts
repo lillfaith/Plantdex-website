@@ -94,7 +94,7 @@ export function providerFailureMessage(released: boolean, refunded: boolean, isC
 export type ScanFailure =
   | { kind: 'rateLimited'; message: string; signedIn: boolean }
   | { kind: 'unconfigured'; message: string }
-  | { kind: 'error'; message: string; /** The same photographs may be sent again; nothing was spent. */ retryable?: boolean };
+  | { kind: 'error'; message: string; /** The same photographs may be sent again; nothing was spent. */ retryable?: boolean; /** The backend consumed the camera session and did not hand it back: it cannot be sent again. */ captureSpent?: boolean };
 
 export interface ScanRecord {
   id: string;
@@ -301,12 +301,15 @@ export async function identifyPlant(
       return {
         kind: 'error',
         message: providerFailureMessage(released, payload.allowance === 'refunded', Boolean(options.capture)),
-        ...(released ? { retryable: true } : {}),
+        ...(released ? { retryable: true } : options.capture ? { captureSpent: true } : {}),
       };
     }
     return {
       kind: 'error',
-      message: payload.error ?? 'The identification service could not be reached.',
+      // No answer at all (the connection dropped, or the function was unreachable). The photographs are
+      // still on screen and nothing the player did is lost, so say that; a retry uses the same
+      // capture session, and if the server turns out to have spent it the retry says so.
+      message: payload.error ?? 'The identification service could not be reached. Your photos are still here: check your connection and try again.',
     };
   }
 

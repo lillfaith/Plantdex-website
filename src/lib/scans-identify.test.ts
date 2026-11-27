@@ -146,8 +146,22 @@ describe('identifyPlant: four honest outcomes, exact words', () => {
   });
   it('!released && refunded: capture', async () => {
     const a = await fail({ allowance: 'refunded' }, cap);
-    expect(a).toEqual({ kind: 'error', message: `${U} This attempt was not counted against your daily scans. Please take your photos again.` });
+    // The backend consumed the camera session and did not hand it back: the client must drop it.
+    expect(a).toEqual({ kind: 'error', captureSpent: true, message: `${U} This attempt was not counted against your daily scans. Please take your photos again.` });
     expect(a).not.toHaveProperty('retryable');
+  });
+  it('a released session is never reported spent (the same session is reused on retry)', async () => {
+    expect(await fail({ capture: R, allowance: 'refunded' })).not.toHaveProperty('captureSpent');
+  });
+  it('a dropped connection says the photos are still there and keeps the session', async () => {
+    state.data = null;
+    state.error = new Error('Failed to send a request to the Edge Function'); // FunctionsFetchError: no response, no body
+    const a = await identifyPlant(photos, undefined, cap);
+    expect(a).toEqual({
+      kind: 'error',
+      message: 'The identification service could not be reached. Your photos are still here: check your connection and try again.',
+    });
+    expect(a).not.toHaveProperty('captureSpent');
   });
   it('!released && refunded: non-capture lookup', async () => {
     expect(await fail({ allowance: 'refunded' })).toEqual({
@@ -156,7 +170,7 @@ describe('identifyPlant: four honest outcomes, exact words', () => {
   });
   it('neither', async () => {
     const a = await fail({ allowance: 'not_refunded' }, cap);
-    expect(a).toEqual({ kind: 'error', message: `${U} Please try again in a little while.` });
+    expect(a).toEqual({ kind: 'error', captureSpent: true, message: `${U} Please try again in a little while.` });
     expect(a).not.toHaveProperty('retryable');
   });
   it('no player-facing message names global, shared or budget, or claims a restore without confirmation', () => {
