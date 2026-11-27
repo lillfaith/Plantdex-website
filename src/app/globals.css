@@ -2900,6 +2900,10 @@ body {
 [data-ground='lavender'] [class*='drop-shadow-[']:not([class*='drop-shadow-[0_0_']) {
   filter: drop-shadow(0 0 1px rgb(156 33 248 / 0.55)) drop-shadow(0 0 7px rgb(255 214 240 / 0.95)) drop-shadow(0 0 18px rgb(222 190 255 / 0.85));
 }
+/* The green pool under the Home creatures was a grey smudge on lavender: it is soft light instead. */
+[data-ground='lavender'] [class*='bg-band-leaf/35'][class*='blur'] {
+  background-color: rgb(255 226 244 / 0.85);
+}
 /* The grounding blob under a companion sprite was a dark violet smudge; it is a pool of pink-white light. */
 [data-ground='lavender'] [class*='bg-violet-900/50'][class*='blur'] {
   background-color: rgb(255 214 240 / 0.8);
