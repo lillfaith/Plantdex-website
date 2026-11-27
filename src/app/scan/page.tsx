@@ -87,7 +87,7 @@ export default function ScanPage() {
       <div className="mt-8 space-y-3">
         <SafetyNotice
           variant="standard"
-          context="An identification from a photograph is a starting point, not proof. Never eat, drink or apply a wild plant on one."
+          context="An identification from a photograph is a starting point, not proof."
         />
         {/*
           THE TWO NOTES ANSWER DIFFERENT QUESTIONS, which is why this is not one longer block.
