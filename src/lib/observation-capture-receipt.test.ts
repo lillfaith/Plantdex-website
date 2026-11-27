@@ -456,9 +456,10 @@ const LCR_CODE = LCR_TEXT.replace(/^\s*#.*$/gm, '');
 const LIVE_RUN_PY = read('scripts/live_run.py');
 
 describe('the autonomous live run workflow stays TEST-only, deliberate and bounded', () => {
-  it('can start only from a push to integration that changes the request file', () => {
-    expect(LCR_CODE).toMatch(/on:\s*\n\s{2}push:\s*\n\s{4}branches:\s*\n\s{6}- integration\s*\n\s{4}paths:\s*\n\s{6}- docs\/release\/live-run-request\.json\s*\n/);
-    expect(LCR_CODE).not.toMatch(/^\s{2}(pull_request|pull_request_target|schedule|workflow_dispatch|workflow_run|issue_comment):/m);
+  it('has no live trigger: dispatch only, and the gate refuses anything but a push to integration', () => {
+    expect(LCR_CODE).toMatch(/on:\s*\n\s{2}workflow_dispatch:\s*\n/);
+    expect(LCR_CODE).not.toMatch(/^\s{2}(push|pull_request|pull_request_target|schedule|workflow_run|issue_comment):/m);
+    expect(LCR_CODE).toContain('"$GITHUB_EVENT_NAME" != "push"');
   });
   it('names the TEST project as a literal, takes no project input and never names production', () => {
     expect(LCR_CODE).toContain('PROJECT_REF: vgjehmwcpavflbfhbbrp');
