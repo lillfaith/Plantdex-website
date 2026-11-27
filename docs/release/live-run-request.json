@@ -1,0 +1,10 @@
+{
+  "target": "TEST vgjehmwcpavflbfhbbrp",
+  "authorized_by": "owner",
+  "enforcement": "off",
+  "max_provider_calls": 2,
+  "request_id": "live-run-1-20261127",
+  "herb_id": "taraxacum-officinale",
+  "expires_at": "2026-11-27T12:00:00Z",
+  "note": "First autonomous TEST live capture run. Owner authorised TEST-only identification requests and disposable TEST accounts on 2026-11-27. Change this file only to request another run."
+}
