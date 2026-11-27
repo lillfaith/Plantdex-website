@@ -3549,3 +3549,7 @@ html:has(main[data-shade='scan']) { background: #beb0f6; }
 html:has(main[data-shade='quests']) { background: #d4a8f2; }
 html:has(main[data-shade='journal']) { background: #cbaeea; }
 html:has(main[data-shade='learn']) { background: #b7b7f5; }
+/* A hover/pressed tint that was a dark translucent plum is the pale surface on lavender (it stays after a tap on a phone). */
+[data-ground='lavender'] [class*='hover:bg-plum']:hover {
+  background-color: var(--lav-surface-2);
+}
