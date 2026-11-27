@@ -102,7 +102,7 @@ export function HabitatsPreview({ initialView = 'overview', initialIndex = 1, in
 
   return (
     <main id="main" data-ground="lavender" className="mx-auto max-w-md px-4 py-6" data-habitats-preview>
-      <div className="flex items-center justify-between pr-14">
+      <div className="flex items-center justify-between pr-28">
         <p className="text-[0.72rem] font-extrabold tracking-[0.14em] text-violet-200 uppercase">Regional quests</p>
         <span className="rounded-full bg-[#f7f0ff] px-3 py-1 text-sm font-bold text-violet-100">Georgia ▾</span>
       </div>
