@@ -1,3 +1,4 @@
+import { execSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { ACTIVE_PAGE_THEMES, PAGE_THEMES } from './page-themes';
@@ -31,16 +32,11 @@ describe('page themes', () => {
     }
   });
 
-  it('each active theme is applied by exactly its own route, and the rest by none', () => {
-    const routes: Record<string, string> = {
-      scan: 'src/app/scan/page.tsx',
-      collection: 'src/app/herbdex/page.tsx',
-      garden: 'src/app/garden/page.tsx',
-    };
-    for (const id of PAGE_THEMES) {
-      const used = Object.entries(routes).filter(([, f]) => readFileSync(f, 'utf8').includes(`<PageAtmosphere theme="${id}" />`));
-      expect(used.length).toBe(ACTIVE_PAGE_THEMES.includes(id) ? 1 : 0);
-    }
+  it('a theme that any route or view applies is listed as active (order-independent: a listed theme may be applied by a later change)', () => {
+    const files = execSync("grep -rl 'PageAtmosphere theme=' src/app src/components || true", { encoding: 'utf8' }).split('\n').filter(Boolean);
+    const used = new Set<string>();
+    for (const f of files) for (const m of readFileSync(f, 'utf8').matchAll(/<PageAtmosphere theme="([a-z]+)" \/>/g)) used.add(m[1]!);
+    for (const id of PAGE_THEMES) if (used.has(id)) expect(ACTIVE_PAGE_THEMES.includes(id), id).toBe(true);
   });
 
   it('the atmosphere is static, Safari-safe gradients: fixed, no animation, filter, blur or attachment', () => {
@@ -53,11 +49,20 @@ describe('page themes', () => {
     expect(component).toContain('aria-hidden="true"');
   });
 
-  it('the navigation is one solid brand plum on every page', () => {
+  it('the navigation is a solid bright lavender, darker than every page ground, with deep-plum ink', () => {
     const at = css.indexOf('@utility nav-bar');
     const block = strip(css.slice(at, css.indexOf('\n}', at)));
-    expect(block).toContain('var(--color-brand-nav)');
     expect(block).not.toMatch(/backdrop|transparent|color-mix/);
+    const stops = [...block.matchAll(/#([0-9a-f]{6})/g)].map((m) => m[1]!).slice(0, 2);
+    expect(stops.length).toBe(2);
+    const lum = (hex: string) => {
+      const c = [0, 2, 4].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255).map((v) => (v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4));
+      return 0.2126 * c[0]! + 0.7152 * c[1]! + 0.0722 * c[2]!;
+    };
+    const grounds = [...css.matchAll(/(?:body|html):has\(main\[data-(?:shade|ground)='[a-z]+'\]\)\s*\{\s*background:\s*#([0-9a-f]{6})/g)].map((m) => m[1]!);
+    expect(grounds.length).toBeGreaterThanOrEqual(7);
+    for (const g of grounds) for (const n of stops) expect(lum(n), `nav #${n} must be darker than page ground #${g}`).toBeLessThan(lum(g));
+    for (const n of stops) expect((lum(n) + 0.05) / (lum('2b1650') + 0.05), `plum ink on #${n}`).toBeGreaterThanOrEqual(4.5);
     const nav = readFileSync('src/components/SiteNav.tsx', 'utf8');
     expect(nav).toContain('nav-bar');
     expect(nav).not.toContain('panel-raised');

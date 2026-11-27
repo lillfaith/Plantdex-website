@@ -73,7 +73,7 @@ export function GardenView() {
   }, [ready, stageSignature]);
 
   return (
-    <main id="main" data-ground="lavender" className="mx-auto max-w-5xl px-4 py-8">
+    <main id="main" data-ground="lavender" data-palette="card" className="mx-auto max-w-5xl px-4 py-8">
       <h1 className="font-display text-3xl font-extrabold text-gold-plate">My Garden</h1>
       <p className="mt-1 text-sm text-violet-300">
         Every plant you&apos;ve found, growing as you get to know it.
