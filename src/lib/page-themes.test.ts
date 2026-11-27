@@ -49,11 +49,20 @@ describe('page themes', () => {
     expect(component).toContain('aria-hidden="true"');
   });
 
-  it('the navigation is one solid brand plum on every page', () => {
+  it('the navigation is a solid bright lavender, darker than every page ground, with deep-plum ink', () => {
     const at = css.indexOf('@utility nav-bar');
     const block = strip(css.slice(at, css.indexOf('\n}', at)));
-    expect(block).toContain('var(--color-brand-nav)');
     expect(block).not.toMatch(/backdrop|transparent|color-mix/);
+    const stops = [...block.matchAll(/#([0-9a-f]{6})/g)].map((m) => m[1]!).slice(0, 2);
+    expect(stops.length).toBe(2);
+    const lum = (hex: string) => {
+      const c = [0, 2, 4].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255).map((v) => (v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4));
+      return 0.2126 * c[0]! + 0.7152 * c[1]! + 0.0722 * c[2]!;
+    };
+    const grounds = [...css.matchAll(/(?:body|html):has\(main\[data-(?:shade|ground)='[a-z]+'\]\)\s*\{\s*background:\s*#([0-9a-f]{6})/g)].map((m) => m[1]!);
+    expect(grounds.length).toBeGreaterThanOrEqual(7);
+    for (const g of grounds) for (const n of stops) expect(lum(n), `nav #${n} must be darker than page ground #${g}`).toBeLessThan(lum(g));
+    for (const n of stops) expect((lum(n) + 0.05) / (lum('2b1650') + 0.05), `plum ink on #${n}`).toBeGreaterThanOrEqual(4.5);
     const nav = readFileSync('src/components/SiteNav.tsx', 'utf8');
     expect(nav).toContain('nav-bar');
     expect(nav).not.toContain('panel-raised');
