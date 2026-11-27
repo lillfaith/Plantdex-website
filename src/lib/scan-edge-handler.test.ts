@@ -89,6 +89,16 @@ const collect = { purpose: 'collect', capture_session_id: SESSION, capture_nonce
  * `scan-edge-refuse.test.ts`. What must hold under both: the capture is reported honestly with its code, no receipt is issued, the
  * provider is called at most once, and a 200 still carries the identification.
  */
+/** The same RPCs were made, whichever of the claim and the capture came first; the session is always consumed before receipts are issued. */
+function expectCalls(calls: Calls, names: string[]): void {
+  const seen = calls.rpc.map(([n]) => n);
+  expect([...seen].sort()).toEqual([...names].sort());
+  if (seen.includes('consume_capture_session') && seen.includes('issue_capture_receipts')) {
+    expect(seen.indexOf('consume_capture_session')).toBeLessThan(seen.indexOf('issue_capture_receipts'));
+  }
+}
+const rpcArgs = (calls: Calls, name: string): Record<string, unknown> => calls.rpc.find(([n]) => n === name)![1];
+
 function expectRefusedCapture(out: { status: number; body: Record<string, unknown> }, code: string, calls?: Calls): void {
   expect([200, 409]).toContain(out.status);
   expect(out.body.capture).toEqual({ accepted: false, code });
@@ -186,9 +196,9 @@ describe('purpose=collect', () => {
     const out = await invoke(handler, { token: 'tok-alice', images, fields: collect });
     expect(out.status).toBe(200);
     expect(provider.calls).toBe(1);
-    expect(calls.rpc.map(([n]) => n)).toEqual(['claim_scan_pair', 'consume_capture_session', 'issue_capture_receipts']);
+    expectCalls(calls, ['claim_scan_pair', 'consume_capture_session', 'issue_capture_receipts']);
 
-    const consume = calls.rpc[1]![1];
+    const consume = rpcArgs(calls, 'consume_capture_session');
     const sha = async (f: File) => [...new Uint8Array(await crypto.subtle.digest('SHA-256', await f.arrayBuffer()))].map((b) => b.toString(16).padStart(2, '0')).join('');
     expect(consume).toEqual({
       p_user: ALICE,
@@ -198,7 +208,7 @@ describe('purpose=collect', () => {
       p_image_digests: [await sha(images[0]!), await sha(images[1]!)],
     });
 
-    const issue = calls.rpc[2]![1];
+    const issue = rpcArgs(calls, 'issue_capture_receipts');
     expect(issue.p_user).toBe(ALICE);
     expect(issue.p_session).toBe(SESSION);
     expect(issue.p_items).toEqual([
@@ -365,9 +375,9 @@ describe('purpose=collect', () => {
     const out = await invoke(handler, { token: 'tok-alice', images: [image], fields: collect });
     expect(out.status).toBe(200);
     expect(provider.calls).toBe(1);
-    expect(calls.rpc.map(([n]) => n)).toEqual(['claim_scan_pair', 'consume_capture_session', 'issue_capture_receipts']);
+    expectCalls(calls, ['claim_scan_pair', 'consume_capture_session', 'issue_capture_receipts']);
     const sha = [...new Uint8Array(await crypto.subtle.digest('SHA-256', await image.arrayBuffer()))].map((b) => b.toString(16).padStart(2, '0')).join('');
-    expect(calls.rpc[1]![1].p_image_digests).toEqual([sha]);
+    expect(rpcArgs(calls, 'consume_capture_session').p_image_digests).toEqual([sha]);
     const body = out.body as { candidates: Array<Record<string, unknown>>; capture: unknown };
     expect(body.capture).toEqual({ accepted: true });
     expect(body.candidates[0]!.captureReceipt).toEqual({ id: 'rcpt_00000000000000000000000000000000', rankPosition: 'top', expiresAt: '2030-01-01T00:00:00+00:00' });
@@ -391,7 +401,7 @@ describe('purpose=collect', () => {
     const out = await invoke(handler, { token: 'tok-alice', images: [], fields: collect });
     expect(out.status).toBe(400);
     expect(out.body.code).toBe('tooFewImages');
-    expect(calls.rpc.map(([n]) => n)).toEqual(['claim_scan_pair']);
+    expect(calls.rpc.map(([n]) => n).filter((n) => n !== 'claim_scan_pair')).toEqual([]);
   });
 
   it('a NON-collect request of one image is still the old 400 (education lookups keep the two-photo floor)', async () => {
@@ -400,6 +410,6 @@ describe('purpose=collect', () => {
     const out = await invoke(handler, { token: 'tok-alice', images: [fakeImage('solo')] });
     expect(out.status).toBe(400);
     expect(out.body.code).toBe('tooFewImages');
-    expect(calls.rpc.map(([n]) => n)).toEqual(['claim_scan_pair']);
+    expect(calls.rpc.map(([n]) => n).filter((n) => n !== 'claim_scan_pair')).toEqual([]);
   });
 });
