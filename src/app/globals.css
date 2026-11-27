@@ -3583,12 +3583,12 @@ html:has(main[data-shade='learn']) { background: #b7b7f5; }
 .nav-bar :is(a, button) {
   color: #3d0a63;
 }
-.nav-bar :is(a, button):hover:not([aria-current='page']):not([class*='bg-brand-purple']) {
+.nav-bar :is(a, button):hover:not([aria-current='page']):not([class~='bg-brand-purple']) {
   background: rgb(255 255 255 / 0.32);
   color: #3d0a63;
 }
 .nav-bar a[aria-current='page'],
-.nav-bar :is(a, button)[class*='bg-brand-purple'] {
+.nav-bar :is(a, button)[class~='bg-brand-purple'] {
   background: linear-gradient(180deg, #7a4cc0 0%, #5b2e91 100%);
   color: #fff0a8;
   box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.28), 0 2px 0 0 #3d1a6d;
