@@ -24,7 +24,7 @@ export const metadata: Metadata = {
  */
 export default function ScanPage() {
   return (
-    <main id="main" className="mx-auto max-w-2xl px-4 py-8">
+    <main id="main" data-ground="lavender" data-shade="scan" className="mx-auto max-w-2xl px-4 py-8">
       <PageAtmosphere theme="scan" />
       {/*
         THE SCOUT SITS BESIDE THE HEADING, AND ON ITS LEFT.

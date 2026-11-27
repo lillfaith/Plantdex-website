@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { CATALOGUE } from '@/lib/catalogue';
 import { SafetyNotice } from '@/components/SafetyNotice';
 import { PlantLibrary } from '@/components/learn/PlantLibrary';
+import { PageAtmosphere } from '@/components/PageAtmosphere';
 
 export const metadata: Metadata = {
   title: 'Plant library',
@@ -25,7 +26,8 @@ export default function PlantLibraryPage() {
   const plants = [...CATALOGUE].sort((a, b) => a.commonName.localeCompare(b.commonName));
 
   return (
-    <main id="main" className="mx-auto max-w-3xl px-4 py-8">
+    <main id="main" data-ground="lavender" data-shade="learn" className="mx-auto max-w-3xl px-4 py-8">
+      <PageAtmosphere theme="learn" />
       <nav aria-label="Breadcrumb" className="mb-2">
         <Link
           href="/learn"

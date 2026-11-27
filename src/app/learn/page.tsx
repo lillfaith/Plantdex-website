@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { SafetyNotice } from '@/components/SafetyNotice';
 import { pixelObject } from '@/lib/pixel-art';
+import { PageAtmosphere } from '@/components/PageAtmosphere';
 
 export const metadata: Metadata = {
   title: 'Learn',
@@ -24,7 +25,8 @@ const SECTIONS: {
 
 export default function LearnPage() {
   return (
-    <main id="main" className="mx-auto max-w-3xl px-4 py-8">
+    <main id="main" data-ground="lavender" data-shade="learn" className="mx-auto max-w-3xl px-4 py-8">
+      <PageAtmosphere theme="learn" />
       <h1 className="font-display text-3xl font-extrabold text-gold-plate">Learn</h1>
       {/*
         WHAT "LEARN" MEANS HERE, WHICH IS NARROWER THAN THE WORD.
