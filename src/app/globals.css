@@ -3599,7 +3599,7 @@ html:has(main[data-shade='learn']) { background: #cfd3fb; }
 }
 .nav-bar a[aria-current='page'],
 .nav-bar :is(a, button)[class~='bg-brand-purple'] {
-  background: linear-gradient(180deg, #a339f7 0%, #8a18e0 100%);
+  background: linear-gradient(180deg, #962af0 0%, #8216d8 100%);
   color: #fff0a8;
   box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.3), 0 2px 0 0 #5a0fa8;
 }
