@@ -2997,6 +2997,37 @@ body {
 @keyframes cf-nudge { 0% { transform: translateX(0); } 50% { transform: translateX(2px); } }
 
 /*
+ * CARD-VIOLET FRAMES FOR THE SQUARE BOXES (owner 2026-11-27): boxes that hold an element and a label (stat tiles, Learn tiles, the Scan flow scenes, the
+ * Habitats and Garden tiles) get a 2px frame in the colour of the card background (#9C21F8, sampled from the 54 card fronts) with small pixel corner
+ * studs, so they read as part of the same collectible family as the cards. Scoped to the lavender ground; larger content panels are not framed this way.
+ */
+[data-ground='lavender'] :is(.sunken, .learn-tile, .cf-scene) {
+  --stud: #9c21f8;
+  border: 2px solid #9c21f8;
+  background-image:
+    linear-gradient(var(--stud) 0 0), linear-gradient(var(--stud) 0 0), linear-gradient(var(--stud) 0 0), linear-gradient(var(--stud) 0 0);
+  background-repeat: no-repeat;
+  background-size: 6px 6px, 6px 6px, 6px 6px, 6px 6px;
+  background-position: -2px -2px, calc(100% + 2px) -2px, -2px calc(100% + 2px), calc(100% + 2px) calc(100% + 2px);
+  background-origin: border-box;
+  box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.85), 0 0 8px 1px rgb(255 214 240 / 0.8);
+}
+[data-ground='lavender'] .learn-tile {
+  background-image:
+    linear-gradient(var(--stud) 0 0), linear-gradient(var(--stud) 0 0), linear-gradient(var(--stud) 0 0), linear-gradient(var(--stud) 0 0),
+    radial-gradient(120% 70% at 50% 0%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 70%);
+  background-size: 6px 6px, 6px 6px, 6px 6px, 6px 6px, auto;
+  background-position: -2px -2px, calc(100% + 2px) -2px, -2px calc(100% + 2px), calc(100% + 2px) calc(100% + 2px), 0 0;
+}
+[data-ground='lavender'] :is(a, button)[class*='border-dashed'][class*='rounded-xl'],
+[data-ground='lavender'] li > button.tap-44.flex.w-full.flex-col {
+  border: 2px solid #9c21f8;
+  border-radius: 10px;
+  background-color: var(--lav-surface);
+}
+.cf-scene { border-color: #9c21f8; }
+
+/*
  * BOSS FORM CHALLENGES: every motion here runs a FIXED number of times and then rests, because
  * this app does not use ambient motion that repeats forever. Opacity and transform only, never
  * blur or filter (blur measurably halved the discovery reveal's frame rate), so it stays cheap
