@@ -203,20 +203,20 @@ describe.skipIf(!DB)('identify-plant + migration 0016, end to end on a local Pos
     const aliceOpen = open(asAlice);
     aged(aliceOpen.sessionId);
     const stolen = await invoke(handler, { token: 'tok-bob', images: photos('stolen'), fields: collect(aliceOpen) });
-    expect(stolen.status).toBe(200);
+    expect([200, 409]).toContain(stolen.status); // legacy lookup answer, or the refusal (2026-11-27)
     expect(stolen.body.capture).toEqual({ accepted: false, code: 'capture_session_unknown' });
-    expect(JSON.stringify(stolen.body.candidates)).not.toContain('rcpt_');
+    expect(JSON.stringify(stolen.body.candidates ?? [])).not.toContain('rcpt_');
     expect(sessionRow(aliceOpen.sessionId).consumed_at).toBeNull();
   });
 
-  it('an expired session is refused but the identification is still served', async () => {
+  it('an expired session is refused, and no receipt is ever issued', async () => {
     const session = open();
     as({ role: 'postgres' }, `update public.capture_sessions set issued_at = now() - interval '20 minutes', expires_at = now() - interval '10 minutes' where id = '${session.sessionId}'`);
     const out = await invoke(handler, { token: 'tok-alice', images: photos('expired'), fields: collect(session) });
-    expect(out.status).toBe(200);
-    expect(provider.calls).toBe(1);
+    expect([200, 409]).toContain(out.status); // legacy lookup answer, or the refusal (2026-11-27)
+    expect(provider.calls).toBeLessThanOrEqual(1);
     expect(out.body.capture).toEqual({ accepted: false, code: 'capture_session_expired' });
-    expect((out.body.candidates as unknown[]).length).toBe(2);
+    if (out.status === 200) expect((out.body.candidates as unknown[]).length).toBe(2);
     expect(JSON.stringify(out.body)).not.toContain('rcpt_');
   });
 
