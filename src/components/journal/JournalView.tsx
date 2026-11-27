@@ -7,6 +7,7 @@ import { assetPath } from '@/lib/asset-path';
 import { GROWTH_STAGE_LABEL } from '@/lib/sightings';
 import { useSightingsStore } from '@/lib/sightings-store';
 import { SightingPhoto } from './SightingPhoto';
+import { PageAtmosphere } from '@/components/PageAtmosphere';
 
 /**
  * The whole field journal, newest first, across every species.
@@ -35,7 +36,8 @@ export function JournalView() {
   const { sightings } = useSightingsStore();
 
   return (
-    <main id="main" className="mx-auto max-w-3xl px-4 py-8">
+    <main id="main" data-ground="lavender" data-shade="journal" className="mx-auto max-w-3xl px-4 py-8">
+      <PageAtmosphere theme="journal" />
       <h1 className="font-display text-3xl font-extrabold text-gold-plate">Field Journal</h1>
       <p className="mt-1 text-sm text-violet-300">
         Everything you&apos;ve logged, newest first.
