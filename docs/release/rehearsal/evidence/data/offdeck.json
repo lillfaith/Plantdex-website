@@ -1,0 +1,22 @@
+{
+ "scenario": "offdeck",
+ "result": "them to the same plant. / + / Whole plant / 1. Required. Step back. Show its overall shape and how it grows. / × / Leaf + stem / (optional) / 2. Optional. Get close and fill the frame with one leaf and where it joins the stem. Other plants in the shot will confuse the result. / + / Detail / (optional) / 3. Optional. A flower, fruit or the most distinctive feature you can find. / 1 of 3 added · ready to identify / Taken with the in-app camera. That makes it eligible to collect; it is not proof of where the plant was. / Fill the frame with one plant / Get Identification / → / Ready with 1 photo. Extra angles are optional. / A SUGGESTION, NOT AN IDENTIFICATION / A photo can suggest which plant this might be. It is not confirmation, and it says nothing about whether the plant can be eaten, drunk, applied or handled without harm. Check it against the card and a second source, and never consume or apply a wild plant on a phone’s identification. / Not one of the 45 cards / We recognised the plant, but it is not in this collection. Plantdex covers 45 common wild species — most plants you photograph will not be among them. / Magnolia grandiflora / Magnolia virginiana / Rhaphiolepis indica / Keep it on your Seed Shelf / This plant isn’t in the Plantdex yet. Save it here — if it becomes a card in a future collection, your discovery will already be waiting. / Saving keeps a record. It earn",
+ "buttons": [
+  "+",
+  "×",
+  "+",
+  "Get Identification →",
+  "Save to Seed Shelf"
+ ],
+ "shelfButton": 1,
+ "afterShelf": "l not be among them. / Magnolia grandiflora / Magnolia virginiana / Rhaphiolepis indica / New seed packet / Southern magnolia has no card in this collection, so Plantdex kept it for you on your Seed Shelf. / Magnolia grandiflora / A packet earns no XP and does not fill your collection. If this species becomes a card one day, your find will already be waiting — dated today. / Open your Seed Shelf → / 9 identifications left today. / HERBAL SAFETY / An identification from a photograph is a starting point, not proof. / For education only — not medical advice. / Read full safety information → / FORAGING SAFETY: Avoid eating or using plants from areas that may have been treated with pesticides, herbicides, or other chemicals. If you’re unsure whether an area was sprayed, don’t consume the plant.",
+ "xpAfter": "Lv. 1 / 0 /  / 250 /  XP / 250 XP to Level 2 · 600 XP to next Field Card / Earn XP by exploring and completing Field Research. Higher levels unlock digital Field Cards. / 0 / 45 / Cards collected / 0 ",
+ "log": [
+  "OPTIONS /functions/v1/identify-plant 204 ",
+  "POST /rest/v1/rpc/open_capture_session 200 ",
+  "POST /functions/v1/identify-plant 200 {\"candidates\":[{\"scientificName\":\"Magnolia grandiflora\",\"commonName\":\"Southern magnolia\",\"commonNames\":[\"Southern magnolia\",\"Bull bay\",\"Evergreen Magnolia\"],\"score\":0.65443,\"rank\":\"species\",\"gbifId\":\"9605163\",\"powoId\":\"554723-1\",\"attestation\":\"v1.eyJuIjoiTWFnb",
+  "POST /rest/v1/scans 201 ",
+  "POST /rest/v1/seed_shelf 201 ",
+  "POST /functions/v1/seed-packet 200 {\"packets\":[{\"species_key\":\"magnolia grandiflora\",\"scientific_name\":\"Magnolia grandiflora\",\"common_name\":\"Southern magnolia\",\"gbif_id\":\"9605163\",\"powo_id\":\"554723-1\",\"packet\":{\"ink\":\"ink-forest\",\"band\":\"band-leaf\",\"motif\":\"seedhead\",\"paper\":\"paper-sage\",\"shape"
+ ]
+}

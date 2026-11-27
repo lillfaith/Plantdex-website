@@ -1,0 +1,18 @@
+{
+ "scenario": "blank",
+ "result": " them to the same plant. / + / Whole plant / 1. Required. Step back. Show its overall shape and how it grows. / × / Leaf + stem / (optional) / 2. Optional. Get close and fill the frame with one leaf and where it joins the stem. Other plants in the shot will confuse the result. / + / Detail / (optional) / 3. Optional. A flower, fruit or the most distinctive feature you can find. / 1 of 3 added · ready to identify / Taken with the in-app camera. That makes it eligible to collect; it is not proof of where the plant was. / Fill the frame with one plant / Get Identification / → / Ready with 1 photo. Extra angles are optional. / A SUGGESTION, NOT AN IDENTIFICATION / A photo can suggest which plant this might be. It is not confirmation, and it says nothing about whether the plant can be eaten, drunk, applied or handled without harm. Check it against the card and a second source, and never consume or apply a wild plant on a phone’s identification. / Not one of the 45 cards / Nothing was recognised in that photograph. A closer shot of a single leaf or flower usually works better. / Browse the collection instead → / HERBAL SAFETY / An identification from a photograph is a starting point, not",
+ "buttons": [
+  "+",
+  "×",
+  "+",
+  "Get Identification →"
+ ],
+ "collectOffered": 0,
+ "xpAfter": "Lv. 1 / 0 /  / 250 /  XP / 250 XP to Level 2 · 600 XP to next Field Card / Earn XP by exploring and completing Field Research. Higher levels unlock digital Field Cards. / 0 / 45 / Cards collected / 0 ",
+ "log": [
+  "OPTIONS /functions/v1/identify-plant 204 ",
+  "POST /rest/v1/rpc/open_capture_session 200 ",
+  "POST /functions/v1/identify-plant 200 {\"candidates\":[],\"providerFoundNothing\":true,\"provider\":\"plantnet\",\"observationId\":\"b26747a4-8bf2-4048-b085-110aa226ffd6\",\"capture\":{\"accepted\":true,\"code\":\"no_eligible_candidate\"}}",
+  "POST /rest/v1/scans 201 "
+ ]
+}

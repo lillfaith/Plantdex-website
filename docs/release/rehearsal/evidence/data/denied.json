@@ -1,0 +1,17 @@
+{
+ "scenario": "denied",
+ "afterDeny": "Review / Confirm / Reveal / Collect / Take one photo with the camera. More angles are optional — keep them to the same plant. / + / Whole plant / 1. Required. Step back. Show its overall shape and how it grows. / + / Leaf + stem / 2. Required. Get close and fill the frame with one leaf and where it joins the stem. Other plants in the shot will confuse the result. / + / Detail / (optional) / 3. Optional. A flower, fruit or the most distinctive feature you can find. / Camera · Leaf + stem / The camera could not be started. You can try again or identify from a library photo. / Try the camera again / Use a library photo instead / Cancel / A library photo can identify a plant but is not eligible to collect a new card. / 0 of 3 added · 1 camera photo needed · extra angles optional (up to 3) / Camera preview (test). Photos taken with the in-app camera can collect a new card; library photos identify only. / Fill the frame with one plant / Get Identification / → / Add 2 more photos to identify.",
+ "buttons": [
+  "+",
+  "+",
+  "+",
+  "Try the camera again",
+  "Use a library photo instead",
+  "Cancel",
+  "Get Identification →"
+ ],
+ "log": [
+  "OPTIONS /functions/v1/identify-plant 204 ",
+  "POST /rest/v1/rpc/open_capture_session 200 "
+ ]
+}

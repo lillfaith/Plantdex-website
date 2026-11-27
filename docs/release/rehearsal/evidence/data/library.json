@@ -1,0 +1,28 @@
+{
+ "scenario": "library",
+ "afterImport": "eview / Confirm / Reveal / Collect / A library photo can identify a plant but not collect it. Add 2 or 3 photos of the same plant, or use the camera to collect. / × / Whole plant / 1. Required. Step back. Show its overall shape and how it grows. / × / Leaf + stem / 2. Required. Get close and fill the frame with one leaf and where it joins the stem. Other plants in the shot will confuse the result. / + / Detail / (optional) / 3. Optional. A flower, fruit or the most distinctive feature you can find. / 2 of 3 added · ready to identify / Identification only - not eligible to collect / Fill the frame with one plant / Send your photo to identify? / PlantDex sends your selected photo(s) to Pl@ntNet or Plant.id (by Kindwise) to suggest which plant you photographed. / Privacy details / Send photo(",
+ "goEnabledBeforeConsent": false,
+ "btnsAfterImport": [
+  "×",
+  "×",
+  "+",
+  "Send photo(s)",
+  "Not now",
+  "Get Identification →"
+ ],
+ "result": "r 3 photos of the same plant, or use the camera to collect. / × / Whole plant / 1. Required. Step back. Show its overall shape and how it grows. / × / Leaf + stem / 2. Required. Get close and fill the frame with one leaf and where it joins the stem. Other plants in the shot will confuse the result. / + / Detail / (optional) / 3. Optional. A flower, fruit or the most distinctive feature you can find. / 2 of 3 added · ready to identify / Identification only - not eligible to collect / Fill the frame with one plant / Get Identification / → / Ready with 2 photos. / A SUGGESTION, NOT AN IDENTIFICATION / A photo can suggest which plant this might be. It is not confirmation, and it says nothing about whether the plant can be eaten, drunk, applied or handled without harm. Check it against the card and a second source, and never consume or apply a wild plant on a phone’s identification. / Looks like Annual ragweed / Ambrosia artemisiifolia · strongest single match / The identifier put one species clearly ahead of the rest. Check it against the card before you record anything. / Photographing one of your cards is not a find. Log it only if you met the plant outdoors. / BEST MATCHES / Ambrosi",
+ "buttons": [
+  "×",
+  "×",
+  "+",
+  "Get Identification →"
+ ],
+ "collectOffered": 0,
+ "xpAfter": "Lv. 1 / 0 /  / 250 /  XP / 250 XP to Level 2 · 600 XP to next Field Card / Earn XP by exploring and completing Field Research. Higher levels unlock digital Field Cards. / 0 / 45 / Cards collected / 0 ",
+ "log": [
+  "OPTIONS /functions/v1/identify-plant 204 ",
+  "POST /rest/v1/rpc/open_capture_session 200 ",
+  "POST /functions/v1/identify-plant 200 {\"candidates\":[{\"scientificName\":\"Ambrosia artemisiifolia\",\"commonName\":\"Annual ragweed\",\"commonNames\":[\"Annual ragweed\",\"Ragweed\",\"Common ragweed\"],\"score\":0.93164,\"rank\":\"species\",\"gbifId\":\"8002952\",\"powoId\":\"176058-1\",\"attestation\":\"v1.eyJuIjoiQW1icm9zaWEgY",
+  "POST /rest/v1/scans 201 "
+ ]
+}

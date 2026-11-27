@@ -1,0 +1,18 @@
+{
+ "scenario": "notnow",
+ "postsAfterNotNow": 0,
+ "afterNotNow": "Review / Confirm / Reveal / Collect / Take one photo with the camera. More angles are optional — keep them to the same plant. / + / Whole plant / 1. Required. Step back. Show its overall shape and how it grows. / × / Leaf + stem / (optional) / 2. Optional. Get close and fill the frame with one leaf and where it joins the stem. Other plants in the shot will confuse the result. / + / Detail / (optional) / 3. Optional. A flower, fruit or the most distinctive feature you can find. / 1 of 3 added · ready to identify / Taken with the in-app camera. That makes it eligible to collect; it is not proof of where the plant was. / Fill the frame with one plant / Send your photo to identify? / PlantDex sends your selected photo(s) to Pl@ntNet or Plant.id (by Kindwise) to suggest which plant you photogra",
+ "buttons": [
+  "+",
+  "×",
+  "+",
+  "Send photo(s)",
+  "Not now",
+  "Get Identification →"
+ ],
+ "log": [
+  "OPTIONS /functions/v1/identify-plant 204 ",
+  "OPTIONS /functions/v1/identify-plant 204 ",
+  "POST /rest/v1/rpc/open_capture_session 200 "
+ ]
+}
