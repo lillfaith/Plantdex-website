@@ -296,6 +296,16 @@ export async function identifyPlant(
         message: payload.error ?? 'Plant identification is not set up on this deployment yet.',
       };
     }
+    // The server refused THIS capture (session used, expired, unknown, wrong nonce...). It spoke about the
+    // session, so it can never be sent again, and its own sentence says what to do. Without this branch the
+    // refusal read as a dropped connection and the same dead session was resent on every retry.
+    if (payload.code === 'captureRefused' && options.capture) {
+      return {
+        kind: 'error',
+        message: payload.error ?? 'This photo could not be matched to a camera capture. Please take the photo again.',
+        captureSpent: true,
+      };
+    }
     if (payload.allowance === 'refunded' || payload.allowance === 'not_refunded' || payload.capture?.retryable === true) {
       const released = payload.capture?.retryable === true;
       return {

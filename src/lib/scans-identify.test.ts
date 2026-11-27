@@ -153,6 +153,24 @@ describe('identifyPlant: four honest outcomes, exact words', () => {
   it('a released session is never reported spent (the same session is reused on retry)', async () => {
     expect(await fail({ capture: R, allowance: 'refunded' })).not.toHaveProperty('captureSpent');
   });
+  it('a refused capture (409 captureRefused) drops the session and uses the server sentence, not "could not be reached"', async () => {
+    state.data = null;
+    state.error = {
+      context: new Response(
+        JSON.stringify({ error: 'This capture was already used. Please take a new photo.', code: 'captureRefused', capture: { accepted: false, code: 'capture_session_used' } }),
+        { status: 409 },
+      ),
+    };
+    const a = await identifyPlant(photos, undefined, cap);
+    expect(a).toEqual({ kind: 'error', captureSpent: true, message: 'This capture was already used. Please take a new photo.' });
+  });
+  it('a rate-limited or unconfigured answer never reports the session spent (it is untouched: the claim runs before consume)', async () => {
+    for (const code of ['rateLimited', 'unconfigured']) {
+      state.data = null;
+      state.error = { context: new Response(JSON.stringify({ code, error: 'x' }), { status: 429 }) };
+      expect(await identifyPlant(photos, undefined, cap)).not.toHaveProperty('captureSpent');
+    }
+  });
   it('a dropped connection says the photos are still there and keeps the session', async () => {
     state.data = null;
     state.error = new Error('Failed to send a request to the Edge Function'); // FunctionsFetchError: no response, no body
