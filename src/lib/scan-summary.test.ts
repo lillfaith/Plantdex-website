@@ -232,3 +232,12 @@ describe('the genus label', () => {
     expect(genusLabel('Oxalis stricta')).toBe('Oxalis');
   });
 });
+
+describe('an accepted synonym of a card reads as one claim, not two that contradict', () => {
+  it('names the synonym in the qualifier and does not say the identifier only settled on the genus', () => {
+    const summary = summariseScan([candidate('Taraxacum campylodes', 0.45)], 'plantnet');
+    expect(summary.qualifier).toMatch(/accepted synonym of a card Plantdex has/);
+    expect(summary.detail).toMatch(/another accepted name for a species Plantdex has a card for/);
+    expect(`${summary.qualifier} ${summary.detail}`).not.toMatch(/settled on the genus|exact species uncertain|several close matches/);
+  });
+});

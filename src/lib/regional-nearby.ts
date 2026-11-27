@@ -59,6 +59,11 @@ export const RECORDED_COPY = {
     `${unlocked} of ${total} in your collection`,
   unlockedBadge: 'unlocked',
   occasionalLabel: (region: string) => `Recorded only occasionally in ${region}`,
+  /**
+   * The short notice on a plant sheet. Accurate, not alarming: a record is a statement about the region. The full source, date, rule and
+   * limits stay in `sourceNote`, one tap away under "About this data".
+   */
+  sheetNotice: 'Recorded somewhere in this region, which is not a guarantee it grows where you are.',
   /** Source, survey date, rule and limits; null for a region that was never surveyed. */
   sourceNote: (regionId: string | null | undefined): string | null => {
     const entry = regionId ? OCCURRENCE_SOURCES[regionId] : undefined;
