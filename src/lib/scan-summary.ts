@@ -191,9 +191,11 @@ export function summariseScan(
        * decided identifier still returns 0.30.
        */
       detail:
-        field.length > 1
-          ? "Plantdex found several close matches, but the photos don't support choosing an exact species confidently yet."
-          : "The identifier settled on the genus, but isn't confident enough about which species within it.",
+        top.match.eligibility === 'synonym'
+          ? 'The identifier\u2019s best match is another accepted name for a species Plantdex has a card for. Check it against the card before you record anything.'
+          : field.length > 1
+            ? "Plantdex found several close matches, but the photos don't support choosing an exact species confidently yet."
+            : "The identifier settled on the genus, but isn't confident enough about which species within it.",
     };
   }
 
