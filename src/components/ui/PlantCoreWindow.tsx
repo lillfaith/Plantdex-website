@@ -50,7 +50,7 @@ export function PlantCoreWindow({
   const mastery = MASTERY_STAGE_LABEL[MASTERY_BY_GARDEN_STAGE[current.stage]];
   const step = (d: number) => setIndex((i) => (i + d + plants.length) % plants.length);
 
-  const action = (href: string, label: string, icon: IconName, tone: 'cream' | 'sky' | 'violet') => (
+  const action = (href: string, label: string, icon: IconName, tone: 'blush' | 'lav' | 'violet') => (
     <Link href={href} className={`pc-btn pc-${tone} flex min-h-10 items-center justify-center gap-1.5 px-1.5 text-[0.8rem] font-bold`}>
       <PlantdexIcon name={icon} className="text-base" aria-hidden="true" />
       <span>{label}</span>
@@ -71,7 +71,7 @@ export function PlantCoreWindow({
 
       <div className="mt-1.5 grid grid-cols-[2.6rem_1fr_7.6rem] gap-2">
         {/* The three existing growth stages, as a segmented meter. Display only. */}
-        <div role="img" aria-label={`Growth stage ${stageIdx + 1} of 3: ${STAGE_LABEL[current.stage]}`} className="pc-meter flex flex-col-reverse gap-[3px] p-[3px]">
+        <div role="img" aria-label={`Growth stage ${stageIdx + 1} of 3: ${STAGE_LABEL[current.stage]}`} className="pc-meter flex flex-col-reverse gap-[2px] p-[2px]">
           {STAGES.map((s, i) => (
             <span key={s} className={`pc-seg flex flex-1 items-center justify-center ${i <= stageIdx ? 'pc-seg-on' : ''}`}>
               <PlantdexIcon name={s === 'sprout' ? 'sprout' : s === 'growing' ? 'leaves' : 'flower'} className="text-base" aria-hidden="true" />
@@ -81,20 +81,16 @@ export function PlantCoreWindow({
 
         <div className="flex flex-col">
           <div className="pc-stage relative aspect-[3/4] overflow-hidden">
-            <span aria-hidden="true" className="pc-spark pc-spark-1" />
-            <span aria-hidden="true" className="pc-spark pc-spark-2" />
-            <span aria-hidden="true" className="pc-spark pc-spark-3" />
-            <span aria-hidden="true" className="pc-scenery" />
-            <span className="absolute inset-x-[0%] bottom-[9%] block">
+            <span className="absolute inset-x-[2%] bottom-[8%] block">
               <PlantSprite herbId={herb.id} alt={herb.commonName} stage={current.stage} fit className="w-full" />
             </span>
           </div>
-          <div className="pc-namebar mt-1.5 grid grid-cols-[2.5rem_1fr_2.5rem] items-center gap-[3px] p-[3px]">
-            <button type="button" onClick={() => step(-1)} aria-label="Previous plant" className="pc-btn pc-cream tap-44 h-9" disabled={plants.length < 2}>
+          <div className="pc-namebar mt-1.5 grid grid-cols-[1.75rem_1fr_1.75rem] items-stretch gap-[2px]">
+            <button type="button" onClick={() => step(-1)} aria-label="Previous plant" className="pc-btn pc-cream pc-arrow tap-44" disabled={plants.length < 2}>
               <span aria-hidden="true" className="pc-tri pc-tri-l" />
             </button>
             <span className="pc-field truncate px-1 text-center text-[0.8rem] leading-9 font-bold">{herb.commonName}</span>
-            <button type="button" onClick={() => step(1)} aria-label="Next plant" className="pc-btn pc-cream tap-44 h-9" disabled={plants.length < 2}>
+            <button type="button" onClick={() => step(1)} aria-label="Next plant" className="pc-btn pc-cream pc-arrow tap-44" disabled={plants.length < 2}>
               <span aria-hidden="true" className="pc-tri pc-tri-r" />
             </button>
           </div>
@@ -107,8 +103,8 @@ export function PlantCoreWindow({
           </div>
           {variant === 'garden' ? (
             <>
-              {action(`/herbdex/${herb.id}`, hint === 'Learn its card' ? 'Learn card' : (hint ?? 'Open card'), hint ? 'learn' : 'herbdex', 'cream')}
-              {action('/scan', 'Scan a plant', 'scan', 'sky')}
+              {action(`/herbdex/${herb.id}`, hint === 'Learn its card' ? 'Learn card' : (hint ?? 'Open card'), hint ? 'learn' : 'herbdex', 'blush')}
+              {action('/scan', 'Scan a plant', 'scan', 'lav')}
               <Link href={`/herbdex/${herb.id}`} className="pc-btn pc-violet flex min-h-10 items-center justify-center gap-1.5 px-1.5 text-[0.8rem] font-bold">
                 <PlantdexIcon name="herbdex" className="text-base" aria-hidden="true" />
                 <span>Full card</span>
@@ -127,8 +123,8 @@ export function PlantCoreWindow({
       </div>
 
       <div className="mt-2 flex justify-center">
-        <button type="button" onClick={onClose} className="pc-btn pc-blush tap-44 min-h-9 px-8 text-[0.85rem] font-bold">
-          close
+        <button type="button" onClick={onClose} className="pc-btn pc-blush tap-44 min-h-8 px-9 text-[0.85rem] font-medium">
+          Close
         </button>
       </div>
     </div>

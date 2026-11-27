@@ -3001,100 +3001,89 @@ body {
  * a segmented side meter and a sparkling sprite stage. Used only by the flagged /plant-core-proto routes.
  */
 .pc-window {
-  --pc-ink: #2f1a52;
-  --pc-hi: #fbf7ff;
-  --pc-lo: #8b78a8;
+  /* MS Paint / Windows 95-98 construction in PlantDex colours. light = pale pink-lilac, face = dusty lavender, shade = mid lavender-plum, dark = deep plum. */
+  --pc-light: #F8EEFF;
   --pc-face: #C5B2DC;
-  --pc-scenery: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22192%22 height=%2264%22 viewBox=%220 0 192 64%22 shape-rendering=%22crispEdges%22%3E%3Crect x=%2216%22 y=%224%22 width=%2220%22 height=%224%22 fill=%22%23d3e2ee%22/%3E%3Crect x=%2212%22 y=%228%22 width=%2228%22 height=%224%22 fill=%22%23d3e2ee%22/%3E%3Crect x=%2216%22 y=%2212%22 width=%2220%22 height=%224%22 fill=%22%23d3e2ee%22/%3E%3Crect x=%22148%22 y=%2212%22 width=%2220%22 height=%224%22 fill=%22%23c4d8e8%22/%3E%3Crect x=%22144%22 y=%2216%22 width=%2228%22 height=%224%22 fill=%22%23c4d8e8%22/%3E%3Crect x=%22148%22 y=%2220%22 width=%2220%22 height=%224%22 fill=%22%23c4d8e8%22/%3E%3Crect x=%220%22 y=%2236%22 width=%224%22 height=%2228%22 fill=%22%23a3c4a8%22/%3E%3Crect x=%224%22 y=%2244%22 width=%224%22 height=%2220%22 fill=%22%23a3c4a8%22/%3E%3Crect x=%228%22 y=%2244%22 width=%224%22 height=%2220%22 fill=%22%23a3c4a8%22/%3E%3Crect x=%2212%22 y=%2244%22 width=%224%22 height=%2220%22 fill=%22%23a3c4a8%22/%3E%3Crect x=%2216%22 y=%2244%22 width=%224%22 height=%2220%22 fill=%22%23a3c4a8%22/%3E%3Crect x=%2220%22 y=%2240%22 width=%224%22 height=%2224%22 fill=%22%23a3c4a8%22/%3E%3Crect x=%2224%22 y=%2244%22 width=%224%22 height=%2220%22 fill=%22%23a3c4a8%22/%3E%3Crect x=%2228%22 y=%2244%22 width=%224%22 height=%2220%22 fill=%22%23a3c4a8%22/%3E%3Crect x=%2232%22 y=%2244%22 width=%224%22 height=%2220%22 fill=%22%23a3c4a8%22/%3E%3Crect x=%2236%22 y=%2244%22 width=%224%22 height=%2220%22 fill=%22%23a3c4a8%22/%3E%3Crect x=%2240%22 y=%2240%22 width=%224%22 height=%2224%22 fill=%22%23a3c4a8%22/%3E%3Crect x=%2244%22 y=%2240%22 width=%224%22 height=%2224%22 fill=%22%23a3c4a8%22/%3E%3Crect x=%2248%22 y=%2244%22 width=%224%22 height=%2220%22 fill=%22%23a3c4a8%22/%3E%3Crect x=%2252%22 y=%2244%22 width=%224%22 height=%2220%22 fill=%22%23a3c4a8%22/%3E%3Crect x=%2256%22 y=%2244%22 width=%224%22 height=%2220%22 fill=%22%23a3c4a8%22/%3E%3Crect x=%2260%22 y=%2240%22 width=%224%22 height=%2224%22 fill=%22%23a3c4a8%22/%3E%3Crect x=%2264%22 y=%2244%22 width=%224%22 height=%2220%22 fill=%22%23a3c4a8%22/%3E%3Crect x=%2268%22 y=%2244%22 width=%224%22 height=%2220%22 fill=%22%23a3c4a8%22/%3E%3Crect x=%2272%22 y=%2244%22 width=%224%22 height=%2220%22 fill=%22%23a3c4a8%22/%3E%3Crect x=%2276%22 y=%2244%22 width=%224%22 height=%2220%22 fill=%22%23a3c4a8%22/%3E%3Crect x=%2280%22 y=%2240%22 width=%224%22 height=%2224%22 fill=%22%23a3c4a8%22/%3E%3Crect x=%2284%22 y=%2244%22 width=%224%22 height=%2220%22 fill=%22%23a3c4a8%22/%3E%3Crect x=%2288%22 y=%2240%22 width=%224%22 height=%2224%22 fill=%22%23a3c4a8%22/%3E%3Crect x=%2292%22 y=%2244%22 width=%224%22 height=%2220%22 fill=%22%23a3c4a8%22/%3E%3Crect x=%2296%22 y=%2244%22 width=%224%22 height=%2220%22 fill=%22%23a3c4a8%22/%3E%3Crect x=%22100%22 y=%2240%22 width=%224%22 height=%2224%22 fill=%22%23a3c4a8%22/%3E%3Crect x=%22104%22 y=%2244%22 width=%224%22 height=%2220%22 fill=%22%23a3c4a8%22/%3E%3Crect x=%22108%22 y=%2244%22 width=%224%22 height=%2220%22 fill=%22%23a3c4a8%22/%3E%3Crect x=%22112%22 y=%2244%22 width=%224%22 height=%2220%22 fill=%22%23a3c4a8%22/%3E%3Crect x=%22116%22 y=%2244%22 width=%224%22 height=%2220%22 fill=%22%23a3c4a8%22/%3E%3Crect x=%22120%22 y=%2240%22 width=%224%22 height=%2224%22 fill=%22%23a3c4a8%22/%3E%3Crect x=%22124%22 y=%2244%22 width=%224%22 height=%2220%22 fill=%22%23a3c4a8%22/%3E%3Crect x=%22128%22 y=%2244%22 width=%224%22 height=%2220%22 fill=%22%23a3c4a8%22/%3E%3Crect x=%22132%22 y=%2240%22 width=%224%22 height=%2224%22 fill=%22%23a3c4a8%22/%3E%3Crect x=%22136%22 y=%2244%22 width=%224%22 height=%2220%22 fill=%22%23a3c4a8%22/%3E%3Crect x=%22140%22 y=%2240%22 width=%224%22 height=%2224%22 fill=%22%23a3c4a8%22/%3E%3Crect x=%22144%22 y=%2244%22 width=%224%22 height=%2220%22 fill=%22%23a3c4a8%22/%3E%3Crect x=%22148%22 y=%2244%22 width=%224%22 height=%2220%22 fill=%22%23a3c4a8%22/%3E%3Crect x=%22152%22 y=%2244%22 width=%224%22 height=%2220%22 fill=%22%23a3c4a8%22/%3E%3Crect x=%22156%22 y=%2244%22 width=%224%22 height=%2220%22 fill=%22%23a3c4a8%22/%3E%3Crect x=%22160%22 y=%2240%22 width=%224%22 height=%2224%22 fill=%22%23a3c4a8%22/%3E%3Crect x=%22164%22 y=%2244%22 width=%224%22 height=%2220%22 fill=%22%23a3c4a8%22/%3E%3Crect x=%22168%22 y=%2244%22 width=%224%22 height=%2220%22 fill=%22%23a3c4a8%22/%3E%3Crect x=%22172%22 y=%2244%22 width=%224%22 height=%2220%22 fill=%22%23a3c4a8%22/%3E%3Crect x=%22176%22 y=%2240%22 width=%224%22 height=%2224%22 fill=%22%23a3c4a8%22/%3E%3Crect x=%22180%22 y=%2240%22 width=%224%22 height=%2224%22 fill=%22%23a3c4a8%22/%3E%3Crect x=%22184%22 y=%2244%22 width=%224%22 height=%2220%22 fill=%22%23a3c4a8%22/%3E%3Crect x=%22188%22 y=%2244%22 width=%224%22 height=%2220%22 fill=%22%23a3c4a8%22/%3E%3Crect x=%220%22 y=%2252%22 width=%224%22 height=%2212%22 fill=%22%237fa68a%22/%3E%3Crect x=%224%22 y=%2252%22 width=%224%22 height=%2212%22 fill=%22%237fa68a%22/%3E%3Crect x=%228%22 y=%2252%22 width=%224%22 height=%2212%22 fill=%22%237fa68a%22/%3E%3Crect x=%2212%22 y=%2252%22 width=%224%22 height=%2212%22 fill=%22%237fa68a%22/%3E%3Crect x=%2216%22 y=%2252%22 width=%224%22 height=%2212%22 fill=%22%237fa68a%22/%3E%3Crect x=%2220%22 y=%2252%22 width=%224%22 height=%2212%22 fill=%22%237fa68a%22/%3E%3Crect x=%2224%22 y=%2252%22 width=%224%22 height=%2212%22 fill=%22%237fa68a%22/%3E%3Crect x=%2228%22 y=%2252%22 width=%224%22 height=%2212%22 fill=%22%237fa68a%22/%3E%3Crect x=%2232%22 y=%2252%22 width=%224%22 height=%2212%22 fill=%22%237fa68a%22/%3E%3Crect x=%2236%22 y=%2252%22 width=%224%22 height=%2212%22 fill=%22%237fa68a%22/%3E%3Crect x=%2240%22 y=%2252%22 width=%224%22 height=%2212%22 fill=%22%237fa68a%22/%3E%3Crect x=%2244%22 y=%2252%22 width=%224%22 height=%2212%22 fill=%22%237fa68a%22/%3E%3Crect x=%2248%22 y=%2252%22 width=%224%22 height=%2212%22 fill=%22%237fa68a%22/%3E%3Crect x=%2252%22 y=%2252%22 width=%224%22 height=%2212%22 fill=%22%237fa68a%22/%3E%3Crect x=%2256%22 y=%2252%22 width=%224%22 height=%2212%22 fill=%22%237fa68a%22/%3E%3Crect x=%2260%22 y=%2252%22 width=%224%22 height=%2212%22 fill=%22%237fa68a%22/%3E%3Crect x=%2264%22 y=%2252%22 width=%224%22 height=%2212%22 fill=%22%237fa68a%22/%3E%3Crect x=%2268%22 y=%2252%22 width=%224%22 height=%2212%22 fill=%22%237fa68a%22/%3E%3Crect x=%2272%22 y=%2252%22 width=%224%22 height=%2212%22 fill=%22%237fa68a%22/%3E%3Crect x=%2276%22 y=%2252%22 width=%224%22 height=%2212%22 fill=%22%237fa68a%22/%3E%3Crect x=%2280%22 y=%2252%22 width=%224%22 height=%2212%22 fill=%22%237fa68a%22/%3E%3Crect x=%2284%22 y=%2252%22 width=%224%22 height=%2212%22 fill=%22%237fa68a%22/%3E%3Crect x=%2288%22 y=%2252%22 width=%224%22 height=%2212%22 fill=%22%237fa68a%22/%3E%3Crect x=%2292%22 y=%2252%22 width=%224%22 height=%2212%22 fill=%22%237fa68a%22/%3E%3Crect x=%2296%22 y=%2252%22 width=%224%22 height=%2212%22 fill=%22%237fa68a%22/%3E%3Crect x=%22100%22 y=%2252%22 width=%224%22 height=%2212%22 fill=%22%237fa68a%22/%3E%3Crect x=%22104%22 y=%2252%22 width=%224%22 height=%2212%22 fill=%22%237fa68a%22/%3E%3Crect x=%22108%22 y=%2252%22 width=%224%22 height=%2212%22 fill=%22%237fa68a%22/%3E%3Crect x=%22112%22 y=%2252%22 width=%224%22 height=%2212%22 fill=%22%237fa68a%22/%3E%3Crect x=%22116%22 y=%2252%22 width=%224%22 height=%2212%22 fill=%22%237fa68a%22/%3E%3Crect x=%22120%22 y=%2252%22 width=%224%22 height=%2212%22 fill=%22%237fa68a%22/%3E%3Crect x=%22124%22 y=%2252%22 width=%224%22 height=%2212%22 fill=%22%237fa68a%22/%3E%3Crect x=%22128%22 y=%2252%22 width=%224%22 height=%2212%22 fill=%22%237fa68a%22/%3E%3Crect x=%22132%22 y=%2252%22 width=%224%22 height=%2212%22 fill=%22%237fa68a%22/%3E%3Crect x=%22136%22 y=%2252%22 width=%224%22 height=%2212%22 fill=%22%237fa68a%22/%3E%3Crect x=%22140%22 y=%2252%22 width=%224%22 height=%2212%22 fill=%22%237fa68a%22/%3E%3Crect x=%22144%22 y=%2252%22 width=%224%22 height=%2212%22 fill=%22%237fa68a%22/%3E%3Crect x=%22148%22 y=%2252%22 width=%224%22 height=%2212%22 fill=%22%237fa68a%22/%3E%3Crect x=%22152%22 y=%2252%22 width=%224%22 height=%2212%22 fill=%22%237fa68a%22/%3E%3Crect x=%22156%22 y=%2252%22 width=%224%22 height=%2212%22 fill=%22%237fa68a%22/%3E%3Crect x=%22160%22 y=%2252%22 width=%224%22 height=%2212%22 fill=%22%237fa68a%22/%3E%3Crect x=%22164%22 y=%2252%22 width=%224%22 height=%2212%22 fill=%22%237fa68a%22/%3E%3Crect x=%22168%22 y=%2252%22 width=%224%22 height=%2212%22 fill=%22%237fa68a%22/%3E%3Crect x=%22172%22 y=%2252%22 width=%224%22 height=%2212%22 fill=%22%237fa68a%22/%3E%3Crect x=%22176%22 y=%2252%22 width=%224%22 height=%2212%22 fill=%22%237fa68a%22/%3E%3Crect x=%22180%22 y=%2252%22 width=%224%22 height=%2212%22 fill=%22%237fa68a%22/%3E%3Crect x=%22184%22 y=%2252%22 width=%224%22 height=%2212%22 fill=%22%237fa68a%22/%3E%3Crect x=%22188%22 y=%2252%22 width=%224%22 height=%2212%22 fill=%22%237fa68a%22/%3E%3Crect x=%220%22 y=%2248%22 width=%224%22 height=%224%22 fill=%22%235f8a6c%22/%3E%3Crect x=%2216%22 y=%2248%22 width=%224%22 height=%224%22 fill=%22%235f8a6c%22/%3E%3Crect x=%2232%22 y=%2248%22 width=%224%22 height=%224%22 fill=%22%235f8a6c%22/%3E%3Crect x=%2248%22 y=%2248%22 width=%224%22 height=%224%22 fill=%22%235f8a6c%22/%3E%3Crect x=%2264%22 y=%2248%22 width=%224%22 height=%224%22 fill=%22%235f8a6c%22/%3E%3Crect x=%2280%22 y=%2248%22 width=%224%22 height=%224%22 fill=%22%235f8a6c%22/%3E%3Crect x=%2296%22 y=%2248%22 width=%224%22 height=%224%22 fill=%22%235f8a6c%22/%3E%3Crect x=%22112%22 y=%2248%22 width=%224%22 height=%224%22 fill=%22%235f8a6c%22/%3E%3Crect x=%22128%22 y=%2248%22 width=%224%22 height=%224%22 fill=%22%235f8a6c%22/%3E%3Crect x=%22144%22 y=%2248%22 width=%224%22 height=%224%22 fill=%22%235f8a6c%22/%3E%3Crect x=%22160%22 y=%2248%22 width=%224%22 height=%224%22 fill=%22%235f8a6c%22/%3E%3Crect x=%22176%22 y=%2248%22 width=%224%22 height=%224%22 fill=%22%235f8a6c%22/%3E%3Crect x=%2220%22 y=%2244%22 width=%224%22 height=%228%22 fill=%22%235f8a6c%22/%3E%3Crect x=%2216%22 y=%2240%22 width=%2212%22 height=%224%22 fill=%22%23c4d8e8%22/%3E%3Crect x=%2220%22 y=%2236%22 width=%224%22 height=%224%22 fill=%22%23c4d8e8%22/%3E%3Crect x=%2276%22 y=%2244%22 width=%224%22 height=%228%22 fill=%22%235f8a6c%22/%3E%3Crect x=%2272%22 y=%2240%22 width=%2212%22 height=%224%22 fill=%22%23f1e6ae%22/%3E%3Crect x=%2276%22 y=%2236%22 width=%224%22 height=%224%22 fill=%22%23f1e6ae%22/%3E%3Crect x=%22132%22 y=%2244%22 width=%224%22 height=%228%22 fill=%22%235f8a6c%22/%3E%3Crect x=%22128%22 y=%2240%22 width=%2212%22 height=%224%22 fill=%22%23c4d8e8%22/%3E%3Crect x=%22132%22 y=%2236%22 width=%224%22 height=%224%22 fill=%22%23c4d8e8%22/%3E%3Crect x=%22172%22 y=%2244%22 width=%224%22 height=%228%22 fill=%22%235f8a6c%22/%3E%3Crect x=%22168%22 y=%2240%22 width=%2212%22 height=%224%22 fill=%22%23f4eef8%22/%3E%3Crect x=%22172%22 y=%2236%22 width=%224%22 height=%224%22 fill=%22%23f4eef8%22/%3E%3C/svg%3E");
+  --pc-soft: #E2D6F0;
+  --pc-shade: #8E7BA8;
+  --pc-dark: #38204F;
+  --pc-title: #65339A;
   --pc-icon: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2224%22 height=%2224%22 viewBox=%220 0 24 24%22 shape-rendering=%22crispEdges%22%3E%3Crect x=%228%22 y=%221%22 width=%222%22 height=%222%22 fill=%22%232f6b3a%22/%3E%3Crect x=%2210%22 y=%221%22 width=%222%22 height=%222%22 fill=%22%232f6b3a%22/%3E%3Crect x=%2216%22 y=%221%22 width=%222%22 height=%222%22 fill=%22%232f6b3a%22/%3E%3Crect x=%226%22 y=%223%22 width=%222%22 height=%222%22 fill=%22%232f6b3a%22/%3E%3Crect x=%228%22 y=%223%22 width=%222%22 height=%222%22 fill=%22%237fcf7a%22/%3E%3Crect x=%2210%22 y=%223%22 width=%222%22 height=%222%22 fill=%22%237fcf7a%22/%3E%3Crect x=%2212%22 y=%223%22 width=%222%22 height=%222%22 fill=%22%232f6b3a%22/%3E%3Crect x=%2214%22 y=%223%22 width=%222%22 height=%222%22 fill=%22%232f6b3a%22/%3E%3Crect x=%2216%22 y=%223%22 width=%222%22 height=%222%22 fill=%22%237fcf7a%22/%3E%3Crect x=%224%22 y=%225%22 width=%222%22 height=%222%22 fill=%22%232f6b3a%22/%3E%3Crect x=%226%22 y=%225%22 width=%222%22 height=%222%22 fill=%22%237fcf7a%22/%3E%3Crect x=%228%22 y=%225%22 width=%222%22 height=%222%22 fill=%22%237fcf7a%22/%3E%3Crect x=%2210%22 y=%225%22 width=%222%22 height=%222%22 fill=%22%237fcf7a%22/%3E%3Crect x=%2212%22 y=%225%22 width=%222%22 height=%222%22 fill=%22%237fcf7a%22/%3E%3Crect x=%2214%22 y=%225%22 width=%222%22 height=%222%22 fill=%22%232f6b3a%22/%3E%3Crect x=%2216%22 y=%225%22 width=%222%22 height=%222%22 fill=%22%237fcf7a%22/%3E%3Crect x=%226%22 y=%227%22 width=%222%22 height=%222%22 fill=%22%232f6b3a%22/%3E%3Crect x=%228%22 y=%227%22 width=%222%22 height=%222%22 fill=%22%232f6b3a%22/%3E%3Crect x=%2210%22 y=%227%22 width=%222%22 height=%222%22 fill=%22%232f6b3a%22/%3E%3Crect x=%2212%22 y=%227%22 width=%222%22 height=%222%22 fill=%22%232f6b3a%22/%3E%3Crect x=%2214%22 y=%227%22 width=%222%22 height=%222%22 fill=%22%232f6b3a%22/%3E%3Crect x=%2212%22 y=%229%22 width=%222%22 height=%222%22 fill=%22%232f6b3a%22/%3E%3Crect x=%2210%22 y=%2211%22 width=%222%22 height=%222%22 fill=%22%232f6b3a%22/%3E%3Crect x=%2212%22 y=%2211%22 width=%222%22 height=%222%22 fill=%22%232f6b3a%22/%3E%3Crect x=%2210%22 y=%2213%22 width=%222%22 height=%222%22 fill=%22%232f6b3a%22/%3E%3Crect x=%226%22 y=%2215%22 width=%222%22 height=%222%22 fill=%22%235a2f12%22/%3E%3Crect x=%228%22 y=%2215%22 width=%222%22 height=%222%22 fill=%22%235a2f12%22/%3E%3Crect x=%2210%22 y=%2215%22 width=%222%22 height=%222%22 fill=%22%235a2f12%22/%3E%3Crect x=%2212%22 y=%2215%22 width=%222%22 height=%222%22 fill=%22%235a2f12%22/%3E%3Crect x=%2214%22 y=%2215%22 width=%222%22 height=%222%22 fill=%22%235a2f12%22/%3E%3Crect x=%2216%22 y=%2215%22 width=%222%22 height=%222%22 fill=%22%235a2f12%22/%3E%3Crect x=%226%22 y=%2217%22 width=%222%22 height=%222%22 fill=%22%235a2f12%22/%3E%3Crect x=%228%22 y=%2217%22 width=%222%22 height=%222%22 fill=%22%23b9764b%22/%3E%3Crect x=%2210%22 y=%2217%22 width=%222%22 height=%222%22 fill=%22%23b9764b%22/%3E%3Crect x=%2212%22 y=%2217%22 width=%222%22 height=%222%22 fill=%22%23b9764b%22/%3E%3Crect x=%2214%22 y=%2217%22 width=%222%22 height=%222%22 fill=%22%23b9764b%22/%3E%3Crect x=%2216%22 y=%2217%22 width=%222%22 height=%222%22 fill=%22%235a2f12%22/%3E%3Crect x=%228%22 y=%2219%22 width=%222%22 height=%222%22 fill=%22%235a2f12%22/%3E%3Crect x=%2210%22 y=%2219%22 width=%222%22 height=%222%22 fill=%22%23b9764b%22/%3E%3Crect x=%2212%22 y=%2219%22 width=%222%22 height=%222%22 fill=%22%23b9764b%22/%3E%3Crect x=%2214%22 y=%2219%22 width=%222%22 height=%222%22 fill=%22%235a2f12%22/%3E%3Crect x=%228%22 y=%2221%22 width=%222%22 height=%222%22 fill=%22%235a2f12%22/%3E%3Crect x=%2210%22 y=%2221%22 width=%222%22 height=%222%22 fill=%22%235a2f12%22/%3E%3Crect x=%2212%22 y=%2221%22 width=%222%22 height=%222%22 fill=%22%235a2f12%22/%3E%3Crect x=%2214%22 y=%2221%22 width=%222%22 height=%222%22 fill=%22%235a2f12%22/%3E%3C/svg%3E");
   position: relative;
   background: var(--pc-face);
   border-radius: 0;
-  padding: 3px;
-  color: var(--pc-ink);
-  box-shadow: 0 0 0 1px var(--pc-ink), inset 1px 1px 0 var(--pc-hi), inset -1px -1px 0 var(--pc-ink), inset 2px 2px 0 #ece4f6, inset -2px -2px 0 var(--pc-lo), 3px 3px 0 1px rgb(47 26 82 / 0.35);
+  padding: 2px;
+  color: var(--pc-dark);
+  box-shadow: inset 1px 1px 0 var(--pc-soft), inset -1px -1px 0 var(--pc-dark), inset 2px 2px 0 var(--pc-light), inset -2px -2px 0 var(--pc-shade);
   font-size: 0.8rem;
   line-height: 1.2;
   image-rendering: pixelated;
 }
 .pc-titlebar {
-  background: linear-gradient(90deg, #3f2370 0%, #6a3fb5 60%, #9c7be0 100%);
-  padding: 2px 3px 2px 5px;
-  min-height: 22px;
+  background: var(--pc-title);
+  padding: 2px 2px 2px 3px;
+  min-height: 20px;
+  margin: 1px;
 }
-.pc-title { font-size: 0.85rem; font-weight: 700; letter-spacing: 0.02em; color: #fff; }
+.pc-title { font-size: 0.85rem; font-weight: 700; color: #fff; letter-spacing: 0; }
 .pc-appicon { display: inline-block; width: 16px; height: 16px; background: var(--pc-icon) no-repeat center / 16px 16px; image-rendering: pixelated; }
+/* Title-bar close box: 16x14, raised, with a pixel X. */
 .pc-x {
-  position: relative;
-  width: 18px; height: 16px;
-  background: var(--pc-face);
-  box-shadow: inset 1px 1px 0 var(--pc-hi), inset -1px -1px 0 var(--pc-ink), inset 2px 2px 0 #ece4f6, inset -2px -2px 0 var(--pc-lo);
+  position: relative; width: 16px; height: 14px; background: var(--pc-face);
+  box-shadow: inset 1px 1px 0 var(--pc-soft), inset -1px -1px 0 var(--pc-dark), inset 2px 2px 0 var(--pc-light), inset -2px -2px 0 var(--pc-shade);
 }
-.pc-x::after { content: ''; position: absolute; inset: -14px -12px; }
-.pc-x:active { box-shadow: inset 1px 1px 0 var(--pc-ink), inset -1px -1px 0 var(--pc-hi), inset 2px 2px 0 var(--pc-lo); }
+.pc-x::after { content: ''; position: absolute; inset: -15px -14px; }
+.pc-x:active { box-shadow: inset 1px 1px 0 var(--pc-dark), inset -1px -1px 0 var(--pc-light), inset 2px 2px 0 var(--pc-shade); }
 .pc-x-glyph {
   position: absolute; left: 50%; top: 50%; width: 8px; height: 7px; transform: translate(-50%, -50%);
   background:
-    linear-gradient(var(--pc-ink) 0 0) 0 0 / 2px 1px no-repeat, linear-gradient(var(--pc-ink) 0 0) 6px 0 / 2px 1px no-repeat,
-    linear-gradient(var(--pc-ink) 0 0) 1px 1px / 2px 1px no-repeat, linear-gradient(var(--pc-ink) 0 0) 5px 1px / 2px 1px no-repeat,
-    linear-gradient(var(--pc-ink) 0 0) 2px 2px / 4px 1px no-repeat,
-    linear-gradient(var(--pc-ink) 0 0) 3px 3px / 2px 1px no-repeat,
-    linear-gradient(var(--pc-ink) 0 0) 2px 4px / 4px 1px no-repeat,
-    linear-gradient(var(--pc-ink) 0 0) 1px 5px / 2px 1px no-repeat, linear-gradient(var(--pc-ink) 0 0) 5px 5px / 2px 1px no-repeat,
-    linear-gradient(var(--pc-ink) 0 0) 0 6px / 2px 1px no-repeat, linear-gradient(var(--pc-ink) 0 0) 6px 6px / 2px 1px no-repeat;
+    linear-gradient(var(--pc-dark) 0 0) 0 0 / 2px 1px no-repeat, linear-gradient(var(--pc-dark) 0 0) 6px 0 / 2px 1px no-repeat,
+    linear-gradient(var(--pc-dark) 0 0) 1px 1px / 2px 1px no-repeat, linear-gradient(var(--pc-dark) 0 0) 5px 1px / 2px 1px no-repeat,
+    linear-gradient(var(--pc-dark) 0 0) 2px 2px / 4px 1px no-repeat, linear-gradient(var(--pc-dark) 0 0) 3px 3px / 2px 1px no-repeat,
+    linear-gradient(var(--pc-dark) 0 0) 2px 4px / 4px 1px no-repeat,
+    linear-gradient(var(--pc-dark) 0 0) 1px 5px / 2px 1px no-repeat, linear-gradient(var(--pc-dark) 0 0) 5px 5px / 2px 1px no-repeat,
+    linear-gradient(var(--pc-dark) 0 0) 0 6px / 2px 1px no-repeat, linear-gradient(var(--pc-dark) 0 0) 6px 6px / 2px 1px no-repeat;
 }
-/* Sunken (inset) panels: the stage, the stage meter, the status field and the name field. */
-.pc-meter, .pc-stage, .pc-plaque, .pc-namebar {
-  box-shadow: inset 1px 1px 0 var(--pc-ink), inset -1px -1px 0 var(--pc-hi), inset 2px 2px 0 var(--pc-lo), inset -2px -2px 0 #ece4f6;
+/* Sunken wells: the toolbox, the canvas, the status field and the name field. */
+.pc-meter, .pc-stage, .pc-plaque, .pc-namebar, .pc-field {
+  box-shadow: inset 1px 1px 0 var(--pc-shade), inset -1px -1px 0 var(--pc-light), inset 2px 2px 0 var(--pc-dark), inset -2px -2px 0 var(--pc-soft);
 }
-.pc-meter { background: #d9cfe8; }
-.pc-seg { background: #cfd9cf; color: var(--pc-ink); opacity: 0.8; box-shadow: inset 1px 1px 0 var(--pc-hi), inset -1px -1px 0 var(--pc-lo); }
-.pc-seg-on { background: #7fcf7a; opacity: 1; box-shadow: inset 1px 1px 0 #d9f5d4, inset -1px -1px 0 #3d8a4a; }
-.pc-stage {
-  background:
-    repeating-conic-gradient(rgb(255 255 255 / 0.12) 0 25%, transparent 0 50%) 0 0 / 4px 4px,
-    linear-gradient(180deg, #ecc9d8 0%, #dba6bd 60%, #c98ba8 100%);
+.pc-meter { background: var(--pc-face); }
+/* The stage "toolbox": three square tool buttons (the real growth stages). Reached stages are pressed in with a dithered face, as a selected Paint tool is. */
+.pc-seg {
+  background: var(--pc-face); color: var(--pc-dark);
+  box-shadow: inset 1px 1px 0 var(--pc-soft), inset -1px -1px 0 var(--pc-dark), inset 2px 2px 0 var(--pc-light), inset -2px -2px 0 var(--pc-shade);
 }
-.pc-scenery {
-  position: absolute; inset-inline: 0; bottom: 2px; height: 22%;
-  background: var(--pc-scenery) repeat-x left bottom / auto 100%;
-  image-rendering: pixelated;
+.pc-seg-on {
+  background: repeating-conic-gradient(var(--pc-light) 0 25%, #BDA3DF 0 50%) 0 0 / 2px 2px;
+  box-shadow: inset 1px 1px 0 var(--pc-dark), inset -1px -1px 0 var(--pc-light), inset 2px 2px 0 var(--pc-shade);
 }
-.pc-spark { position: absolute; width: 8px; height: 8px; background: #fff; clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%); }
-.pc-spark-1 { top: 14%; left: 16%; }
-.pc-spark-2 { top: 24%; right: 14%; width: 10px; height: 10px; }
-.pc-spark-3 { top: 48%; left: 8%; width: 6px; height: 6px; }
-.pc-namebar { background: #F3E9D2; }
-.pc-field { background: #fffaf0; box-shadow: inset 1px 1px 0 var(--pc-ink), inset -1px -1px 0 var(--pc-hi); }
-/* Raised bevel buttons: light top-left, dark bottom-right; pressed = inverted bevel and the label drops a pixel. */
+.pc-stage { background: var(--pc-light); }
+.pc-namebar { background: transparent; box-shadow: none; padding: 0; }
+.pc-field { background: var(--pc-light); line-height: 2rem; }
+/* Raised buttons: pale top-left, plum bottom-right; pressed inverts and nudges the label. */
 .pc-btn {
-  border: 0; border-radius: 0; color: var(--pc-ink);
-  box-shadow: inset 1px 1px 0 var(--pc-hi), inset -1px -1px 0 var(--pc-ink), inset 2px 2px 0 #fff6, inset -2px -2px 0 var(--pc-lo);
+  border: 0; border-radius: 0; color: var(--pc-dark);
+  box-shadow: inset 1px 1px 0 var(--pc-soft), inset -1px -1px 0 var(--pc-dark), inset 2px 2px 0 var(--pc-light), inset -2px -2px 0 var(--pc-shade);
 }
-.pc-btn:active {
-  box-shadow: inset 1px 1px 0 var(--pc-ink), inset -1px -1px 0 var(--pc-hi), inset 2px 2px 0 var(--pc-lo);
-  padding-top: 2px;
-}
-.pc-cream { background: #F3E9D2; }
-.pc-sky { background: #AECBE2; }
-.pc-violet { background: #9c20f8; color: #fff; box-shadow: inset 1px 1px 0 #d9b0ff, inset -1px -1px 0 #3a0a66, inset 2px 2px 0 #c183fb, inset -2px -2px 0 #6a12b8; }
-.pc-blush { background: #EBC6D6; }
-.pc-plaque { background: #F6EBB0; }
-.pc-note { color: var(--pc-ink); }
+.pc-btn:active { box-shadow: inset 1px 1px 0 var(--pc-dark), inset -1px -1px 0 var(--pc-light), inset 2px 2px 0 var(--pc-shade); padding-top: 2px; padding-left: 8px; }
+.pc-btn:focus-visible { outline: 1px dotted var(--pc-dark); outline-offset: -5px; }
+.pc-blush { background: #F2C5DE; }
+.pc-lav { background: #BDA3DF; }
+.pc-cream { background: var(--pc-face); }
+.pc-violet { background: var(--pc-title); color: #fff; box-shadow: inset 1px 1px 0 #9b74cf, inset -1px -1px 0 var(--pc-dark), inset 2px 2px 0 #7f52b8, inset -2px -2px 0 #4b2576; }
+.pc-violet:focus-visible { outline-color: #fff; }
+.pc-arrow { min-height: 2rem; }
+.pc-plaque { background: var(--pc-light); }
+.pc-note { color: var(--pc-dark); }
 .pc-tri { display: block; width: 0; height: 0; margin: 0 auto; border-style: solid; border-color: transparent; }
-.pc-tri-l { border-width: 5px 6px 5px 0; border-right-color: var(--pc-ink); }
-.pc-tri-r { border-width: 5px 0 5px 6px; border-left-color: var(--pc-ink); }
+.pc-tri-l { border-width: 4px 5px 4px 0; border-right-color: var(--pc-dark); }
+.pc-tri-r { border-width: 4px 0 4px 5px; border-left-color: var(--pc-dark); }
 .pc-backdrop {
   background:
     conic-gradient(#d9d2f0 25%, #ebe6f8 0 50%, #d9d2f0 0 75%, #ebe6f8 0) 0 0 / 28px 28px;
   opacity: 0.88;
 }
-@media (prefers-reduced-motion: no-preference) {
-  .pc-spark { animation: pc-twinkle 2.4s steps(2, end) infinite; }
-  .pc-spark-2 { animation-delay: 0.8s; }
-  .pc-spark-3 { animation-delay: 1.6s; }
-}
-@keyframes pc-twinkle { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.35; transform: scale(0.7); } }
 
 /*
  * BOSS FORM CHALLENGES: every motion here runs a FIXED number of times and then rests, because
