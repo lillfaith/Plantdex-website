@@ -47,7 +47,7 @@ function PasswordField({
           type="button"
           onClick={() => setShown((v) => !v)}
           aria-pressed={shown}
-          className="absolute top-1/2 right-1.5 min-h-9 -translate-y-1/2 rounded-lg px-2.5 text-sm font-extrabold text-violet-300 hover:bg-[var(--card-violet-100)]"
+          className="absolute top-1/2 right-1 min-h-11 min-w-11 -translate-y-1/2 rounded-lg px-2.5 text-sm font-extrabold text-violet-300 hover:bg-[var(--card-violet-100)]"
         >
           {shown ? 'Hide' : 'Show'}
         </button>
