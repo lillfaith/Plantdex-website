@@ -18,6 +18,8 @@ import { haptic } from '@/lib/haptics';
 import { FIELD_CARDS_NAME, slotsCrossedBetween } from '@/lib/field-cards';
 import { FIELD_FRAMES } from '@/lib/field-frames';
 import { consumeJustUnlocked } from '@/lib/unlocked-field-cards';
+import { levelUpId } from '@/lib/earned-moments';
+import { markAnnounced } from '@/lib/earned-moments-store';
 
 /**
  * The discovery celebration: reveal, reward, progress.
@@ -319,6 +321,19 @@ export function DiscoveryCelebration({
   }
 
   const shownLevel = leveledUp && barPhase !== 'newLevel' ? before : after;
+
+  /*
+   * THE SHARED EARNED-MOMENT CARD MUST NOT REPEAT A LEVEL THIS DIALOG ALREADY SAID.
+   * The dialog shows the live level (and the dialog's own aria text names `after.level` from
+   * the first render), so both are written to the announced ledger on mount and whenever the
+   * displayed level changes, including a level reached after reconciliation updates the
+   * progress. `markAnnounced` also drops a matching moment that is already queued.
+   */
+  const shownLevelNumber = shownLevel.level;
+  const afterLevelNumber = after.level;
+  useEffect(() => {
+    markAnnounced([levelUpId(shownLevelNumber), levelUpId(afterLevelNumber)]);
+  }, [shownLevelNumber, afterLevelNumber]);
   const barPct =
     barPhase === 'start'
       ? before.fraction * 100

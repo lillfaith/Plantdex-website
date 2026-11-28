@@ -6,6 +6,7 @@ import { describe, expect, it } from 'vitest';
 import {
   EarnedMomentHost,
   describeMoment,
+  headerKicker,
   type EarnedMoment,
 } from '@/components/ui/EarnedMomentHost';
 import { getPrintedCard, PRINTED_CARDS } from '@/lib/deck';
@@ -34,11 +35,32 @@ describe('the host', () => {
     expect(render([])).toBe('');
   });
 
-  it('shows one card however many are pending, folding the rest into a line', () => {
+  it('shows ONE card with every pending moment as a row, up to three', () => {
     const html = render([LEVEL, MASTERY, RESEARCH]);
     expect((html.match(/role="status"/g) ?? []).length).toBe(1);
-    expect(html).toContain('+2 more');
+    expect((html.match(/class="earned-row"/g) ?? []).length).toBe(3);
+    expect((html.match(/<button/g) ?? []).length).toBe(1);
+    expect(html).not.toContain('more</p>');
     expect(html).not.toContain('role="dialog"');
+  });
+
+  it('folds the fourth and later into a +N more line', () => {
+    const extra: EarnedMoment = { id: 'm2', kind: 'mastery', herbId: PRINTED_CARDS[1]!.id };
+    const html = render([LEVEL, MASTERY, RESEARCH, extra]);
+    expect((html.match(/class="earned-row"/g) ?? []).length).toBe(3);
+    expect(html).toContain('+1 more');
+  });
+
+  it('names the kind in the header only when every row is one kind', () => {
+    expect(headerKicker([LEVEL])).toBe('Level up');
+    expect(headerKicker([RESEARCH])).toBe('Field Research');
+    expect(headerKicker([LEVEL, MASTERY])).toBe('Earned');
+    expect(render([LEVEL, MASTERY])).toContain('earned-label');
+    expect(render([LEVEL])).not.toContain('earned-label');
+  });
+
+  it('acknowledges exactly the rows shown, from one control', () => {
+    expect(CODE).toMatch(/latest\.current\.slice\(0, MAX_ROWS\)/);
   });
 
   it('copy comes from the libs the screens read', () => {
@@ -115,7 +137,7 @@ describe('the earned-moment and camera CSS', () => {
 
   it('lists every new animation in the reduced-motion block', () => {
     const reduced = BLOCK.slice(BLOCK.lastIndexOf('@media (prefers-reduced-motion: reduce)'));
-    for (const cls of ['.earned-card', '.earned-dot', '.earned-kicker', '.earned-title', '.shutter-brackets', '.shutter-flash', '.scout-waiting']) {
+    for (const cls of ['.earned-card', '.earned-dot', '.earned-row', '.shutter-brackets', '.shutter-flash', '.scout-waiting']) {
       expect(reduced, cls).toContain(cls);
     }
     expect(reduced).toMatch(/\.shutter-flash \{[^}]*display: none/);
@@ -127,9 +149,28 @@ describe('the earned-moment and camera CSS', () => {
     expect(BLOCK).toMatch(/\.shutter-brackets \{[^}]*pointer-events: none/);
   });
 
+  it('is a flat light card: no gradient, no large dark panel, no shadow glow', () => {
+    const card = BLOCK.slice(BLOCK.indexOf('.earned-card {'), BLOCK.indexOf('.earned-head {'));
+    expect(BLOCK.slice(BLOCK.indexOf('.earned-host'), BLOCK.indexOf('.shutter-flash {'))).not.toMatch(/gradient/);
+    expect(card).toMatch(/background:\s*var\(--card-violet-50\)/);
+    expect(card).toMatch(/box-shadow:\s*0 3px 0 0 var\(--card-violet-700\)/);
+    expect(card).not.toMatch(/plum-9|plum-8/);
+  });
+
   it('gates the scout on .scout-waiting', () => {
     expect(BLOCK).toMatch(/\.scan-scout\.scout-waiting \{[^}]*scan-scout-look/);
     const rule = CSS_RAW.slice(CSS_RAW.indexOf('\n.scan-scout {'));
     expect(rule.slice(0, rule.indexOf('}'))).toMatch(/animation:\s*none/);
+  });
+});
+
+describe('the discovery celebration and the card never say the same level twice', () => {
+  const CELEBRATION = strip(readFileSync('src/components/herbdex/DiscoveryCelebration.tsx', 'utf8'));
+  it('marks every level it displays as announced', () => {
+    expect(CELEBRATION).toMatch(/from '@\/lib\/earned-moments-store'/);
+    expect(CELEBRATION).toMatch(/from '@\/lib\/earned-moments'/);
+    expect(CELEBRATION).toMatch(/markAnnounced\(/);
+    expect(CELEBRATION).toMatch(/levelUpId\(shownLevel\.level\)/);
+    expect(CELEBRATION).toMatch(/levelUpId\(after\.level\)/);
   });
 });

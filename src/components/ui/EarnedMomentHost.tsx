@@ -58,7 +58,7 @@ export function describeMoment(moment: EarnedMoment): MomentCopy {
     };
   }
   const title = researchTaskById(moment.taskId)?.title ?? 'Field Research';
-  return { kicker: 'Field Research complete', title, detail: null, short: title };
+  return { kicker: 'Field Research', title, detail: null, short: title };
 }
 
 function prefersReducedMotion(): boolean {
@@ -114,26 +114,73 @@ function subscribeDialogs(notify: () => void): () => void {
 }
 const dialogOpen = () => document.querySelector('dialog[open]') !== null;
 
+const MAX_ROWS = 3;
+
+function Row({ moment, labelled, settled }: { moment: EarnedMoment; labelled: boolean; settled: boolean }) {
+  const copy = describeMoment(moment);
+  const showSprite = moment.kind === 'mastery' && hasSprite(moment.herbId);
+  return (
+    <li className="earned-row" data-earned-kind={moment.kind}>
+      <div className="earned-art" aria-hidden={showSprite ? undefined : true}>
+        {!settled && moment.kind !== 'research' && <Burst />}
+        {showSprite && moment.kind === 'mastery' ? (
+          <PlantSprite
+            herbId={moment.herbId}
+            alt={getPrintedCard(moment.herbId)?.commonName ?? ''}
+            stage="flowering"
+            fit
+            frozen={settled}
+            className="earned-sprite"
+          />
+        ) : (
+          <span className="earned-glyph" aria-hidden="true">
+            {moment.kind === 'level-up' ? moment.toLevel : <i className="earned-tick" />}
+          </span>
+        )}
+        {moment.kind === 'level-up' && <i aria-hidden="true" className="earned-star" />}
+      </div>
+      <div className="earned-text">
+        {labelled && <p className="earned-label">{copy.kicker}</p>}
+        <p className="earned-title">
+          {moment.kind === 'level-up' && !settled ? (
+            <CountUp from={moment.fromLevel} to={moment.toLevel} durationMs={700} prefix="Level " />
+          ) : (
+            copy.title
+          )}
+        </p>
+        {copy.detail && <p className="earned-detail">{copy.detail}</p>}
+      </div>
+    </li>
+  );
+}
+
+/** The header names the kind when every row is one kind, and just says "Earned" otherwise. */
+export function headerKicker(moments: readonly EarnedMoment[]): string {
+  const kinds = new Set(moments.map((m) => m.kind));
+  const first = moments[0];
+  return first && kinds.size === 1 ? describeMoment(first).kicker : 'Earned';
+}
+
 function MomentCard({
-  moment,
-  more,
+  moments,
+  hidden,
   onDismiss,
 }: {
-  moment: EarnedMoment;
-  more: string[];
+  moments: EarnedMoment[];
+  hidden: number;
   onDismiss: () => void;
 }) {
   // Reduced motion starts at the end state. Safe on the server: the host renders nothing
   // there because the pending list is empty until the provider is ready.
   const [settled, setSettled] = useState(prefersReducedMotion);
   const touched = useRef(false);
-  const copy = describeMoment(moment);
-  const isLevel = moment.kind === 'level-up';
+  const isLevel = moments.some((m) => m.kind === 'level-up');
 
   // The one haptic, on the real event. A no-op on iOS web and under reduced motion.
+  const firstKind = moments[0]?.kind;
   useEffect(() => {
-    haptic(moment.kind === 'research' ? 'tap' : 'success');
-  }, [moment.kind]);
+    haptic(firstKind === 'research' ? 'tap' : 'success');
+  }, [firstKind]);
 
   // Motion ends by itself; Skip just gets there sooner.
   useEffect(() => {
@@ -153,7 +200,7 @@ function MomentCard({
     return () => window.clearTimeout(timer);
   }, [isLevel, onDismiss]);
 
-  // First Escape or Skip lands the end state; the next one closes. Same two steps as Skip.
+  // First Escape or Skip lands the end state; the next one closes.
   const skip = () => {
     touched.current = true;
     if (!settled) setSettled(true);
@@ -171,69 +218,44 @@ function MomentCard({
     return () => window.removeEventListener('keydown', onKey);
   }, [settled, onDismiss]);
 
-  const showSprite = moment.kind === 'mastery' && hasSprite(moment.herbId);
+  const labelled = new Set(moments.map((m) => m.kind)).size > 1;
 
   return (
     <div
       role="status"
       aria-live="polite"
-      data-earned-kind={moment.kind}
       data-settled={settled ? 'true' : 'false'}
+      data-earned-rows={moments.length}
       onPointerDown={() => {
         touched.current = true;
       }}
       className={`earned-card ${settled ? 'earned-settled' : ''}`}
     >
-      <div className="earned-art" aria-hidden={showSprite ? undefined : true}>
-        {!settled && <Burst />}
-        {showSprite && moment.kind === 'mastery' ? (
-          <PlantSprite
-            herbId={moment.herbId}
-            alt={getPrintedCard(moment.herbId)?.commonName ?? ''}
-            stage="flowering"
-            fit
-            frozen={settled}
-            className="earned-sprite"
-          />
-        ) : (
-          <span className="earned-glyph" aria-hidden="true">
-            {isLevel ? moment.toLevel : <i className="earned-tick" />}
-          </span>
-        )}
+      <div className="earned-head">
+        <p className="earned-kicker">{headerKicker(moments)}</p>
+        <button type="button" onClick={skip} className="earned-skip min-h-11 min-w-11">
+          {settled ? 'Done' : 'Skip'}
+          <span className="sr-only"> this notice</span>
+        </button>
       </div>
-
-      <div className="earned-text">
-        <p className="earned-kicker">{copy.kicker}</p>
-        <p className="earned-title">
-          {isLevel && !settled ? (
-            <CountUp from={moment.fromLevel} to={moment.toLevel} durationMs={700} prefix="Level " />
-          ) : (
-            copy.title
-          )}
-        </p>
-        {copy.detail && <p className="earned-detail">{copy.detail}</p>}
-        {more.length > 0 && (
-          <p className="earned-more">
-            +{more.length} more: {more.join(' · ')}
-          </p>
-        )}
-      </div>
-
-      <button type="button" onClick={skip} className="earned-skip min-h-11 min-w-11">
-        {settled ? 'Done' : 'Skip'}
-        <span className="sr-only"> this notice</span>
-      </button>
+      <ul className="earned-rows">
+        {moments.map((moment) => (
+          <Row key={moment.id} moment={moment} labelled={labelled} settled={settled} />
+        ))}
+      </ul>
+      {hidden > 0 && <p className="earned-more">+{hidden} more</p>}
     </div>
   );
 }
 
 /**
- * Renders at most ONE card however many moments are pending; the rest fold into a single
- * "+N more" line. Dismissing acknowledges everything that was folded in, so N moments are
- * N acknowledgements but never N cards.
+ * ONE card for everything pending: up to three rows (level-up, mastery, research), then a
+ * "+N more" line. A single Skip or Done acknowledges exactly the rows shown; the rest stay
+ * queued and appear in the next card, so nothing is acknowledged unseen.
  *
  * It is anchored above the bottom nav and does not take focus, cover a primary action or
  * block the page: `role="status"`, no scrim, no trap. Pure display of data it is handed.
+ * While a modal dialog is open it is not mounted at all (see `subscribeDialogs`).
  */
 export function EarnedMomentHost({
   moments,
@@ -242,29 +264,28 @@ export function EarnedMomentHost({
   moments: EarnedMoment[];
   onAcknowledge: (id: string) => void;
 }) {
-  const current = moments[0];
+  const first = moments[0];
   const blocked = useSyncExternalStore(subscribeDialogs, dialogOpen, () => false);
   // Latest list for the dismiss handler without re-arming the card's timers on each change.
   const latest = useRef(moments);
   useEffect(() => {
     latest.current = moments;
   });
-  const acknowledgeAll = useRef((): void => undefined);
+  const acknowledgeShown = useRef((): void => undefined);
   useEffect(() => {
-    acknowledgeAll.current = () => {
-      for (const moment of latest.current) onAcknowledge(moment.id);
+    acknowledgeShown.current = () => {
+      for (const moment of latest.current.slice(0, MAX_ROWS)) onAcknowledge(moment.id);
     };
   }, [onAcknowledge]);
-  const [dismiss] = useState(() => () => acknowledgeAll.current());
+  const [dismiss] = useState(() => () => acknowledgeShown.current());
 
   // Moments stay queued in the provider; they simply wait for the dialog to close.
-  if (!current || blocked) return null;
+  if (!first || blocked) return null;
 
-  const more = moments.slice(1).map((moment) => describeMoment(moment).short);
-
+  const shown = moments.slice(0, MAX_ROWS);
   return (
     <div className="earned-host">
-      <MomentCard key={current.id} moment={current} more={more} onDismiss={dismiss} />
+      <MomentCard key={first.id} moments={shown} hidden={moments.length - shown.length} onDismiss={dismiss} />
     </div>
   );
 }
