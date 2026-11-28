@@ -258,8 +258,19 @@ export function SeasonsGuide() {
                       <span className="block truncate text-[0.95rem] font-extrabold text-violet-100">{herb.commonName}</span>
                       <span className="font-botanical block truncate text-[0.8125rem] text-violet-300 italic">{herb.scientificName}</span>
                       {pending && <span className="block text-xs leading-tight font-bold text-violet-300">Camera collecting is not available yet</span>}
+                      <span className="mt-1 flex items-center gap-2 min-[360px]:hidden">
+                        <span className="text-[0.8125rem] font-bold text-violet-300 tabular-nums">#{String(herb.cardNumber).padStart(2, '0')}</span>
+                        <span
+                        className={`pd-badge !min-h-0 !px-2 !py-0.5 !text-xs ${
+                          have ? '!border-[var(--card-leaf-700)] !bg-[var(--card-leaf-100)]' : '!border-[var(--card-violet-300)] !bg-white'
+                        }`}
+                      >
+                        {ready ? (have ? 'Collected' : pending ? 'Not yet' : 'To find') : 'Card'}
+                      </span>
+                      </span>
                     </span>
-                    <span className="flex shrink-0 flex-col items-end gap-1">
+                    {/* Phones narrower than 360px: the number and state sit under the names (nothing is cut off at the right edge). */}
+                    <span className="flex shrink-0 flex-col items-end gap-1 max-[359px]:hidden">
                       <span className="text-[0.8125rem] font-bold text-violet-300 tabular-nums">#{String(herb.cardNumber).padStart(2, '0')}</span>
                       <span
                         className={`pd-badge !min-h-0 !px-2 !py-0.5 !text-xs ${
