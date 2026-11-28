@@ -64,9 +64,7 @@ export function SeasonsGuide() {
           <PlantdexIcon name="leaves" />
         </span>
         <p className="text-[0.8125rem] leading-snug text-violet-100">
-          <strong className="font-extrabold">Typical, not exact.</strong> These are the seasons printed on the cards. Real timing shifts with
-          region, weather and elevation, so this is when to start looking, not a harvesting schedule or a live guide to what is growing near
-          you.
+          <strong className="font-extrabold">Typical, not exact.</strong> Seasons are as printed on the cards; real timing shifts with region, weather and elevation. A guide to when to start looking, not a harvesting schedule or a live view of what is growing near you.
         </p>
       </aside>
 
@@ -154,10 +152,10 @@ export function SeasonsGuide() {
                 <li key={herb.id} className="sm:border-b-2 sm:border-[var(--card-violet-100)] sm:odd:border-r-2">
                   <Link
                     href={`/herbdex/${herb.id}`}
-                    className="flex min-h-[4.25rem] items-center gap-3 px-3 py-2 transition-colors hover:bg-[var(--card-violet-50)] focus-visible:bg-[var(--card-violet-50)]"
+                    className="flex min-h-[4.25rem] items-center gap-2.5 px-2.5 py-2 transition-colors min-[360px]:gap-3 min-[360px]:px-3 hover:bg-[var(--card-violet-50)] focus-visible:bg-[var(--card-violet-50)]"
                   >
                     <span
-                      className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border-2 ${
+                      className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border-2 min-[360px]:h-12 min-[360px]:w-12 ${
                         have ? 'border-[var(--card-violet-500)] bg-white' : 'border-dashed border-[var(--card-violet-300)] bg-[var(--card-violet-50)]'
                       }`}
                     >
@@ -184,7 +182,7 @@ export function SeasonsGuide() {
                         {ready ? (have ? 'Collected' : 'To find') : 'Card'}
                       </span>
                     </span>
-                    <span aria-hidden="true" className="text-lg text-violet-300">
+                    <span aria-hidden="true" className="text-lg text-violet-300 max-[359px]:hidden">
                       &rsaquo;
                     </span>
                   </Link>
