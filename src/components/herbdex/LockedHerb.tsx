@@ -50,8 +50,7 @@ export function LockedHerb({
         You haven&apos;t discovered this plant yet
       </h1>
       <p className="mt-2 text-sm leading-relaxed text-violet-300">
-        Find it outdoors to reveal its Plantdex card and earn{' '}
-        <strong className="text-gold-300">+{herb.xp} XP</strong>.
+        Scan this plant with the in-app camera to unlock its Plantdex card.
       </p>
 
       {/*
@@ -76,7 +75,7 @@ export function LockedHerb({
       )}
 
       <div className="mt-5">
-        <DiscoverPanel herb={herb} label="Log a Discovery" spoilerFree onDiscovered={onDiscovered} />
+        <DiscoverPanel herb={herb} onDiscovered={onDiscovered} />
       </div>
 
       <p className="mt-5 text-xs text-violet-400">
@@ -100,7 +99,7 @@ export function LockedHerb({
         </h2>
         <p className="mt-2 text-sm text-violet-200">
           This will show its identity and card, but it won&apos;t count toward your
-          collection. It stays locked until you log a real discovery.
+          collection. It stays locked until you scan the plant with the in-app camera.
         </p>
         <div className="mt-5 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
           <button

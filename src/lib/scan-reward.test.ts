@@ -56,8 +56,10 @@ describe('a confirmation says what it is recording', () => {
   const flat = (source: string) => source.replace(/\s+/g, ' ');
   const FIND_WORDS = /found it outdoors|met the plant outdoors/;
 
-  it('qualifies the confirmation on the card page', () => {
-    expect(flat(DISCOVER_PANEL)).toMatch(FIND_WORDS);
+  it('sends the card page to the scanner instead of confirming a find', () => {
+    // The card page no longer writes a discovery; see scan-route-no-manual.test.ts.
+    expect(flat(DISCOVER_PANEL)).toContain('href="/scan"');
+    expect(flat(DISCOVER_PANEL)).not.toMatch(/discover\(/);
   });
 
   it('qualifies the confirmation on the scanner too', () => {

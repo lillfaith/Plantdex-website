@@ -42,8 +42,8 @@ export function FirstQuestCard({ cta = true }: { cta?: boolean }) {
         Make your first find
       </h2>
       <p className="mt-1 text-sm leading-relaxed text-violet-100">
-        Find any plant growing outdoors, photograph it, then record it. It counts once you
-        confirm the find.{' '}
+        Scan any plant with the in-app camera while signed in. It counts once you confirm
+        the scan.{' '}
         {!cta && 'Use the scanner just below.'}
       </p>
       {badge && amberRing && (

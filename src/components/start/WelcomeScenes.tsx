@@ -169,11 +169,11 @@ function Discover() {
           ))}
         </ul>
         <p className="welcome-key mt-2 rounded-full py-1.5 text-center text-[0.72rem] font-bold tracking-wide uppercase">
-          Record this find
+          Confirm this scan
         </p>
       </div>
       <p className="mx-auto mt-3 max-w-[19rem] text-sm leading-relaxed text-violet-100">
-        Snap a plant, review the suggestions, then record it only if you really met it.{' '}
+        Scan a plant with the in-app camera, review the suggestions, then confirm it only if you really met it.{' '}
         <strong className="text-gold-300">Identifying a plant is not finding it.</strong>
       </p>
     </>
@@ -407,7 +407,7 @@ function Explore({ returning, onLeave, onTour, tourDone }: SceneProps) {
         </p>
         <Title>{returning ? 'Find something new' : 'Your First Find'}</Title>
         <p className="mt-1 text-sm leading-relaxed text-violet-100">
-          Photograph a plant outdoors, then record it.
+          Scan a plant with the in-app camera to unlock its card.
         </p>
         {!returning && badge && amberRing && (
           <div className="mt-3 flex items-center justify-center gap-4">

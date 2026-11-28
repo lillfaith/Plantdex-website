@@ -13,7 +13,7 @@ import { MysteryCard } from './MysteryCard';
  * WHY HERE AND NOT IN THE GRID, WHICH IS WHERE THIS FIRST WENT.
  *
  * A grid tile is a <Link> to this page, and this page is where `DiscoverPanel` renders
- * "Log a Discovery" — so the tile is the route into recording a find. Putting the press
+ * "Scan it to collect" — so the tile is the route to the scanner. Putting the press
  * target on the tile meant either swallowing that route or carving the tile into two
  * regions that behave differently, and both are worse than the thing they bought.
  *

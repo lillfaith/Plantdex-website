@@ -1,42 +1,37 @@
 'use client';
 
-import { useCallback, useRef } from 'react';
+import Link from 'next/link';
 import type { DiscoveryResult, Herb } from '@/lib/types';
 import { useHerbdex } from '@/state/HerbdexProvider';
 import { xpForDiscoveries } from '@/lib/progression';
 import { PlantdexIcon } from '../icons/PlantdexIcon';
 
 /**
- * The "I Found This Plant" flow.
+ * The route from an uncollected card to the scanner.
  *
- * Confirm → record → reveal → award XP → update progress → surface any new achievements,
- * matching the discovery sequence in AGENTS.md.
+ * OWNER DECISION: a NEW card is unlocked only by the in-app camera and receipt flow. This panel
+ * used to record a find from two taps; it now writes nothing and calls no reducer. Reading a
+ * card (the reveal hatch) is unaffected, because reading is not unlocking. Hiding the old button
+ * is not the security rule: the server enforces it. This panel is only the honest explanation.
  *
- * Native <dialog> is used so focus trapping, Escape-to-close and focus restoration come
- * from the platform rather than from hand-rolled key handling.
- *
- * The celebration deliberately lives in the PARENT, not here. Discovering flips this page
- * from its locked view to its full view, which unmounts this component — so a dialog owned
- * here would be destroyed the instant it was needed. The parent survives that swap.
+ * Wording: a card unlocked this way was captured in the app. Never "verified", never "found
+ * outdoors", and nothing here speaks about identification, edibility or safety beyond saying
+ * a scan makes none of them certain.
  */
 export function DiscoverPanel({
   herb,
-  label = 'I Found This Plant',
-  spoilerFree = false,
+  label = 'Scan it to collect',
   showStamp = true,
-  onDiscovered,
 }: {
   herb: Herb;
-  /** CTA wording. The locked page says "Log a Discovery"; the revealed page keeps the default. */
+  /** CTA wording. */
   label?: string;
-  /** On an undiscovered page the confirm step must not leak the plant's name. */
-  spoilerFree?: boolean;
   /** Show the "Discovered" stamp panel once found. The overview hides it (the Progress tab and the character panel carry the date). */
   showStamp?: boolean;
-  /** Called only for a genuine first discovery, so the parent can celebrate it. */
+  /** Kept for callers; this panel no longer unlocks anything, so it is never called here. */
   onDiscovered?: (result: DiscoveryResult) => void;
 }) {
-  const { isDiscovered, discover, state, ready } = useHerbdex();
+  const { isDiscovered, state, ready } = useHerbdex();
 
   /*
    * WHAT THIS FIND ACTUALLY PAYS, asked of the ledger rather than read off the card.
@@ -48,22 +43,10 @@ export function DiscoverPanel({
    */
   const award = xpForDiscoveries([herb.id]);
 
-  const confirmRef = useRef<HTMLDialogElement>(null);
-
+  const pays =
+    award > 0 ? `; a successful scan collects it for ${award} XP, once` : '; this one pays no XP';
   const discovered = ready && isDiscovered(herb.id);
   const discoveredAt = state.discoveries[herb.id];
-
-  const closeDialog = useCallback((ref: React.RefObject<HTMLDialogElement | null>) => {
-    ref.current?.close();
-  }, []);
-
-  const onConfirm = useCallback(() => {
-    const outcome = discover(herb);
-    closeDialog(confirmRef);
-    // Only celebrate a genuine first discovery. A replayed confirm awards nothing and
-    // shows nothing, which is what makes double-tapping harmless rather than lucrative.
-    if (outcome.awarded) onDiscovered?.(outcome);
-  }, [discover, herb, closeDialog, onDiscovered]);
 
   if (!ready) {
     // Placeholder of the same height, so the layout does not jump once storage is read.
@@ -98,65 +81,21 @@ export function DiscoverPanel({
         </div>
         ) : null
       ) : (
-        <button
-          type="button"
-          onClick={() => confirmRef.current?.showModal()}
-          className="group relative min-h-12 w-full overflow-hidden rounded-full bg-gradient-to-r from-gold-500 to-pink-accent px-6 text-base font-bold text-violet-deep shadow-card transition-transform duration-150 hover:scale-[1.02] active:scale-[0.98] motion-reduce:transition-none motion-reduce:hover:scale-100 motion-reduce:active:scale-100"
-        >
-          <span className="relative z-10 flex items-center justify-center gap-2">
-            <PlantdexIcon name="discovered" className="text-base" />
+        <div>
+          <Link
+            href="/scan"
+            className="group relative flex min-h-12 w-full items-center justify-center gap-2 overflow-hidden rounded-full bg-gradient-to-r from-gold-500 to-pink-accent px-6 text-base font-bold text-violet-deep shadow-card transition-transform duration-150 hover:scale-[1.02] active:scale-[0.98] motion-reduce:transition-none motion-reduce:hover:scale-100 motion-reduce:active:scale-100"
+          >
+            <PlantdexIcon name="scan" className="text-base" />
             {label}
-            {award > 0 && (
-              <span className="text-sm font-extrabold opacity-70">+{award} XP</span>
-            )}
-          </span>
-        </button>
-      )}
-
-      {/* Confirmation */}
-      <dialog
-        ref={confirmRef}
-        aria-labelledby="confirm-title"
-        className="panel m-auto w-[min(26rem,calc(100vw-2rem))] p-5 text-violet-100 backdrop:bg-plum-950/80 backdrop:backdrop-blur-sm"
-      >
-        <h2 id="confirm-title" className="font-display text-lg font-bold text-gold-plate">
-          Add {spoilerFree ? `card #${String(herb.cardNumber).padStart(2, '0')}` : herb.commonName}{' '}
-          to your collection?
-        </h2>
-        <p className="mt-2 text-sm text-violet-200">
-          Only if you actually found it outdoors.{' '}
-          {award > 0 ? (
-            <>
-              <strong className="text-gold-300">{award} XP</strong>, once.
-            </>
-          ) : (
-            /* A Field Card pays nothing — see `award` above. Saying so is the honest half
-               of "log it anyway": the record is the point, not the number. */
-            <>This one pays no XP; the record is that you found it.</>
-          )}
-        </p>
-        <p className="mt-2 text-xs text-violet-300">
-          Logging a find isn&apos;t confirming an identification, and never makes a plant safe
-          to use.
-        </p>
-        <div className="mt-5 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
-          <button
-            type="button"
-            onClick={() => closeDialog(confirmRef)}
-            className="min-h-11 rounded-full border border-violet-500 px-5 text-sm font-semibold text-violet-200 hover:bg-plum-600"
-          >
-            Cancel
-          </button>
-          <button
-            type="button"
-            onClick={onConfirm}
-            className="min-h-11 rounded-full bg-gold-500 px-5 text-sm font-bold text-violet-deep transition-transform hover:bg-gold-400 active:scale-[0.99] motion-reduce:active:scale-100"
-          >
-            Yes, I found it
-          </button>
+          </Link>
+          <p className="mt-2 text-center text-xs leading-relaxed text-violet-300">
+            A new card is unlocked by scanning the plant with the in-app camera while signed in
+            {pays}. Photos chosen from your library can help identify a plant but cannot unlock a card.
+            Scanning never confirms an identification or makes a plant safe to use.
+          </p>
         </div>
-      </dialog>
-
+      )}
     </>
   );
 }

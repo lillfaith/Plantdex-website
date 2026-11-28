@@ -15,7 +15,7 @@ describe('the first quest card', () => {
     expect(code).not.toMatch(/herbdex-reducer|discover\(|\d+\s*XP/);
   });
   it('says what counts', () => {
-    expect(code).toMatch(/It counts once you\s+confirm the find/);
+    expect(code).toMatch(/It counts once you\s+confirm\s+the scan/);
   });
   it('is on /herbdex and on research, each with its own scan button', () => {
     expect(readFileSync('src/app/herbdex/page.tsx', 'utf8')).toContain('<FirstQuestCard />');

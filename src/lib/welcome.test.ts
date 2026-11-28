@@ -156,7 +156,7 @@ describe('what the welcome says', () => {
 
   it('ends on the first objective', () => {
     expect(SCENES).toContain('Your First Find');
-    expect(SCENES).toMatch(/Photograph a plant outdoors, then record it/);
+    expect(SCENES).toMatch(/Scan a plant with the in-app camera to unlock its card/);
     expect(SCENES.indexOf("id: 'explore'")).toBeGreaterThan(SCENES.indexOf("id: 'discover'"));
   });
 

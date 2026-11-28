@@ -296,7 +296,7 @@ export function HerbDetail({ herb }: { herb: Herb }) {
       {!discovered && revealed && !xpUnlocked && (
         <p className="panel mb-4 p-3 text-xs text-violet-300">
           <PlantdexIcon name="revealed" className="text-sm" /> Revealed for reading — still
-          undiscovered until you find it outdoors.
+          undiscovered until you scan it with the in-app camera.
         </p>
       )}
 

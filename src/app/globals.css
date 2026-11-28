@@ -4130,3 +4130,87 @@ html:has(main[data-shade='learn']) { background: #b7b7f5; }
 [data-shade] [class*='hover:bg-violet-200']:hover { background-color: #3d0a63; }
 /* The white "Edit profile" link sits on the pale hero plate here. */
 [data-shade] [class*='tap-44'][class*='absolute'][class~='text-white'] { color: var(--color-violet-200); }
+
+/*
+ * COLLECTION REFUSAL NOTICE. Flat lavender surface and a saturated card-violet header, the same
+ * look as the earned-moment card. Pure status: no animation at all (so nothing to add to the
+ * reduced-motion block), no scrim, and it only takes pointer events inside its own box, above
+ * the bottom nav. White on card-violet-500 is 5.2:1; #38204f on card-violet-50 is well over 7:1.
+ */
+.refusal-host {
+  position: fixed;
+  inset-inline: 0.75rem;
+  bottom: calc(5rem + env(safe-area-inset-bottom));
+  z-index: 55;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+@media (min-width: 640px) {
+  .refusal-host {
+    bottom: 1.5rem;
+  }
+}
+.refusal-card {
+  pointer-events: auto;
+  width: 100%;
+  max-width: 24rem;
+  overflow: hidden;
+  background: var(--card-violet-50);
+  border: 2px solid var(--card-violet-300);
+  border-radius: 12px;
+  box-shadow: 0 3px 0 0 var(--card-violet-700);
+  color: #38204f;
+}
+.refusal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0 0.5rem 0 0.75rem;
+  background: var(--card-violet-500);
+  color: #fff;
+}
+.refusal-kicker {
+  margin: 0;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.refusal-dismiss {
+  flex: none;
+  padding-inline: 0.75rem;
+  margin-block: 0.125rem;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #fff;
+  background: #38204f;
+  border: 2px solid var(--card-violet-300);
+  border-radius: 8px;
+  cursor: pointer;
+}
+.refusal-dismiss:hover,
+.refusal-dismiss:focus-visible {
+  background: var(--card-violet-700);
+}
+.refusal-body {
+  padding: 0.625rem 0.75rem 0.75rem;
+}
+.refusal-text {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.45;
+}
+.refusal-link {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--card-violet-900);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
