@@ -9,6 +9,8 @@ import { SEASONS, type Season } from '@/lib/types';
 import { useHerbdex } from '@/state/HerbdexProvider';
 import { PlantdexIcon } from '@/components/icons/PlantdexIcon';
 import { fromRows, gridToUri } from '@/lib/pixel-art';
+import { matchScientificName } from '@/lib/plant-match';
+import { isReceiptEligibility } from '@/lib/observation-capture-receipt';
 
 /**
  * Season identity is a SMALL accent on the one visible panel, never four competing saturated panels: a tint for the
@@ -81,12 +83,6 @@ const GLYPH_ROWS: Record<Season, readonly string[]> = {
   ],
 };
 const glyphUri = (season: Season) => gridToUri(fromRows(GLYPH_ROWS[season], GLYPH_PALETTE));
-/** The same glyph padded with empty columns, so a repeating ribbon is a sparse line of glyphs rather than a solid band. */
-const ribbonUri = (season: Season) => {
-  const rows = GLYPH_ROWS[season];
-  const width = Math.max(...rows.map((row) => row.length)) + 14;
-  return gridToUri(fromRows(rows.map((row) => row.padEnd(width, ' ')), GLYPH_PALETTE));
-};
 function SeasonGlyph({ season, size }: { season: Season; size: number }) {
   return (
     <span
@@ -96,15 +92,19 @@ function SeasonGlyph({ season, size }: { season: Season; size: number }) {
     />
   );
 }
-/** A thin repeating ribbon of the season's glyph along the foot of the header: the identity of the season, as scenery, at 14px tall. */
-function SeasonRibbon({ season }: { season: Season }) {
-  return (
-    <div
-      aria-hidden="true"
-      className="h-3.5 w-full opacity-90 [image-rendering:pixelated]"
-      style={{ backgroundImage: ribbonUri(season), backgroundRepeat: 'repeat-x', backgroundSize: 'auto 14px', backgroundPosition: 'left bottom' }}
-    />
-  );
+/**
+ * CAN A CAMERA PHOTOGRAPH OF THIS CARD'S OWN PLANT UNLOCK IT? Asked of the same matcher the scanner uses, not remembered: the card's own
+ * binomial must resolve to the card with a receipt-eligible basis. Today that holds for all 45 printed cards (pinned by
+ * `seasons-eligibility.test.ts`; Goldenrod's old genus-wide override was retired and its accepted species curated), so nothing renders as
+ * "Not yet" now. If a card ever stops being collectable by camera, an objective the camera cannot complete must not read as an ordinary
+ * "To find" - it says so instead. Genuine discovery status is never touched: a card the player has is "Collected" regardless.
+ */
+export function cameraCollectingAvailable(herb: { id: string; scientificName: string }): boolean {
+  const match = matchScientificName(herb.scientificName);
+  return match.herbId === herb.id && isReceiptEligibility(match.eligibility);
+}
+function cameraCollectingPending(herb: { id: string; scientificName: string }): boolean {
+  return !cameraCollectingAvailable(herb);
 }
 
 /**
@@ -130,6 +130,7 @@ export function SeasonsGuide() {
 
   const { total, collected } = countFor(active);
   const list = bySeason(active);
+  const pendingLeft = list.filter((herb) => !collectedIds.has(herb.id) && cameraCollectingPending(herb)).length;
   const accent = ACCENT[active];
 
   function onKeyDown(event: React.KeyboardEvent, index: number) {
@@ -192,7 +193,7 @@ export function SeasonsGuide() {
         <div className="px-4 pt-3 pb-3" style={{ background: `linear-gradient(180deg, ${accent.tint}, transparent)` }}>
           <div className="flex items-baseline justify-between gap-2">
             <h2 className="font-display flex items-center gap-2 text-xl font-extrabold text-violet-100">
-              <SeasonGlyph season={active} size={28} />
+              <SeasonGlyph season={active} size={32} />
               {SEASON_LABEL[active]}
             </h2>
             <p className="text-sm font-bold text-violet-100 tabular-nums">
@@ -222,10 +223,9 @@ export function SeasonsGuide() {
                 ? `Every ${SEASON_LABEL[active].toLowerCase()} card in the deck is in your collection.`
                 : collected === 0
                   ? 'None collected yet. Open a card to see how to find it.'
-                  : `${total - collected} left to find. Open a card for how to recognise it.`}
+                  : `${total - collected} left to find. Open a card for how to recognise it.${pendingLeft ? ` ${pendingLeft === 1 ? 'One of them' : `${pendingLeft} of them`} cannot be collected by camera yet.` : ''}`}
           </p>
         </div>
-        <SeasonRibbon season={active} />
 
         {list.length === 0 ? (
           <p className="px-4 pb-4 text-sm text-violet-300">No cards in the deck are marked for this season.</p>
@@ -233,6 +233,7 @@ export function SeasonsGuide() {
           <ul className="grid divide-y-2 divide-[var(--card-violet-100)] border-t-2 border-[var(--card-violet-100)] sm:grid-cols-2 sm:divide-y-0">
             {list.map((herb) => {
               const have = ready && collectedIds.has(herb.id);
+              const pending = !have && ready && cameraCollectingPending(herb);
               return (
                 <li key={herb.id} className="sm:border-b-2 sm:border-[var(--card-violet-100)] sm:odd:border-r-2">
                   <Link
@@ -256,6 +257,7 @@ export function SeasonsGuide() {
                     <span className="min-w-0 flex-1">
                       <span className="block truncate text-[0.95rem] font-extrabold text-violet-100">{herb.commonName}</span>
                       <span className="font-botanical block truncate text-[0.8125rem] text-violet-300 italic">{herb.scientificName}</span>
+                      {pending && <span className="block text-xs leading-tight font-bold text-violet-300">Camera collecting is not available yet</span>}
                     </span>
                     <span className="flex shrink-0 flex-col items-end gap-1">
                       <span className="text-[0.8125rem] font-bold text-violet-300 tabular-nums">#{String(herb.cardNumber).padStart(2, '0')}</span>
@@ -264,7 +266,7 @@ export function SeasonsGuide() {
                           have ? '!border-[var(--card-leaf-700)] !bg-[var(--card-leaf-100)]' : '!border-[var(--card-violet-300)] !bg-white'
                         }`}
                       >
-                        {ready ? (have ? 'Collected' : 'To find') : 'Card'}
+                        {ready ? (have ? 'Collected' : pending ? 'Not yet' : 'To find') : 'Card'}
                       </span>
                     </span>
                     <span aria-hidden="true" className="text-lg text-violet-300 max-[359px]:hidden">
