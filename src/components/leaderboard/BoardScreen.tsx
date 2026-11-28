@@ -332,7 +332,7 @@ function Membership(props: BoardScreenProps & { listed: boolean }) {
             type="button"
             onClick={props.onLeave}
             disabled={busy}
-            className="pd-btn-quiet px-4 text-sm disabled:opacity-60"
+            className="pd-btn-quiet min-h-11 px-4 text-sm disabled:opacity-60"
           >
             Leave the board
           </button>
@@ -343,7 +343,7 @@ function Membership(props: BoardScreenProps & { listed: boolean }) {
             type="button"
             onClick={() => props.onJoin(null)}
             disabled={busy}
-            className="pd-btn px-5 text-sm disabled:opacity-70"
+            className="pd-btn min-h-11 px-5 text-sm disabled:opacity-70"
           >
             Join the board
           </button>
@@ -353,7 +353,7 @@ function Membership(props: BoardScreenProps & { listed: boolean }) {
               type="button"
               onClick={() => props.onJoin(region.id)}
               disabled={busy}
-              className="pd-btn-quiet px-4 text-sm disabled:opacity-60"
+              className="pd-btn-quiet min-h-11 px-4 text-sm disabled:opacity-60"
             >
               Join as {region.name}
             </button>
