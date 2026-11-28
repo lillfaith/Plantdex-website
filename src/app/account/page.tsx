@@ -14,7 +14,7 @@ export default function AccountPage() {
 
   return (
     <main id="main" data-ground="lavender" data-palette="card" className="mx-auto max-w-md px-4 py-8">
-      <PageAtmosphere theme="home" />
+      <PageAtmosphere theme="collection" />
       <h1 className="font-display text-2xl font-bold text-gold-plate">Account</h1>
 
       {/*
