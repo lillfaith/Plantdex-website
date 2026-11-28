@@ -123,8 +123,9 @@ export function BoardScreen(props: BoardScreenProps) {
           <p className="font-display text-4xl leading-none font-extrabold tabular-nums" aria-label={`${ownReady ? shownOwn.score.points.toLocaleString() : 'not counted yet'} points`}>
             {ownReady ? (
               <>
-                <span aria-hidden="true" className="text-[var(--card-violet-700)]">{String(shownOwn.score.points).padStart(5, '0').slice(0, Math.max(0, 5 - String(shownOwn.score.points).length))}</span>
-                <span aria-hidden="true" className="text-[var(--card-gold-500)] [text-shadow:0_0_8px_rgb(255_219_22/0.45)]">{shownOwn.score.points}</span>
+                {/* The leading zeros are the counter's ghost digits: smaller and dimmer than the score, set apart by a gap, so only the real number reads as the number. */}
+                <span aria-hidden="true" className="mr-1.5 align-baseline text-xl tracking-wider text-[var(--card-violet-300)] opacity-50">{String(shownOwn.score.points).padStart(5, '0').slice(0, Math.max(0, 5 - String(shownOwn.score.points).length))}</span>
+                <span aria-hidden="true" className="text-[var(--card-gold-500)]">{shownOwn.score.points}</span>
               </>
             ) : (
               <span aria-hidden="true" className="text-[var(--card-gold-500)]">{'\u2014'}</span>
