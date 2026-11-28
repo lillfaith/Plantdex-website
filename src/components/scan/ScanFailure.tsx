@@ -32,7 +32,7 @@ export function ScanFailure({
         <button
           type="button"
           onClick={onRetry}
-          className="mt-3 min-h-11 w-full rounded-full border border-gold-500 bg-gold-500/15 px-5 text-sm font-bold text-gold-300 hover:bg-gold-500/25"
+          className="pd-btn-quiet mt-3 min-h-11 w-full px-5 text-sm"
         >
           Retry
         </button>

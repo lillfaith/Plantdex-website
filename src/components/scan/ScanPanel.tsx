@@ -384,7 +384,8 @@ export function ScanPanel() {
           recordAllowance(0);
         }
         setProblem(answer.message);
-        setRetryable(answer.kind !== 'rateLimited');
+        // Never for a spent/refused camera session: resending it cannot work, and the message says to retake.
+        setRetryable(answer.kind === 'error' && !answer.captureSpent);
         setStage('idle');
         return;
       }

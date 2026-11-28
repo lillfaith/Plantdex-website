@@ -69,6 +69,8 @@ export interface ScanResult {
   receipts?: Record<string, { id: string; rankPosition: 'top' | 'listed'; expiresAt: string }>;
 }
 
+export const CAPTURE_STORE_UNAVAILABLE = 'Collecting is unavailable right now. Open the camera and take the photo again in a moment, or add another photo of the same plant to look it up.';
+
 const UNREACHABLE = 'The identifier could not be reached.';
 
 /**
@@ -276,7 +278,7 @@ export async function identifyPlant(
 
   if (error) {
     // The function's own sentence is better than a generic one, so re-read the body.
-    let payload: { error?: string; code?: string; signedIn?: boolean; capture?: { retryable?: unknown }; allowance?: unknown } = {};
+    let payload: { error?: string; code?: string; signedIn?: boolean; capture?: { retryable?: unknown; code?: unknown }; allowance?: unknown } = {};
     try {
       const context = (error as { context?: Response }).context;
       if (context) payload = await context.clone().json();
@@ -300,6 +302,11 @@ export async function identifyPlant(
     // session, so it can never be sent again, and its own sentence says what to do. Without this branch the
     // refusal read as a dropped connection and the same dead session was resent on every retry.
     if (payload.code === 'captureRefused' && options.capture) {
+      // The client treats a refused session as spent (it is never resent), so the server's "try again in a
+      // moment" for an unavailable store would promise a retry of THIS photo that cannot happen.
+      if (payload.capture?.code === 'capture_unavailable') {
+        return { kind: 'error', message: CAPTURE_STORE_UNAVAILABLE, captureSpent: true };
+      }
       return {
         kind: 'error',
         message: payload.error ?? 'This photo could not be matched to a camera capture. Please take the photo again.',
