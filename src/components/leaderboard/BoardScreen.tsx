@@ -71,12 +71,12 @@ const STEP: Record<1 | 2 | 3, { height: string; tone: string; label: string }> =
   },
   2: {
     height: '5.2rem',
-    tone: 'bg-[var(--card-violet-200)] text-plum-900',
+    tone: 'bg-[var(--card-violet-300)] text-plum-900',
     label: 'Second place',
   },
   3: {
     height: '4.4rem',
-    tone: 'bg-[var(--card-pink-500)] text-plum-900',
+    tone: 'bg-pink-accent text-plum-900',
     label: 'Third place',
   },
 };
