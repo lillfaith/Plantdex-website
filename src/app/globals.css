@@ -3414,6 +3414,17 @@ body:has(#profile) main [class*='text-[0.72rem]'],
 body:has(#profile) main .text-xs { font-size: 0.8125rem; line-height: 1.35; }
 body:has(#profile) main .font-botanical { font-size: max(1em, 0.9rem); }
 
+/* The Field Board link and Sign in sit top-right and scroll away; on a narrow phone a left-aligned title now wraps short of them instead of running under them. */
+@media (max-width: 380px) {
+  main h1:not([class*='text-center']):not([class*='mx-auto']) { padding-right: 8rem; }
+}
+/* 320px: seven tabs share 320px, so the labels tighten (and never clip) rather than the last one being cut off. */
+@media (max-width: 340px) {
+  .nav-bar ul { gap: 0; padding-inline: 0; }
+  .nav-bar li { min-width: 0; }
+  .nav-bar a { padding-inline: 0; font-size: 0.66rem; letter-spacing: -0.03em; }
+}
+
 /* Challenges and Progress read as one centred column on wide screens, so the rail, the steps and the primary action line up. */
 @media (min-width: 900px) {
   [data-ground='lavender'] [role='tabpanel'].pt-4 > * { max-width: 46rem; margin-inline: auto; }
