@@ -10,9 +10,51 @@ import { track } from '@/lib/analytics';
  */
 
 const fieldClass =
-  'mt-1 min-h-11 w-full rounded-lg border border-violet-600 bg-plum-700/70 px-3 text-sm text-violet-100';
-const submitClass =
-  'min-h-11 w-full rounded-full bg-gold-500 px-5 text-sm font-bold text-violet-deep hover:bg-gold-400 disabled:opacity-60';
+  'mt-1 min-h-12 w-full rounded-xl border-2 border-[var(--card-violet-300)] bg-white px-3 text-base text-violet-100 shadow-[inset_0_2px_0_rgb(235_211_254)] focus-visible:border-[var(--card-violet-500)]';
+const submitClass = 'pd-btn min-h-12 w-full text-base disabled:opacity-60';
+const labelClass = 'text-sm font-bold text-violet-100';
+
+/** A password field with a show/hide control. The input keeps its autocomplete token, so password managers behave exactly as before. */
+function PasswordField({
+  value,
+  onChange,
+  autoComplete,
+  minLength,
+  invalid,
+}: {
+  value: string;
+  onChange: (value: string) => void;
+  autoComplete: 'new-password' | 'current-password';
+  minLength?: number;
+  invalid?: boolean;
+}) {
+  const [shown, setShown] = useState(false);
+  return (
+    <label className="block">
+      <span className={labelClass}>Password</span>
+      <span className="relative mt-1 block">
+        <input
+          type={shown ? 'text' : 'password'}
+          autoComplete={autoComplete}
+          required
+          minLength={minLength}
+          aria-invalid={invalid || undefined}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          className={`${fieldClass} !mt-0 pr-20`}
+        />
+        <button
+          type="button"
+          onClick={() => setShown((v) => !v)}
+          aria-pressed={shown}
+          className="absolute top-1/2 right-1 min-h-11 min-w-11 -translate-y-1/2 rounded-lg px-2.5 text-sm font-extrabold text-violet-300 hover:bg-[var(--card-violet-100)]"
+        >
+          {shown ? 'Hide' : 'Show'}
+        </button>
+      </span>
+    </label>
+  );
+}
 
 export function SignUpForm() {
   const { signUp } = useAuth();
@@ -66,29 +108,20 @@ export function SignUpForm() {
   return (
     <form onSubmit={onSubmit} className="space-y-3">
       <label className="block">
-        <span className="text-xs font-semibold text-violet-200">Email</span>
+        <span className={labelClass}>Email</span>
         <input
           type="email"
           autoComplete="email"
           required
+          aria-invalid={error ? true : undefined}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           className={fieldClass}
         />
       </label>
-      <label className="block">
-        <span className="text-xs font-semibold text-violet-200">Password</span>
-        <input
-          type="password"
-          autoComplete="new-password"
-          required
-          minLength={6}
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className={fieldClass}
-        />
-      </label>
-      {error && <p className="text-sm text-stat-temp">{error}</p>}
+      <PasswordField value={password} onChange={setPassword} autoComplete="new-password" minLength={6} invalid={Boolean(error)} />
+      <p className="text-[0.8125rem] text-violet-300">At least 6 characters.</p>
+      {error && <p role="alert" className="pd-tile px-3 py-2 text-sm font-bold text-stat-temp">{error}</p>}
       <button type="submit" disabled={status === 'saving'} className={submitClass}>
         {status === 'saving' ? 'Creating account…' : 'Create account'}
       </button>
@@ -119,35 +152,26 @@ export function SignInForm({ onForgotPassword }: { onForgotPassword: () => void 
   return (
     <form onSubmit={onSubmit} className="space-y-3">
       <label className="block">
-        <span className="text-xs font-semibold text-violet-200">Email</span>
+        <span className={labelClass}>Email</span>
         <input
           type="email"
           autoComplete="email"
           required
+          aria-invalid={error ? true : undefined}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           className={fieldClass}
         />
       </label>
-      <label className="block">
-        <span className="text-xs font-semibold text-violet-200">Password</span>
-        <input
-          type="password"
-          autoComplete="current-password"
-          required
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className={fieldClass}
-        />
-      </label>
-      {error && <p className="text-sm text-stat-temp">{error}</p>}
+      <PasswordField value={password} onChange={setPassword} autoComplete="current-password" invalid={Boolean(error)} />
+      {error && <p role="alert" className="pd-tile px-3 py-2 text-sm font-bold text-stat-temp">{error}</p>}
       <button type="submit" disabled={saving} className={submitClass}>
         {saving ? 'Signing in…' : 'Sign in'}
       </button>
       <button
         type="button"
         onClick={onForgotPassword}
-        className="min-h-11 w-full text-sm font-semibold text-gold-300 underline underline-offset-4 hover:text-gold-200"
+        className="min-h-11 w-full text-sm font-extrabold text-violet-300 underline underline-offset-4 hover:text-violet-100"
       >
         Forgot your password?
       </button>
@@ -209,7 +233,7 @@ export function ForgotPasswordForm({ onCancel }: { onCancel: () => void }) {
         We&apos;ll email you a link to set a new one.
       </p>
       <label className="block">
-        <span className="text-xs font-semibold text-violet-200">Email</span>
+        <span className={labelClass}>Email</span>
         <input
           type="email"
           autoComplete="email"
