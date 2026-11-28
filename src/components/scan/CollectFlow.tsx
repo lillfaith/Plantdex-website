@@ -1,3 +1,6 @@
+'use client';
+
+import { Fragment, useState } from 'react';
 import { PlantSprite } from '../PlantSprite';
 import { PlantdexIcon } from '../icons/PlantdexIcon';
 import { assetPath } from '@/lib/asset-path';
@@ -11,7 +14,7 @@ import { getPrintedCard } from '@/lib/deck';
  * records nothing, reads no state and awards nothing: the sprite and the card are the deck's own (Dandelion), shown as an example and not as a claim about
  * what this player has found.
  *
- * MOTION: the four steps take turns being lit on one 8s loop (CSS in globals.css, `.cf-*`); the card art is revealed in step three and a "+1" pops on
+ * MOTION: the four steps take turns being lit ONCE (`.cf-once`; CSS in globals.css, `.cf-*`) and rest on the final frame; Replay remounts them; the card art is revealed in step three and a "+1" pops on
  * step four. Under `prefers-reduced-motion` every animation is off and each scene shows its finished state, so the static version is the whole explanation.
  */
 const EXAMPLE = 'taraxacum-officinale';
@@ -26,69 +29,85 @@ const STEPS: { label: string; hint: string }[] = [
 ];
 
 export function CollectFlow() {
+  /*
+   * REPLAY IS A REMOUNT, NOT A TIMER. The scenes play one iteration (`.cf-once`) and rest on
+   * their final frame; bumping the key gives React fresh elements, so the CSS animations
+   * start again. The button sits outside the keyed part so it keeps focus. No timeout anywhere.
+   */
+  const [run, setRun] = useState(0);
   const herb = getPrintedCard(EXAMPLE);
   if (!herb) return null;
   const cardArt = assetPath(herb.thumb);
   return (
-    <section aria-label="How collecting works" className="cf mx-auto mt-4 w-full max-w-md" data-ui-placeholder="collect-flow">
-      <ol className="cf-strip grid grid-cols-4 gap-2">
-        {STEPS.map((step, i) => (
-          <li key={step.label} className={`cf-step cf-step-${i + 1} relative flex flex-col items-center`}>
-            <span className="cf-scene relative block aspect-square w-full overflow-hidden rounded-xl">
-              {i < 2 && (
-                <>
-                  <span aria-hidden="true" className="cf-meadow absolute inset-0" />
-                  <span className="absolute inset-x-[12%] bottom-[10%] block">
-                    <PlantSprite herbId={START} alt="" stage="flowering" fit className="w-full" />
-                  </span>
-                </>
-              )}
-              {i === 1 && (
-                <>
-                  <span aria-hidden="true" className="cf-brackets absolute inset-[9%]" />
-                  <span aria-hidden="true" className="cf-flash absolute inset-0" />
-                  <PlantdexIcon name="scan" aria-hidden="true" className="absolute top-1 right-1 text-sm text-violet-deep" />
-                </>
-              )}
-              {i === 2 && (
-                <>
-                  <span aria-hidden="true" className="cf-scene-card absolute inset-0" />
-                  <span className="cf-card absolute top-[7%] left-1/2 block aspect-[356/576] h-[86%] -translate-x-1/2 overflow-hidden rounded-md">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={cardArt} alt="" className="h-full w-full object-cover" />
-                  </span>
-                </>
-              )}
-              {i === 3 && (
-                <>
-                  <span aria-hidden="true" className="cf-scene-card absolute inset-0" />
-                  <span className="cf-stack absolute top-[16%] left-1/2 block aspect-[356/576] h-[76%] -translate-x-1/2">
-                    <span className="cf-stack-back absolute inset-0 rounded-md" />
-                    <span className="cf-stack-mid absolute inset-0 rounded-md" />
-                    <span className="cf-stack-top absolute inset-0 block overflow-hidden rounded-md">
+    <section aria-label="How collecting works" className="cf cf-once mx-auto mt-4 w-full max-w-md" data-ui-placeholder="collect-flow">
+      <Fragment key={run}>
+        <ol className="cf-strip grid grid-cols-4 gap-2">
+          {STEPS.map((step, i) => (
+            <li key={step.label} className={`cf-step cf-step-${i + 1} relative flex flex-col items-center`}>
+              <span className="cf-scene relative block aspect-square w-full overflow-hidden rounded-xl">
+                {i < 2 && (
+                  <>
+                    <span aria-hidden="true" className="cf-meadow absolute inset-0" />
+                    <span className="absolute inset-x-[12%] bottom-[10%] block">
+                      <PlantSprite herbId={START} alt="" stage="flowering" fit className="w-full" />
+                    </span>
+                  </>
+                )}
+                {i === 1 && (
+                  <>
+                    <span aria-hidden="true" className="cf-brackets absolute inset-[9%]" />
+                    <span aria-hidden="true" className="cf-flash absolute inset-0" />
+                    <PlantdexIcon name="scan" aria-hidden="true" className="absolute top-1 right-1 text-sm text-violet-deep" />
+                  </>
+                )}
+                {i === 2 && (
+                  <>
+                    <span aria-hidden="true" className="cf-scene-card absolute inset-0" />
+                    <span className="cf-card absolute top-[7%] left-1/2 block aspect-[356/576] h-[86%] -translate-x-1/2 overflow-hidden rounded-md">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img src={cardArt} alt="" className="h-full w-full object-cover" />
                     </span>
-                  </span>
-                  <span aria-hidden="true" className="cf-plus absolute top-1 right-1.5 text-xs font-extrabold">
-                    +1
-                  </span>
-                </>
-              )}
-            </span>
-            <span className="cf-label mt-1.5 text-center text-[0.8rem] leading-tight font-extrabold">{step.label}</span>
-            <span className="cf-hint text-center text-[0.72rem] leading-tight">{step.hint}</span>
-            {i < STEPS.length - 1 && (
-              <span aria-hidden="true" className="cf-arrow absolute top-[32%] -right-[0.7rem] z-10 text-sm font-black">
-                &#9656;
+                  </>
+                )}
+                {i === 3 && (
+                  <>
+                    <span aria-hidden="true" className="cf-scene-card absolute inset-0" />
+                    <span className="cf-stack absolute top-[16%] left-1/2 block aspect-[356/576] h-[76%] -translate-x-1/2">
+                      <span className="cf-stack-back absolute inset-0 rounded-md" />
+                      <span className="cf-stack-mid absolute inset-0 rounded-md" />
+                      <span className="cf-stack-top absolute inset-0 block overflow-hidden rounded-md">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={cardArt} alt="" className="h-full w-full object-cover" />
+                      </span>
+                    </span>
+                    <span aria-hidden="true" className="cf-plus absolute top-1 right-1.5 text-xs font-extrabold">
+                      +1
+                    </span>
+                  </>
+                )}
               </span>
-            )}
-          </li>
-        ))}
-      </ol>
-      <p className="cf-rule mt-2 text-center text-xs leading-snug font-semibold">
-        A photo from the in-app camera can unlock a card. A photo from your library only identifies a plant.
-      </p>
+              <span className="cf-label mt-1.5 text-center text-[0.8rem] leading-tight font-extrabold">{step.label}</span>
+              <span className="cf-hint text-center text-[0.72rem] leading-tight">{step.hint}</span>
+              {i < STEPS.length - 1 && (
+                <span aria-hidden="true" className="cf-arrow absolute top-[32%] -right-[0.7rem] z-10 text-sm font-black">
+                  &#9656;
+                </span>
+              )}
+            </li>
+          ))}
+        </ol>
+        <p className="cf-rule mt-2 text-center text-xs leading-snug font-semibold">
+          A photo from the in-app camera can unlock a card. A photo from your library only identifies a plant.
+        </p>
+      </Fragment>
+      <button
+        type="button"
+        aria-label="Replay the explainer"
+        onClick={() => setRun((n) => n + 1)}
+        className="mx-auto mt-2 flex min-h-11 min-w-11 items-center justify-center rounded-full border border-violet-500 px-5 text-sm font-bold text-violet-100 hover:bg-violet-600/30"
+      >
+        Replay
+      </button>
     </section>
   );
 }

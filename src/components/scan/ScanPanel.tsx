@@ -53,6 +53,9 @@ import {
 } from '@/lib/scan-session-holder';
 import { captureUnavailableMessage } from '@/lib/scan-capture-copy';
 import { isCameraCaptureEnabled } from '@/lib/scan-capture';
+import { waitingCopy } from '@/lib/scan-waiting';
+import { ScanScout } from './ScanScout';
+import { ScanFailure } from './ScanFailure';
 
 /** How many candidates the result list opens with; the rest are one tap away. */
 const VISIBLE_CANDIDATES = 3;
@@ -133,6 +136,7 @@ export function ScanPanel() {
    */
   const [stage, setStage] = useState<'idle' | 'preparing' | 'identifying'>('idle');
   const busy = stage !== 'idle';
+  const waiting = waitingCopy(stage);
   /*
    * The chosen photograph, shown the INSTANT it is chosen.
    *
@@ -146,6 +150,8 @@ export function ScanPanel() {
   const [result, setResult] = useState<ScanResult | null>(null);
   const [problem, setProblem] = useState<string | null>(null);
   const [rateLimited, setRateLimited] = useState<{ signedIn: boolean } | null>(null);
+  // True only for a failed ANSWER that is worth sending again (not a daily limit, not a missing session).
+  const [retryable, setRetryable] = useState(false);
   /*
    * What the confirmation ACTUALLY produced, not just which card it was.
    *
@@ -346,6 +352,7 @@ export function ScanPanel() {
         return;
       }
       setProblem(null);
+      setRetryable(false);
       setRateLimited(null);
       setResult(null);
       setConfirmed(null);
@@ -377,6 +384,7 @@ export function ScanPanel() {
           recordAllowance(0);
         }
         setProblem(answer.message);
+        setRetryable(answer.kind !== 'rateLimited');
         setStage('idle');
         return;
       }
@@ -662,7 +670,7 @@ export function ScanPanel() {
           tap, before the decode has started, which is the first honest signal that the app
           received the thing it was handed.
         */}
-        {busy && (
+        {busy && waiting && (
           /*
             THE SAME RETICLE AS THE CAPTURE PANEL, BECAUSE THIS IS THE SAME INSTRUMENT.
 
@@ -678,6 +686,7 @@ export function ScanPanel() {
           */
           <section className="panel scanner-frame p-5" aria-live="polite" aria-busy="true">
             <div className="flex items-center gap-4">
+              <ScanScout waiting className="w-14 shrink-0" />
               {preview && (
                 /*
                   THE WHOLE PHOTOGRAPH, AT ITS OWN PROPORTIONS.
@@ -704,7 +713,7 @@ export function ScanPanel() {
               )}
               <div className="min-w-0 flex-1">
                 <p className="text-sm font-bold text-violet-100">
-                  {stage === 'preparing' ? 'Preparing photo\u2026' : 'Identifying\u2026'}
+                  {waiting.title}
                 </p>
                 {/*
                   A determinate bar with exactly two steps, because there are exactly two
@@ -720,13 +729,11 @@ export function ScanPanel() {
                 >
                   <div
                     className="path-fill h-full rounded-full bg-gold-500"
-                    style={{ ['--fill' as string]: stage === 'preparing' ? '15%' : '65%' }}
+                    style={{ ['--fill' as string]: waiting.fill }}
                   />
                 </div>
                 <p className="mt-1.5 text-xs text-violet-300">
-                  {stage === 'preparing'
-                    ? 'Resizing it and removing its location data on your device.'
-                    : 'Sent for identification. This usually takes a few seconds.'}
+                  {waiting.detail}
                 </p>
               </div>
             </div>
@@ -734,8 +741,10 @@ export function ScanPanel() {
         )}
 
         {problem && (
-          <section className="panel p-5">
-            <p className="text-sm text-violet-100">{problem}</p>
+          <ScanFailure
+            message={problem}
+            onRetry={retryable && canIdentify && !busy && !outOfScans ? () => void run(photos) : undefined}
+          >
             {rateLimited && !rateLimited.signedIn && (
               <p className="mt-2 text-sm text-violet-300">
                 <Link
@@ -747,7 +756,7 @@ export function ScanPanel() {
                 to keep your scan history. Everything else here works without one.
               </p>
             )}
-          </section>
+          </ScanFailure>
         )}
 
         {result && (

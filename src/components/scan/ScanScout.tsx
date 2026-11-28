@@ -19,13 +19,16 @@ import { assetPath } from '@/lib/asset-path';
  * the 54 plant sheets. That file also carries why this is a sheet rather than the inline SVG
  * it used to be, and why it still does not belong in `sprites.json`.
  *
+ * IT PLAYS ONLY WHERE `waiting` IS SET (`.scout-waiting`); otherwise it holds frame 0. The idle page
+ * and the failure panel pass nothing, so they show the resting creature.
+ *
  * ALL THE MOTION IS IN `.scan-scout`. This component contributes exactly one thing the
  * stylesheet cannot: the sheet's URL, resolved through `assetPath()`. A root-absolute
  * `url()` written in CSS is the one asset reference `basePath` does not rewrite, so under
  * the `/Plantdex-website` build it would 404 and the creature would simply not be there.
  * ─────────────────────────────────────────────────────────────────────────────
  */
-export function ScanScout({ className = '' }: { className?: string }) {
+export function ScanScout({ className = '', waiting = false }: { className?: string; waiting?: boolean }) {
   return (
     <span
       aria-hidden="true"
@@ -35,7 +38,7 @@ export function ScanScout({ className = '' }: { className?: string }) {
        * — which made this render 367px wide instead of 64. The caller sizes it; the
        * `aspect-ratio` in `.scan-scout` keeps the authored cell's proportion.
        */
-      className={`scan-scout ${className}`}
+      className={`scan-scout ${waiting ? 'scout-waiting' : ''} ${className}`}
       style={{ backgroundImage: `url('${assetPath('/scan/scout.png')}')` }}
     />
   );
