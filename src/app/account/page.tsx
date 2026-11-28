@@ -125,34 +125,64 @@ export default function AccountPage() {
             THIS PAGE IS THE DOOR, NOT THE DESTINATION: identity details, "your data" and account deletion live on the profile, MOVED rather
             than copied, because an irreversible action offered in two places is one somebody meets twice and trusts less each time.
           */}
-          <section className="pd-panel p-4" aria-label="Your passport">
-            <div className="flex items-center gap-3">
-              {passport.avatarHerbId ? (
-                <ProfileAvatar herbId={passport.avatarHerbId} frame={passport.frame} stage={passport.stage} size="lg" frozen />
-              ) : (
-                <span className="pd-tile flex h-16 w-16 shrink-0 items-center justify-center text-2xl font-extrabold text-violet-100">
-                  {(user.email ?? '?').slice(0, 1).toUpperCase()}
-                </span>
-              )}
-              <div className="min-w-0">
-                <p className="font-display truncate text-2xl leading-tight font-extrabold text-violet-100">{passport.name || 'Field naturalist'}</p>
-                <p className="text-sm font-bold text-violet-300">{passport.title}</p>
-                <p className="truncate text-[0.8125rem] text-violet-300">{user.email}</p>
-              </div>
+          <section className="pd-panel overflow-hidden" aria-label="Your passport">
+            {/* A passport's cover strip: deep violet with gold lettering (the one dark emphasis on the page). It is a label, not a status. */}
+            <div className="flex items-center justify-between bg-[var(--card-violet-900)] px-4 py-1.5 shadow-[inset_0_-3px_0_0_var(--card-gold-700)]">
+              <p className="text-xs font-extrabold tracking-[0.18em] text-[var(--card-gold-300)] uppercase">PlantDex · Player passport</p>
+              <span aria-hidden="true" className="text-sm text-[var(--card-gold-500)]">
+                &#9670;
+              </span>
             </div>
-            <dl className="mt-3 grid grid-cols-2 gap-2 text-center">
-              <div className="pd-tile px-2 py-2" data-tone="gold">
-                <dt className="text-[0.8125rem] font-bold text-violet-100">Level</dt>
-                <dd className="font-display text-2xl leading-none font-extrabold text-violet-100">{passport.level}</dd>
+            <div className="flex items-start gap-3 p-4">
+              {/* The photo page: the player's own avatar, framed with the frame they chose. */}
+              <div className="shrink-0">
+                {passport.avatarHerbId ? (
+                  <ProfileAvatar herbId={passport.avatarHerbId} frame={passport.frame} stage={passport.stage} size="lg" frozen />
+                ) : (
+                  <span className="pd-tile flex h-20 w-20 items-center justify-center text-3xl font-extrabold text-violet-100">
+                    {(user.email ?? '?').slice(0, 1).toUpperCase()}
+                  </span>
+                )}
               </div>
-              <div className="pd-tile px-2 py-2" data-tone="leaf">
-                <dt className="text-[0.8125rem] font-bold text-violet-100">Cards collected</dt>
-                <dd className="font-display text-2xl leading-none font-extrabold text-violet-100 tabular-nums">
+              <dl className="min-w-0 flex-1 space-y-1.5">
+                <div>
+                  <dt className="text-xs font-extrabold tracking-[0.12em] text-violet-300 uppercase">Name</dt>
+                  <dd className="font-display truncate text-xl leading-tight font-extrabold text-violet-100">{passport.name || 'Field naturalist'}</dd>
+                </div>
+                <div>
+                  <dt className="text-xs font-extrabold tracking-[0.12em] text-violet-300 uppercase">Title</dt>
+                  <dd className="truncate text-sm font-bold text-violet-100">{passport.title}</dd>
+                </div>
+              </dl>
+            </div>
+            <div className="grid grid-cols-2 gap-2 px-4 pb-3">
+              <div className="pd-tile px-2 py-2 text-center" data-tone="gold">
+                <p className="text-xs font-extrabold tracking-[0.1em] text-violet-100 uppercase">Level</p>
+                <p className="font-display text-2xl leading-none font-extrabold text-violet-100">{passport.level}</p>
+                <p className="mt-0.5 truncate text-[0.8125rem] font-bold text-violet-300">{passport.levelName}</p>
+              </div>
+              <div className="pd-tile px-2 py-2 text-center" data-tone="leaf">
+                <p className="text-xs font-extrabold tracking-[0.1em] text-violet-100 uppercase">Cards</p>
+                <p className="font-display text-2xl leading-none font-extrabold text-violet-100 tabular-nums">
                   {passport.cards}
                   <span className="text-sm font-bold text-violet-300"> / {PRINTED_DECK_SIZE}</span>
-                </dd>
+                </p>
+                <div
+                  role="progressbar"
+                  aria-label="Cards collected"
+                  aria-valuemin={0}
+                  aria-valuemax={PRINTED_DECK_SIZE}
+                  aria-valuenow={passport.cards}
+                  className="mx-auto mt-1.5 h-2 w-full overflow-hidden rounded-full border-2 border-[var(--card-leaf-700)] bg-white"
+                >
+                  <div className="h-full bg-[var(--card-leaf-500)]" style={{ width: `${Math.min(100, (passport.cards / PRINTED_DECK_SIZE) * 100)}%` }} />
+                </div>
               </div>
-            </dl>
+            </div>
+            {/* The machine-readable zone of a real passport, here just the account line: perforated rule above, signed-in email below. */}
+            <div className="border-t-4 border-dotted border-[var(--card-violet-300)] px-4 py-2">
+              <p className="truncate text-[0.8125rem] font-bold tracking-wide text-violet-300">{user.email}</p>
+            </div>
           </section>
           <Row href="/profile" title="Your profile" note="Edit your avatar and name, see your record, download your data, sign out or delete your account." />
           <Row href="/leaderboard" title="Field Board" note="Opt in to standings, or leave. Provisional, self-reported scores." />
