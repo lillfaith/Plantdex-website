@@ -7,7 +7,9 @@ import {
   boardIds,
   boardStorageKey,
   clearBoard,
+  isServerBoard,
   refreshBoard,
+  setServerBoard,
   resetBoardCacheForTests,
 } from './research-board';
 import { applyDiscovery } from './herbdex-reducer';
@@ -132,5 +134,45 @@ describe('account deletion coverage', () => {
     expect(boardStorageKey('any-user-id').startsWith('plantdex.')).toBe(true);
     const source = readFileSync('src/lib/delete-account.ts', 'utf8');
     expect(source).toContain("key.startsWith('plantdex.')");
+  });
+});
+
+describe('server-decided board', () => {
+  it('replaces local picks exactly and persists under the scoped key', () => {
+    refreshBoard(veteran(), DAY, 'user-a');
+    setServerBoard('user-a', ['daily:find:a', 'daily:learn:b'], '2026-11-28');
+    expect(boardIds('user-a')).toEqual(['daily:find:a', 'daily:learn:b']);
+    expect(JSON.parse(store.get(boardStorageKey('user-a'))!)).toEqual({
+      lastFilled: '2026-11-28',
+      open: ['daily:find:a', 'daily:learn:b'],
+    });
+    expect(isServerBoard('user-a')).toBe(true);
+  });
+
+  it('refresh never adds picks to a server board, even on a new day or an empty board', () => {
+    setServerBoard('user-a', [], '2026-11-28');
+    refreshBoard(veteran(), '2026-11-29', 'user-a');
+    expect(boardIds('user-a')).toEqual([]);
+    setServerBoard('user-a', ['daily:find:a'], '2026-11-29');
+    refreshBoard(veteran(), '2026-11-30', 'user-a');
+    expect(boardIds('user-a')).toEqual(['daily:find:a']);
+  });
+
+  it('ids the server did not offer never appear, and junk entries are dropped', () => {
+    refreshBoard(veteran(), DAY, 'user-a');
+    const local = [...boardIds('user-a')];
+    setServerBoard('user-a', ['daily:find:s', '', 5 as unknown as string], DAY);
+    expect(boardIds('user-a')).toEqual(['daily:find:s']);
+    for (const id of local) expect(boardIds('user-a')).not.toContain(id);
+  });
+
+  it('keeps scopes isolated: the device scope stays local, other accounts untouched', () => {
+    setServerBoard('user-a', ['daily:find:s'], DAY);
+    expect(isServerBoard(ANONYMOUS_SCOPE)).toBe(false);
+    expect(isServerBoard('user-b')).toBe(false);
+    refreshBoard(veteran(), DAY);
+    expect(boardIds(ANONYMOUS_SCOPE)).toHaveLength(DAILY_BOARD_SIZE);
+    expect(boardIds('user-b')).toEqual([]);
+    expect(boardIds('user-a')).toEqual(['daily:find:s']);
   });
 });

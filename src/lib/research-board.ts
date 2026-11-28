@@ -54,6 +54,14 @@ const EMPTY_OPEN: readonly string[] = Object.freeze([]);
 
 /** One cached board per scope; never a single slot, so scopes cannot bleed into each other. */
 const caches = new Map<string, BoardState>();
+
+/**
+ * Scopes whose board the SERVER decided this session. Session-only on purpose: it is the
+ * provider's job to call `setServerBoard` again after a reload, and until it does the stored
+ * list is simply the last server answer, which `refreshBoard` may not top up either way
+ * for a signed-in scope (the caller only uses `refreshBoard` for the signed-out scope).
+ */
+const serverScopes = new Set<string>();
 const listeners = new Set<() => void>();
 
 function parse(raw: string | null): BoardState | null {
@@ -129,6 +137,8 @@ export function refreshBoard(
   dateKey: string,
   scope: string = ANONYMOUS_SCOPE,
 ): void {
+  // The server owns a server board: the client must never top it up with its own picks.
+  if (serverScopes.has(scope)) return;
   const board = read(scope);
   const completed = world.state.research;
   const isNewDay = board.lastFilled !== dateKey;
@@ -176,9 +186,39 @@ export function clearBoard(scope: string = ANONYMOUS_SCOPE): void {
 /** Testing only: forget every in-memory board so the next read goes back to storage. */
 export function resetBoardCacheForTests(): void {
   caches.clear();
+  serverScopes.clear();
 }
 
 /** Non-hook read of `scope`'s open task ids (tests, and callers outside React). */
 export function boardIds(scope: string = ANONYMOUS_SCOPE): readonly string[] {
   return read(scope).open;
+}
+
+/**
+ * SIGNED-IN PATH: the server decides the board.
+ *
+ * Replaces `scope`'s open list with exactly `ids` (only non-strings and empty strings are
+ * dropped; nothing is validated against the client's own picks) and stamps `lastFilled` with
+ * `boardDay`. From then on `refreshBoard` is a no-op for this scope for the session.
+ *
+ * `boardDay` is the server's board day: a UTC date string `YYYY-MM-DD`. The local-date key
+ * (`localDateKey()`) remains only for the signed-out scope's own top-up.
+ */
+export function setServerBoard(scope: string, ids: readonly string[], boardDay: string): void {
+  const open = ids.filter((id): id is string => typeof id === 'string' && id.length > 0);
+  serverScopes.add(scope);
+  const board = read(scope);
+  if (
+    board.lastFilled === boardDay &&
+    board.open.length === open.length &&
+    board.open.every((id, index) => id === open[index])
+  ) {
+    return;
+  }
+  commit(scope, { lastFilled: boardDay, open });
+}
+
+/** True once `setServerBoard` has been called for `scope` this session. */
+export function isServerBoard(scope: string): boolean {
+  return serverScopes.has(scope);
 }
