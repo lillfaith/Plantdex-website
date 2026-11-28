@@ -3425,6 +3425,12 @@ body:has(#profile) main .font-botanical { font-size: max(1em, 0.9rem); }
   .nav-bar a { padding-inline: 0; font-size: 0.66rem; letter-spacing: -0.03em; }
 }
 
+/* A software keyboard opening must never leave the fixed bottom nav sitting over the field being typed into (Android resizes the viewport,
+   iOS shows it above the keyboard). While a text field has focus on a phone the nav steps out of the way and returns on blur. */
+@media (max-width: 639px) {
+  body:has(input:not([type='checkbox']):not([type='radio']):not([type='file']):focus, textarea:focus, select:focus) .nav-bar { display: none; }
+}
+
 /* Challenges and Progress read as one centred column on wide screens, so the rail, the steps and the primary action line up. */
 @media (min-width: 900px) {
   [data-ground='lavender'] [role='tabpanel'].pt-4 > * { max-width: 46rem; margin-inline: auto; }
