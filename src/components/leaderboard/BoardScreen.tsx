@@ -116,8 +116,8 @@ export function BoardScreen(props: BoardScreenProps) {
       {/* ── The scoreboard: one total, three counted things, each with what it is worth ── */}
       <section aria-labelledby="own-heading" className="pd-panel mt-3 p-3">
         <div className="relative flex items-center justify-between gap-3 rounded-xl border-2 border-[var(--card-violet-900)] bg-[var(--card-violet-900)] px-3 py-2.5 shadow-[inset_0_0_0_2px_var(--card-violet-700),0_3px_0_0_var(--card-violet-700)]">
-          <h2 id="own-heading" className="flex items-center gap-1.5 text-[0.8125rem] font-extrabold tracking-[0.12em] text-[var(--card-gold-300)] uppercase">
-            <PixelIcon uri={traitBadge('star')} size={18} />
+          <h2 id="own-heading" className="flex items-center gap-1.5 text-[0.8125rem] font-extrabold tracking-[0.12em] whitespace-nowrap text-[var(--card-gold-300)] uppercase max-[359px]:tracking-[0.04em]">
+            <span className="max-[359px]:hidden"><PixelIcon uri={traitBadge('star')} size={18} /></span>
             Your points
           </h2>
           <p className="font-display text-4xl leading-none font-extrabold tabular-nums" aria-label={`${ownReady ? shownOwn.score.points.toLocaleString() : 'not counted yet'} points`}>
@@ -266,8 +266,13 @@ function ScoreTile({
       <dd className="font-display text-xl leading-none font-extrabold text-violet-100 tabular-nums">
         {value === null ? '\u2014' : value.toLocaleString()}
       </dd>
-      <dt className="text-xs font-extrabold tracking-[0.1em] text-violet-100 uppercase">{label}</dt>
-      {worth !== undefined && <span className="pd-badge !min-h-0 !border-[1.5px] !px-1.5 !py-0 !text-xs">+{worth} each</span>}
+      <dt className="text-xs font-extrabold tracking-[0.1em] text-violet-100 uppercase max-[359px]:tracking-normal">{label}</dt>
+      {worth !== undefined && (
+        <span className="pd-badge !min-h-0 !border-[1.5px] !px-1.5 !py-0 !text-xs whitespace-nowrap">
+          +{worth}
+          <span className="max-[359px]:sr-only"> each</span>
+        </span>
+      )}
     </div>
   );
 }
