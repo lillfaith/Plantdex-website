@@ -60,10 +60,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <AuthProvider>
           <HerbdexProvider>
             <SiteNav />
-            {/* The header marks, as one fixed cluster: the Field Board link, then the account
+            {/* The header marks, as one cluster that scrolls away with the page (it was fixed, which let it sit on top of text, progress bars and buttons further down a long page): the Field Board link, then the account
                 badge. The badge renders nothing when accounts are not configured, and the link
                 still shows. */}
-            <div className="fixed top-2 right-2 z-40 flex items-center gap-2 sm:top-3 sm:right-3">
+            <div className="absolute top-2 right-2 z-40 flex items-center gap-2 sm:top-3 sm:right-3" data-header-marks>
               <BoardTrophyLink />
               <AccountBadge inline />
             </div>
