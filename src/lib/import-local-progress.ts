@@ -7,23 +7,19 @@ import { ensureCanonicalPackets } from './species-packets';
 import type { HerbdexState } from './types';
 
 /**
- * One-time merge of this browser's local progress into a freshly signed-in account.
+ * One-time merge of this browser's local JOURNAL into a freshly signed-in account.
  *
- * Additive only, and safe to run more than once: every table has a uniqueness constraint
- * on its own key, so re-importing an id already present server-side is a no-op rather than
- * a duplicate or an overwritten timestamp — the same idempotency guarantee every other
- * write in this app already relies on.
+ * OWNER'S DECISION (security blocker): every new collectible unlock comes from the in-app
+ * camera and a server receipt. A signed-out device's `discoveries`, `learned`, `mastered`,
+ * `research` and the achievements derived from them are self-declared, so they are NEVER
+ * written to the server by this module. They stay on the device as local-only legacy progress
+ * (nothing is deleted, nothing is stranded) and are only COUNTED here, so the dialog can say
+ * truthfully what stayed. See docs/release/import-and-grandfathering-policy.md.
  *
- * `mastered` and `research_completions` are imported directly from their local timestamps
- * here, unlike ordinary play where the edge function re-derives them from synced sightings
- * (see `remote-herbdex-storage.ts`). That's deliberate: CLAUDE.md's mastery rule is that a
- * card mastered locally stays mastered even after the sighting that earned it is deleted.
- * If import only re-derived from currently-importable sightings, exactly that history would
- * be lost the moment someone had tidied up their journal before ever making an account.
- * This is a one-time, explicitly user-consented migration of a player's own past — the same
- * trust already extended to local play before any account existed — not an ongoing runtime
- * boundary, so it does not weaken the "never trust a live client claim" rule that governs
- * every other write in this file.
+ * What still travels: sightings (the player's own journal, with photos) and the Seed Shelf.
+ * Every record is written on its own, so one refused row never blocks valid ones, and a
+ * permanent refusal (PostgREST 42501) is told apart from a transient failure. Only transient
+ * failures keep the offer open. Idempotent: re-importing is a no-op via ignoreDuplicates.
  */
 
 /**
@@ -53,8 +49,7 @@ export function markImportOffered(userId: string): void {
 }
 
 export async function hasLocalProgressToImport(): Promise<boolean> {
-  const state = await createLocalStorageAdapter().load();
-  if (Object.keys(state.discoveries).length > 0) return true;
+  // Local discoveries alone are NOT importable (see the header), so they do not earn the offer.
   if (getAllSightings().length > 0) return true;
   // A shelf on its own is worth the offer: somebody can scan a dozen plants the deck does
   // not carry before they ever discover a card, and that is exactly the person whose finds
@@ -62,27 +57,22 @@ export async function hasLocalProgressToImport(): Promise<boolean> {
   return getLocalFinds().length > 0;
 }
 
-/** Resolves false when the write failed, so the caller can keep the offer open. */
-async function upsertTimestampRows(
-  table: string,
-  idColumn: string,
-  atColumn: string,
-  userId: string,
-  record: Record<string, string>,
-): Promise<boolean> {
-  if (!supabase) return false;
-  const rows = Object.entries(record).map(([id, at]) => ({
-    user_id: userId,
-    [idColumn]: id,
-    [atColumn]: at,
-  }));
-  if (rows.length === 0) return true;
-  const { error } = await supabase
-    .from(table)
-    .upsert(rows, { onConflict: `user_id,${idColumn}`, ignoreDuplicates: true });
-  if (error) console.warn(`[plantdex] import failed for ${table}`, error);
-  return !error;
+/** PostgREST 42501 / HTTP 403: the database refused this row for good; retrying cannot help. */
+function isPermanentRefusal(error: { code?: string; status?: number } | null | undefined): boolean {
+  return !!error && (error.code === '42501' || error.status === 403);
 }
+
+/** What happened to one part of the import. `imported` counts rows written or already present. */
+export interface PartResult {
+  total: number;
+  imported: number;
+  /** Permanently refused (42501): kept on the device, not a failure. */
+  refused: number;
+  /** Transient failures: the offer stays open so a retry can finish them. */
+  failed: number;
+}
+
+const emptyPart = (): PartResult => ({ total: 0, imported: 0, refused: 0, failed: 0 });
 
 async function importSightingPhoto(userId: string, sightingId: string, photoId: string): Promise<string | undefined> {
   if (!supabase) return undefined;
@@ -103,12 +93,13 @@ async function importSightingPhoto(userId: string, sightingId: string, photoId: 
   }
 }
 
-async function importSightings(userId: string): Promise<boolean> {
-  if (!supabase) return false;
-  let ok = true;
+async function importSightings(userId: string): Promise<PartResult> {
+  const result = emptyPart();
+  if (!supabase) return result;
   // Sequential, not parallel: each may move a photo out of IndexedDB, and a personal
   // journal is small enough that there is no real benefit to racing N uploads at once.
   for (const sighting of getAllSightings()) {
+    result.total += 1;
     const photoPath = sighting.photoId
       ? await importSightingPhoto(userId, sighting.id, sighting.photoId)
       : undefined;
@@ -148,12 +139,14 @@ async function importSightings(userId: string): Promise<boolean> {
       },
       { onConflict: 'id', ignoreDuplicates: true },
     );
-    if (error) {
+    if (!error) result.imported += 1;
+    else if (isPermanentRefusal(error)) result.refused += 1;
+    else {
       console.warn('[plantdex] import failed for a sighting', error);
-      ok = false;
+      result.failed += 1;
     }
   }
-  return ok;
+  return result;
 }
 
 /**
@@ -163,20 +156,34 @@ async function importSightings(userId: string): Promise<boolean> {
  * and because the shelf is derived by grouping finds, a duplicate would have been visible as
  * an inflated encounter count rather than as a second packet.
  */
-async function importSeedShelf(userId: string): Promise<boolean> {
-  if (!supabase) return false;
+async function importSeedShelf(userId: string): Promise<PartResult> {
+  const result = emptyPart();
+  if (!supabase) return result;
   const finds = getLocalFinds();
-  if (finds.length === 0) return true;
-  const { error } = await supabase
-    .from('seed_shelf')
-    .upsert(finds.map((find) => findToRow(userId, find)), {
-      onConflict: 'id',
-      ignoreDuplicates: true,
-    });
-  if (error) {
-    console.warn('[plantdex] import failed for the seed shelf', error);
-    return false;
+  result.total = finds.length;
+  if (finds.length === 0) return result;
+  const upsert = (rows: ReturnType<typeof findToRow>[]) =>
+    supabase!.from('seed_shelf').upsert(rows, { onConflict: 'id', ignoreDuplicates: true });
+  const batch = await upsert(finds.map((find) => findToRow(userId, find)));
+  const landed: typeof finds = [];
+  if (!batch.error) {
+    result.imported = finds.length;
+    landed.push(...finds);
+  } else {
+    // One bad row must not strand the rest: fall back to row by row.
+    for (const find of finds) {
+      const { error } = await upsert([findToRow(userId, find)]);
+      if (!error) {
+        result.imported += 1;
+        landed.push(find);
+      } else if (isPermanentRefusal(error)) result.refused += 1;
+      else {
+        console.warn('[plantdex] import failed for a seed shelf find', error);
+        result.failed += 1;
+      }
+    }
   }
+  if (landed.length === 0) return result;
 
   /*
    * Introduce anything Plantdex has never seen to the canonical registry.
@@ -198,7 +205,7 @@ async function importSeedShelf(userId: string): Promise<boolean> {
    * actually accompanied the first sighting.
    */
   const bySpecies = new Map<string, (typeof finds)[number]>();
-  for (const find of finds) {
+  for (const find of landed) {
     const held = bySpecies.get(find.speciesKey);
     if (!held || find.foundAt < held.foundAt || (!held.attestation && find.attestation)) {
       bySpecies.set(find.speciesKey, find);
@@ -213,49 +220,58 @@ async function importSeedShelf(userId: string): Promise<boolean> {
       attestation: find.attestation,
     })),
   );
-  return true;
+  return result;
 }
 
 /**
- * Whether every part of the import landed. A partial import is reported as a failure so
- * `ImportLocalProgressDialog` can keep the offer open and let the player retry: the import
- * is additive and idempotent, so retrying re-writes only what is genuinely missing. Marking
- * the offer "done" after a failed write is what would strand a player's local progress —
- * still on the device, never deleted, but with no way left to reach the account.
+ * `ok` is false only when something failed TRANSIENTLY, so the dialog keeps the offer open for a
+ * retry. A permanent refusal or a record deliberately left on the device is not a failure.
  */
 export interface ImportOutcome {
   ok: boolean;
-  /** Names of the parts that failed, for the dialog to report. Empty when `ok`. */
+  /** Names of the parts with transient failures. Empty when `ok`. */
   failed: string[];
+  /** Parts with at least one permanent (42501) refusal. Informational; never reopens the offer. */
+  refused: string[];
+  /** Per-part account of what was attempted. */
+  parts: { sightings: PartResult; 'seed shelf': PartResult };
+  /**
+   * Local records deliberately NOT imported: collecting requires the in-app camera, so these stay on
+   * this device as local-only legacy progress. Not a failure.
+   */
+  leftOnDevice: LeftOnDevice;
+}
+
+export interface LeftOnDevice {
+  discoveries: number;
+  learned: number;
+  mastered: number;
+  research: number;
+}
+
+export function countLeftOnDevice(state: HerbdexState): LeftOnDevice {
+  return {
+    discoveries: Object.keys(state.discoveries).length,
+    learned: Object.keys(state.learned).length,
+    mastered: Object.keys(state.mastered).length,
+    research: Object.keys(state.research).length,
+  };
 }
 
 export async function importLocalProgress(userId: string): Promise<ImportOutcome> {
-  if (!supabase) return { ok: false, failed: ['accounts are not configured'] };
   const state: HerbdexState = await createLocalStorageAdapter().load();
+  const leftOnDevice = countLeftOnDevice(state);
+  const none = { sightings: emptyPart(), 'seed shelf': emptyPart() };
+  if (!supabase) {
+    return { ok: false, failed: ['accounts are not configured'], refused: [], parts: none, leftOnDevice };
+  }
 
-  const parts: [string, Promise<boolean>][] = [
-    ['discoveries', upsertTimestampRows('discoveries', 'herb_id', 'discovered_at', userId, state.discoveries)],
-    ['learned', upsertTimestampRows('learned', 'herb_id', 'learned_at', userId, state.learned)],
-    // MASTERY AND RESEARCH ARE NOT IMPORTED AS ROWS. Migration 0013 removed the client insert
-    // path on both tables, because either one is a claim the server derives. They are rebuilt
-    // by `herbdex-action` from the discoveries, learned records and sightings imported here,
-    // the next time the collection reconciles. The cost is narrow and stated: a card mastered
-    // on this device whose only sighting was later deleted is not carried into the account.
-    [
-      'achievements',
-      upsertTimestampRows(
-        'unlocked_achievements',
-        'achievement_id',
-        'unlocked_at',
-        userId,
-        state.achievements,
-      ),
-    ],
-    ['sightings', importSightings(userId)],
-    ['seed shelf', importSeedShelf(userId)],
-  ];
-
-  const results = await Promise.all(parts.map(([, promise]) => promise));
-  const failed = parts.filter((_, index) => !results[index]).map(([name]) => name);
-  return { ok: failed.length === 0, failed };
+  const parts = {
+    sightings: await importSightings(userId),
+    'seed shelf': await importSeedShelf(userId),
+  };
+  const names = Object.keys(parts) as (keyof typeof parts)[];
+  const failed = names.filter((n) => parts[n].failed > 0);
+  const refused = names.filter((n) => parts[n].refused > 0);
+  return { ok: failed.length === 0, failed, refused, parts, leftOnDevice };
 }
