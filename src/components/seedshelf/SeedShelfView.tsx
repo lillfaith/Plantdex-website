@@ -1,6 +1,5 @@
 'use client';
 
-import { useCallback, useState } from 'react';
 import Link from 'next/link';
 import { getCatalogueEntry } from '@/lib/catalogue';
 import { useHerbdex } from '@/state/HerbdexProvider';
@@ -36,37 +35,19 @@ const COLUMNS_DESKTOP = 5;
 
 export function SeedShelfView() {
   const { entries, signedIn } = useSeedShelf();
-  const { state, ready, discover } = useHerbdex();
-  const [claimed, setClaimed] = useState<string | null>(null);
+  const { state, ready } = useHerbdex();
 
   const ordered = shelfOrder(entries, state);
   const counts = shelfCounts(entries, state);
 
   /*
-   * CLAIMING A SPROUTED SEED.
+   * A SPROUTED SEED IS A ROUTE TO THE SCANNER, NOT A WAY TO A CARD.
    *
-   * The only write is the ordinary `discover()` — the same call the plant page and the scan
-   * screen make — so a card already in the collection awards nothing and a double tap awards
-   * once. The shelf itself is not touched: "grown" is derived from the discovery, so the
-   * packet changes state because the collection did.
-   *
-   * The discovery is stamped with the entry's FIRST-FOUND DATE, not with today. The player
-   * found the plant then; the deck simply had nowhere to put it yet.
+   * A new card unlocks only from an in-app camera scan with a server-issued receipt, so the
+   * shelf has no write path into the collection at all: it never calls `discover()`. The
+   * packet changes state because the collection did, and the only action here is a link to
+   * Scan. Nothing on the shelf awards anything.
    */
-  const claim = useCallback(
-    (entry: SeedShelfEntry) => {
-      const herbId = cardFor(entry);
-      // `cardFor` returns catalogue ids, so a shelved species that sprouted into a Field
-      // Card resolves here too. Through `getPrintedCard` this returned undefined and the
-      // claim button silently did nothing.
-      const herb = herbId ? getCatalogueEntry(herbId) : undefined;
-      if (!herb) return;
-      discover(herb, entry.firstFoundAt);
-      track('seed_shelf_sprouted');
-      setClaimed(herb.id);
-    },
-    [discover],
-  );
 
   // Planned twice, once per breakpoint. `planShelfRows` is pure and tested: every entry
   // appears exactly once and in order, and the pots only ever dress slots.
@@ -120,7 +101,7 @@ export function SeedShelfView() {
               </span>
             )}
             {counts.sprouted > 0 && (
-              <span className="text-gold-300"> · {counts.sprouted} ready to claim</span>
+              <span className="text-gold-300"> · {counts.sprouted} ready to scan</span>
             )}
             {counts.grown > 0 && (
               <span className="text-violet-300">
@@ -129,24 +110,6 @@ export function SeedShelfView() {
               </span>
             )}
           </p>
-        )}
-
-        {claimed && (
-          <section className="panel mt-4 border border-gold-500/60 p-4" aria-live="polite">
-            <p className="font-display text-base font-extrabold text-gold-plate">
-              A seed has sprouted.
-            </p>
-            <p className="mt-1 text-sm text-violet-200">
-              {getCatalogueEntry(claimed)?.commonName} is a card now, and it&apos;s yours — dated the day
-              you first found it.
-            </p>
-            <Link
-              href={`/herbdex/${claimed}`}
-              className="mt-3 inline-flex min-h-11 items-center text-sm font-semibold text-gold-400 underline underline-offset-2 hover:text-gold-300"
-            >
-              Open the card &rarr;
-            </Link>
-          </section>
         )}
 
         {entries.length === 0 ? (
@@ -188,9 +151,8 @@ export function SeedShelfView() {
               columns={COLUMNS_MOBILE}
               mobile
               state={state}
-              onClaim={claim}
             />
-            <Shelf rows={rowsDesktop} columns={COLUMNS_DESKTOP} state={state} onClaim={claim} />
+            <Shelf rows={rowsDesktop} columns={COLUMNS_DESKTOP} state={state} />
           </div>
         )}
 
@@ -228,13 +190,11 @@ function Shelf({
   columns,
   mobile = false,
   state,
-  onClaim,
 }: {
   rows: ShelfRow[];
   columns: number;
   mobile?: boolean;
   state: HerbdexState;
-  onClaim?: (entry: SeedShelfEntry) => void;
 }) {
   return (
     <div className={`${mobile ? 'sm:hidden' : 'hidden sm:block'} space-y-3`}>
@@ -246,7 +206,6 @@ function Shelf({
                 key={slot.entry.speciesKey}
                 entry={slot.entry}
                 status={shelfStatus(slot.entry, state)}
-                onClaim={() => onClaim?.(slot.entry)}
               />
             ) : (
               <ShelfProp key={`pot-${position}`} variant={slot.variant} />
@@ -319,11 +278,9 @@ function ShelfProp({ variant }: { variant: number }) {
 function Packet({
   entry,
   status,
-  onClaim,
 }: {
   entry: SeedShelfEntry;
   status: ReturnType<typeof shelfStatus>;
-  onClaim: () => void;
 }) {
   const herbId = cardFor(entry);
   const herb = herbId ? getCatalogueEntry(herbId) : undefined;
@@ -395,20 +352,18 @@ function Packet({
       {status === 'sprouted' && herb && (
         <div className="mt-1.5 flex w-full items-center justify-center">
           {/*
-           * THE LABEL IS ONE WORD, BUT THE ACCESSIBLE NAME IS NOT. On screen the packet is
-           * already captioned with the species directly above the button, so repeating it
-           * inside said the same thing twice. A screen reader gets no such adjacency: several
-           * sprouted packets side by side would all announce "Plant, button" with nothing to
-           * tell them apart, which is why the name still travels in `aria-label`.
+           * The packet is captioned with the species directly above the link, so the visible
+           * label does not repeat it. A screen reader gets no such adjacency, which is why the
+           * name still travels in `aria-label`.
            */}
-          <button
-            type="button"
-            onClick={onClaim}
-            aria-label={`Plant ${herb.commonName}`}
-            className="arcade-key min-h-11 w-full rounded-full border border-gold-500/60 bg-gold-500/15 px-2 text-[0.72rem] font-bold text-gold-300 transition-colors hover:bg-gold-500/25"
+          <Link
+            href="/scan"
+            onClick={() => track('seed_shelf_sprouted')}
+            aria-label={`Scan it to collect ${herb.commonName}`}
+            className="arcade-key flex min-h-11 w-full items-center justify-center rounded-full border border-gold-500/60 bg-gold-500/15 px-2 text-center text-[0.72rem] leading-tight font-bold text-gold-300 transition-colors hover:bg-gold-500/25"
           >
-            Plant
-          </button>
+            Scan it to collect it
+          </Link>
         </div>
       )}
 

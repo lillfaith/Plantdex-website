@@ -11,8 +11,8 @@
  * this page's camera. A photograph of a screen or a picture is indistinguishable, and nothing
  * here or in its copy may say otherwise.
  *
- * Inert unless `NEXT_PUBLIC_CAMERA_CAPTURE` is 'on': off, `channelForPhotos` returns
- * 'unspecified' and `collectAllowed` is true, i.e. today's behaviour.
+ * With `NEXT_PUBLIC_CAMERA_CAPTURE` off, `channelForPhotos` returns 'unspecified', which is
+ * identification only: nothing can be proved to have come from the camera, so nothing collects.
  */
 import { isCameraCaptureEnabled } from './scan-capture';
 
@@ -31,7 +31,7 @@ export function channelForPhotos(photos: readonly { source?: PhotoSource }[]): O
 
 /** May this observation unlock a NEW card? Held cards are never affected. */
 export function collectAllowed(channel: ObservationChannel): boolean {
-  return channel !== 'lookup';
+  return channel === 'collect';
 }
 
 export const FLOW_STEPS = ['Scan', 'Review', 'Confirm', 'Reveal', 'Collect'] as const;
@@ -51,6 +51,16 @@ export function currentStep(input: {
 export const LOOKUP_NOTICE = {
   heading: 'Identification only - not eligible to collect',
   body: 'This observation includes a photo from your library, so it can tell you what a plant might be but cannot unlock a new card. To collect, take every photo with the in-app camera.',
+} as const;
+
+export const CAMERA_OFF_NOTICE = {
+  heading: 'Identification only',
+  body: 'Collecting a card needs photos taken with the in-app camera, which is not available here. You can still identify this plant.',
+} as const;
+
+export const SIGNED_OUT_NOTICE = {
+  heading: 'Sign in to collect',
+  body: 'Scanning and identifying work without an account. Collecting a card needs an account and photos taken with the in-app camera.',
 } as const;
 
 export const COLLECT_NOTE =

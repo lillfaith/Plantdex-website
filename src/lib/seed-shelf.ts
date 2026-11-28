@@ -346,9 +346,8 @@ export function cardFor(entry: Pick<SeedShelfEntry, 'scientificName'>): string |
    * one. Restricted to `getPrintedCard`, a shelved Witch Hazel would have sat at `waiting`
    * forever while its card existed — the shelf asserting, permanently, something false.
    *
-   * Claiming stays the ordinary idempotent `discover()` call every other entry point makes,
-   * and `applyDiscovery` already resolves ids through the CATALOGUE, so a Field Card is a
-   * legitimate target and credits zero XP exactly as it does everywhere else.
+   * The shelf never unlocks a card: a card that now exists is collected by scanning it with
+   * the in-app camera (receipt flow), never through this module.
    */
   return getCatalogueEntry(match.herbId) ? match.herbId : null;
 }
@@ -360,8 +359,8 @@ export function cardFor(entry: Pick<SeedShelfEntry, 'scientificName'>): string |
  *   sprouted  a card exists and has not been claimed. The moment the shelf is for.
  *   grown     the card exists and is in the collection. The packet stays, as history.
  *
- * Derived from the collection rather than stored, which is why claiming needs no write to
- * the shelf at all: `discover()` records the card, and this reads it back.
+ * Derived from the collection rather than stored, which is why the shelf needs no write
+ * when a card is collected by scanning: the collection records it, and this reads it back.
  */
 export type ShelfStatus = 'waiting' | 'sprouted' | 'grown';
 

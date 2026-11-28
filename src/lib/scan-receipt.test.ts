@@ -4,7 +4,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 const rpc = vi.hoisted(() => vi.fn());
 vi.mock('./supabase-client', () => ({ supabase: { rpc } }));
 
-import { decideConfirm, shouldClaim, shouldFetchRules, type ConfirmInput } from './scan-receipt';
+import { decideConfirm, shouldClaim, type ConfirmInput } from './scan-receipt';
 import { claimDiscovery, fetchDiscoveryRules, openCaptureSession } from './scan-capture-session';
 
 afterEach(() => {
@@ -13,71 +13,88 @@ afterEach(() => {
 });
 
 const RECEIPT = { id: 'rcpt_' + 'a'.repeat(32), rankPosition: 'top' as const, expiresAt: '2026-12-26T00:00:00Z' };
-const base: ConfirmInput = { channel: 'collect', signedIn: true, wasHeld: false, receipt: RECEIPT, claim: null, rules: null };
+const base: ConfirmInput = { channel: 'collect', signedIn: true, wasHeld: false, receipt: RECEIPT, claim: null };
 
-describe('decideConfirm: the table', () => {
-  it('flag off (unspecified): unrestricted, exactly today', () => {
-    expect(decideConfirm({ ...base, channel: 'unspecified' })).toMatchObject({ allow: true, kind: 'unrestricted', line: null });
-  });
-  it('a held card is never blocked, whatever the channel (grandfathered, idempotent)', () => {
+describe('decideConfirm: the table (a NEW card needs camera + signed in + receipt + ok claim)', () => {
+  const ok = { ok: true, status: 'claimed' } as const;
+  it('a held card is never blocked, whatever the channel or account (grandfathered, idempotent)', () => {
     for (const channel of ['collect', 'lookup', 'unspecified'] as const) {
-      expect(decideConfirm({ ...base, channel, wasHeld: true })).toMatchObject({ allow: true, kind: 'held' });
+      for (const signedIn of [true, false]) {
+        expect(decideConfirm({ ...base, channel, signedIn, wasHeld: true, receipt: undefined })).toMatchObject({ allow: true, kind: 'held', line: null });
+      }
     }
   });
-  it('a lookup can never unlock a new card, with or without a receipt', () => {
-    expect(decideConfirm({ ...base, channel: 'lookup' }).allow).toBe(false);
-    expect(decideConfirm({ ...base, channel: 'lookup', claim: { ok: true, status: 'claimed' } }).allow).toBe(false);
+  it('lookup (library photo): identification only, even with a receipt and an ok claim', () => {
+    for (const extra of [{}, { claim: ok }, { signedIn: false }]) {
+      const d = decideConfirm({ ...base, channel: 'lookup', ...extra });
+      expect(d).toMatchObject({ allow: false, kind: 'blocked' });
+      expect(d.line).toMatch(/^Identification only/);
+    }
   });
-  it('signed out: local only, no receipt, said plainly', () => {
+  it('unspecified (camera feature off): identification only, cannot unlock, even with an ok claim', () => {
+    for (const extra of [{}, { claim: ok }, { signedIn: false }, { receipt: undefined }]) {
+      const d = decideConfirm({ ...base, channel: 'unspecified', ...extra });
+      expect(d).toMatchObject({ allow: false, kind: 'blocked' });
+      expect(d.line).toMatch(/^Identification only/);
+    }
+  });
+  it('signed out: blocked with a calm sign-in line that says scanning still works', () => {
     const d = decideConfirm({ ...base, signedIn: false, receipt: undefined });
-    expect(d).toMatchObject({ allow: true, kind: 'local-only' });
-    expect(d.line).toMatch(/this device only/);
+    expect(d).toMatchObject({ allow: false, kind: 'blocked' });
+    expect(d.line).toMatch(/^Sign in to collect/);
+    expect(d.line).toMatch(/identifying work without an account/);
+    expect(d.line).toMatch(/in-app camera/);
+    expect(decideConfirm({ ...base, signedIn: false, claim: ok }).allow).toBe(false);
   });
-  it('a claimed receipt allows and says captured in the app', () => {
+  it('signed in + camera + receipt + ok claim: allowed, for every success status', () => {
     for (const status of ['claimed', 'already_claimed', 'already_held'] as const) {
       const d = decideConfirm({ ...base, claim: { ok: true, status } });
       expect(d).toMatchObject({ allow: true, kind: 'claimed' });
       expect(d.line).toMatch(/Captured in the app/);
     }
   });
-  it('a refused claim blocks, with a plain line, and unlocks nothing', () => {
-    for (const code of ['receipt_unknown', 'receipt_expired', 'receipt_ineligible', 'not_signed_in', 'network'] as const) {
+  it('every refused claim code blocks, with a line, and unlocks nothing', () => {
+    for (const code of ['receipt_unknown', 'receipt_expired', 'receipt_ineligible', 'not_signed_in', 'network', 'not-deployed'] as const) {
       const d = decideConfirm({ ...base, claim: { ok: false, code } });
-      expect(d.allow).toBe(false);
-      expect(d.kind).toBe('blocked');
+      expect(d).toMatchObject({ allow: false, kind: 'blocked' });
       expect(d.line).toBeTruthy();
     }
   });
-  it('functions not deployed: MOCK fallback, labelled, never presented as a receipt', () => {
-    const withReceipt = decideConfirm({ ...base, claim: { ok: false, code: 'not-deployed' } });
-    const noReceipt = decideConfirm({ ...base, receipt: undefined, rules: { kind: 'not-deployed' } });
-    const offRules = decideConfirm({ ...base, receipt: undefined, rules: { kind: 'known', enforcing: false } });
-    for (const d of [withReceipt, noReceipt, offRules]) {
-      expect(d).toMatchObject({ allow: true, kind: 'mock' });
-      expect(d.line).toMatch(/MOCK/);
-    }
+  it('a receipt with no claim attempted blocks (a claim that never ran is not a claim)', () => {
+    expect(decideConfirm({ ...base, claim: null }).allow).toBe(false);
   });
-  it('enforcing, or unknown, with no receipt: blocked (fail safe)', () => {
-    expect(decideConfirm({ ...base, receipt: undefined, rules: { kind: 'known', enforcing: true } }).allow).toBe(false);
-    expect(decideConfirm({ ...base, receipt: undefined, rules: { kind: 'unknown' } }).allow).toBe(false);
-    expect(decideConfirm({ ...base, receipt: undefined, rules: null }).allow).toBe(false);
+  it('camera, signed in, NO receipt: blocked and told to retake, with no mock or fallback', () => {
+    const d = decideConfirm({ ...base, receipt: undefined });
+    expect(d).toMatchObject({ allow: false, kind: 'blocked' });
+    expect(d.line).toMatch(/not recorded for collecting/);
+    expect(d.line).toMatch(/camera/);
+  });
+  it('no input can produce any kind but claimed, held or blocked, and only those two allow', () => {
+    const channels = ['collect', 'lookup', 'unspecified'] as const;
+    const claims = [null, { ok: true, status: 'claimed' }, { ok: false, code: 'not-deployed' }, { ok: false, code: 'network' }] as const;
+    for (const channel of channels) for (const signedIn of [true, false]) for (const wasHeld of [true, false])
+      for (const receipt of [undefined, RECEIPT]) for (const claim of claims) {
+        const d = decideConfirm({ channel, signedIn, wasHeld, receipt, claim });
+        expect(['claimed', 'held', 'blocked']).toContain(d.kind);
+        if (d.allow && !wasHeld) expect(channel === 'collect' && signedIn && !!receipt && claim?.ok === true).toBe(true);
+      }
   });
   it('never says verified or outdoors', () => {
     const lines = [
       decideConfirm({ ...base, claim: { ok: true, status: 'claimed' } }),
       decideConfirm({ ...base, claim: { ok: false, code: 'not-deployed' } }),
       decideConfirm({ ...base, claim: { ok: false, code: 'receipt_unknown' } }),
-      decideConfirm({ ...base, receipt: undefined, rules: { kind: 'unknown' } }),
+      decideConfirm({ ...base, receipt: undefined }),
+      decideConfirm({ ...base, signedIn: false }),
+      decideConfirm({ ...base, channel: 'unspecified' }),
+      decideConfirm({ ...base, channel: 'lookup' }),
     ].map((d) => d.line ?? '');
-    for (const line of lines) expect(line).not.toMatch(/verif|outdoor|in the wild|proof/i);
+    for (const line of lines) expect(line).not.toMatch(/verif|outdoor|in the wild|proof|MOCK/i);
   });
-  it('shouldClaim / shouldFetchRules are mutually exclusive and only for a signed-in new camera card', () => {
+  it('shouldClaim is only for a signed-in new camera card with a receipt', () => {
     expect(shouldClaim(base)).toBe(true);
-    expect(shouldFetchRules(base)).toBe(false);
-    expect(shouldFetchRules({ ...base, receipt: undefined })).toBe(true);
-    for (const off of [{ channel: 'lookup' as const }, { signedIn: false }, { wasHeld: true }]) {
+    for (const off of [{ channel: 'lookup' as const }, { channel: 'unspecified' as const }, { signedIn: false }, { wasHeld: true }, { receipt: undefined }]) {
       expect(shouldClaim({ ...base, ...off })).toBe(false);
-      expect(shouldFetchRules({ ...base, receipt: undefined, ...off })).toBe(false);
     }
   });
 });

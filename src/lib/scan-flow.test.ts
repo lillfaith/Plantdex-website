@@ -16,10 +16,10 @@ const cam = { source: 'camera' as const };
 const imp = { source: 'import' as const };
 
 describe('channelForPhotos', () => {
-  it('is unspecified, and collecting stays allowed, with the pilot off', () => {
+  it('is unspecified, and collecting is NOT allowed (identification only), with the pilot off', () => {
     vi.stubEnv('NEXT_PUBLIC_CAMERA_CAPTURE', 'off');
     expect(channelForPhotos([imp, imp])).toBe('unspecified');
-    expect(collectAllowed('unspecified')).toBe(true);
+    expect(collectAllowed('unspecified')).toBe(false);
   });
   it('is collect only when every photo is from the live camera', () => {
     vi.stubEnv('NEXT_PUBLIC_CAMERA_CAPTURE', 'on');
@@ -82,6 +82,24 @@ describe('the collect rule is wired before the reducer call', () => {
   });
   it('claims the server receipt BEFORE the ordinary insert, never after', () => {
     expect(panel.indexOf('await claimDiscovery(')).toBeLessThan(panel.indexOf('const outcome = discover(herb);'));
+  });
+  it('ScanPanel calls discover( only once, and only after the decision allows it', () => {
+    const calls = [...panel.matchAll(/\bdiscover\(/g)].map((m) => m.index!);
+    const refuse = panel.indexOf('if (!decision.allow) return;');
+    const live = calls.filter((i) => !/^\s*\*|\/\//.test(panel.slice(panel.lastIndexOf('\n', i) + 1, i)) && !panel.slice(panel.lastIndexOf('\n', i) + 1, i).includes('`'));
+    expect(live).toHaveLength(1);
+    expect(live[0]).toBeGreaterThan(refuse);
+  });
+  it('the Seed Shelf has no write path into the collection', () => {
+    const shelf = readFileSync('src/components/seedshelf/SeedShelfView.tsx', 'utf8')
+      .replace(/\/\*[\s\S]*?\*\//g, '')
+      .replace(/\{\/\*[\s\S]*?\*\/\}/g, '');
+    expect(shelf).not.toMatch(/\bdiscover\b/);
+    expect(shelf).toContain('Scan it to collect it');
+    expect(shelf).toContain('href="/scan"');
+  });
+  it('the confirm row offers nothing unless channel is collect AND somebody is signed in', () => {
+    expect(panel).toMatch(/!collectAllowed\(sentChannel\) \|\| !user/);
   });
   it('the live camera input drops capture= so the library path is plainly a library path', () => {
     expect(readFileSync('src/components/scan/ObservationPhotos.tsx', 'utf8')).toContain("capture={cameraOn ? undefined : 'environment'}");

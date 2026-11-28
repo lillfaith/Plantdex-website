@@ -34,16 +34,18 @@ import { ScanOutcome } from './ScanOutcome';
 import { SaveToSeedShelf } from '../seedshelf/SaveToSeedShelf';
 import { ProviderConsent, useProviderConsent } from './ProviderConsent';
 import {
+  CAMERA_OFF_NOTICE,
   COLLECT_NOTE,
   FLOW_STEPS,
   LOOKUP_NOTICE,
+  SIGNED_OUT_NOTICE,
   channelForPhotos,
   collectAllowed,
   currentStep,
   type ObservationChannel,
 } from '@/lib/scan-flow';
-import { decideConfirm, shouldClaim, shouldFetchRules } from '@/lib/scan-receipt';
-import { claimDiscovery, fetchDiscoveryRules } from '@/lib/scan-capture-session';
+import { decideConfirm, shouldClaim } from '@/lib/scan-receipt';
+import { claimDiscovery } from '@/lib/scan-capture-session';
 import {
   captureSessionFailure,
   clearCaptureSessions,
@@ -430,8 +432,7 @@ export function ScanPanel() {
       const receipt = result?.receipts?.[candidate.scientificName];
       const gate = { channel: sentChannel, signedIn: Boolean(user), wasHeld, receipt };
       const claim = shouldClaim(gate) ? await claimDiscovery(receipt!.id) : null;
-      const rules = shouldFetchRules(gate) ? await fetchDiscoveryRules() : null;
-      const decision = decideConfirm({ ...gate, claim, rules });
+      const decision = decideConfirm({ ...gate, claim });
       setConfirmBlock(decision.allow ? null : decision.line);
       if (!decision.allow) return;
       setReceiptNote(decision.line);
@@ -570,7 +571,7 @@ export function ScanPanel() {
                 ? LOOKUP_NOTICE.heading
                 : user
                   ? 'Camera preview (test). Photos taken with the in-app camera can collect a new card; library photos identify only.'
-                  : 'Camera preview (test). Sign in to collect a new card from an in-app camera photo; signed out, photos identify only.'}
+                  : 'Camera preview (test). Sign in to collect a new card from an in-app camera photo; signed out, scans identify only.'}
           </p>
         )}
 
@@ -1147,19 +1148,32 @@ export function ScanPanel() {
                                 : 'Same card as above'
                               : 'Already in your collection.'}
                           </p>
-                        ) : !collectAllowed(sentChannel) ? (
+                        ) : !collectAllowed(sentChannel) || !user ? (
                           /*
-                           * IMPORTED PHOTO, CAMERA PILOT ON: identification only. No path from
-                           * here to a confirm, so a library photo can never unlock a new card.
+                           * NO PATH FROM HERE TO A CONFIRM. A NEW card unlocks only from the
+                           * in-app camera, signed in (see `decideConfirm`), so a library photo,
+                           * a scan with the camera feature off and a signed-out scan all
+                           * identify and stop. The database trigger is the real gate; this is
+                           * the client declining to offer what it forbids.
                            */
                           <p
                             data-ui-placeholder="lookup-only"
                             className="mt-2 text-xs leading-relaxed text-violet-300"
                           >
-                            <span className="font-semibold text-violet-200">
-                              {LOOKUP_NOTICE.heading}.
-                            </span>{' '}
-                            {LOOKUP_NOTICE.body}
+                            {(() => {
+                              const notice =
+                                sentChannel === 'lookup'
+                                  ? { heading: `${LOOKUP_NOTICE.heading}.`, body: LOOKUP_NOTICE.body }
+                                  : sentChannel === 'unspecified'
+                                    ? { heading: `${CAMERA_OFF_NOTICE.heading}.`, body: CAMERA_OFF_NOTICE.body }
+                                    : { heading: `${SIGNED_OUT_NOTICE.heading}.`, body: SIGNED_OUT_NOTICE.body };
+                              return (
+                                <>
+                                  <span className="font-semibold text-violet-200">{notice.heading}</span>{' '}
+                                  {notice.body}
+                                </>
+                              );
+                            })()}
                           </p>
                         ) : (
                           /*
