@@ -1,7 +1,10 @@
+'use client';
+
 import type { CSSProperties } from 'react';
 
 import { assetPath } from '@/lib/asset-path';
 import { spriteFor } from '@/lib/plant-sprites';
+import { observeSprite } from '@/lib/sprite-visibility';
 import type { SpriteStage } from '@/lib/plant-sprites';
 
 /**
@@ -17,6 +20,9 @@ import type { SpriteStage } from '@/lib/plant-sprites';
  * a background image, and a keyframe. `prefers-reduced-motion` freezes it on frame 0,
  * which every sprite authors as a complete resting pose (see `globals.css`, and
  * `build_sprites.py` for why frame 0 carries that responsibility).
+ *
+ * Every animating (non-`frozen`) sprite registers with the page's single shared observer
+ * (`sprite-visibility.ts`) and so pauses while offscreen or while the tab is hidden.
  *
  * All 45 cards have an authored portrait at all three growth stages. It still renders
  * nothing for an id with no sprite, so pages can mount it unconditionally without
@@ -99,6 +105,7 @@ export function PlantSprite({
 
   return (
     <div
+      ref={frozen ? undefined : observeSprite}
       role="img"
       aria-label={alt}
       onAnimationEnd={onAnimationEnd}

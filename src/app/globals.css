@@ -1005,6 +1005,17 @@ body {
 }
 
 /*
+ * The tab is in the background: every sprite holds its position (pause freezes, it does not
+ * reset, so resuming continues mid-gesture). ONE rule on a root attribute that
+ * `sprite-visibility.ts` sets from a single `visibilitychange` / `pagehide` / `pageshow`
+ * listener. `!important` because the offscreen observer writes an inline `running` on the
+ * sprites in view, which would otherwise win over this.
+ */
+html[data-page-hidden] .plant-sprite {
+  animation-play-state: paused !important;
+}
+
+/*
  * A sprite held on its resting pose, used as the botanical shadow inside a locked card.
  * Frame 0 is authored as a complete, dignified plant precisely so it can be used still —
  * the same property `prefers-reduced-motion` relies on.
@@ -1215,7 +1226,7 @@ body {
 
 .node-earned { animation: node-earned 900ms cubic-bezier(0.22, 1, 0.36, 1) 1; }
 .xp-rise { animation: xp-rise 1100ms ease-out 1 forwards; }
-.node-pulse { animation: node-pulse 2600ms ease-in-out infinite; }
+.node-pulse { animation: node-pulse 2600ms ease-in-out 1; } /* one beat on arrival, then a steady ring */
 .pip-fill { animation: pip-fill 320ms ease-out 1 backwards; }
 
 /* The line that fills as stages complete. Width is a custom property so the same element
@@ -1237,16 +1248,6 @@ body {
    * strand it on frame 13 instead, which is the same trap `.plant-sprite-once` documents.
    */
   .scan-scout {
-    animation: none !important;
-  }
-
-  /*
-   * The rail stops dead rather than being removed. Freezing it keeps the shelf's shape and
-   * the achievements that happen to be on screen; deleting the animation would leave the
-   * track parked at translateX(0), which is the same thing but by accident. The expanded
-   * list underneath is the complete set either way.
-   */
-  .achievement-rail {
     animation: none !important;
   }
 
@@ -1437,33 +1438,15 @@ body {
  * THE ACHIEVEMENT RAIL.
  *
  * Nineteen achievements is a wall of pills on a phone, and most of them are things you
- * have not done yet. Collapsed, they become a slow rail that carries both states past —
+ * have not done yet. Collapsed, they become a rail that carries both states side by side —
  * earned and unearned together, so the shelf reads as a set with gaps in it rather than a
  * list of failures.
  *
- * The track holds the SAME children twice and travels exactly -50%, which is what makes the
- * loop seamless: at the end of the run the second copy sits precisely where the first one
- * started. Any other distance shows a seam.
+ * IT DOES NOT MOVE. It used to be a 60s marquee holding every child twice; that was ambient
+ * motion on the page a player lands on, and the duplicate had to be hidden from screen
+ * readers. It is now a stationary, manually scrollable row (`overflow-x-auto` + scroll snap
+ * in the component), so there is one copy of each pill and nothing animates.
  * ───────────────────────────────────────────────────────────────────────────── */
-@keyframes achievement-rail {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
-}
-
-@utility achievement-rail {
-  animation: achievement-rail 60s linear infinite;
-  /* Pausing on hover and on keyboard focus: a moving target is unreadable and unclickable,
-     and the rail carries real names rather than decoration. */
-  &:hover,
-  &:focus-within {
-    animation-play-state: paused;
-  }
-}
-
 /* A fade at both ends, so items enter and leave rather than being chopped off by the edge. */
 @utility rail-mask {
   -webkit-mask-image: linear-gradient(90deg, transparent, #000 2.5rem, #000 calc(100% - 2.5rem), transparent);
@@ -1748,7 +1731,7 @@ body {
 /*
  * THE ONE AMBIENT LOOP ON THE PAGE.
  *
- * Three 2px pixels drifting around the sidekick. Deliberately slow and dim: it is the only
+ * Three 2px pixels drifting around the sidekick for two passes each, then still. Deliberately slow and dim: it is the only
  * thing on the profile that moves without being touched, and a page carrying this much
  * information cannot afford anything that pulls the eye while you read. Transform and
  * opacity only, so it composites on the GPU and never causes layout work mid-scroll.
@@ -1774,7 +1757,7 @@ body {
 }
 
 .sparkle {
-  animation: sparkle-drift 5200ms ease-in-out infinite;
+  animation: sparkle-drift 5200ms ease-in-out 2 both; /* two passes per pixel, then rest (invisible) */
 }
 
 /*
@@ -1874,8 +1857,10 @@ body {
   }
 }
 
+/* ONE settle when the card is brought to the front (the element mounts per featured card),
+   then it rests. It used to bob forever, which is ambient motion on the front page. */
 .showcase-drift {
-  animation: showcase-drift 5600ms ease-in-out infinite;
+  animation: showcase-drift 1400ms ease-in-out 1;
 }
 
 /*
@@ -1889,17 +1874,17 @@ body {
  * colour and belongs to the frame already around every card here.
  */
 @keyframes showcase-halo {
-  0%,
-  100% {
+  from {
     opacity: 0.4;
   }
-  50% {
-    opacity: 0.72;
+  to {
+    opacity: 0.6;
   }
 }
 
+/* The halo brightens once and holds (`forwards`); it no longer breathes forever. */
 .showcase-halo {
-  animation: showcase-halo 4200ms ease-in-out infinite;
+  animation: showcase-halo 1400ms ease-out 1 both;
 }
 
 /*
@@ -2282,7 +2267,7 @@ body {
   width: 6px;
   height: 6px;
   background: var(--color-gold-300);
-  animation: welcome-drift 5.5s ease-in-out infinite;
+  animation: welcome-drift 5.5s ease-in-out 3 forwards; /* three drifts, then rest */
 }
 @utility welcome-mote-a {
   left: 14%;
@@ -2335,7 +2320,7 @@ body {
   inset: 0 0 auto 0;
   height: 2px;
   background: var(--color-gold-300);
-  animation: welcome-scan 2.6s ease-in-out infinite;
+  animation: welcome-scan 2.6s ease-in-out 3 forwards; /* three passes, then rest at the top */
 }
 @keyframes welcome-scan {
   0%,
@@ -2986,7 +2971,42 @@ body {
   .cf-stack-top { animation: cf-drop 8s steps(4, end) infinite 6s; }
   .cf-plus { animation: cf-pop 8s steps(3, end) infinite 6.4s; }
   .cf-arrow { animation: cf-nudge 2s steps(2, end) infinite; }
+  /*
+   * `.cf-once` CLASS CONTRACT (for the scan lane, which owns CollectFlow.tsx).
+   * Put `cf-once` on the explainer's root, an ancestor of every `.cf-*` element. Under it the
+   * same animations run ONE pass of the 8s timeline and HOLD THE END STATE (the collected
+   * card, the stack, the plus) instead of looping. Only longhands are set, so the per-scene
+   * `animation-delay`s above still apply. Remove the class (or key it) to replay.
+   * cf-reveal / cf-drop / cf-pop have `-once` keyframes because the loop's own last frame is
+   * the reset (silhouette, card lifted off, plus hidden), which is not an end state.
+   * `both` fill on those three so the not-yet-collected look shows during their delay;
+   * cf-lit stays `forwards` only, or every scene would start lit.
+   */
+  .cf-once .cf-scene { animation-iteration-count: 1; animation-fill-mode: forwards; }
+  .cf-once .cf-flash,
+  .cf-once .cf-brackets { animation-iteration-count: 1; animation-fill-mode: forwards; }
+  .cf-once .cf-card { animation-name: cf-reveal-once; animation-iteration-count: 1; animation-fill-mode: both; }
+  .cf-once .cf-stack-top { animation-name: cf-drop-once; animation-iteration-count: 1; animation-fill-mode: both; }
+  .cf-once .cf-plus { animation-name: cf-pop-once; animation-iteration-count: 1; animation-fill-mode: both; }
+  .cf-once .cf-arrow { animation: none; }
 }
+@media (prefers-reduced-motion: reduce) {
+  /* Reduced motion under `.cf-once`: nothing animates, and the base styles ARE the end state
+     (card shown, stack dropped, plus visible, flash clear), listed explicitly per the file's convention. */
+  .cf-once .cf-scene,
+  .cf-once .cf-flash,
+  .cf-once .cf-brackets,
+  .cf-once .cf-card,
+  .cf-once .cf-stack-top,
+  .cf-once .cf-plus,
+  .cf-once .cf-arrow { animation: none !important; }
+}
+@keyframes cf-reveal-once {
+  0% { filter: brightness(0.2) saturate(0); transform: scale(0.9); }
+  18%, 100% { filter: none; transform: scale(1); }
+}
+@keyframes cf-drop-once { 0% { transform: translateY(-60%); } 14%, 100% { transform: none; } }
+@keyframes cf-pop-once { 0% { opacity: 0; transform: translateY(6px); } 14%, 100% { opacity: 1; transform: none; } }
 @keyframes cf-lit {
   0%, 24.9% { transform: translateY(-2px); border-color: #9c21f8; box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.9), 0 0 0 2px #ffe27a, 0 0 14px 3px rgb(255 214 240 / 0.95); }
   25%, 100% { transform: none; border-color: #9d8ae6; box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.9); }
