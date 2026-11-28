@@ -3402,7 +3402,6 @@ main[data-shade='home'] .home-stage .home-name-strip { left: 6px; right: 6px; bo
 .photo-slot:focus-visible { outline: 3px solid var(--card-violet-700); outline-offset: 2px; }
 
 /* Small text that sits directly on the lavender ground must clear 4.5:1 there: the three that measured 4.34-4.37. */
-[data-ground='lavender'] [class*='text-rarity-common'] { color: #3a2a55; }
 [data-ground='lavender'] a[href^='/shop'][class*='border'] { color: #3a1f04; }
 [data-ground='lavender'] div > a[href^='/shop'] + p { color: #3a2a55; }
 
