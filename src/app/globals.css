@@ -3405,6 +3405,15 @@ main[data-shade='home'] .home-stage .home-name-strip { left: 6px; right: 6px; bo
 [data-ground='lavender'] a[href^='/shop'][class*='border'] { color: #3a1f04; }
 [data-ground='lavender'] div > a[href^='/shop'] + p { color: #3a2a55; }
 
+/* Keyboard focus and scrollIntoView must land CLEAR of the fixed bottom nav (it is 4.5rem on a phone; the desktop nav is static). */
+html { scroll-padding-top: 1rem; scroll-padding-bottom: 6.5rem; }
+@media (min-width: 640px) { html { scroll-padding-bottom: 1.5rem; } }
+
+/* Plant detail: the genuinely undersized text (labels, card data, helper lines, scientific names) steps up from 11.5px to 13px. */
+body:has(#profile) main [class*='text-[0.72rem]'],
+body:has(#profile) main .text-xs { font-size: 0.8125rem; line-height: 1.35; }
+body:has(#profile) main .font-botanical { font-size: max(1em, 0.9rem); }
+
 /* Challenges and Progress read as one centred column on wide screens, so the rail, the steps and the primary action line up. */
 @media (min-width: 900px) {
   [data-ground='lavender'] [role='tabpanel'].pt-4 > * { max-width: 46rem; margin-inline: auto; }
