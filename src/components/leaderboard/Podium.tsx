@@ -1,13 +1,13 @@
 import type { ReactNode } from 'react';
 import type { Standing } from '@/lib/remote-leaderboard';
-import { PODIUM_PLANTS, ordinal, podiumOf } from '@/lib/board-view';
+import { ordinal } from '@/lib/board-view';
 import { trophyArt } from '@/lib/pixel-icons';
 import { regionById } from '@/lib/regions';
-import { PlantSprite } from '../PlantSprite';
+import { fromRows, gridToUri } from '@/lib/pixel-art';
 import { PixelIcon } from '../herbdex/HerbalVisuals';
 
 /**
- * THE TOP THREE, as compact pixel-beveled player cards.
+ * THE TOP THREE, as compact pixel-beveled player cards, in rank order.
  *
  * PRESENTATION ONLY. Nothing here scores, ranks or breaks a tie: the rows arrive already ranked by
  * the standings function, `row.standing` is the rank it computed, and this file reads it. A card is
@@ -16,19 +16,11 @@ import { PixelIcon } from '../herbdex/HerbalVisuals';
  * same standing (the whole list is checked, so a third-place tie that spills below the top three
  * is still said out loud).
  *
- * Two layouts are built for the owner to choose between (`NEXT_PUBLIC_PODIUM_VARIANT`):
- *   `cards`  three horizontal cards, one per row, in rank order. The compact, readable default.
- *   `trio`   three small vertical cards side by side, the leader raised a step.
- *
  * Privacy is unchanged: a name is what the player chose to publish, an unnamed player is shown as
- * "No name set", and the art slot is their own avatar ONLY if the standings function publishes it
- * (it does not today). Otherwise it holds the decorative sprite chosen by PLACE, never by player.
+ * "No name set". The art slot holds the player's own avatar ONLY if the standings function
+ * publishes it (it does not today); otherwise a NEUTRAL pixel silhouette. It is deliberately not a
+ * plant: a species sprite beside a stranger's name reads as that stranger's own plant.
  */
-export type PodiumVariant = 'cards' | 'trio';
-
-export function podiumVariant(value: string | undefined = process.env.NEXT_PUBLIC_PODIUM_VARIANT): PodiumVariant {
-  return value === 'trio' ? 'trio' : 'cards';
-}
 
 type Place = 1 | 2 | 3;
 
@@ -49,6 +41,20 @@ const TONE: Record<Place, { card: string; plate: string; label: string }> = {
     label: 'Third place',
   },
 };
+
+const SILHOUETTE_ROWS = [
+  '    ####    ',
+  '   ######   ',
+  '   ######   ',
+  '   ######   ',
+  '    ####    ',
+  '  ########  ',
+  ' ########## ',
+  '############',
+  '############',
+];
+/** A neutral head-and-shoulders in card lilac: not a plant, not anybody in particular. */
+const SILHOUETTE = gridToUri(fromRows(SILHOUETTE_ROWS, { '#': '#BF6FFA' }));
 
 const nameOf = (row: Standing) => row.displayName ?? 'No name set';
 const placeOf = (row: Standing): Place => Math.min(3, Math.max(1, row.standing)) as Place;
@@ -88,7 +94,7 @@ function TiePill({ standing }: { standing: number }) {
   );
 }
 
-function Art({ row, place, size, avatarFor }: { row: Standing; place: Place; size: number; avatarFor: (row: Standing) => ReactNode }) {
+function Art({ row, size, avatarFor }: { row: Standing; size: number; avatarFor: (row: Standing) => ReactNode }) {
   const avatar = avatarFor(row);
   return (
     <span
@@ -96,7 +102,7 @@ function Art({ row, place, size, avatarFor }: { row: Standing; place: Place; siz
       className="pd-tile flex shrink-0 items-center justify-center !rounded-lg !bg-white !p-0.5"
       style={{ width: size, height: size }}
     >
-      {avatar ?? <PlantSprite herbId={PODIUM_PLANTS[place]} alt="" fit />}
+      {avatar ?? <PixelIcon uri={SILHOUETTE} size={size - 12} />}
     </span>
   );
 }
@@ -115,7 +121,7 @@ function CardsLayout({ rows, avatarFor }: { rows: readonly Standing[]; avatarFor
             style={{ animationDelay: `${index * 90}ms` }}
           >
             <RankPlate row={row} place={place} />
-            <Art row={row} place={place} size={lead ? 40 : 34} avatarFor={avatarFor} />
+            <Art row={row} size={lead ? 40 : 34} avatarFor={avatarFor} />
             <span className="min-w-0 flex-1">
               <span
                 className={`block truncate text-sm font-extrabold text-[#38204f] ${row.isSelf ? 'underline decoration-[var(--card-gold-500)] decoration-2 underline-offset-2' : ''}`}
@@ -141,59 +147,13 @@ function CardsLayout({ rows, avatarFor }: { rows: readonly Standing[]; avatarFor
   );
 }
 
-function TrioLayout({ rows, avatarFor }: { rows: readonly Standing[]; avatarFor: (row: Standing) => ReactNode }) {
-  const slots = podiumOf([...rows]);
-  const leadRaised = slots.some(({ place }) => place !== 1);
-  return (
-    <ol aria-label="Top three" className="mx-auto flex max-w-sm items-start justify-center gap-2">
-      {slots.map(({ place, row }, index) => {
-        const lead = place === 1 && leadRaised;
-        const tied = isTied(row, rows);
-        return (
-          <li
-            key={`${row.standing}-${index}`}
-            className={`board-rise flex min-w-0 flex-1 flex-col items-center rounded-xl border-2 px-1.5 pb-2 text-center ${lead ? 'pt-1.5' : 'mt-3 pt-1.5'} ${TONE[place].card}`}
-            style={{ animationDelay: `${index * 90}ms` }}
-          >
-            <RankPlate row={row} place={place} />
-            <span className="mt-1.5">
-              <Art row={row} place={place} size={lead ? 52 : 44} avatarFor={avatarFor} />
-            </span>
-            <span
-              className={`mt-1 line-clamp-2 w-full text-sm leading-tight font-extrabold break-words text-[#38204f] ${row.isSelf ? 'underline decoration-[var(--card-gold-500)] decoration-2 underline-offset-2' : ''}`}
-              title={nameOf(row)}
-            >
-              {nameOf(row)}
-              {row.isSelf && <span className="sr-only"> (you)</span>}
-            </span>
-            <span className="mt-1">
-              <PointsPlate points={row.points} />
-            </span>
-            {tied && (
-              <span className="mt-1">
-                <TiePill standing={row.standing} />
-              </span>
-            )}
-          </li>
-        );
-      })}
-    </ol>
-  );
-}
-
 export function Podium({
   rows,
   avatarFor,
-  variant = podiumVariant(),
 }: {
   rows: readonly Standing[];
   avatarFor: (row: Standing) => ReactNode;
-  variant?: PodiumVariant;
 }) {
   if (rows.length === 0) return null;
-  return variant === 'trio' ? (
-    <TrioLayout rows={rows} avatarFor={avatarFor} />
-  ) : (
-    <CardsLayout rows={rows} avatarFor={avatarFor} />
-  );
+  return <CardsLayout rows={rows} avatarFor={avatarFor} />;
 }
