@@ -6,7 +6,6 @@ import { SCORING_RULES } from '@/lib/leaderboard';
 import type { Standing } from '@/lib/remote-leaderboard';
 import {
   BOARD_PAGE_SIZE,
-  PODIUM_PLANTS,
   beyondPodium,
   countsLine,
   friendlyBoardError,
@@ -15,19 +14,18 @@ import {
   ordinal,
   ownDisplay,
   placeNote,
-  podiumOf,
   remainingAfter,
   selfOf,
 } from '@/lib/board-view';
-import { illustration, traitBadge, trophyArt } from '@/lib/pixel-icons';
+import { illustration, traitBadge } from '@/lib/pixel-icons';
 import { DEFAULT_FRAME_ID, getFrame, type FieldFrame } from '@/lib/field-frames';
 import { hasSprite } from '@/lib/plant-sprites';
 import type { GardenStage } from '@/lib/garden';
-import { PlantSprite } from '../PlantSprite';
 import { ProfileAvatar } from '../profile/ProfileAvatar';
 import { pixelObject } from '@/lib/pixel-art';
 import { regionById } from '@/lib/regions';
 import { PixelIcon } from '../herbdex/HerbalVisuals';
+import { Podium } from './Podium';
 
 export type BoardScope = { kind: 'global' } | { kind: 'region'; id: string };
 
@@ -62,24 +60,6 @@ export interface BoardScreenProps {
   onLeave: () => void;
   onRetry: () => void;
 }
-
-const STEP: Record<1 | 2 | 3, { height: string; tone: string; label: string }> = {
-  1: {
-    height: '6.4rem',
-    tone: 'from-gold-300 to-gold-500 text-plum-900',
-    label: 'First place',
-  },
-  2: {
-    height: '5.2rem',
-    tone: 'from-violet-200 to-violet-400 text-plum-900',
-    label: 'Second place',
-  },
-  3: {
-    height: '4.4rem',
-    tone: 'from-pink-accent/80 to-pink-accent text-plum-900',
-    label: 'Third place',
-  },
-};
 
 const nameOf = (row: Standing) => row.displayName ?? 'No name set';
 
@@ -504,7 +484,6 @@ function Standings({
   memberRegion: string | null;
   me?: BoardMe;
 }) {
-  const podium = podiumOf(rows);
   const rest = beyondPodium(rows, shown);
   const left = remainingAfter(rows, shown);
   const note = placeNote(rows, listed, isFull(rows));
@@ -526,50 +505,14 @@ function Standings({
         </p>
       ) : null}
 
-      <ol aria-label="Top three" className="mx-auto flex max-w-sm items-end justify-center gap-2">
-        {podium.map(({ place, row }, index) => (
-          <li
-            key={`${row.standing}-${index}`}
-            className="board-rise flex min-w-0 flex-1 flex-col items-center"
-            style={{ animationDelay: `${index * 110}ms` }}
-          >
-            {/* A real Plantdex sprite stands on each step. Decorative: chosen by place, never a
-                player's own plant. */}
-            <span aria-hidden="true" className="block w-14">
-              <PlantSprite herbId={PODIUM_PLANTS[place]} alt="" fit />
-            </span>
-            <p
-              className={`mt-1 w-full truncate text-center text-sm font-bold ${
-                row.isSelf ? 'holo-border rounded px-1 text-violet-50' : 'text-violet-50'
-              }`}
-              title={nameOf(row)}
-            >
-              {nameOf(row)}
-            </p>
-            {row.regionId && (
-              <p className="text-[0.72rem] leading-tight text-violet-300">
-                {regionById(row.regionId)?.name}
-              </p>
-            )}
-            <p className="mt-0.5 text-sm font-extrabold text-gold-300 tabular-nums">
-              {row.points.toLocaleString()} pts
-            </p>
-            <div
-              className={`mt-1.5 flex w-full flex-col items-center rounded-t-md bg-gradient-to-b pt-1 font-display leading-none font-extrabold shadow-[inset_0_3px_0_rgb(255_255_255/0.5)] ${STEP[place].tone}`}
-              style={{ height: STEP[place].height }}
-            >
-              <span aria-hidden="true">
-                <PixelIcon uri={trophyArt(place)} size={place === 1 ? 40 : 34} />
-              </span>
-              <span className="mt-0.5 text-2xl">
-                <span className="sr-only">{STEP[place].label}, standing </span>
-                {row.standing}
-              </span>
-            </div>
-          </li>
-        ))}
-      </ol>
-      <div aria-hidden="true" className="mx-auto h-1.5 max-w-sm bg-violet-500/60" />
+      <Podium
+        rows={rows}
+        avatarFor={(row) =>
+          (row.isSelf && me?.avatarHerbId) || (!row.isSelf && row.avatarHerbId && hasSprite(row.avatarHerbId)) ? (
+            <RowAvatar row={row} me={me} size="xs" />
+          ) : null
+        }
+      />
 
       {rest.length > 0 && (
         <ol className="mt-3" start={4}>

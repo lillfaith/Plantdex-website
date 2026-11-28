@@ -197,7 +197,7 @@ describe('the screen is calm, honest and mobile-safe', () => {
 
   it('animates once and switches the animation off under reduced motion', () => {
     const css = readFileSync('src/app/globals.css', 'utf8');
-    expect(code).toContain('board-rise');
+    expect(code + readFileSync('src/components/leaderboard/Podium.tsx', 'utf8')).toContain('board-rise');
     expect(css).toMatch(/@utility board-rise \{[\s\S]*?animation: rise-in 420ms ease-out both;/);
     expect(css).toMatch(/prefers-reduced-motion: reduce\) \{\s*\.board-rise \{\s*animation: none;/);
     expect(css).not.toMatch(/board-rise[^}]*infinite/);
