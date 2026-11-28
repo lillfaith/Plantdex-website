@@ -106,7 +106,7 @@ describe('the host', () => {
     expect(CODE).not.toMatch(/setInterval|requestAnimationFrame\(\s*poll/);
     // The blocked check sits before the card is mounted, so its timers and Escape listener
     // (both inside MomentCard) cannot run while a dialog is open.
-    expect(CODE).toMatch(/!current \|\| blocked\) return null/);
+    expect(CODE).toMatch(/!first \|\| blocked\) return null/);
     expect(CODE.indexOf('blocked) return null')).toBeLessThan(CODE.indexOf('<MomentCard key'));
   });
 
@@ -170,7 +170,7 @@ describe('the discovery celebration and the card never say the same level twice'
     expect(CELEBRATION).toMatch(/from '@\/lib\/earned-moments-store'/);
     expect(CELEBRATION).toMatch(/from '@\/lib\/earned-moments'/);
     expect(CELEBRATION).toMatch(/markAnnounced\(/);
-    expect(CELEBRATION).toMatch(/levelUpId\(shownLevel\.level\)/);
-    expect(CELEBRATION).toMatch(/levelUpId\(after\.level\)/);
+    expect(CELEBRATION).toMatch(/levelUpId\(shownLevelNumber\)/);
+    expect(CELEBRATION).toMatch(/levelUpId\(afterLevelNumber\)/);
   });
 });
