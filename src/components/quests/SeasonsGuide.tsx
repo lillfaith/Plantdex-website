@@ -83,8 +83,11 @@ const GLYPH_ROWS: Record<Season, readonly string[]> = {
 const glyphUri = (season: Season) => gridToUri(fromRows(GLYPH_ROWS[season], GLYPH_PALETTE));
 function SeasonGlyph({ season, size }: { season: Season; size: number }) {
   return (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img src={glyphUri(season)} alt="" aria-hidden="true" width={size} height={size} draggable={false} className="shrink-0 [image-rendering:pixelated]" />
+    <span
+      aria-hidden="true"
+      className="inline-block shrink-0 [image-rendering:pixelated]"
+      style={{ width: size, height: size, backgroundImage: glyphUri(season), backgroundSize: '100% 100%', backgroundRepeat: 'no-repeat' }}
+    />
   );
 }
 /** A thin repeating ribbon of the season's glyph along the foot of the header: the identity of the season, as scenery, at 14px tall. */
@@ -93,7 +96,7 @@ function SeasonRibbon({ season }: { season: Season }) {
     <div
       aria-hidden="true"
       className="h-3.5 w-full opacity-90 [image-rendering:pixelated]"
-      style={{ backgroundImage: `url(${glyphUri(season)})`, backgroundRepeat: 'repeat-x', backgroundSize: '14px 14px', backgroundPosition: 'left bottom' }}
+      style={{ backgroundImage: glyphUri(season), backgroundRepeat: 'repeat-x', backgroundSize: '14px 14px', backgroundPosition: 'left bottom' }}
     />
   );
 }
