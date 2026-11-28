@@ -1,13 +1,11 @@
-'use client';
-
-import { useEffect, type RefObject } from 'react';
-
 /**
  * ═══════════════════════════════════════════════════════════════════════════════
  * ONLY THE SPRITES SOMEBODY CAN SEE SHOULD BE MOVING.
  *
- * The Garden animates every discovered plant, which is the point of the page and also, at a
- * full collection, forty-five sheets stepping through frames at once. Most of them are below
+ * Every `PlantSprite` registers here (see its `ref`), so the pausing is no longer a Garden-only
+ * rule: Home, Profile, the species hero and the showcase get it too. The Garden animates every
+ * discovered plant, which is the point of the page and also, at a full collection,
+ * forty-five sheets stepping through frames at once. Most of them are below
  * the fold, and a sprite stepping through a 3,680px background nobody is looking at costs the
  * same as one in view.
  *
@@ -46,6 +44,9 @@ import { useEffect, type RefObject } from 'react';
 /** Every element carrying the sprite animation. Both walks share this class. */
 export const SPRITE_SELECTOR = '.plant-sprite';
 
+/** Set on <html> while the page is in the background; one CSS rule pauses every sprite under it. */
+export const PAGE_HIDDEN_ATTRIBUTE = 'data-page-hidden';
+
 /**
  * Should this sprite be running?
  *
@@ -66,75 +67,72 @@ export function spritePlayState(onscreen: boolean, documentVisible: boolean): 'r
  */
 export const SPRITE_ROOT_MARGIN = '96px';
 
-/**
- * Pause every sprite inside `container` that nobody is looking at.
- *
- * `key` re-runs the effect when the set of tiles changes — the Garden passes its stage
- * signature, so a plant that grows is re-observed rather than left behind with a stale
- * inline style. Without it the observer would watch elements React has already replaced.
+/*
+ * ONE observer and ONE set of listeners for the whole page, created on the first sprite and
+ * shared by every later one. A page of forty-five creatures costs one IntersectionObserver,
+ * not forty-five, and the hidden-tab rule is a single attribute rather than a loop over
+ * sprites. Module state, not React state: nothing here ever causes a render.
  */
-export function usePauseOffscreenSprites(
-  container: RefObject<HTMLElement | null>,
-  key: string,
-): void {
-  useEffect(() => {
-    const root = container.current;
-    if (!root) return;
+let observer: IntersectionObserver | null = null;
+let hiddenWatcherInstalled = false;
 
-    // Server render and very old browsers: leave every sprite running, which is exactly the
-    // behaviour before this hook existed. An optimisation that breaks without it would be a
-    // dependency rather than an optimisation.
-    if (typeof IntersectionObserver === 'undefined') return;
+function syncHiddenAttribute(): void {
+  document.documentElement.toggleAttribute(PAGE_HIDDEN_ATTRIBUTE, document.visibilityState === 'hidden');
+}
 
-    // Not the reduced-motion GUARD — the stylesheet owns that. Skipping here only avoids
-    // writing inline styles that `animation: none !important` would ignore anyway.
-    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;
+/**
+ * The tab going to the background pauses every sprite through `html[data-page-hidden]` (see
+ * globals.css). Pausing freezes position, so coming back continues mid-gesture. `pagehide` /
+ * `pageshow` cover Safari's back-forward cache, which does not always fire `visibilitychange`.
+ */
+function ensureHiddenWatcher(): void {
+  if (hiddenWatcherInstalled) return;
+  hiddenWatcherInstalled = true;
+  syncHiddenAttribute();
+  document.addEventListener('visibilitychange', syncHiddenAttribute);
+  window.addEventListener('pagehide', () => document.documentElement.setAttribute(PAGE_HIDDEN_ATTRIBUTE, ''));
+  window.addEventListener('pageshow', syncHiddenAttribute);
+}
 
-    const sprites = Array.from(root.querySelectorAll<HTMLElement>(SPRITE_SELECTOR));
-    if (sprites.length === 0) return;
+function sharedObserver(): IntersectionObserver {
+  observer ??= new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        (entry.target as HTMLElement).style.animationPlayState = entry.isIntersecting ? 'running' : 'paused';
+      }
+    },
+    { rootMargin: SPRITE_ROOT_MARGIN },
+  );
+  return observer;
+}
 
-    const onscreen = new Set<HTMLElement>();
-    const apply = (sprite: HTMLElement) => {
-      sprite.style.animationPlayState = spritePlayState(onscreen.has(sprite), !document.hidden);
-    };
+/**
+ * A ref callback for an ANIMATING sprite. `PlantSprite` passes it as `ref` unless `frozen`, so a
+ * frozen sprite is never observed. React 19 runs the returned function when the element goes
+ * away, which is what keeps the observer from holding detached nodes.
+ *
+ * Starts paused and lets the observer switch on whatever is in view; it reports every target
+ * on its first run, so nothing visible stays frozen, and nothing offscreen ever runs.
+ */
+export function observeSprite(sprite: HTMLElement | null): (() => void) | void {
+  if (!sprite) return;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          const sprite = entry.target as HTMLElement;
-          if (entry.isIntersecting) onscreen.add(sprite);
-          else onscreen.delete(sprite);
-          apply(sprite);
-        }
-      },
-      { rootMargin: SPRITE_ROOT_MARGIN },
-    );
+  // Server render and very old browsers: leave every sprite running, which is exactly the
+  // behaviour before this existed. An optimisation that breaks without it would be a dependency.
+  if (typeof IntersectionObserver === 'undefined') return;
 
-    /*
-     * Start paused, then let the observer switch on whatever is actually in view — it
-     * delivers an entry for every target on its first run, so nothing visible stays frozen.
-     * Starting the other way round would have all forty-five animating for the frame or two
-     * before that callback, which is the exact cost this hook exists to avoid and the moment
-     * the page can least afford it.
-     */
-    for (const sprite of sprites) {
-      sprite.style.animationPlayState = 'paused';
-      observer.observe(sprite);
-    }
+  // Not the reduced-motion GUARD — the stylesheet owns that. Skipping here only avoids
+  // writing inline styles that `animation: none !important` would ignore anyway.
+  if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;
 
-    // The browser tab going to the background stops everything; coming back restores each
-    // sprite to whatever the observer last said about it, rather than starting them all.
-    const onVisibilityChange = () => {
-      for (const sprite of sprites) apply(sprite);
-    };
-    document.addEventListener('visibilitychange', onVisibilityChange);
+  ensureHiddenWatcher();
+  const watcher = sharedObserver();
+  sprite.style.animationPlayState = 'paused';
+  watcher.observe(sprite);
 
-    return () => {
-      observer.disconnect();
-      document.removeEventListener('visibilitychange', onVisibilityChange);
-      // Leaving the Garden must not leave a paused sprite behind: the same element can be
-      // reused by another route, and an inline style outlives the observer that set it.
-      for (const sprite of sprites) sprite.style.animationPlayState = '';
-    };
-  }, [container, key]);
+  return () => {
+    watcher.unobserve(sprite);
+    // An inline style outlives the observer that set it, and the element may be reused.
+    sprite.style.animationPlayState = '';
+  };
 }

@@ -1,9 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
-import { SPRITE_ROOT_MARGIN, SPRITE_SELECTOR, spritePlayState } from './sprite-visibility';
+import { PAGE_HIDDEN_ATTRIBUTE, SPRITE_ROOT_MARGIN, SPRITE_SELECTOR, spritePlayState } from './sprite-visibility';
 
 const HOOK = readFileSync('src/lib/sprite-visibility.ts', 'utf8');
 const GARDEN = readFileSync('src/components/garden/GardenView.tsx', 'utf8');
+const SPRITE = readFileSync('src/components/PlantSprite.tsx', 'utf8');
 
 function code(source: string): string {
   return source.replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '');
@@ -76,13 +77,15 @@ describe('how the pausing is implemented', () => {
   it('watches the tab as well as the viewport', () => {
     expect(code(HOOK)).toContain('IntersectionObserver');
     expect(code(HOOK)).toContain("'visibilitychange'");
-    expect(code(HOOK)).toContain('document.hidden');
+    expect(code(HOOK)).toContain('visibilityState');
+    expect(code(HOOK)).toContain("'pagehide'");
+    expect(code(HOOK)).toContain("'pageshow'");
+    expect(PAGE_HIDDEN_ATTRIBUTE).toBe('data-page-hidden');
   });
 
   // Leaving the Garden must not strand a paused sprite: the element can be reused elsewhere.
   it('disconnects and clears its inline styles on cleanup', () => {
-    expect(code(HOOK)).toContain('observer.disconnect()');
-    expect(code(HOOK)).toContain("removeEventListener('visibilitychange'");
+    expect(code(HOOK)).toContain('watcher.unobserve(sprite)');
     expect(code(HOOK)).toMatch(/animationPlayState = ''/);
   });
 
@@ -93,7 +96,7 @@ describe('how the pausing is implemented', () => {
    * visible stays frozen.
    */
   it('starts paused and lets the observer switch on what is in view', () => {
-    expect(code(HOOK)).toMatch(/animationPlayState = 'paused';\s*\n\s*observer\.observe/);
+    expect(code(HOOK)).toMatch(/animationPlayState = 'paused';\s*\n\s*watcher\.observe/);
   });
 
   it('starts sprites slightly before they reach the fold', () => {
@@ -121,16 +124,31 @@ describe('how the pausing is implemented', () => {
   });
 });
 
-describe('the garden uses it', () => {
-  it('observes the bed and re-observes when a plant grows', () => {
-    expect(GARDEN).toContain('usePauseOffscreenSprites');
-    expect(code(GARDEN)).toMatch(/usePauseOffscreenSprites\(bed, stageSignature\)/);
-    expect(code(GARDEN)).toMatch(/<ul ref=\{bed\}/);
+describe('every animating sprite uses it', () => {
+  // The Garden used to be the only caller; now the sprite registers itself, wherever it renders.
+  it('registers a non-frozen PlantSprite through its ref, and never a frozen one', () => {
+    expect(code(SPRITE)).toMatch(/ref=\{frozen \? undefined : observeSprite\}/);
+    expect(SPRITE.startsWith("'use client'")).toBe(true);
   });
 
-  // Scoped to the bed so a sprite elsewhere on the page is not paused by the Garden's rules.
-  it('scopes the observer to the bed rather than the document', () => {
-    expect(code(HOOK)).toContain('root.querySelectorAll');
-    expect(code(HOOK)).not.toContain('document.querySelectorAll');
+  it('shares ONE observer and ONE set of page listeners, however many sprites there are', () => {
+    expect(code(HOOK).match(/new IntersectionObserver/g) ?? []).toHaveLength(1);
+    expect(code(HOOK).match(/addEventListener\('visibilitychange'/g) ?? []).toHaveLength(1);
+    expect(code(HOOK)).toContain('observer ??=');
+    expect(code(HOOK)).toContain('hiddenWatcherInstalled');
+  });
+
+  it('leaves sprites running when IntersectionObserver is missing', () => {
+    expect(code(HOOK)).toMatch(/typeof IntersectionObserver === 'undefined'\) return;/);
+  });
+
+  it('pauses a hidden page with one CSS rule on the root attribute', () => {
+    const CSS = readFileSync('src/app/globals.css', 'utf8');
+    expect(CSS).toMatch(/html\[data-page-hidden\] \.plant-sprite \{\s*animation-play-state: paused !important/);
+  });
+
+  it('no longer needs the Garden to opt in', () => {
+    expect(GARDEN).not.toContain('usePauseOffscreenSprites');
+    expect(code(HOOK)).not.toContain('useEffect');
   });
 });

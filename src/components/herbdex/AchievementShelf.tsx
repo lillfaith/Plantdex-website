@@ -19,7 +19,7 @@ import { achievementIcon } from '../icons/achievement-icons';
  *
  * So the collapsed state is a rail rather than a title. It carries EARNED AND UNEARNED
  * TOGETHER, deliberately: a shelf with gaps in it reads as a set you are partway through,
- * where a list of locked pills reads as a list of failures. Movement is what lets a strip
+ * where a list of locked pills reads as a list of failures. Scrolling is what lets a strip
  * narrower than the content still show all of it.
  *
  * COLOUR SAYS WHICH, GOLD SAYS WHETHER. Each achievement wears one of seven shades from the
@@ -28,10 +28,12 @@ import { achievementIcon } from '../icons/achievement-icons';
  * other, and nothing has to shout to be told apart.
  * ─────────────────────────────────────────────────────────────────────────────
  *
- * ACCESSIBILITY. The rail holds the same children twice so the loop can be seamless; the
- * second copy is `aria-hidden`, or every achievement would be announced twice. The rail
- * pauses on hover and on keyboard focus, freezes entirely under `prefers-reduced-motion`,
- * and the expanded list below is the complete, static, ordered set either way.
+ * IT DOES NOT MOVE. It was a 60-second marquee that held every pill twice; ambient motion on
+ * the page a player lands on, with a duplicate to hide from screen readers. It is now a
+ * stationary row the player scrolls themselves (`overflow-x-auto`, scroll snap), reachable by
+ * keyboard (`tabIndex=0`, arrow keys scroll it). One copy of each pill, so nothing is announced
+ * twice and nothing needs `aria-hidden`. The expanded list below is the complete, static,
+ * ordered set either way.
  */
 export function AchievementShelf({
   unlocked,
@@ -93,17 +95,17 @@ export function AchievementShelf({
           Tapping it toggles the section, which is the behaviour you want anyway: the rail
           is the affordance.
         */}
-        <div className="rail-mask mt-2 overflow-hidden group-open:hidden">
-          <div className="achievement-rail flex w-max gap-2">
-            {[0, 1].map((copy) => (
-              <ul key={copy} aria-hidden={copy === 1} className="flex shrink-0 gap-2">
-                {ACHIEVEMENTS.map((achievement) => (
-                  <li key={achievement.id}>{pill(achievement, isUnlocked(achievement.id))}</li>
-                ))}
-              </ul>
-            ))}
-          </div>
-        </div>
+        <ul
+          tabIndex={0}
+          aria-label="Achievements, scroll sideways to see them all"
+          className="rail-mask mt-2 flex snap-x snap-proximity gap-2 overflow-x-auto pb-1 group-open:hidden"
+        >
+          {ACHIEVEMENTS.map((achievement) => (
+            <li key={achievement.id} className="shrink-0 snap-start">
+              {pill(achievement, isUnlocked(achievement.id))}
+            </li>
+          ))}
+        </ul>
       </summary>
 
       <ul className="mt-2 hidden flex-wrap gap-2 group-open:flex">
