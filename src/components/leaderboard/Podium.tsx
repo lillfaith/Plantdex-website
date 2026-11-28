@@ -67,12 +67,12 @@ function PointsPlate({ points }: { points: number }) {
 function RankPlate({ row, place }: { row: Standing; place: Place }) {
   return (
     <span
-      className={`flex w-11 shrink-0 flex-col items-center justify-center rounded-lg border-2 py-1 leading-none text-[#38204f] ${TONE[place].plate}`}
+      className={`flex w-10 shrink-0 flex-col items-center justify-center rounded-lg border-2 py-0.5 leading-none text-[#38204f] ${TONE[place].plate}`}
     >
       <span aria-hidden="true">
-        <PixelIcon uri={trophyArt(place)} size={place === 1 ? 26 : 22} />
+        <PixelIcon uri={trophyArt(place)} size={place === 1 ? 22 : 20} />
       </span>
-      <span className="font-display mt-0.5 text-base font-extrabold">
+      <span className="font-display text-[0.9375rem] font-extrabold">
         <span className="sr-only">{TONE[place].label}, standing </span>
         {ordinal(row.standing)}
       </span>
@@ -103,7 +103,7 @@ function Art({ row, place, size, avatarFor }: { row: Standing; place: Place; siz
 
 function CardsLayout({ rows, avatarFor }: { rows: readonly Standing[]; avatarFor: (row: Standing) => ReactNode }) {
   return (
-    <ol aria-label="Top three" className="mx-auto flex max-w-sm flex-col gap-2.5">
+    <ol aria-label="Top three" className="mx-auto flex max-w-sm flex-col gap-2">
       {rows.slice(0, 3).map((row, index) => {
         const place = placeOf(row);
         const lead = place === 1;
@@ -111,11 +111,11 @@ function CardsLayout({ rows, avatarFor }: { rows: readonly Standing[]; avatarFor
         return (
           <li
             key={`${row.standing}-${index}`}
-            className={`board-rise flex min-w-0 items-center gap-2.5 rounded-xl border-2 px-2.5 ${lead ? 'py-2.5' : 'py-2'} ${TONE[place].card}`}
+            className={`board-rise flex min-w-0 items-center gap-2 rounded-xl border-2 px-2.5 ${lead ? 'py-2' : 'py-1.5'} ${TONE[place].card}`}
             style={{ animationDelay: `${index * 90}ms` }}
           >
             <RankPlate row={row} place={place} />
-            <Art row={row} place={place} size={lead ? 44 : 38} avatarFor={avatarFor} />
+            <Art row={row} place={place} size={lead ? 40 : 34} avatarFor={avatarFor} />
             <span className="min-w-0 flex-1">
               <span
                 className={`block truncate text-sm font-extrabold text-[#38204f] ${row.isSelf ? 'underline decoration-[var(--card-gold-500)] decoration-2 underline-offset-2' : ''}`}
