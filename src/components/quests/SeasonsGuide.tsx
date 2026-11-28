@@ -7,9 +7,8 @@ import { printedCardsInDeckOrder, SEASON_LABEL } from '@/lib/deck';
 import { assetPath } from '@/lib/asset-path';
 import { SEASONS, type Season } from '@/lib/types';
 import { useHerbdex } from '@/state/HerbdexProvider';
-import { PlantdexIcon, type IconName } from '@/components/icons/PlantdexIcon';
-
-const SEASON_ICON: Record<Season, IconName> = { spring: 'spring', summer: 'summer', autumn: 'autumn', winter: 'winter' };
+import { PlantdexIcon } from '@/components/icons/PlantdexIcon';
+import { fromRows, gridToUri } from '@/lib/pixel-art';
 
 /**
  * Season identity is a SMALL accent on the one visible panel, never four competing saturated panels: a tint for the
@@ -22,6 +21,82 @@ const ACCENT: Record<Season, { rail: string; tint: string }> = {
   autumn: { rail: 'var(--card-orchid-500)', tint: 'var(--card-orchid-100)' },
   winter: { rail: 'var(--card-turq-500)', tint: 'var(--card-turq-100)' },
 };
+
+
+/**
+ * A small pixel glyph per season, drawn the way the rest of the app draws its pixel art (a character grid turned into a data URI, shown with
+ * `image-rendering: pixelated`). Spring flowers, summer sunlight, autumn leaves, winter frost. The colours are the app's existing pixel palette
+ * (plum outline, leaf greens, gold, blossom pink, orange leaf, ice blue); nothing here is a new colour family and no plant artwork is touched.
+ */
+const GLYPH_PALETTE: Record<string, string> = {
+  k: '#3b1d63', g: '#6fcf7e', G: '#3f9a55', y: '#ffd45c', Y: '#e0a030', p: '#f2a7cf', P: '#cc6df3', o: '#d98b2b', O: '#b8651b', c: '#9be0ff', C: '#5fb8e6', w: '#ffffff',
+};
+const GLYPH_ROWS: Record<Season, readonly string[]> = {
+  spring: [
+    '   kk     ',
+    '  kppk    ',
+    ' kpyypk   ',
+    ' kpyypk   ',
+    '  kppk    ',
+    '   kGk    ',
+    '  kGGk kk ',
+    ' kgGGkkpPk',
+    '   kGk kPk',
+    '   kGk  k ',
+  ],
+  summer: [
+    '    k  k    ',
+    '  k  kk  k  ',
+    '   kkkkkk   ',
+    ' k kyyyyk k ',
+    '  kkyYYykk  ',
+    '  kkyYYykk  ',
+    ' k kyyyyk k ',
+    '   kkkkkk   ',
+    '  k  kk  k  ',
+    '    k  k    ',
+  ],
+  autumn: [
+    '     kk   ',
+    '    koOk  ',
+    '   koooOk ',
+    '  koooooOk',
+    ' kooooooOk',
+    ' kooooOOk ',
+    '  koOOOk  ',
+    '   kOOk   ',
+    '    kk    ',
+    '    k     ',
+  ],
+  winter: [
+    '    kk    ',
+    '  k kc k  ',
+    '   kcck   ',
+    ' kkcccckk ',
+    '  kcwwck  ',
+    ' kkcccckk ',
+    '   kcck   ',
+    '  k kc k  ',
+    '    kk    ',
+  ],
+};
+const glyphUri = (season: Season) => gridToUri(fromRows(GLYPH_ROWS[season], GLYPH_PALETTE));
+function SeasonGlyph({ season, size }: { season: Season; size: number }) {
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img src={glyphUri(season)} alt="" aria-hidden="true" width={size} height={size} draggable={false} className="shrink-0 [image-rendering:pixelated]" />
+  );
+}
+/** A thin repeating ribbon of the season's glyph along the foot of the header: the identity of the season, as scenery, at 14px tall. */
+function SeasonRibbon({ season }: { season: Season }) {
+  return (
+    <div
+      aria-hidden="true"
+      className="h-3.5 w-full opacity-90 [image-rendering:pixelated]"
+      style={{ backgroundImage: `url(${glyphUri(season)})`, backgroundRepeat: 'repeat-x', backgroundSize: '14px 14px', backgroundPosition: 'left bottom' }}
+    />
+  );
+}
 
 /**
  * THE SEASONAL GUIDE, CONNECTED TO THE PLAYER'S COLLECTION.
@@ -88,9 +163,9 @@ export function SeasonsGuide() {
                 selected ? 'bg-[var(--card-violet-500)] text-white shadow-[0_3px_0_0_var(--card-violet-900)]' : 'text-violet-100 hover:bg-[var(--card-violet-100)]'
               }`}
             >
-              <PlantdexIcon name={SEASON_ICON[season]} className="text-lg" />
+              <SeasonGlyph season={season} size={22} />
               <span>{SEASON_LABEL[season]}</span>
-              <span className={`text-[0.72rem] font-bold tabular-nums ${selected ? 'text-white' : 'text-violet-300'}`}>
+              <span className={`text-xs font-bold tabular-nums ${selected ? 'text-white' : 'text-violet-300'}`}>
                 {ready ? `${c.collected}/${c.total}` : `${c.total}`}
               </span>
             </button>
@@ -108,7 +183,7 @@ export function SeasonsGuide() {
         <div className="px-4 pt-3 pb-3" style={{ background: `linear-gradient(180deg, ${accent.tint}, transparent)` }}>
           <div className="flex items-baseline justify-between gap-2">
             <h2 className="font-display flex items-center gap-2 text-xl font-extrabold text-violet-100">
-              <PlantdexIcon name={SEASON_ICON[active]} className="text-xl" />
+              <SeasonGlyph season={active} size={28} />
               {SEASON_LABEL[active]}
             </h2>
             <p className="text-sm font-bold text-violet-100 tabular-nums">
@@ -141,6 +216,7 @@ export function SeasonsGuide() {
                   : `${total - collected} left to find. Open a card for how to recognise it.`}
           </p>
         </div>
+        <SeasonRibbon season={active} />
 
         {list.length === 0 ? (
           <p className="px-4 pb-4 text-sm text-violet-300">No cards in the deck are marked for this season.</p>
@@ -175,7 +251,7 @@ export function SeasonsGuide() {
                     <span className="flex shrink-0 flex-col items-end gap-1">
                       <span className="text-[0.8125rem] font-bold text-violet-300 tabular-nums">#{String(herb.cardNumber).padStart(2, '0')}</span>
                       <span
-                        className={`pd-badge !min-h-0 !px-2 !py-0.5 !text-[0.72rem] ${
+                        className={`pd-badge !min-h-0 !px-2 !py-0.5 !text-xs ${
                           have ? '!border-[var(--card-leaf-700)] !bg-[var(--card-leaf-100)]' : '!border-[var(--card-violet-300)] !bg-white'
                         }`}
                       >
