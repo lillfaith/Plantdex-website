@@ -368,14 +368,13 @@ function Membership(props: BoardScreenProps & { listed: boolean }) {
           ))}
         </div>
       )}
-      <p className="mt-1.5 text-xs leading-snug text-violet-300">
+      <p className="mt-1.5 text-[0.8125rem] leading-snug text-violet-300">
         {listed ? 'Shared with signed-in players: ' : 'Joining shares '}your display name, region
-        and counts. Nothing else.{' '}
-        <Link href="/profile" className="underline underline-offset-2 hover:text-violet-100">
-          Set your name
-        </Link>
-        .
+        and counts. Nothing else.
       </p>
+      <Link href="/profile" className="mt-1 inline-flex min-h-11 items-center text-sm font-extrabold text-violet-100 underline underline-offset-2">
+        Set your name
+      </Link>
     </section>
   );
 }
