@@ -9,6 +9,7 @@ import { SiteFooter } from '@/components/SiteFooter';
 import { PlausibleScript } from '@/components/analytics/PlausibleScript';
 import { AccountBadge } from '@/components/auth/AccountBadge';
 import { AppWalkthrough } from '@/components/start/AppWalkthrough';
+import { EarnedMomentMount } from '@/state/EarnedMomentMount';
 import { BoardTrophyLink } from '@/components/leaderboard/BoardTrophyLink';
 import './globals.css';
 
@@ -83,6 +84,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <WelcomeIntro />
             {/* The guided walkthrough that follows the intro. Renders nothing until asked. */}
             <AppWalkthrough />
+            <EarnedMomentMount />
             {/*
               THE FIXED NAV'S CLEARANCE COMES FROM THE FOOTER, not from here.
 
