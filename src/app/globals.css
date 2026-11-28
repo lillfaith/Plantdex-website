@@ -3970,7 +3970,7 @@ body:has([data-ground='lavender']) [data-page-theme='garden'] {
   color: #5b3a8a;
 }
 [data-ground='lavender'] [class*='text-rarity-common'] {
-  color: #2f5f8f;
+  color: #244a73;
 }
 [data-ground='lavender'] [class*='text-rarity-uncommon'] {
   color: #8a5300;
