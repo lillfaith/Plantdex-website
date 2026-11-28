@@ -79,7 +79,7 @@ export default function HomePage() {
           far end rather than stopping, so the line reads as light catching an edge instead
           of as a border somebody drew. `aria-hidden` on both: the sentence is the content.
         */}
-        <p className="home-eyebrow flex items-center justify-center gap-3 max-[379px]:pt-10 text-xs font-bold tracking-[0.25em] text-violet-300 uppercase">
+        <p className="home-eyebrow flex items-center justify-center gap-3 max-sm:pt-10 text-xs font-bold tracking-[0.25em] text-violet-300 uppercase">
           <span
             aria-hidden="true"
             className="hidden h-px w-16 bg-gradient-to-r from-transparent to-gold-500/50 sm:block"
