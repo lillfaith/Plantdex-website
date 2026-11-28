@@ -34,17 +34,17 @@ type Place = 1 | 2 | 3;
 
 const TONE: Record<Place, { card: string; plate: string; label: string }> = {
   1: {
-    card: 'border-[var(--card-gold-500)] bg-gradient-to-b from-white to-[var(--card-gold-100)] shadow-[inset_0_2px_0_#fff,0_3px_0_0_var(--card-gold-700)]',
+    card: 'border-[var(--card-gold-500)] bg-[var(--card-gold-100)] shadow-[inset_0_2px_0_#fff,0_3px_0_0_var(--card-gold-700)]',
     plate: 'bg-[var(--card-gold-300)] border-[var(--card-gold-700)]',
     label: 'First place',
   },
   2: {
-    card: 'border-[var(--card-violet-300)] bg-gradient-to-b from-white to-[var(--card-violet-50)] shadow-[inset_0_2px_0_#fff,0_3px_0_0_var(--card-violet-700)]',
+    card: 'border-[var(--card-violet-300)] bg-[var(--card-violet-50)] shadow-[inset_0_2px_0_#fff,0_3px_0_0_var(--card-violet-700)]',
     plate: 'bg-[var(--card-violet-100)] border-[var(--card-violet-500)]',
     label: 'Second place',
   },
   3: {
-    card: 'border-[var(--card-pink-500)] bg-gradient-to-b from-white to-[var(--card-pink-300)] shadow-[inset_0_2px_0_#fff,0_3px_0_0_var(--card-pink-700)]',
+    card: 'border-[var(--card-pink-500)] bg-[var(--card-pink-300)] shadow-[inset_0_2px_0_#fff,0_3px_0_0_var(--card-pink-700)]',
     plate: 'bg-[var(--card-pink-300)] border-[var(--card-pink-700)]',
     label: 'Third place',
   },
@@ -93,7 +93,7 @@ function Art({ row, place, size, avatarFor }: { row: Standing; place: Place; siz
   return (
     <span
       aria-hidden="true"
-      className="pd-tile flex shrink-0 items-center justify-center !rounded-lg !p-0.5"
+      className="pd-tile flex shrink-0 items-center justify-center !rounded-lg !bg-white !p-0.5"
       style={{ width: size, height: size }}
     >
       {avatar ?? <PlantSprite herbId={PODIUM_PLANTS[place]} alt="" fit />}
