@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { PageAtmosphere } from '@/components/PageAtmosphere';
 import { FieldBoardView } from '@/components/leaderboard/FieldBoardView';
 
 export const metadata: Metadata = {
@@ -8,5 +9,11 @@ export const metadata: Metadata = {
 };
 
 export default function LeaderboardPage() {
-  return <FieldBoardView />;
+  // The page background is a fixed atmosphere layer; the screen itself (in the board component) carries the lavender ground attributes.
+  return (
+    <>
+      <PageAtmosphere theme="collection" />
+      <FieldBoardView />
+    </>
+  );
 }
