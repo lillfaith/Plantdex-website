@@ -9,6 +9,7 @@ import {
 } from '@/lib/scan-capture-camera';
 import { ANONYMOUS_CAPTURE_SCOPE, type CaptureState } from '@/lib/scan-capture';
 import { captureStateCopy } from '@/lib/scan-capture-copy';
+import { SHUTTER_MS, shutterPlan } from '@/lib/scan-shutter';
 
 /**
  * TEST/SANDBOX PREVIEW of live in-app capture, for ONE photo slot at a time. Functional markup
@@ -24,12 +25,15 @@ export function CameraCapturePanel({
   onCaptured,
   onUseLibrary,
   onCancel,
+  onShutterDone,
 }: {
   slotLabel: string;
   scope: string | null;
   onCaptured: (file: File) => void;
   onUseLibrary: () => void;
   onCancel: () => void;
+  /** Called once the shutter response has finished, so the parent may close this panel. The photo was handed over earlier. */
+  onShutterDone?: () => void;
 }) {
   /*
    * Built and probed once, in a lazy initialiser: this panel only mounts after a tap, so `window`
@@ -46,6 +50,31 @@ export function CameraCapturePanel({
   const cameraRef = useRef<CameraCapture>(camera);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [state, setState] = useState<CaptureState>(camera.state);
+  const [shutter, setShutter] = useState<{ flash: boolean; brackets: boolean } | null>(null);
+  const shutterTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const shutterActive = useRef(false);
+  useEffect(
+    () => () => {
+      if (shutterTimer.current) clearTimeout(shutterTimer.current);
+    },
+    [],
+  );
+
+  /*
+   * THE SHUTTER RESPONSE. Called only with a frame that was really taken, AFTER the photograph
+   * has been handed on, so it can neither delay nor block capture. A second call while one is
+   * showing is ignored. The reduced-motion query is read here, in a handler, never in render.
+   */
+  const fireShutter = () => {
+    if (shutterActive.current) return;
+    shutterActive.current = true;
+    setShutter(shutterPlan(typeof window === 'undefined' ? null : window.matchMedia?.bind(window)));
+    shutterTimer.current = setTimeout(() => {
+      shutterActive.current = false;
+      setShutter(null);
+      onShutterDone?.();
+    }, SHUTTER_MS);
+  };
 
   useEffect(() => {
     const hide = () => {
@@ -93,6 +122,7 @@ export function CameraCapturePanel({
         type: frame.image.contentType,
       }),
     );
+    fireShutter();
   };
 
   const copy = captureStateCopy(state);
@@ -101,8 +131,14 @@ export function CameraCapturePanel({
     <section
       aria-label={`Camera: ${slotLabel}`}
       data-ui-placeholder="camera-capture"
-      className="panel space-y-3 p-4"
+      className="panel relative space-y-3 overflow-hidden p-4"
     >
+      {shutter && (
+        <>
+          {shutter.flash && <span aria-hidden="true" className="shutter-flash pointer-events-none absolute inset-0 z-10" />}
+          {shutter.brackets && <span aria-hidden="true" className="shutter-brackets pointer-events-none absolute inset-[6%] z-10" />}
+        </>
+      )}
       <p className="text-sm font-bold text-violet-100">Camera &middot; {slotLabel}</p>
       {(state === 'granted' || state === 'capturing') && (
         <video
@@ -117,6 +153,7 @@ export function CameraCapturePanel({
       <p role="status" aria-live="polite" className="text-sm leading-relaxed text-violet-200">
         {copy.message}
       </p>
+      {!shutter && (
       <div className="flex flex-col gap-2 sm:flex-row">
         {state === 'granted' && (
           <button
@@ -151,6 +188,7 @@ export function CameraCapturePanel({
           Cancel
         </button>
       </div>
+      )}
       <p className="text-xs leading-relaxed text-violet-300">
         A library photo can identify a plant but is not eligible to collect a new card.
       </p>

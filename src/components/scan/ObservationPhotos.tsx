@@ -329,9 +329,11 @@ export function ObservationPhotos({
               slotLabel={slot.label}
               scope={scope}
               onCaptured={(file) => {
+                // The photograph is handed on NOW; the panel stays mounted only for the
+                // shutter response and then reports `onShutterDone`.
                 put(slot, file, 'camera');
-                setCapturingSlot(null);
               }}
+              onShutterDone={() => setCapturingSlot(null)}
               onUseLibrary={() => {
                 setCapturingSlot(null);
                 inputs.current[slot.key]?.click();
