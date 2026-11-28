@@ -77,6 +77,19 @@ interface Held {
 /** Cheap identity, at pick time. Catches the real case: the same file chosen twice. */
 const fingerprint = (file: File): string => `${file.name}:${file.size}:${file.lastModified}`;
 
+/** A recognisable camera, drawn as a chunky pixel-ish glyph so it reads as an action before any label is read. */
+function CameraGlyph({ large }: { large: boolean }) {
+  const size = large ? 56 : 32;
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true" className="photo-glyph" shapeRendering="crispEdges">
+      <path d="M8 5h8l1.5 2H21v12H3V7h3.5L8 5Z" fill="currentColor" opacity="0.14" />
+      <path d="M8 5h8l1.5 2H21v12H3V7h3.5L8 5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
+      <circle cx="12" cy="13" r="3.6" stroke="currentColor" strokeWidth="1.8" />
+      <rect x="17.5" y="9" width="1.8" height="1.8" fill="currentColor" />
+    </svg>
+  );
+}
+
 export function ObservationPhotos({
   onChange,
   disabled = false,
@@ -175,6 +188,11 @@ export function ObservationPhotos({
    */
   const isRequired = (slot: (typeof SLOTS)[number]): boolean => (slot.key === 'close' ? closeRequired : slot.required);
 
+  /* What the player is TOLD about each slot. With the live camera and nothing held yet, one camera photo is all that is needed, so the supporting
+     angles read as optional; the floor itself (`minPhotosFor`) is untouched and still decides when the button enables. */
+  const readsOptional = (slot: (typeof SLOTS)[number]): boolean =>
+    !isRequired(slot) || (cameraOn && count === 0 && slot.key !== SLOTS[0]!.key);
+
   const firstEmpty = SLOTS.find((slot) => !held[slot.key]);
 
   return (
@@ -207,12 +225,12 @@ export function ObservationPhotos({
         )}
       </p>
 
-      <ol className="grid grid-cols-3 gap-3">
+      <ol className="grid grid-cols-2 gap-3">
         {SLOTS.map((slot, index) => {
           const one = held[slot.key];
           const active = !one && firstEmpty?.key === slot.key;
           return (
-            <li key={slot.key} className="flex flex-col items-center">
+            <li key={slot.key} className={`flex flex-col items-center ${index === 0 ? 'col-span-2' : ''}`}>
               <div className="relative w-full">
                 <button
                   type="button"
@@ -223,23 +241,26 @@ export function ObservationPhotos({
                     onCameraOpen?.();
                   }}
                   aria-label={`${one ? 'Replace' : 'Add'} photo: ${slot.label}. ${slot.instruction}`}
-                  className={`relative block aspect-square w-full overflow-hidden rounded-2xl border-2 bg-plum-800/60 transition-colors disabled:opacity-60 ${
-                    one
-                      ? 'border-gold-400'
-                      : active
-                        ? 'holo-border'
-                        : 'border-violet-500/50'
-                  }`}
+                  data-slot-role={index === 0 ? 'primary' : 'optional'}
+                  data-held={one ? 'true' : 'false'}
+                  className={`photo-slot relative block w-full overflow-hidden transition-colors disabled:opacity-60 ${
+                    index === 0 ? 'min-h-[9.5rem] sm:min-h-[11rem]' : 'aspect-[4/3]'
+                  } ${active ? 'photo-slot-next' : ''}`}
                 >
                   {one ? (
                     // eslint-disable-next-line @next/next/no-img-element
-                    <img src={one.url} alt="" className="h-full w-full object-cover" />
+                    <img src={one.url} alt="" className={`w-full object-cover ${index === 0 ? "h-[9.5rem] sm:h-[11rem]" : "h-full"}`} />
                   ) : (
-                    <span
-                      aria-hidden="true"
-                      className="flex h-full w-full items-center justify-center text-4xl font-light text-violet-200"
-                    >
-                      +
+                    <span aria-hidden="true" className="photo-slot-empty flex h-full w-full flex-col items-center justify-center gap-1.5 px-3 text-center">
+                      <CameraGlyph large={index === 0} />
+                      {index === 0 ? (
+                        <>
+                          <span className="text-base font-extrabold">{cameraOn ? 'Take a photo' : 'Add a photo'}</span>
+                          <span className="text-xs font-semibold">{slot.instruction}</span>
+                        </>
+                      ) : (
+                        <span className="text-xs font-bold">Add photo</span>
+                      )}
                     </span>
                   )}
                 </button>
@@ -260,7 +281,7 @@ export function ObservationPhotos({
                   </button>
                 )}
               </div>
-              <p className="mt-2 flex items-center gap-1.5 text-center text-xs leading-tight font-semibold text-violet-100">
+              <p className="mt-2 flex items-center gap-1.5 text-center text-xs leading-tight font-bold text-violet-100">
                 <span
                   aria-hidden="true"
                   className={`inline-block h-2.5 w-2.5 shrink-0 border-2 ${
@@ -269,8 +290,8 @@ export function ObservationPhotos({
                 />
                 {slot.label}
               </p>
-              {!isRequired(slot) && (
-                <p className="text-[0.72rem] leading-tight text-violet-300">(optional)</p>
+              {readsOptional(slot) && (
+                <p className="pd-badge mt-1 !min-h-0 !px-2 !py-0.5 !text-[0.72rem]">optional</p>
               )}
               <input
                 ref={(node) => {
@@ -291,7 +312,7 @@ export function ObservationPhotos({
                 }}
               />
               <span className="sr-only">
-                {index + 1}. {isRequired(slot) ? 'Required' : 'Optional'}. {slot.instruction}
+                {index + 1}. {readsOptional(slot) ? 'Optional' : 'Required'}. {slot.instruction}
               </span>
             </li>
           );
