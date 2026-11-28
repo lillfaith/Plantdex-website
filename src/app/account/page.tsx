@@ -128,7 +128,7 @@ export default function AccountPage() {
           <section className="pd-panel overflow-hidden" aria-label="Your passport">
             {/* A passport's cover strip: deep violet with gold lettering (the one dark emphasis on the page). It is a label, not a status. */}
             <div className="flex items-center justify-between bg-[var(--card-violet-900)] px-4 py-1.5 shadow-[inset_0_-3px_0_0_var(--card-gold-700)]">
-              <p className="text-xs font-extrabold tracking-[0.18em] text-[var(--card-gold-300)] uppercase">PlantDex · Player passport</p>
+              <p className="text-xs leading-tight font-extrabold tracking-[0.14em] text-[var(--card-gold-300)] uppercase">PlantDex · Player passport</p>
               <span aria-hidden="true" className="text-sm text-[var(--card-gold-500)]">
                 &#9670;
               </span>
@@ -144,14 +144,14 @@ export default function AccountPage() {
                   </span>
                 )}
               </div>
-              <dl className="min-w-0 flex-1 space-y-1.5">
+              <dl className="min-w-0 flex-1 space-y-1.5 [overflow-wrap:anywhere]">
                 <div>
                   <dt className="text-xs font-extrabold tracking-[0.12em] text-violet-300 uppercase">Name</dt>
-                  <dd className="font-display truncate text-xl leading-tight font-extrabold text-violet-100">{passport.name || 'Field naturalist'}</dd>
+                  <dd className="font-display text-xl leading-tight font-extrabold break-words text-violet-100">{passport.name || 'Field naturalist'}</dd>
                 </div>
                 <div>
                   <dt className="text-xs font-extrabold tracking-[0.12em] text-violet-300 uppercase">Title</dt>
-                  <dd className="truncate text-sm font-bold text-violet-100">{passport.title}</dd>
+                  <dd className="text-sm font-bold break-words text-violet-100">{passport.title}</dd>
                 </div>
               </dl>
             </div>
@@ -159,7 +159,7 @@ export default function AccountPage() {
               <div className="pd-tile px-2 py-2 text-center" data-tone="gold">
                 <p className="text-xs font-extrabold tracking-[0.1em] text-violet-100 uppercase">Level</p>
                 <p className="font-display text-2xl leading-none font-extrabold text-violet-100">{passport.level}</p>
-                {passport.levelName !== passport.title && <p className="mt-0.5 truncate text-[0.8125rem] font-bold text-violet-300">{passport.levelName}</p>}
+                {passport.levelName !== passport.title && <p className="mt-0.5 text-[0.8125rem] leading-tight font-bold break-words text-violet-300">{passport.levelName}</p>}
               </div>
               <div className="pd-tile px-2 py-2 text-center" data-tone="leaf">
                 <p className="text-xs font-extrabold tracking-[0.1em] text-violet-100 uppercase">Cards</p>
@@ -181,7 +181,7 @@ export default function AccountPage() {
             </div>
             {/* The machine-readable zone of a real passport, here just the account line: perforated rule above, signed-in email below. */}
             <div className="border-t-4 border-dotted border-[var(--card-violet-300)] px-4 py-2">
-              <p className="truncate text-[0.8125rem] font-bold tracking-wide text-violet-300">{user.email}</p>
+              <p className="text-[0.8125rem] font-bold tracking-wide break-all text-violet-300">{user.email}</p>
             </div>
           </section>
           <Row href="/profile" title="Your profile" note="Edit your avatar and name, see your record, download your data, sign out or delete your account." />
