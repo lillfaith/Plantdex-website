@@ -9,7 +9,7 @@ import { SiteFooter } from '@/components/SiteFooter';
 import { PlausibleScript } from '@/components/analytics/PlausibleScript';
 import { AccountBadge } from '@/components/auth/AccountBadge';
 import { AppWalkthrough } from '@/components/start/AppWalkthrough';
-import { EarnedMomentMount } from '@/components/game/EarnedMomentMount';
+import { EarnedMomentMount } from '@/components/ui/EarnedMomentMount';
 import { BoardTrophyLink } from '@/components/leaderboard/BoardTrophyLink';
 import './globals.css';
 

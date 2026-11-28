@@ -1,7 +1,7 @@
 'use client';
 
 import type { EarnedMoment } from '@/lib/earned-moments';
-import { useEffect, useRef, useState, type CSSProperties } from 'react';
+import { useEffect, useRef, useState, useSyncExternalStore, type CSSProperties } from 'react';
 import { CountUp } from '@/components/herbdex/CountUp';
 import { PlantSprite } from '@/components/PlantSprite';
 import { getPrintedCard } from '@/lib/deck';
@@ -88,6 +88,29 @@ function Burst() {
     </span>
   );
 }
+
+/**
+ * Is a modal `<dialog>` open anywhere? A modal sits in the top layer, so a card shown under it
+ * is invisible while its clock runs. The host therefore does not mount the card (no motion, no
+ * auto-dismiss, no Escape handler, no acknowledgement) until the last one closes. Event driven:
+ * one MutationObserver on the `open` attribute and on dialogs entering or leaving the tree,
+ * plus a capturing `close` listener. No polling.
+ */
+function subscribeDialogs(notify: () => void): () => void {
+  const observer = new MutationObserver(notify);
+  observer.observe(document.documentElement, {
+    subtree: true,
+    childList: true,
+    attributes: true,
+    attributeFilter: ['open'],
+  });
+  document.addEventListener('close', notify, true);
+  return () => {
+    observer.disconnect();
+    document.removeEventListener('close', notify, true);
+  };
+}
+const dialogOpen = () => document.querySelector('dialog[open]') !== null;
 
 function MomentCard({
   moment,
@@ -218,6 +241,7 @@ export function EarnedMomentHost({
   onAcknowledge: (id: string) => void;
 }) {
   const current = moments[0];
+  const blocked = useSyncExternalStore(subscribeDialogs, dialogOpen, () => false);
   // Latest list for the dismiss handler without re-arming the card's timers on each change.
   const latest = useRef(moments);
   useEffect(() => {
@@ -231,7 +255,8 @@ export function EarnedMomentHost({
   }, [onAcknowledge]);
   const [dismiss] = useState(() => () => acknowledgeAll.current());
 
-  if (!current) return null;
+  // Moments stay queued in the provider; they simply wait for the dialog to close.
+  if (!current || blocked) return null;
 
   const more = moments.slice(1).map((moment) => describeMoment(moment).short);
 

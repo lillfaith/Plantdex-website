@@ -7,7 +7,7 @@ import {
   EarnedMomentHost,
   describeMoment,
   type EarnedMoment,
-} from '@/components/game/EarnedMomentHost';
+} from '@/components/ui/EarnedMomentHost';
 import { getPrintedCard, PRINTED_CARDS } from '@/lib/deck';
 import { MASTERY_STAGE_LABEL } from '@/lib/mastery';
 import { LEVELS } from '@/lib/progression';
@@ -18,7 +18,7 @@ const CSS_RAW = readFileSync('src/app/globals.css', 'utf8');
 const START = CSS_RAW.indexOf('EARNED MOMENTS AND CAMERA FEEDBACK');
 const END = CSS_RAW.indexOf('BOSS FORM CHALLENGES: every motion');
 const BLOCK = strip(CSS_RAW.slice(START, END));
-const SOURCE = readFileSync('src/components/game/EarnedMomentHost.tsx', 'utf8');
+const SOURCE = readFileSync('src/components/ui/EarnedMomentHost.tsx', 'utf8');
 const CODE = strip(SOURCE);
 
 const herb = PRINTED_CARDS[0]!;
@@ -74,6 +74,18 @@ describe('the host', () => {
       if (level.minXp > 0) expect(CODE).not.toMatch(new RegExp(`\\b${level.minXp}\\b`));
     }
     expect(CODE).not.toMatch(/Math\.random/);
+  });
+
+  it('waits for any open modal dialog, event driven, with no polling', () => {
+    expect(CODE).toMatch(/dialog\[open\]/);
+    expect(CODE).toMatch(/MutationObserver/);
+    expect(CODE).toMatch(/attributeFilter:\s*\['open'\]/);
+    expect(CODE).toMatch(/addEventListener\('close'/);
+    expect(CODE).not.toMatch(/setInterval|requestAnimationFrame\(\s*poll/);
+    // The blocked check sits before the card is mounted, so its timers and Escape listener
+    // (both inside MomentCard) cannot run while a dialog is open.
+    expect(CODE).toMatch(/!current \|\| blocked\) return null/);
+    expect(CODE.indexOf('blocked) return null')).toBeLessThan(CODE.indexOf('<MomentCard key'));
   });
 
   it('auto-dismisses only when untouched', () => {
