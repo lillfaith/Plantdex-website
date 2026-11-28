@@ -91,7 +91,7 @@ export function BoardScreen(props: BoardScreenProps) {
   const ownReady = own.ready || shownOwn.source === 'board';
 
   return (
-    <main id="main" data-ground="lavender" data-palette="card" className="mx-auto max-w-xl px-4 py-6">
+    <main id="main" data-ground="lavender" data-palette="card" className="mx-auto max-w-xl px-4 py-6 max-sm:pt-16">
       {/* ── Header: the trophy sits ON the title plate, not beside an empty page ── */}
       <header className="pd-panel flex items-center gap-3 px-3 py-3">
         <span className="pd-tile flex h-14 w-14 shrink-0 items-center justify-center !rounded-2xl" data-tone="gold">
