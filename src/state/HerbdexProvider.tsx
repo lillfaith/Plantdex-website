@@ -19,6 +19,13 @@ import {
 import { clearBoard, refreshBoard, useResearchBoard } from '@/lib/research-board';
 import { useSightingCounts } from '@/lib/sightings-store';
 import { PRINTED_DECK_SIZE } from '@/lib/deck';
+import { snapshotOf, levelUpId, type EarnedMoment } from '@/lib/earned-moments';
+import {
+  acknowledge,
+  markAnnounced,
+  observeSnapshot,
+  useEarnedMoments,
+} from '@/lib/earned-moments-store';
 import { discoveryEvent, researchEvent, track } from '@/lib/analytics';
 import { researchKindFromId } from '@/lib/progression';
 import { createHerbdexStore } from './herbdex-store';
@@ -63,6 +70,9 @@ interface HerbdexContextValue {
   discover: (herb: Herb, at?: string) => DiscoveryResult;
   markLearned: (herb: Herb) => DiscoveryResult;
   reset: () => void;
+  /** Pending earned moments (level-up, mastery, research), oldest first. Session-only. */
+  earnedMoments: EarnedMoment[];
+  acknowledgeMoment: (id: string) => void;
 }
 
 const HerbdexContext = createContext<HerbdexContextValue | null>(null);
@@ -103,6 +113,15 @@ export function HerbdexProvider({
     store.getSnapshot,
     store.getServerSnapshot,
   );
+
+  const earnedMoments = useEarnedMoments();
+
+  // Every state the store publishes after hydration is authoritative (hydration, reconcile
+  // reloads, local writes). The first one per account is the baseline and fires nothing.
+  useEffect(() => {
+    if (!ready) return;
+    observeSnapshot(userId ?? ANONYMOUS_SCOPE, snapshotOf(state));
+  }, [ready, state, userId]);
 
   const sightingCounts = useSightingCounts();
   const boardIds = useResearchBoard();
@@ -206,8 +225,13 @@ export function HerbdexProvider({
    */
   const discover = useCallback(
     (herb: Herb, at?: string) => {
+      const levelBefore = progressFromState(store.getSnapshot().state).level;
       const result = store.discover(herb, at);
       if (result.awarded) {
+        // The discovery celebration already plays a level-up this discovery caused, so the
+        // shared moment must not repeat it.
+        const levelAfter = progressFromState(store.getSnapshot().state).level;
+        if (levelAfter > levelBefore) markAnnounced([levelUpId(levelAfter)]);
         // First-ever discovery is the activation moment, and the only split worth a
         // separate goal. Which plant it was comes from the page the discovery happened on.
         track(discoveryEvent(Object.keys(store.getSnapshot().state.discoveries).length === 1));
@@ -258,8 +282,10 @@ export function HerbdexProvider({
       discover,
       markLearned,
       reset,
+      earnedMoments: [...earnedMoments],
+      acknowledgeMoment: acknowledge,
     };
-  }, [state, ready, progress, sightingCounts, world, dailyTasks, lastResearch, discover, markLearned, reset]);
+  }, [state, ready, progress, sightingCounts, world, dailyTasks, lastResearch, discover, markLearned, reset, earnedMoments]);
 
   return <HerbdexContext.Provider value={value}>{children}</HerbdexContext.Provider>;
 }
