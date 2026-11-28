@@ -91,13 +91,16 @@ export function BoardScreen(props: BoardScreenProps) {
   const ownReady = own.ready || shownOwn.source === 'board';
 
   return (
-    <main id="main" className="mx-auto max-w-xl px-4 py-6">
-      {/* ── Header ───────────────────────────────────────────────────── */}
-      <header className="flex items-center gap-3">
-        <PixelIcon uri={illustration('trophy')} size={40} />
-        <h1 className="font-display text-3xl leading-none font-extrabold text-gold-plate">
-          Field Board
-        </h1>
+    <main id="main" data-ground="lavender" data-palette="card" className="mx-auto max-w-xl px-4 py-6">
+      {/* ── Header: the trophy sits ON the title plate, not beside an empty page ── */}
+      <header className="pd-panel flex items-center gap-3 px-3 py-3">
+        <span className="pd-tile flex h-14 w-14 shrink-0 items-center justify-center !rounded-2xl" data-tone="gold">
+          <PixelIcon uri={illustration('trophy')} size={40} />
+        </span>
+        <div className="min-w-0">
+          <h1 className="font-display text-3xl leading-none font-extrabold text-gold-plate">Field Board</h1>
+          <p className="mt-1 text-[0.8125rem] leading-snug text-violet-300">Opt-in standings built from field work.</p>
+        </div>
       </header>
 
       {/*
@@ -105,78 +108,69 @@ export function BoardScreen(props: BoardScreenProps) {
         here is self-reported. The live-site check looks for this exact heading in the built page,
         so it is in the first render in every state, not behind a tap.
       */}
-      <p className="mt-2 text-xs leading-snug text-violet-200">
-        <strong className="font-bold text-gold-300">These scores are provisional.</strong> Plantdex
+      <p className="pd-tile mt-3 px-3 py-2 text-[0.8125rem] leading-snug text-violet-100" data-tone="gold">
+        <strong className="font-extrabold">These scores are provisional.</strong> Plantdex
         does not verify that anybody went outside, so they are self-reported.
       </p>
 
-      {/* ── Your points, on one line ─────────────────────────────── */}
-      <section aria-labelledby="own-heading" className="mt-3">
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
-          <h2 id="own-heading" className="text-sm font-bold text-violet-50">
-            Your points{' '}
-            <span className="font-display text-xl font-extrabold text-gold-plate tabular-nums">
-              {own.ready || shownOwn.source === 'board'
-                ? shownOwn.score.points.toLocaleString()
-                : '\u2014'}
-            </span>
+      {/* ── The scoreboard: one total, three counted things, each with what it is worth ── */}
+      <section aria-labelledby="own-heading" className="pd-panel mt-3 p-3">
+        <div className="flex items-end justify-between gap-3">
+          <h2 id="own-heading" className="text-sm font-extrabold text-violet-100">
+            Your points
           </h2>
-          <dl className="flex items-center gap-3 text-xs text-violet-200">
-            <MiniStat
-              icon={<PixelIcon uri={illustration('leaf')} size={20} />}
-              label="species"
-              value={ownReady ? shownOwn.score.discoveries : null}
-            />
-            <MiniStat
-              icon={<PixelIcon uri={pixelObject('book')} size={20} />}
-              label="entries"
-              value={ownReady ? shownOwn.score.journalEntries : null}
-            />
-            <MiniStat
-              icon={<PixelIcon uri={traitBadge('star')} size={20} />}
-              label="challenges"
-              value={ownReady ? shownOwn.score.challenges : null}
-            />
-          </dl>
+          <p className="font-display text-4xl leading-none font-extrabold text-gold-plate tabular-nums">
+            {own.ready || shownOwn.source === 'board' ? shownOwn.score.points.toLocaleString() : '\u2014'}
+          </p>
         </div>
-        <p className="mt-1 text-xs leading-snug text-violet-300">
+        <dl className="mt-3 grid grid-cols-3 gap-2 text-center">
+          <ScoreTile
+            tone="leaf"
+            icon={<PixelIcon uri={illustration('leaf')} size={26} />}
+            label="species"
+            value={ownReady ? shownOwn.score.discoveries : null}
+            worth={SCORING_RULES[0]?.points}
+          />
+          <ScoreTile
+            tone="pink"
+            icon={<PixelIcon uri={pixelObject('book')} size={26} />}
+            label="entries"
+            value={ownReady ? shownOwn.score.journalEntries : null}
+            worth={SCORING_RULES[1]?.points}
+          />
+          <ScoreTile
+            tone="gold"
+            icon={<PixelIcon uri={traitBadge('star')} size={26} />}
+            label="challenges"
+            value={ownReady ? shownOwn.score.challenges : null}
+            worth={SCORING_RULES[2]?.points}
+          />
+        </dl>
+        <p className="mt-2 text-[0.8125rem] leading-snug text-violet-300">
           {shownOwn.source === 'board'
             ? shownOwn.difference === null
               ? 'Counted by the board from your synced records.'
               : `The board counts ${Math.abs(shownOwn.difference).toLocaleString()} ${shownOwn.difference > 0 ? 'fewer' : 'more'} points than this device. It counts only records synced to your account.`
             : 'Counted on this device. Join the board to be ranked by the same rule.'}
         </p>
+        {/* The rules are the SAME three lines as before, kept one tap away. */}
+        <details className="group mt-2 border-t-2 border-[var(--card-violet-100)]">
+          <summary className="flex min-h-11 cursor-pointer list-none items-center gap-2 text-sm font-extrabold text-violet-100">
+            <span aria-hidden="true" className="text-lg leading-none text-violet-300 transition-transform group-open:rotate-90 motion-reduce:transition-none">
+              &rsaquo;
+            </span>
+            How rankings work
+          </summary>
+          <ul className="space-y-2 pb-1">
+            {SCORING_RULES.map((rule) => (
+              <li key={rule.what} className="flex items-baseline gap-3 text-sm font-bold">
+                <span className="w-12 shrink-0 text-right text-violet-300 tabular-nums">+{rule.points}</span>
+                <span className="min-w-0 text-violet-100">{rule.what}</span>
+              </li>
+            ))}
+          </ul>
+        </details>
       </section>
-
-      {/* ── How rankings work ──────────────────────────────────────── */}
-      <details className="group mt-2 border-y border-violet-500/25">
-        <summary className="flex min-h-11 cursor-pointer list-none items-center gap-2 text-sm font-bold text-violet-100">
-          <span
-            aria-hidden="true"
-            className="text-lg leading-none text-violet-300 transition-transform group-open:rotate-90 motion-reduce:transition-none"
-          >
-            &rsaquo;
-          </span>
-          How rankings work
-        </summary>
-        {/*
-          THREE LINES, ONE SHAPE. Points in a fixed-width column that ends on the same edge, so
-          "+50", "+15" and "+100" line up whatever their length, then the rule in the same size and
-          weight beside them, on the same baseline. The long explanations that used to sit under
-          each rule and in a closing paragraph are gone; the provisional note above the score
-          stays, and the rules themselves are in `docs/leaderboard.md`.
-        */}
-        <ul className="space-y-2 pb-3">
-          {SCORING_RULES.map((rule) => (
-            <li key={rule.what} className="flex items-baseline gap-3 text-sm font-bold">
-              <span className="w-12 shrink-0 text-right text-gold-400 tabular-nums">
-                +{rule.points}
-              </span>
-              <span className="min-w-0 text-violet-100">{rule.what}</span>
-            </li>
-          ))}
-        </ul>
-      </details>
 
       {access !== 'member' ? (
         <SignedOut access={access} />
@@ -191,7 +185,7 @@ export function BoardScreen(props: BoardScreenProps) {
               <div
                 role="group"
                 aria-label="Choose a board"
-                className="mb-4 flex flex-wrap gap-1.5 rounded-full border-2 border-violet-500/60 bg-plum-900/50 p-0.5"
+                className="pd-panel mb-4 flex flex-wrap gap-1 !rounded-full p-1"
               >
                 <Scope
                   active={scope.kind === 'global'}
@@ -244,22 +238,27 @@ export function BoardScreen(props: BoardScreenProps) {
   );
 }
 
-function MiniStat({
+function ScoreTile({
+  tone,
   icon,
   label,
   value,
+  worth,
 }: {
+  tone: 'leaf' | 'pink' | 'gold';
   icon: React.ReactNode;
   label: string;
   value: number | null;
+  worth?: number;
 }) {
   return (
-    <div className="flex items-center gap-1">
+    <div className="pd-tile flex flex-col items-center gap-0.5 px-1 py-2" data-tone={tone}>
       {icon}
-      <dd className="font-bold text-violet-50 tabular-nums">
+      <dd className="font-display text-xl leading-none font-extrabold text-violet-100 tabular-nums">
         {value === null ? '\u2014' : value.toLocaleString()}
       </dd>
-      <dt className="text-violet-300">{label}</dt>
+      <dt className="text-[0.8125rem] font-bold text-violet-100">{label}</dt>
+      {worth !== undefined && <span className="text-[0.72rem] font-bold text-violet-300">+{worth} each</span>}
     </div>
   );
 }
@@ -280,8 +279,8 @@ function Scope({
       aria-pressed={active}
       className={`min-h-11 flex-1 rounded-full px-3 text-sm font-bold whitespace-nowrap transition-colors ${
         active
-          ? 'bg-gradient-to-b from-pink-accent to-violet-400 text-violet-deep'
-          : 'text-violet-200 hover:text-violet-50'
+          ? 'bg-[var(--card-violet-500)] text-white shadow-[0_3px_0_0_var(--card-violet-900)]'
+          : 'text-violet-100 hover:bg-[var(--card-violet-100)]'
       }`}
     >
       {children}
@@ -291,24 +290,24 @@ function Scope({
 
 function SignedOut({ access }: { access: 'unconfigured' | 'signedOut' }) {
   return (
-    <section aria-labelledby="signin-heading" className="mt-8 text-center">
+    <section aria-labelledby="signin-heading" className="pd-panel mt-4 px-4 py-5 text-center">
       <span className="mx-auto block w-fit">
         <PixelIcon uri={illustration('crown')} size={56} />
       </span>
-      <h2 id="signin-heading" className="font-display mt-2 text-xl font-bold text-violet-50">
-        {access === 'unconfigured' ? 'The board needs accounts' : 'Sign in to see the board'}
+      <h2 id="signin-heading" className="font-display mt-2 text-xl font-extrabold text-violet-100">
+        {access === 'unconfigured' ? 'The board needs accounts' : 'See where your field work stands'}
       </h2>
-      <p className="mx-auto mt-1 max-w-xs text-sm leading-relaxed text-violet-200">
-        Standings are only readable by signed-in players, and you only appear if you ask to be
-        listed. Your collection works the same either way.
+      <p className="mx-auto mt-1 max-w-xs text-sm leading-relaxed text-violet-100">
+        Your points above are already counted on this device. Sign in to read the standings; you only appear on them if you choose to be listed. Your
+        collection works the same either way.
       </p>
       {access === 'signedOut' && (
-        <Link
-          href="/account"
-          className="holo-fill mt-4 inline-flex min-h-12 items-center justify-center rounded-full px-8 text-base font-extrabold text-plum-900"
-        >
-          Sign in
-        </Link>
+        <>
+          <Link href="/account" className="pd-btn mt-4 w-full max-w-xs text-base">
+            Sign in to see the board
+          </Link>
+          <p className="mt-2 text-[0.8125rem] text-violet-300">New here? You can create an account on the same page.</p>
+        </>
       )}
     </section>
   );
@@ -317,7 +316,7 @@ function SignedOut({ access }: { access: 'unconfigured' | 'signedOut' }) {
 function Membership(props: BoardScreenProps & { listed: boolean }) {
   const { membership, regions, busy, listed } = props;
   return (
-    <section aria-labelledby="listing-heading" className="mt-3">
+    <section aria-labelledby="listing-heading" className="pd-panel mt-3 p-3">
       <h2 id="listing-heading" className="sr-only">
         Your listing
       </h2>
@@ -333,7 +332,7 @@ function Membership(props: BoardScreenProps & { listed: boolean }) {
             type="button"
             onClick={props.onLeave}
             disabled={busy}
-            className="min-h-11 rounded-full border border-violet-400/70 px-4 text-sm font-semibold text-violet-100 hover:bg-plum-700 disabled:opacity-60"
+            className="pd-btn-quiet px-4 text-sm disabled:opacity-60"
           >
             Leave the board
           </button>
@@ -344,7 +343,7 @@ function Membership(props: BoardScreenProps & { listed: boolean }) {
             type="button"
             onClick={() => props.onJoin(null)}
             disabled={busy}
-            className="holo-fill min-h-11 rounded-full px-5 text-sm font-extrabold text-plum-900 disabled:opacity-70"
+            className="pd-btn px-5 text-sm disabled:opacity-70"
           >
             Join the board
           </button>
@@ -354,7 +353,7 @@ function Membership(props: BoardScreenProps & { listed: boolean }) {
               type="button"
               onClick={() => props.onJoin(region.id)}
               disabled={busy}
-              className="min-h-11 rounded-full border border-gold-500/70 px-4 text-sm font-semibold text-gold-300 hover:bg-plum-700 disabled:opacity-60"
+              className="pd-btn-quiet px-4 text-sm disabled:opacity-60"
             >
               Join as {region.name}
             </button>
@@ -397,15 +396,15 @@ function Skeleton() {
 
 function Empty({ listed }: { listed: boolean }) {
   return (
-    <div className="py-6 text-center">
+    <div className="pd-panel px-4 py-5 text-center">
       <span className="mx-auto block w-fit">
         <PixelIcon uri={illustration('crown')} size={48} />
       </span>
-      <p className="mt-2 text-base font-bold text-violet-50">Nobody is listed here yet.</p>
-      <p className="mt-1 text-sm text-violet-200">
+      <p className="font-display mt-2 text-lg font-extrabold text-violet-100">Nobody is listed here yet.</p>
+      <p className="mx-auto mt-1 max-w-xs text-sm text-violet-100">
         {listed
-          ? 'You are on the board. This one just has nobody else in it.'
-          : 'Join above to be the first.'}
+          ? 'You are on the board; this one just has nobody else in it. Standings appear here as players join.'
+          : 'Joining is optional and shares only your display name, region and counts. Join above to be the first.'}
       </p>
     </div>
   );
