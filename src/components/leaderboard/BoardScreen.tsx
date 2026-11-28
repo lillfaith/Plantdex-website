@@ -115,12 +115,20 @@ export function BoardScreen(props: BoardScreenProps) {
 
       {/* ── The scoreboard: one total, three counted things, each with what it is worth ── */}
       <section aria-labelledby="own-heading" className="pd-panel mt-3 p-3">
-        <div className="flex items-end justify-between gap-3">
-          <h2 id="own-heading" className="text-sm font-extrabold text-violet-100">
+        <div className="relative flex items-center justify-between gap-3 rounded-xl border-2 border-[var(--card-violet-900)] bg-[var(--card-violet-900)] px-3 py-2.5 shadow-[inset_0_0_0_2px_var(--card-violet-700),0_3px_0_0_var(--card-violet-700)]">
+          <h2 id="own-heading" className="flex items-center gap-1.5 text-[0.8125rem] font-extrabold tracking-[0.12em] text-[var(--card-gold-300)] uppercase">
+            <PixelIcon uri={traitBadge('star')} size={18} />
             Your points
           </h2>
-          <p className="font-display text-4xl leading-none font-extrabold text-gold-plate tabular-nums">
-            {own.ready || shownOwn.source === 'board' ? shownOwn.score.points.toLocaleString() : '\u2014'}
+          <p className="font-display text-4xl leading-none font-extrabold tabular-nums" aria-label={`${ownReady ? shownOwn.score.points.toLocaleString() : 'not counted yet'} points`}>
+            {ownReady ? (
+              <>
+                <span aria-hidden="true" className="text-[var(--card-violet-700)]">{String(shownOwn.score.points).padStart(5, '0').slice(0, Math.max(0, 5 - String(shownOwn.score.points).length))}</span>
+                <span aria-hidden="true" className="text-[var(--card-gold-500)] [text-shadow:0_0_8px_rgb(255_219_22/0.45)]">{shownOwn.score.points}</span>
+              </>
+            ) : (
+              <span aria-hidden="true" className="text-[var(--card-gold-500)]">{'\u2014'}</span>
+            )}
           </p>
         </div>
         <dl className="mt-3 grid grid-cols-3 gap-2 text-center">
@@ -257,8 +265,8 @@ function ScoreTile({
       <dd className="font-display text-xl leading-none font-extrabold text-violet-100 tabular-nums">
         {value === null ? '\u2014' : value.toLocaleString()}
       </dd>
-      <dt className="text-[0.8125rem] font-bold text-violet-100">{label}</dt>
-      {worth !== undefined && <span className="text-[0.72rem] font-bold text-violet-300">+{worth} each</span>}
+      <dt className="text-xs font-extrabold tracking-[0.1em] text-violet-100 uppercase">{label}</dt>
+      {worth !== undefined && <span className="pd-badge !min-h-0 !border-[1.5px] !px-1.5 !py-0 !text-xs">+{worth} each</span>}
     </div>
   );
 }
@@ -451,7 +459,7 @@ function RankStrip({ rows, me }: { rows: Standing[]; me?: BoardMe }) {
           ? `Tied for ${ordinal(gap.standing)}`
           : 'You are first on this board';
   return (
-    <section aria-label="Your rank" className="holo-border rounded-2xl px-3 py-2.5">
+    <section aria-label="Your rank" className="pd-panel px-3 py-2.5">
       <div className="flex items-center gap-3">
         <RowAvatar row={mine} me={me} size="sm" />
         <div className="min-w-0 flex-1">
@@ -460,12 +468,12 @@ function RankStrip({ rows, me }: { rows: Standing[]; me?: BoardMe }) {
           </p>
           {me?.title && <p className="truncate text-xs text-gold-300">{me.title}</p>}
         </div>
-        <div className="text-right">
-          <p className="font-display text-4xl leading-none font-extrabold text-gold-plate">
+        <div className="rounded-xl bg-[var(--card-violet-900)] px-3 py-1.5 text-right shadow-[inset_0_0_0_2px_var(--card-violet-700),0_3px_0_0_var(--card-violet-700)]">
+          <p className="font-display text-4xl leading-none font-extrabold text-[var(--card-gold-500)]">
             {ordinal(mine.standing)}
           </p>
-          <p className="text-sm font-bold text-violet-100 tabular-nums">
-            {mine.points.toLocaleString()} pts
+          <p className="text-[0.8125rem] font-bold text-[var(--card-violet-200)] tabular-nums">
+            {mine.points.toLocaleString()} PTS
           </p>
         </div>
       </div>
@@ -565,11 +573,11 @@ function Standings({
               key={`${row.standing}-${index}`}
               className={`flex items-center gap-3 py-2 ${
                 row.isSelf
-                  ? 'holo-border my-1 rounded-xl px-2'
-                  : 'border-t border-violet-500/20 first:border-t-0'
+                  ? 'pd-tile my-1 !rounded-xl px-2'
+                  : 'border-t-2 border-[var(--card-violet-100)] first:border-t-0'
               }`}
             >
-              <span className="font-display w-9 shrink-0 text-right text-lg font-extrabold text-violet-200 tabular-nums">
+              <span className="pd-tile font-display flex h-9 w-9 shrink-0 items-center justify-center !rounded-lg text-lg font-extrabold text-violet-100 tabular-nums" data-tone={row.isSelf ? 'gold' : undefined}>
                 {row.standing}
               </span>
               <RowAvatar row={row} me={me} size="xs" />
@@ -577,7 +585,7 @@ function Standings({
                 <span className="block truncate text-sm font-bold text-violet-50">
                   {nameOf(row)}
                   {row.isSelf && (
-                    <span className="ml-2 rounded-full bg-gold-500 px-2 py-0.5 text-[0.72rem] font-extrabold text-violet-deep">
+                    <span className="pd-badge ml-2 !min-h-0 !border-[var(--card-gold-700)] !bg-[var(--card-gold-300)] !px-2 !py-0 !text-xs">
                       You
                     </span>
                   )}
@@ -587,9 +595,9 @@ function Standings({
                   {countsLine(row)}
                 </span>
               </span>
-              <span className="shrink-0 text-base font-extrabold text-gold-300 tabular-nums">
+              <span className="shrink-0 rounded-lg bg-[var(--card-violet-900)] px-2 py-1 text-base font-extrabold text-[var(--card-gold-500)] tabular-nums shadow-[inset_0_0_0_2px_var(--card-violet-700)]">
                 {row.points.toLocaleString()}
-                <span className="ml-0.5 text-xs font-bold text-violet-300">pts</span>
+                <span className="ml-1 text-xs font-bold text-[var(--card-violet-200)]">PTS</span>
               </span>
             </li>
           ))}
