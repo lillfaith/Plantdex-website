@@ -1,6 +1,7 @@
 'use client';
 
 import { useSyncExternalStore } from 'react';
+import { ANONYMOUS_SCOPE } from './unlocked-field-cards';
 import { DAILY_BOARD_SIZE, pickDailyTasks, type ResearchWorld } from './research';
 
 /**
@@ -20,9 +21,27 @@ import { DAILY_BOARD_SIZE, pickDailyTasks, type ResearchWorld } from './research
  * is no streak to break, and no countdown anywhere. It also refills only on a NEW day, not
  * the instant a task is finished, which is what keeps it a daily nudge rather than a
  * treadmill you can grind.
+ *
+ * KEYED BY ACCOUNT. The board is picked from one player's own progress (a task is only
+ * offered while it is unsatisfied), so a single device-wide entry handed account A's picks to
+ * account B on a shared browser — including dailies B had already satisfied, which then paid
+ * at once — and B's completions pruned A's board. Same shape and same fix as
+ * `unlocked-field-cards.ts`: one key per scope, `ANONYMOUS_SCOPE` for signed-out, and a
+ * per-scope cache so switching accounts in one session cannot show the previous one's tasks.
+ * The legacy un-scoped key is adopted by the signed-out scope only, never by an account.
  */
 
-const STORAGE_KEY = 'plantdex.research-board.v1';
+/** Prefix every scope's key shares; starts with `plantdex.` so account deletion's sweep takes all. */
+export const RESEARCH_BOARD_STORAGE_KEY = 'plantdex.research-board.v1';
+
+/** The pre-scoping key. Read once into the signed-out scope, never into an account. */
+export const LEGACY_RESEARCH_BOARD_KEY = RESEARCH_BOARD_STORAGE_KEY;
+
+export { ANONYMOUS_SCOPE };
+
+export function boardStorageKey(scope: string): string {
+  return `${RESEARCH_BOARD_STORAGE_KEY}:${scope}`;
+}
 
 interface BoardState {
   /** Local date key of the last top-up, or null if never filled. */
@@ -33,40 +52,61 @@ interface BoardState {
 
 const EMPTY_OPEN: readonly string[] = Object.freeze([]);
 
-let cache: BoardState | null = null;
+/** One cached board per scope; never a single slot, so scopes cannot bleed into each other. */
+const caches = new Map<string, BoardState>();
 const listeners = new Set<() => void>();
 
-function read(): BoardState {
-  if (cache) return cache;
-  cache = { lastFilled: null, open: [] };
+function parse(raw: string | null): BoardState | null {
+  if (!raw) return null;
   try {
-    const raw = window.localStorage.getItem(STORAGE_KEY);
-    if (raw) {
-      const parsed: unknown = JSON.parse(raw);
-      if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
-        const entry = parsed as Record<string, unknown>;
-        const open = Array.isArray(entry.open)
-          ? entry.open.filter((id): id is string => typeof id === 'string' && id.length > 0)
-          : [];
-        cache = {
-          lastFilled: typeof entry.lastFilled === 'string' ? entry.lastFilled : null,
-          open,
-        };
-      }
-    }
+    const parsed: unknown = JSON.parse(raw);
+    if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) return null;
+    const entry = parsed as Record<string, unknown>;
+    const open = Array.isArray(entry.open)
+      ? entry.open.filter((id): id is string => typeof id === 'string' && id.length > 0)
+      : [];
+    return { lastFilled: typeof entry.lastFilled === 'string' ? entry.lastFilled : null, open };
   } catch {
-    // Blocked storage or malformed JSON: an empty board is a fine place to start.
+    return null;
   }
-  return cache;
 }
 
-function commit(next: BoardState): void {
-  cache = next;
+function persist(scope: string, state: BoardState): void {
   try {
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+    window.localStorage.setItem(boardStorageKey(scope), JSON.stringify(state));
   } catch {
     // Non-fatal; the board still applies for this session.
   }
+}
+
+function read(scope: string): BoardState {
+  const hit = caches.get(scope);
+  if (hit) return hit;
+  let board: BoardState = { lastFilled: null, open: [] };
+  try {
+    const stored = parse(window.localStorage.getItem(boardStorageKey(scope)));
+    if (stored) {
+      board = stored;
+    } else if (scope === ANONYMOUS_SCOPE) {
+      // One-time adoption of the old device-wide board, by the signed-out scope ONLY. An
+      // account scope must never inherit it: nobody can say whose progress it was picked from.
+      const legacy = parse(window.localStorage.getItem(LEGACY_RESEARCH_BOARD_KEY));
+      if (legacy) {
+        board = legacy;
+        persist(scope, board);
+        window.localStorage.removeItem(LEGACY_RESEARCH_BOARD_KEY);
+      }
+    }
+  } catch {
+    // Blocked storage: an empty board is a fine place to start.
+  }
+  caches.set(scope, board);
+  return board;
+}
+
+function commit(scope: string, next: BoardState): void {
+  caches.set(scope, next);
+  persist(scope, next);
   for (const listener of listeners) listener();
 }
 
@@ -78,14 +118,18 @@ function subscribe(listener: () => void): () => void {
 }
 
 /**
- * Bring the board up to date: drop anything that has been completed, and top up to size
- * once per local day.
+ * Bring `scope`'s board up to date: drop anything that has been completed, and top up to
+ * size once per local day. Touches no other scope.
  *
  * Safe to call on every render. It writes and notifies ONLY when something actually
  * changed, which is what stops the effect that calls it from looping.
  */
-export function refreshBoard(world: ResearchWorld, dateKey: string): void {
-  const board = read();
+export function refreshBoard(
+  world: ResearchWorld,
+  dateKey: string,
+  scope: string = ANONYMOUS_SCOPE,
+): void {
+  const board = read(scope);
   const completed = world.state.research;
   const isNewDay = board.lastFilled !== dateKey;
 
@@ -112,19 +156,29 @@ export function refreshBoard(world: ResearchWorld, dateKey: string): void {
     next.open.every((id, index) => id === board.open[index]);
 
   if (unchanged) return;
-  commit(next);
+  commit(scope, next);
 }
 
-/** Task ids currently on the board. Empty on the server and on the first client render. */
-export function useResearchBoard(): readonly string[] {
+/** Task ids on `scope`'s board. Empty on the server and on the first client render. */
+export function useResearchBoard(scope: string = ANONYMOUS_SCOPE): readonly string[] {
   return useSyncExternalStore(
     subscribe,
-    () => read().open,
+    () => read(scope).open,
     () => EMPTY_OPEN,
   );
 }
 
-/** Testing and "reset my progress" only. */
-export function clearBoard(): void {
-  commit({ lastFilled: null, open: [] });
+/** Testing and "reset my progress" only. Clears one scope; every other player's board stays. */
+export function clearBoard(scope: string = ANONYMOUS_SCOPE): void {
+  commit(scope, { lastFilled: null, open: [] });
+}
+
+/** Testing only: forget every in-memory board so the next read goes back to storage. */
+export function resetBoardCacheForTests(): void {
+  caches.clear();
+}
+
+/** Non-hook read of `scope`'s open task ids (tests, and callers outside React). */
+export function boardIds(scope: string = ANONYMOUS_SCOPE): readonly string[] {
+  return read(scope).open;
 }
