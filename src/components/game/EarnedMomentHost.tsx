@@ -1,5 +1,6 @@
 'use client';
 
+import type { EarnedMoment } from '@/lib/earned-moments';
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { CountUp } from '@/components/herbdex/CountUp';
 import { PlantSprite } from '@/components/PlantSprite';
@@ -18,10 +19,7 @@ import { researchTaskById } from '@/lib/research';
  * integrator switches this to `import type { EarnedMoment } from '@/lib/earned-moments'`.
  * The shapes must stay identical.
  */
-export type EarnedMoment =
-  | { id: string; kind: 'level-up'; fromLevel: number; toLevel: number }
-  | { id: string; kind: 'mastery'; herbId: string }
-  | { id: string; kind: 'research'; taskId: string };
+export type { EarnedMoment };
 
 /** The motion lasts about this long; Skip lands the end state before it. */
 export const EARNED_MOTION_MS = 1150;
