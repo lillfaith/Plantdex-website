@@ -3940,7 +3940,7 @@ body:has([data-ground='lavender']) footer {
   left: 2.15rem;
 }
 /* Garden sample: the same lavender ground as the Collection. */
-body:has(main[data-ground='lavender']) [data-page-theme='garden'] {
+body:has([data-ground='lavender']) [data-page-theme='garden'] {
   --pt-a: #c9a4f8;
   --pt-b: #e2cffc;
   --pt-c: #b98cf2;
@@ -4066,8 +4066,8 @@ body:has(main[data-shade='learn']) [data-page-theme='learn'] { --pt-a: #b7b7f5; 
  * nothing else: in a stitched full-page capture, in overscroll bounce and behind a keyboard, the dark global ground showed through as a plum
  * band under the first screen. Painting the canvas the same shade removes that without touching the fixed layer.
  */
-html:has(main[data-ground='lavender']),
-body:has(main[data-ground='lavender']) {
+html:has([data-ground='lavender']),
+body:has([data-ground='lavender']) {
   background: #c9a4f8;
 }
 body:has(main[data-shade='home']) { background: #d6bdf9; }
