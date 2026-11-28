@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useAuth } from '@/state/AuthProvider';
 import { ForgotPasswordForm, SignInForm, SignUpForm } from '@/components/auth/AuthForms';
 import { ImportLocalProgressDialog } from '@/components/auth/ImportLocalProgressDialog';
+import { PageAtmosphere } from '@/components/PageAtmosphere';
 import { SafetyNotice } from '@/components/SafetyNotice';
 
 export default function AccountPage() {
@@ -12,7 +13,8 @@ export default function AccountPage() {
   const [forgot, setForgot] = useState(false);
 
   return (
-    <main id="main" className="mx-auto max-w-md px-4 py-8">
+    <main id="main" data-ground="lavender" data-palette="card" className="mx-auto max-w-md px-4 py-8">
+      <PageAtmosphere theme="home" />
       <h1 className="font-display text-2xl font-bold text-gold-plate">Account</h1>
 
       {/*
