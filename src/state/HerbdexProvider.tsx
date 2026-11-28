@@ -21,6 +21,7 @@ import { useSightingCounts } from '@/lib/sightings-store';
 import { PRINTED_DECK_SIZE } from '@/lib/deck';
 import { discoveryEvent, researchEvent, track } from '@/lib/analytics';
 import { researchKindFromId } from '@/lib/progression';
+import type { CollectionRefusal } from '@/lib/collection-refusal';
 import { createHerbdexStore } from './herbdex-store';
 
 interface HerbdexContextValue {
@@ -62,6 +63,12 @@ interface HerbdexContextValue {
   /** `at` is for a Seed Shelf claim, which keeps the date the plant was actually found. */
   discover: (herb: Herb, at?: string) => DiscoveryResult;
   markLearned: (herb: Herb) => DiscoveryResult;
+  /**
+   * Set when the server permanently refused a write and the optimistic change was rolled back.
+   * The UI owns the wording (`REFUSAL_COPY` in `@/lib/collection-refusal`).
+   */
+  lastRefusal: CollectionRefusal | null;
+  dismissRefusal: () => void;
   reset: () => void;
 }
 
@@ -98,7 +105,7 @@ export function HerbdexProvider({
     [storage, userId],
   );
 
-  const { state, ready } = useSyncExternalStore(
+  const { state, ready, refusal } = useSyncExternalStore(
     store.subscribe,
     store.getSnapshot,
     store.getServerSnapshot,
@@ -224,6 +231,7 @@ export function HerbdexProvider({
     },
     [store],
   );
+  const dismissRefusal = useCallback(() => store.dismissRefusal(), [store]);
   const reset = useCallback(() => {
     store.reset();
     // The board is a separate store, so resetting progress has to clear it too — otherwise
@@ -257,9 +265,11 @@ export function HerbdexProvider({
       lastResearch,
       discover,
       markLearned,
+      lastRefusal: refusal,
+      dismissRefusal,
       reset,
     };
-  }, [state, ready, progress, sightingCounts, world, dailyTasks, lastResearch, discover, markLearned, reset]);
+  }, [state, ready, progress, sightingCounts, world, dailyTasks, lastResearch, discover, markLearned, refusal, dismissRefusal, reset]);
 
   return <HerbdexContext.Provider value={value}>{children}</HerbdexContext.Provider>;
 }

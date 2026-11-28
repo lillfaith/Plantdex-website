@@ -7,7 +7,8 @@ import {
   reconcileResearch,
 } from '@/lib/herbdex-reducer';
 import { buildWorld, type ResearchTask, type ResearchWorld } from '@/lib/research';
-import { emptyState, type HerbdexStorage, type ReconcileOutcome } from '@/lib/storage';
+import { emptyState, type HerbdexStorage, type ReconcileOutcome, type RefusedWrite } from '@/lib/storage';
+import { refusalKind, type CollectionRefusal } from '@/lib/collection-refusal';
 
 /**
  * An external store wrapping the storage adapter, shaped for `useSyncExternalStore`.
@@ -31,6 +32,8 @@ export interface HerbdexSnapshot {
   state: HerbdexState;
   /** False until the browser's stored collection has been read. */
   ready: boolean;
+  /** The latest permanent server refusal, or null. Cleared by `dismissRefusal` or a new store. */
+  refusal: CollectionRefusal | null;
 }
 
 export interface HerbdexStore {
@@ -58,6 +61,8 @@ export interface HerbdexStore {
    * computed guess; otherwise it runs the same reducer locally, exactly as before V0.3.
    */
   reconcile: (world: ResearchWorld, activeTasks: readonly ResearchTask[]) => Promise<ReconcileOutcome>;
+  /** Hide the refusal notice. Does not change the collection. */
+  dismissRefusal: () => void;
   reset: () => void;
 }
 
@@ -79,6 +84,7 @@ export function createHerbdexStore(adapter: HerbdexStorage): HerbdexStore {
   const emptySnapshot: HerbdexSnapshot = Object.freeze({
     state: emptyState(),
     ready: false,
+    refusal: null,
   });
 
   let snapshot: HerbdexSnapshot = emptySnapshot;
@@ -90,7 +96,7 @@ export function createHerbdexStore(adapter: HerbdexStorage): HerbdexStore {
   }
 
   function commit(state: HerbdexState): void {
-    snapshot = { state, ready: true };
+    snapshot = { ...snapshot, state, ready: true };
     adapter.save(state);
     emit();
   }
@@ -111,7 +117,7 @@ export function createHerbdexStore(adapter: HerbdexStorage): HerbdexStore {
     try {
       const loaded = await adapter.load();
       const reconciled = reconcileAchievements(loaded);
-      snapshot = { state: reconciled, ready: true };
+      snapshot = { ...snapshot, state: reconciled, ready: true };
       adapter.save(reconciled);
       emit();
     } catch (error) {
@@ -126,6 +132,35 @@ export function createHerbdexStore(adapter: HerbdexStorage): HerbdexStore {
       setTimeout(() => void hydrate(attempt + 1), delay);
     }
   }
+
+  /**
+   * The server permanently refused rows the client had already applied optimistically. Drop
+   * them by reloading the authoritative collection (the same path reconcile uses), so XP,
+   * achievements and garden growth derived from them disappear, and publish why.
+   * Nothing is written back: the adapter's `lastKnown` is the loaded state, so this is a no-op save.
+   */
+  async function onRefused(info: RefusedWrite): Promise<void> {
+    const refusal: CollectionRefusal = {
+      at: Date.now(),
+      kind: refusalKind(info.table, info.code),
+      herbIds: info.table === 'discoveries' || info.table === 'learned' ? [...info.ids] : [],
+    };
+    if (info.table === 'discoveries' || info.table === 'learned') {
+      try {
+        const reloaded = await adapter.load();
+        snapshot = { ...snapshot, state: reloaded, ready: true, refusal };
+        emit();
+        return;
+      } catch (error) {
+        // Could not fetch the truth. Keep the optimistic state out of sight of nothing: say so
+        // and let the next successful load correct it.
+        console.warn('[plantdex] could not reload after a refused write', error);
+      }
+    }
+    snapshot = { ...snapshot, refusal };
+    emit();
+  }
+  adapter.onRefused = (info) => void onRefused(info);
 
   return {
     subscribe(listener) {
@@ -183,7 +218,7 @@ export function createHerbdexStore(adapter: HerbdexStorage): HerbdexStore {
           // appear on the next load instead of this one.
           try {
             const reloaded = await adapter.load();
-            snapshot = { state: reloaded, ready: true };
+            snapshot = { ...snapshot, state: reloaded, ready: true };
             emit();
           } catch (error) {
             console.warn('[plantdex] could not reload after reconciling', error);
@@ -208,6 +243,12 @@ export function createHerbdexStore(adapter: HerbdexStorage): HerbdexStore {
         completedResearchIds: research.completedIds,
         newAchievementIds: [...mastery.newAchievementIds, ...research.newAchievementIds],
       };
+    },
+
+    dismissRefusal() {
+      if (!snapshot.refusal) return;
+      snapshot = { ...snapshot, refusal: null };
+      emit();
     },
 
     reset() {

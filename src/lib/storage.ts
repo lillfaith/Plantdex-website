@@ -42,7 +42,19 @@ export interface ReconcileOutcome {
   newAchievementIds: string[];
 }
 
+/** A write the server permanently refused. `code` is a stable reason string (see collection-refusal.ts). */
+export interface RefusedWrite {
+  table: string;
+  ids: string[];
+  code: string;
+}
+
 export interface HerbdexStorage {
+  /**
+   * Set by the store. Called when the server permanently refuses rows (never for transient
+   * failures). The local adapter never refuses and ignores it.
+   */
+  onRefused?: (info: RefusedWrite) => void;
   load(): Promise<HerbdexState>;
   save(state: HerbdexState): void;
   clear(): void;

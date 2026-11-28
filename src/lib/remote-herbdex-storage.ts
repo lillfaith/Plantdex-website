@@ -1,7 +1,9 @@
 import { supabase } from './supabase-client';
 import { emptyState } from './herbdex-state';
 import type { HerbdexState } from './types';
-import type { HerbdexStorage, ReconcileOutcome } from './storage';
+import type { HerbdexStorage, ReconcileOutcome, RefusedWrite } from './storage';
+import { classifyWriteError } from './storage-write-failure';
+import { reconcileAchievements } from './herbdex-reducer';
 import type { ResearchTask, ResearchWorld } from './research';
 
 /**
@@ -30,6 +32,18 @@ export function createRemoteHerbdexStorage(userId: string): HerbdexStorage {
   // knowledge check and triggers a reconcile in the same tick otherwise sends the function a
   // world in which the card is not yet learned, and is told nothing was mastered.
   const inFlight = new Set<Promise<void>>();
+
+  // Rows the server has permanently refused THIS session, per table. Never retried: a refusal
+  // is a rule, not a hiccup. Cleared only by a successful `load()` (the store's rollback), after
+  // which the row is gone from local state and a later proper capture may write it normally.
+  const rejected: Record<string, Set<string>> = {};
+  const rejectedIn = (table: string): Set<string> => (rejected[table] ??= new Set<string>());
+  // Refusals found during the current save, reported once it has fully settled.
+  let pendingRefusals: RefusedWrite[] = [];
+  const upsertRows = (table: string, idColumn: string, rows: Record<string, unknown>[]) =>
+    supabase!
+      .from(table)
+      .upsert(rows, { onConflict: `user_id,${idColumn}`, ignoreDuplicates: true });
 
   async function fetchRecord(
     table: string,
@@ -77,21 +91,42 @@ export function createRemoteHerbdexStorage(userId: string): HerbdexStorage {
     previous: Record<string, string>,
   ): Promise<Record<string, string>> {
     if (!supabase) return previous;
+    const refused = rejectedIn(table);
     const rows = Object.entries(record)
-      .filter(([id]) => !(id in previous))
+      .filter(([id]) => !(id in previous) && !refused.has(id))
       .map(([id, at]) => ({ user_id: userId, [idColumn]: id, [atColumn]: at }));
     if (rows.length === 0) return previous;
-    const { error } = await supabase
-      .from(table)
-      .upsert(rows, { onConflict: `user_id,${idColumn}`, ignoreDuplicates: true });
-    if (error) {
+    const { error } = await upsertRows(table, idColumn, rows);
+    if (!error) return { ...previous, ...Object.fromEntries(rows.map((r) => [r[idColumn] as string, record[r[idColumn] as string]!])) };
+    if (!classifyWriteError(error).permanent) {
       console.warn(`[plantdex] failed to sync ${table}, will retry on the next save`, error);
       return previous;
     }
-    return record;
+    // One refused row poisons a batch, so write the rest one at a time: valid rows still land.
+    const landed: Record<string, string> = { ...previous };
+    const newlyRefused = new Map<string, string>();
+    for (const row of rows) {
+      const id = row[idColumn] as string;
+      const res = await upsertRows(table, idColumn, [row]);
+      if (!res.error) {
+        landed[id] = record[id]!;
+        continue;
+      }
+      const failure = classifyWriteError(res.error);
+      if (failure.permanent) {
+        refused.add(id);
+        newlyRefused.set(id, failure.reason);
+      } else {
+        console.warn(`[plantdex] failed to sync ${table}, will retry on the next save`, res.error);
+      }
+    }
+    const byReason = new Map<string, string[]>();
+    for (const [id, reason] of newlyRefused) byReason.set(reason, [...(byReason.get(reason) ?? []), id]);
+    for (const [code, ids] of byReason) pendingRefusals.push({ table, ids, code });
+    return landed;
   }
 
-  return {
+  const adapter: HerbdexStorage = {
     async load(): Promise<HerbdexState> {
       if (!supabase) return emptyState();
       const [discoveries, learned, mastered, research, achievements] = await Promise.all([
@@ -110,10 +145,27 @@ export function createRemoteHerbdexStorage(userId: string): HerbdexStorage {
         achievements,
       };
       lastKnown = state;
+      // The authoritative state is back: whatever was refused is no longer held locally, so a
+      // later, properly captured write of the same row must not be blocked by an old refusal.
+      for (const key of Object.keys(rejected)) delete rejected[key];
       return state;
     },
 
     save(state: HerbdexState): void {
+      const withoutRefused = (s: HerbdexState, prev: HerbdexState): Record<string, string> => {
+        const dropD = rejectedIn('discoveries');
+        const dropL = rejectedIn('learned');
+        if (dropD.size === 0 && dropL.size === 0) return s.achievements;
+        const clean: HerbdexState = {
+          ...s,
+          discoveries: Object.fromEntries(Object.entries(s.discoveries).filter(([id]) => !dropD.has(id))),
+          learned: Object.fromEntries(Object.entries(s.learned).filter(([id]) => !dropD.has(id) && !dropL.has(id))),
+          mastered: Object.fromEntries(Object.entries(s.mastered).filter(([id]) => !dropD.has(id))),
+          achievements: prev.achievements,
+        };
+        const allowed = reconcileAchievements(clean).achievements;
+        return Object.fromEntries(Object.entries(s.achievements).filter(([id]) => id in allowed));
+      };
       const previous = lastKnown;
       // Fire-and-forget, the same contract `createLocalStorageAdapter.save` has. Only
       // discoveries/learned/achievements are ever set this way — mastered/research are
@@ -128,6 +180,7 @@ export function createRemoteHerbdexStorage(userId: string): HerbdexStorage {
         // migration 0016 (draft, switch OFF) refuses a `learned`/`mastered` row for a card with no
         // `discoveries` row once enforcement is ON, so the order must be a property of the adapter
         // and not luck. With enforcement OFF this changes nothing a player can observe.
+        pendingRefusals = [];
         const discoveries = await upsertNew(
           'discoveries',
           'herb_id',
@@ -135,17 +188,23 @@ export function createRemoteHerbdexStorage(userId: string): HerbdexStorage {
           state.discoveries,
           previous.discoveries,
         );
+        // Achievements are pure predicates of state, so one earned by a refused discovery would
+        // otherwise be written beside it. Only write those that still hold without the refused rows.
+        const achievementsToWrite = withoutRefused(state, previous);
         const [learned, achievements] = await Promise.all([
           upsertNew('learned', 'herb_id', 'learned_at', state.learned, previous.learned),
           upsertNew(
             'unlocked_achievements',
             'achievement_id',
             'unlocked_at',
-            state.achievements,
+            achievementsToWrite,
             previous.achievements,
           ),
         ]);
         lastKnown = { ...lastKnown, discoveries, learned, achievements };
+        const refusals = pendingRefusals;
+        pendingRefusals = [];
+        for (const info of refusals) adapter.onRefused?.(info);
       })();
       inFlight.add(write);
       void write.finally(() => inFlight.delete(write));
@@ -182,4 +241,5 @@ export function createRemoteHerbdexStorage(userId: string): HerbdexStorage {
       return data as ReconcileOutcome;
     },
   };
+  return adapter;
 }
