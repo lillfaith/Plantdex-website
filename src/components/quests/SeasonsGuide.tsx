@@ -81,6 +81,12 @@ const GLYPH_ROWS: Record<Season, readonly string[]> = {
   ],
 };
 const glyphUri = (season: Season) => gridToUri(fromRows(GLYPH_ROWS[season], GLYPH_PALETTE));
+/** The same glyph padded with empty columns, so a repeating ribbon is a sparse line of glyphs rather than a solid band. */
+const ribbonUri = (season: Season) => {
+  const rows = GLYPH_ROWS[season];
+  const width = Math.max(...rows.map((row) => row.length)) + 14;
+  return gridToUri(fromRows(rows.map((row) => row.padEnd(width, ' ')), GLYPH_PALETTE));
+};
 function SeasonGlyph({ season, size }: { season: Season; size: number }) {
   return (
     <span
@@ -96,7 +102,7 @@ function SeasonRibbon({ season }: { season: Season }) {
     <div
       aria-hidden="true"
       className="h-3.5 w-full opacity-90 [image-rendering:pixelated]"
-      style={{ backgroundImage: glyphUri(season), backgroundRepeat: 'repeat-x', backgroundSize: '14px 14px', backgroundPosition: 'left bottom' }}
+      style={{ backgroundImage: ribbonUri(season), backgroundRepeat: 'repeat-x', backgroundSize: 'auto 14px', backgroundPosition: 'left bottom' }}
     />
   );
 }
