@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { printedCardsInDeckOrder, SEASON_LABEL } from '@/lib/deck';
 import { assetPath } from '@/lib/asset-path';
 import { SEASONS, type Season } from '@/lib/types';
+import { PageAtmosphere } from '@/components/PageAtmosphere';
 import { PlantdexIcon, type IconName } from '@/components/icons/PlantdexIcon';
 
 export const metadata: Metadata = {
@@ -32,7 +33,8 @@ export default function SeasonsPage() {
   const herbs = printedCardsInDeckOrder();
 
   return (
-    <main id="main" className="mx-auto max-w-4xl px-4 py-8">
+    <main id="main" data-ground="lavender" data-palette="card" className="mx-auto max-w-4xl px-4 py-8">
+      <PageAtmosphere theme="collection" />
       <h1 className="font-display text-3xl font-extrabold text-gold-plate">Seasons</h1>
       <p className="mt-1 text-sm text-violet-300">
         When each plant in the deck is typically easiest to find.
