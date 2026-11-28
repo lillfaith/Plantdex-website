@@ -159,7 +159,7 @@ export default function AccountPage() {
               <div className="pd-tile px-2 py-2 text-center" data-tone="gold">
                 <p className="text-xs font-extrabold tracking-[0.1em] text-violet-100 uppercase">Level</p>
                 <p className="font-display text-2xl leading-none font-extrabold text-violet-100">{passport.level}</p>
-                <p className="mt-0.5 truncate text-[0.8125rem] font-bold text-violet-300">{passport.levelName}</p>
+                {passport.levelName !== passport.title && <p className="mt-0.5 truncate text-[0.8125rem] font-bold text-violet-300">{passport.levelName}</p>}
               </div>
               <div className="pd-tile px-2 py-2 text-center" data-tone="leaf">
                 <p className="text-xs font-extrabold tracking-[0.1em] text-violet-100 uppercase">Cards</p>
