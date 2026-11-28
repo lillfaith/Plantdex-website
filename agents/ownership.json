@@ -181,6 +181,7 @@
         "src/lib/challenge-bank*",
         "src/lib/mastery-challenges*",
         "src/lib/unlocked-field-cards*",
+        "src/lib/earned-moments*",
         "src/lib/unlock-*",
         "src/lib/field-card-*",
         "src/lib/collection*",
